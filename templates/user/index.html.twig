@@ -1,0 +1,124 @@
+{% extends 'template.html.twig' %}
+
+{% block title %}User index{% endblock %}
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('user_index') }}">Utilisateurs</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+
+
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-lg table-v2 table-striped">
+            <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Roles
+                </th>
+                <th>
+                    actions
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for user in users %}
+                <tr>
+                    <td>
+                        {{ user.id }}
+                    </td>
+                    {#
+                    <td>
+                        <img alt="" src="{{ asset('img/flags-icons/ca.png') }}" width="25px">
+                    </td>
+                    #}
+                    <td class="text-right">
+                        {{ user.email }}
+                    </td>
+                    <td>
+                        {{ user.roles ? user.roles|json_encode : '' }}
+                    </td>
+                    {#
+                    <td class="text-center">
+                        <div class="status-pill yellow" data-title="Pending" data-toggle="tooltip"></div>
+                    </td>
+                    #}
+                    <td class="row-actions">
+                        <a href="{{ path('user_edit', {'id': user.id}) }}">
+                            <i class="os-icon os-icon-ui-49"></i>
+                        </a>
+                        <a href="{{ path('user_show', {'id': user.id}) }}">
+                            <i class="os-icon os-icon-grid-10"></i>
+                        </a>
+                        <a class="danger" href="#">
+                            <i class="os-icon os-icon-ui-15"></i>
+                        </a>
+                    </td>
+
+
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+
+{#
+<table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>
+                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+
+
+        </tbody>
+    </table>
+#}
+
+
+
+    <a href="{{ path('user_new') }}">Create new</a>
+{% endblock %}
