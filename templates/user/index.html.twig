@@ -1,4 +1,4 @@
-{% extends 'template.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}User index{% endblock %}
 {% block  breadcrumb %}
@@ -15,8 +15,6 @@
 
 {% block body %}
     <h1>Liste des utilisateurs</h1>
-
-
 
     <div class="table-responsive">
         <table class="table table-bordered table-lg table-v2 table-striped">
@@ -66,12 +64,7 @@
                         <a href="{{ path('user_show', {'id': user.id}) }}">
                             <i class="os-icon os-icon-grid-10"></i>
                         </a>
-                        <a class="danger" href="#">
-                            <i class="os-icon os-icon-ui-15"></i>
-                        </a>
                     </td>
-
-
                 </tr>
             {% else %}
                 <tr>

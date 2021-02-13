@@ -1,14 +1,126 @@
-{% extends 'template.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Edit User{% endblock %}
+{% block  breadcrumb %}
 
-{% block body %}
-    <h1>Edit User</h1>
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('user_index') }}">Utilisateurs</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Edit</a>
+        </li>
+    </ul>
+{% endblock %}
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('user_index') }}">back to list</a>
+{% block  body %}
 
-    {{ include('user/_delete_form.html.twig') }}
+{#  {{  include('user/_form.html.twig', {'button_label': 'Mettre à jour', 'form_name':'Modifier un utilisateur'}) }}#}
+
+{#
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col md-4">{{ form_row(form.email) }}</div>
+    </div>
+    <div class="row">
+
+        <div class="col md-2">{{ form_row(form.password,{
+                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                )
+            }}
+        </div>
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+    </div>
+    <div class="row">
+        <div class="col md-4">
+            {{ form_row(form.imageFile) }}</div>
+    </div>
+    <button type="submit" class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+                        <h1>{{ form_name }}</h1>
+#}
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box">
+                    {{ form_start(form) }}
+                    <h5 class="form-header">
+                    </h5>
+                    <div class="form-group">
+                        {{ form_row(form.email,{
+                            'label':"Adresse Email",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
+                        }) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.password,{
+                                        'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                                    )
+                                    }}
+                                <input type="hidden" name="_csrf_token"
+                                       value="{{ csrf_token('authenticate') }}"
+                                >
+                                <div class="help-block form-text text-muted form-control-feedback">
+                                    Minimum of 6 characters
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.confirm,{
+                                    'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                                )
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for=""> Regular select</label><select class="form-control">
+                            <option value="New York">
+                                New York
+                            </option>
+                            <option value="California">
+                                California
+                            </option>
+                            <option value="Boston">
+                                Boston
+                            </option>
+                            <option value="Texas">
+                                Texas
+                            </option>
+                            <option value="Colorado">
+                                Colorado
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-group">
+
+                            {{ form_widget(form.imageFile,{
+                                'label':"Image",
+                                'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
+                            }) }}
+                            
+                        </div>
+                    </div>
+                    <div class="form-buttons-w">
+                        <button class="btn btn-primary disabled" type="submit"> Submit</button>
+
+                        <button class="btn" type="reset">Reset</button>
+                    </div>
+                    {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

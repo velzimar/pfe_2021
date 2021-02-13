@@ -1,4 +1,4 @@
-{% extends 'template.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}User{% endblock %}
 
@@ -23,6 +23,21 @@
                 <th>Password</th>
                 <td>{{ user.password }}</td>
             </tr>
+
+                {#
+                <tr>
+                <th>image</th>
+                <td>
+                    {% if property.filename %}
+                        <img src="{{ vich_uploader_asset(property, 'imageFile') }}" alt="card-img-top" style="width: 100%; height: auto">
+                    {% else %}
+                        <img src="/images/properties/php.png" alt="card-img-top" style="width: 100%; height: auto">
+                    {% endif %}
+                </td>
+            </tr>
+                #}
+
+
         </tbody>
     </table>
 
