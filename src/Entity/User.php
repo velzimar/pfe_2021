@@ -67,6 +67,36 @@ class User implements UserInterface, Serializable
      */
     private $password;
 
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $prenom;
+
+    /**
+     * @ORM\Column(type="string", length=8)
+     */
+    private $cin;
+
+    /**
+     * @ORM\Column(type="string", length=8)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $businessName;
+
+    /**
+     * @ORM\Column(type="text", length=255)
+     */
+    private $businessDescription;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -217,5 +247,77 @@ class User implements UserInterface, Serializable
             $this->email,
             $this->password
             )   = unserialize($serialized,['allowed_classes'=>false]);
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): self
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): self
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getCin(): ?string
+    {
+        return $this->cin;
+    }
+
+    public function setCin(string $cin): self
+    {
+        $this->cin = $cin;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getBusinessName(): ?string
+    {
+        return $this->businessName;
+    }
+
+    public function setBusinessName(string $businessName): self
+    {
+        $this->businessName = $businessName;
+
+        return $this;
+    }
+
+    public function getBusinessDescription(): ?string
+    {
+        return $this->businessDescription;
+    }
+
+    public function setBusinessDescription(string $businessDescription): self
+    {
+        $this->businessDescription = $businessDescription;
+
+        return $this;
     }
 }

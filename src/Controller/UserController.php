@@ -61,6 +61,8 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
     /**
      * @Route("/{id}", name="user_show", methods={"GET"})
      * @param User $user
@@ -85,20 +87,8 @@ class UserController extends AbstractController
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            if($form->get('confirm')->getData() == $form->get('password')->getData())
-                $user->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $user,
-                        $form->get('password')->getData()
-                    )
-                );
-            else{
-                $this->addFlash('verify_email_error', 'probleme');
-                return $this->render('user/edit.html.twig', [
-                    'form' => $form->createView(),
-                ]);
-            }
+        if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() == $form->get('password')->getData() ) {
+
                 $user->setPassword(
                     $passwordEncoder->encodePassword(
                         $user,
@@ -108,16 +98,12 @@ class UserController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'Modification avec succès');
             return $this->redirectToRoute('user_index');
+
+        }else if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() !== $form->get('password')->getData() ){
+            $this->addFlash('verify_email_error', 'Vérifier le mot de passe');
         }
-
-
-
-
-
-
-
-
 
         return $this->render('user/edit.html.twig', [
             'user' => $user,

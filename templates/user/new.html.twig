@@ -16,7 +16,145 @@
     </ul>
 {% endblock %}
 {% block body %}
-    {{ include('user/_form.html.twig',{ 'form_name':'Crée un nouveau utilisateur'})  }}
 
-    <a href="{{ path('user_index') }}">back to list</a>
+
+
+
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box">
+
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for flashError in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
+                {{ form_start(form) }}
+                <h5 class="form-header">
+                    Crée un utilisateur
+                </h5>
+                <div class="form-group">
+                    {{ form_row(form.email,{
+                        'label':"Adresse Email",
+                        'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
+                    }) }}
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.nom,{
+                                'label':"Nom",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                            }) }}
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.prenom,{
+                                'label':"Prenom",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.cin,{
+                                'label':"Numéro du carte d'identité",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                            }) }}
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.phone,{
+                                'label':"Numéro de téléphone",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.businessName,{
+                        'label':"Nom de l'affaire",
+                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                    }) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.businessDescription,{
+                        'label':"Description de l'affaire",
+                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                    }) }}
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.password,{
+                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                            )
+                            }}
+                            <input type="hidden" name="_csrf_token"
+                                   value="{{ csrf_token('authenticate') }}"
+                            >
+                            <div class="help-block form-text text-muted form-control-feedback">
+                                Minimum of 6 characters
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.confirm,{
+                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                            )
+                            }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for=""> Regular select</label><select class="form-control">
+                        <option value="New York">
+                            New York
+                        </option>
+                        <option value="California">
+                            California
+                        </option>
+                        <option value="Boston">
+                            Boston
+                        </option>
+                        <option value="Texas">
+                            Texas
+                        </option>
+                        <option value="Colorado">
+                            Colorado
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+
+                        {{ form_widget(form.imageFile,{
+                            'label':"Image",
+                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file', 'required':'true'  }
+                        }) }}
+
+                    </div>
+                </div>
+                <div class="form-buttons-w">
+                    <button class="btn btn-primary disabled" type="submit"> Crée</button>
+
+                    <button class="btn" type="reset">Reset</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

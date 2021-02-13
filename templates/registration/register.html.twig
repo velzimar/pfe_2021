@@ -13,15 +13,20 @@
     {% endfor %}
 
     <h1>Crée un compte</h1>
-
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.nom) }}
+        {{ form_row(registrationForm.prenom) }}
+        {{ form_row(registrationForm.cin) }}
+        {{ form_row(registrationForm.phone) }}
+        {{ form_row(registrationForm.businessName) }}
+        {{ form_row(registrationForm.businessDescription) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
+            {{ form_row(registrationForm.confirm) }}
         {{ form_row(registrationForm.imageFile) }}
         {{ form_row(registrationForm.agreeTerms) }}
-
         <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}

@@ -8,13 +8,30 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('user_index') }}">Utilisateurs</a>
+            <a href="#">Utilisateurs</a>
         </li>
     </ul>
 {% endblock %}
 
+    {% block QuickLink1 %}
+
+        <a class="btn btn-white btn-sm" href="{{ path('user_new') }}">
+            <i class="os-icon os-icon-delivery-box-2"></i>
+            <span>Crée un nouveau utilisateur</span>
+        </a>
+
+    {% endblock %}
 {% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
     <h1>Liste des utilisateurs</h1>
+
 
     <div class="table-responsive">
         <table class="table table-bordered table-lg table-v2 table-striped">
@@ -77,41 +94,41 @@
     </div>
 
 
-{#
-<table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    {#
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>actions</th>
+                </tr>
+            </thead>
+            <tbody>
 
 
-        {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    <td>
+                        <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
+                        <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
 
 
-        </tbody>
-    </table>
-#}
+            </tbody>
+        </table>
+        <a href="{{ path('user_new') }}">Create new</a>
+    #}
 
 
 
-    <a href="{{ path('user_new') }}">Create new</a>
 {% endblock %}

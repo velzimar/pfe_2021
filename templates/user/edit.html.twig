@@ -19,7 +19,6 @@
 
 {% block  body %}
 
-{#  {{  include('user/_form.html.twig', {'button_label': 'Mettre à jour', 'form_name':'Modifier un utilisateur'}) }}#}
 
 {#
     {{ form_start(form) }}
@@ -47,17 +46,78 @@
     {{ form_end(form) }}
                         <h1>{{ form_name }}</h1>
 #}
+
     <div class="col-sm-12">
         <div class="element-wrapper">
             <div class="element-box">
+
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for flashError in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
                     {{ form_start(form) }}
                     <h5 class="form-header">
+                        Modifier un utilisateur
                     </h5>
                     <div class="form-group">
                         {{ form_row(form.email,{
                             'label':"Adresse Email",
                             'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
                         }) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.nom,{
+                                    'label':"Nom",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                                }) }}
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.prenom,{
+                                    'label':"Prenom",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.cin,{
+                                    'label':"Numéro du carte d'identité",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                                }) }}
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.phone,{
+                                    'label':"Numéro de téléphone",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                                {{ form_row(form.businessName,{
+                                    'label':"Nom de l'affaire",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                                }) }}
+                    </div>
+                    <div class="form-group">
+                            {{ form_row(form.businessDescription,{
+                                'label':"Description de l'affaire",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            }) }}
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -114,7 +174,7 @@
                         </div>
                     </div>
                     <div class="form-buttons-w">
-                        <button class="btn btn-primary disabled" type="submit"> Submit</button>
+                        <button class="btn btn-primary disabled" type="submit"> Mettre à jour</button>
 
                         <button class="btn" type="reset">Reset</button>
                     </div>
@@ -123,4 +183,8 @@
         </div>
     </div>
 
+    {#
+    {{ include('user/_form.html.twig',{ 'form_name':'Crée un nouveau utilisateur'})  }}
+
+    #}
 {% endblock %}

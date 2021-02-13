@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
@@ -17,10 +18,14 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email')
-          //  ->add('password')
-            //->add('roles')
-
+            ->add('nom')
+            ->add('prenom')
+            ->add('cin')
+            ->add('phone')
+            ->add('businessName')
+            ->add('businessDescription')
             ->add('password', PasswordType::class, [
+                'required'=>true,
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'constraints' => [
@@ -36,6 +41,7 @@ class UserType extends AbstractType
                 ],
             ])
             ->add('confirm', PasswordType::class, [
+                'required'=>true,
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,

@@ -19,6 +19,12 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email')
+            ->add('nom')
+            ->add('prenom')
+            ->add('cin')
+            ->add('phone')
+            ->add('businessName')
+            ->add('businessDescription')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -60,7 +66,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('imageFile', FileType::class, [
-                'required'=>false
+                'required'=>true
             ])
         ;
     }
