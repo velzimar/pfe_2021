@@ -142,7 +142,31 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+    public function hasRole($role)
+    {
+        if (in_array($role, $this->roles)) {
+            return true;
+        }
 
+        return false;
+    }
+    public function addRole($role)
+    {
+        if (!in_array($role, $this->roles)) {
+            array_push($this->roles, $role);
+        }
+
+        return $this;
+    }
+    public function removeRoles($role): self
+    {
+        if ($this->hasRole($role)) {
+            unset($this->roles[array_search($role, $this->roles)]);
+            $this->roles = array_values($this->roles);
+        }
+
+        return $this;
+    }
     /**
      * @see UserInterface
      */
@@ -320,4 +344,6 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+
+
 }

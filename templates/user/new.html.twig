@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="form-group">
                             {{ form_row(form.cin,{
                                 'label':"Numéro du carte d'identité",
@@ -71,11 +71,19 @@
 
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="form-group">
                             {{ form_row(form.phone,{
                                 'label':"Numéro de téléphone",
                                 'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            {{ form_row(form.admin,{
+                                'label':"Administrateur",
+                                'attr': {'class': 'form-control' }
                             }) }}
                         </div>
                     </div>
