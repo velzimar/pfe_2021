@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -25,6 +27,12 @@ class UserType extends AbstractType
             ->add('phone')
             ->add('businessName')
             ->add('businessDescription')
+            ->add('category_id', EntityType::class, [
+                'choice_label'=>'nom',
+                'class'=> Category::class,
+                'multiple'=>false,
+                'required'=>false,
+            ])
             ->add('password', PasswordType::class, [
                 'required'=>true,
                 // instead of being set onto the object directly,

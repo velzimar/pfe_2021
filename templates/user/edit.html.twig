@@ -152,34 +152,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for=""> Regular select</label><select class="form-control">
-                            <option value="New York">
-                                New York
-                            </option>
-                            <option value="California">
-                                California
-                            </option>
-                            <option value="Boston">
-                                Boston
-                            </option>
-                            <option value="Texas">
-                                Texas
-                            </option>
-                            <option value="Colorado">
-                                Colorado
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group">
                         <div class="form-group">
+                            {{ form_row(form.category_id,{
+                                'label':"Catégorie",
+                                'attr': {'class': 'form-control'  }}) }}
+                        </div>
+                    <div class="form-group">
 
                             {{ form_widget(form.imageFile,{
                                 'label':"Image",
                                 'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
                             }) }}
-                            
-                        </div>
+
                     </div>
                     <div class="form-buttons-w">
                         <button class="btn btn-primary disabled" type="submit"> Mettre à jour</button>

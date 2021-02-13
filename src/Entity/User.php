@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
@@ -28,6 +30,13 @@ class User implements UserInterface, Serializable
      */
 
     private $id;
+
+    /**
+     * @ManyToOne(targetEntity="Category")
+     * @JoinColumn(name="CategoryId", referencedColumnName="id")
+     */
+    private $CategoryId;
+
     /**
      * @var string|null
      * @ORM\Column(type="string", length=255)
@@ -343,6 +352,24 @@ class User implements UserInterface, Serializable
         $this->businessDescription = $businessDescription;
 
         return $this;
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getCategoryId()
+    {
+        return $this->CategoryId;
+    }
+
+    /**
+     * @param mixed $CategoryId
+     */
+    public function setCategoryId($CategoryId): void
+    {
+        $this->CategoryId = $CategoryId;
     }
 
 

@@ -52,14 +52,14 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             if($form->get('admin')->getData()==true){
 
-                $this->addFlash('success', 'add');
                 $user->addRole('ROLE_ADMIN');
             }
             else{
 
-                $this->addFlash('success', 'remove');
                 $user->removeRoles('ROLE_ADMIN');
             }
+
+            $this->addFlash('success', 'Utilisateur ajouté avec succès');
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -107,12 +107,11 @@ class UserController extends AbstractController
                 );
             if($form->get('admin')->getData()==true){
 
-                $this->addFlash('success', 'add');
+               // $this->addFlash('success', 'add');
                 $user->addRole('ROLE_ADMIN');
             }
             else{
-
-                $this->addFlash('success', 'remove');
+               // $this->addFlash('success', 'remove');
                 $user->removeRoles('ROLE_ADMIN');
             }
             $this->getDoctrine()->getManager()->flush();
