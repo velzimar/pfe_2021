@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
@@ -105,6 +107,16 @@ class User implements UserInterface, Serializable
      * @ORM\Column(type="text", length=255)
      */
     private $businessDescription;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ProductCategory::class, mappedBy="businessId")
+     */
+    private $productCategories;
+
+    public function __construct()
+    {
+        $this->productCategories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -372,5 +384,42 @@ class User implements UserInterface, Serializable
         $this->CategoryId = $CategoryId;
     }
 
+    /**
+     * @return Collection|ProductCategory[]
+     */
+    public function getProductCategories(): Collection
+    {
+        return $this->productCategories;
+    }
+
+    public function addProductCategory(ProductCategory $productCategory): self
+    {
+        if (!$this->productCategories->contains($productCategory)) {
+            $this->productCategories[] = $productCategory;
+            $productCategory->setBusinessId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductCategory(ProductCategory $productCategory): self
+    {
+        if ($this->productCategories->removeElement($productCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($productCategory->getBusinessId() === $this) {
+                $productCategory->setBusinessId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        // to show the name of the Category in the select
+        return $this->nom;
+        // to show the id of the Category in the select
+         //return strval($this->id);
+    }
 
 }

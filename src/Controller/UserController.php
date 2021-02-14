@@ -96,7 +96,9 @@ class UserController extends AbstractController
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
+        $isAdmin = $user->hasRole('ROLE_ADMIN');
+        //$this->addFlash('success', "has role: $isAdmin");
+        $form->get('admin')->setData($isAdmin);
         if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() == $form->get('password')->getData() ) {
 
                 $user->setPassword(

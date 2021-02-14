@@ -949,10 +949,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ path('user_new') }}">Crée un nouveau</a>
+                                        <a href="{{ path('user_new') }}">Créer</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('user_index') }}">Liste</a>
+                                        <a href="{{ path('user_index') }}">Lister</a>
                                     </li>
                                     <li>
                                         <a href="{{ path('user_index') }}">Dashboard 3<strong class="badge badge-danger">Hot</strong></a>
@@ -977,10 +977,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ path('category_new') }}">Crée</a>
+                                        <a href="{{ path('category_new') }}">Ajouter</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('category_index') }}">Liste</a>
+                                        <a href="{{ path('category_index') }}">Lister</a>
                                     </li>
                                 </ul>
                             </div>
@@ -990,14 +990,14 @@
                 {% endif %}
 
                 <li class="sub-header">
-                    <span>Options</span>
+                    <span>Gestion de Vitrine</span>
                 </li>
                 <li class="has-sub-menu">
-                    <a href="apps_bank.html">
+                    <a>
                         <div class="icon-w">
                             <div class="os-icon os-icon-package"></div>
                         </div>
-                        <span>Applications</span></a>
+                        <span>Gestion des catégories</span></a>
                     <div class="sub-menu-w">
                         <div class="sub-menu-header">
                             Applications
@@ -1008,42 +1008,12 @@
                         <div class="sub-menu-i">
                             <ul class="sub-menu">
                                 <li>
-                                    <a href="apps_email.html">Email Application</a>
+                                    <a href="{{ path('product_category_new') }}">Ajouter</a>
                                 </li>
                                 <li>
-                                    <a href="apps_support_dashboard.html">Support Dashboard</a>
+                                    <a href="{{ path('product_category_index') }}">Lister</a>
                                 </li>
-                                <li>
-                                    <a href="apps_support_index.html">Tickets Index</a>
-                                </li>
-                                <li>
-                                    <a href="apps_crypto.html">Crypto Dashboard <strong class="badge badge-danger">New</strong></a>
-                                </li>
-                                <li>
-                                    <a href="apps_projects.html">Projects List</a>
-                                </li>
-                                <li>
-                                    <a href="apps_bank.html">Banking <strong class="badge badge-danger">New</strong></a>
-                                </li>
-                            </ul><ul class="sub-menu">
-                                <li>
-                                    <a href="apps_full_chat.html">Chat Application</a>
-                                </li>
-                                <li>
-                                    <a href="apps_todo.html">To Do Application <strong class="badge badge-danger">New</strong></a>
-                                </li>
-                                <li>
-                                    <a href="misc_chat.html">Popup Chat</a>
-                                </li>
-                                <li>
-                                    <a href="apps_pipeline.html">CRM Pipeline</a>
-                                </li>
-                                <li>
-                                    <a href="rentals_index_grid.html">Property Listing <strong class="badge badge-danger">New</strong></a>
-                                </li>
-                                <li>
-                                    <a href="misc_calendar.html">Calendar</a>
-                                </li>
+
                             </ul>
                         </div>
                     </div>
