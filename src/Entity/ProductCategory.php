@@ -122,5 +122,12 @@ class ProductCategory
         return $this;
     }
 
+    public function __toString(): string
+    {
+        // to show the name of the Category in the select
+        return $this->nom;
+        // to show the id of the Category in the select
+        //return strval($this->id);
+    }
 
 }
