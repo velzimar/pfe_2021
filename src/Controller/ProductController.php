@@ -32,6 +32,8 @@ class ProductController extends AbstractController
      */
     public function new(Request $request): Response
     {
+
+
         $product = new Product();
         //$form = $this->createForm(ProductType::class, $product);
         //$form->handleRequest($request);
@@ -41,9 +43,15 @@ class ProductController extends AbstractController
 
 
         $form = $this->createForm(ProductType::class, $product,
-            ['userId' => $user->getId()] //or whatever the variable is called
+            ['userId' => $user->getId() //or whatever the variable is called
+            ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
         );
-
+        /*
+        $role = $user->getRoles();
+        foreach($role as $rolee){
+            $this->addFlash('success', "role user: $rolee");
+        }
+        */
         $form->handleRequest($request);
 
         $categories = $user->getProductCategories();
@@ -51,9 +59,10 @@ class ProductController extends AbstractController
             $this->addFlash('success', "categories de ce user: $category");
         }
 
-
+        $product->setBusiness($user);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
             $entityManager->persist($product);
             $entityManager->flush();
 
@@ -64,6 +73,8 @@ class ProductController extends AbstractController
             'product' => $product,
             'form' => $form->createView(),
         ]);
+
+
     }
 
     /**

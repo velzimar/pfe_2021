@@ -49,6 +49,12 @@ class Product
      */
     private $category;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $business;
+
 
     public function getId(): ?int
     {
@@ -111,6 +117,18 @@ class Product
     public function setCategory(?ProductCategory $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getBusiness(): ?User
+    {
+        return $this->business;
+    }
+
+    public function setBusiness(?User $business): self
+    {
+        $this->business = $business;
 
         return $this;
     }

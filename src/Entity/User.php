@@ -113,9 +113,15 @@ class User implements UserInterface, Serializable
      */
     private $productCategories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="business")
+     */
+    private $products;
+
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,7 +169,13 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
-    public function hasRole($role)
+
+    /**
+     * @param $role
+     * @return bool
+     * @see UserInterface
+     */
+    public function hasRole($role): bool
     {
         if (in_array($role, $this->roles)) {
             return true;
@@ -420,6 +432,36 @@ class User implements UserInterface, Serializable
         return $this->nom;
         // to show the id of the Category in the select
          //return strval($this->id);
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setBusiness($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getBusiness() === $this) {
+                $product->setBusiness(null);
+            }
+        }
+
+        return $this;
     }
 
 }
