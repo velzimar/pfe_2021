@@ -33,18 +33,20 @@ class ProductController extends AbstractController
     public function new(Request $request): Response
     {
         $product = new Product();
-        $form = $this->createForm(ProductType::class, $product);
-        /*
-        $form = $this->createForm(SearchProductType::class, $objName,
-            ['parentId' => $parentId], //or whatever the variable is called
-        );
-        */
-        $form->handleRequest($request);
+        //$form = $this->createForm(ProductType::class, $product);
+        //$form->handleRequest($request);
         $user = $this->getUser();
         $this->addFlash('success', "Utilisateur $user");
+
+
+
+        $form = $this->createForm(ProductType::class, $product,
+            ['userId' => $user->getId()] //or whatever the variable is called
+        );
+
+        $form->handleRequest($request);
+
         $categories = $user->getProductCategories();
-
-
         foreach($categories as $category){
             $this->addFlash('success', "categories de ce user: $category");
         }
