@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}select user{% endblock %}
-
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Selectionner un utilisateur</a>
+        </li>
+    </ul>
+{% endblock %}
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">

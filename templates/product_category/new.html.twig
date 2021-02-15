@@ -1,7 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New ProductCategory{% endblock %}
+{% block  breadcrumb %}
 
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Utilisateurs</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Edit</a>
+        </li>
+    </ul>
+{% endblock %}
 {% block body %}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">

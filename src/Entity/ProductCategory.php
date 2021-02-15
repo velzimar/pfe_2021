@@ -129,5 +129,11 @@ class ProductCategory
         // to show the id of the Category in the select
         //return strval($this->id);
     }
-
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 }

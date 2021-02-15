@@ -19,6 +19,9 @@ class SelectUserType extends AbstractType
         $builder
             ->add('business', EntityType::class, [
                 'class'=> User::class,
+                'choice_label' => function (User $customer) {
+                    return $customer->getNom() . ' ' . $customer->getId();
+                },
                 'multiple'=>false,
                 'required'=>false
             ])

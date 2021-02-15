@@ -1,7 +1,22 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Product{% endblock %}
-
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Selectionner un utilisateur</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('product_index_user', {'userId': userId }) }}">Liste</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Editer</a>
+        </li>
+    </ul>
+{% endblock %}
 {% block body %}
     <h1>Edit Product</h1>
 

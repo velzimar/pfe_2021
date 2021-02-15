@@ -2,6 +2,20 @@
 
 {% block title %}Product index{% endblock %}
 
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Selectionner un utilisateur</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Liste</a>
+        </li>
+    </ul>
+{% endblock %}
+
 {% block body %}
     <h1>Product index</h1>
 
@@ -26,7 +40,8 @@
                 <td>{{ product.qtt }}</td>
                 <td>
 
-                     <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">{{ userId }}</a>
+                     <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">Edit</a>
+                        <a href="{{ path('product_show', {'id': product.id, 'userId':userId}) }}">show</a>
                 </td>
             </tr>
         {% else %}

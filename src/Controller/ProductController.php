@@ -54,7 +54,10 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("/{userId}/index", name="product_index_user", methods={"GET","POST"})
+     * @Route("/{userId}/", name="product_index_user", methods={"GET","POST"})
+     * @param ProductRepository $productRepository
+     * @param User $userId
+     * @return Response
      */
     public function userProducts(ProductRepository $productRepository, User $userId): Response
     {
@@ -151,17 +154,21 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_show", methods={"GET"})
+     * @Route("/{userId}/{id}/show", name="product_show", methods={"GET","POST"})
+     * @param Product $product
+     * @param User $userId
+     * @return Response
      */
-    public function show(Product $product): Response
+    public function show(Product $product, User $userId): Response
     {
         return $this->render('product/show.html.twig', [
             'product' => $product,
+            'userId' => $userId
         ]);
     }
 
     /**
-     * @Route("/{id}/{userId}/edit", name="product_edit", methods={"GET","POST"})
+     * @Route("/{userId}/{id}/edit", name="product_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Product $product
      * @param User $userId
@@ -198,14 +205,19 @@ class ProductController extends AbstractController
 
         return $this->render('product/edit.html.twig', [
             'product' => $product,
+            'userId'=> $userId,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="product_delete", methods={"DELETE"})
+     * @Route("/{userId}/{id}", name="product_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Product $product
+     * @param User $userId
+     * @return Response
      */
-    public function delete(Request $request, Product $product): Response
+    public function delete(Request $request, Product $product, User $userId): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -213,7 +225,9 @@ class ProductController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('product_index');
+        return $this->redirectToRoute('product_index_user',[
+            'userId' => $userId
+        ],301);
     }
 
 }

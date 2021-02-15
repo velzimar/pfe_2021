@@ -1,7 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit ProductCategory{% endblock %}
+{% block  breadcrumb %}
 
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Catégories</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Edit</a>
+        </li>
+    </ul>
+{% endblock %}
 {% block body %}
     <h1>Edit ProductCategory</h1>
 

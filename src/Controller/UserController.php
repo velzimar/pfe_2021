@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ProductCategory;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -61,6 +62,12 @@ class UserController extends AbstractController
 
             $this->addFlash('success', 'Utilisateur ajouté avec succès');
             $entityManager->persist($user);
+            $defaultCategory = new ProductCategory();
+            $defaultCategory->setId(0);
+            $defaultCategory->setBusinessId($user);
+            $defaultCategory->setNom("defaultCategory");
+            $defaultCategory->setDescription("default category for users");
+            $entityManager->persist($defaultCategory);
             $entityManager->flush();
 
             return $this->redirectToRoute('user_index');
