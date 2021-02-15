@@ -25,8 +25,8 @@
                 <td>{{ product.prix }}</td>
                 <td>{{ product.qtt }}</td>
                 <td>
-                    <a href="{{ path('product_show', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('product_edit', {'id': product.id}) }}">edit</a>
+
+                     <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">{{ userId }}</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    {# <a href="{{ path('product_new') }}">Create new</a>#}
+    {#  <a href="{{ path('product_new') }}">Create new</a>#}
 {% endblock %}

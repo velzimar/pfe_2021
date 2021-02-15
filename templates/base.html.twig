@@ -987,7 +987,6 @@
                         </div>
                     </li>
 
-                {% endif %}
 
                 <li class="sub-header">
                     <span>Gestion de Vitrine</span>
@@ -1034,10 +1033,10 @@
                         <div class="sub-menu-i">
                             <ul class="sub-menu">
                                 <li>
-                                    <a href="{{ path('product_new') }}">Ajouter</a>
+                                     <a href="{{ path('selectUser', {'action': 'new'}) }}">Ajouter</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('product_index') }}">Lister</a>
+                                    <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Lister</a>
                                 </li>
 
                             </ul>
@@ -1091,6 +1090,8 @@
                         </div>
                     </div>
                 </li>
+
+                {% endif %}
                 <li class="sub-header">
                     <span>Elements</span>
                 </li>

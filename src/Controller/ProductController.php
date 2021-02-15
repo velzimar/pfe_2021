@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Form\ProductType;
+use App\Form\SelectUserType;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,8 @@ class ProductController extends AbstractController
 {
     /**
      * @Route("/", name="product_index", methods={"GET"})
+     * @param ProductRepository $productRepository
+     * @return Response
      */
     public function index(ProductRepository $productRepository): Response
     {
@@ -27,31 +30,101 @@ class ProductController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/new", name="product_new", methods={"GET","POST"})
+     * @Route("/selectUser_{action}", name="selectUser", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
-    public function new(Request $request): Response
+    public function selectUser(Request $request, $action): Response
     {
+        $first = $this->createForm(SelectUserType::class);
+        $first->handleRequest($request);
+        if ($first->isSubmitted() && $first->isValid()) {
+            $userId = $first->get('business')->getData();
+            $this->addFlash('success', "from selectUser $userId");
+            return $this->redirectToRoute("product_$action",[
+                'userId' => $userId
+            ],301);
+        }
+        return $this->render('product/selectUser.html.twig', [
+            'form' => $first->createView(),
+        ]);
+    }
 
 
+    /**
+     * @Route("/{userId}/index", name="product_index_user", methods={"GET","POST"})
+     */
+    public function userProducts(ProductRepository $productRepository, User $userId): Response
+    {
+        return $this->render('product/userProducts.html.twig', [
+            'products' => $productRepository->findByUser($userId),
+            'userId' => $userId
+        ]);
+    }
+
+    /**
+     * @Route("/{userId}/new", name="product_new", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $userId
+     * @return Response
+     */
+    public function new(Request $request, User $userId): Response
+    {
+        echo $userId->getId();
         $product = new Product();
         //$form = $this->createForm(ProductType::class, $product);
         //$form->handleRequest($request);
         $user = $this->getUser();
-        $this->addFlash('success', "Utilisateur $user");
 
+        if($userId == "" or $userId == null )
+            return $this->redirectToRoute('selectUser');
 
+            $this->addFlash('success', "Utilisateur $user");
+            $this->addFlash('success', "selected user1 $userId");
+            $form = $this->createForm(ProductType::class, $product,
+                ['userId' => $userId //or whatever the variable is called
+                    ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
+            );
+
+            //$role = $user->getRoles();
+            //foreach($role as $rolee){
+            //    $this->addFlash('success', "role user: $rolee");
+            //}
+
+            $form->handleRequest($request);
+
+            $categories = $userId->getProductCategories();
+            foreach($categories as $category){
+                $this->addFlash('success', "categories de ce user: $category");
+            }
+
+            //$product->setBusiness($user);
+            $product->setBusiness($userId);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $entityManager->persist($product);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('product_index_user',[
+                    'userId' => $userId
+                ],301);
+            }
+
+/*
 
         $form = $this->createForm(ProductType::class, $product,
             ['userId' => $user->getId() //or whatever the variable is called
             ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
         );
-        /*
-        $role = $user->getRoles();
-        foreach($role as $rolee){
-            $this->addFlash('success', "role user: $rolee");
-        }
-        */
+
+        //$role = $user->getRoles();
+        //foreach($role as $rolee){
+        //    $this->addFlash('success', "role user: $rolee");
+        //}
+
         $form->handleRequest($request);
 
         $categories = $user->getProductCategories();
@@ -68,7 +141,7 @@ class ProductController extends AbstractController
 
             return $this->redirectToRoute('product_index');
         }
-
+*/
         return $this->render('product/new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
@@ -88,17 +161,39 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="product_edit", methods={"GET","POST"})
+     * @Route("/{id}/{userId}/edit", name="product_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Product $product
+     * @param User $userId
+     * @return Response
      */
-    public function edit(Request $request, Product $product): Response
+    public function edit(Request $request, Product $product, User $userId): Response
     {
-        $form = $this->createForm(ProductType::class, $product);
+
+        echo $userId->getId();
+        //$form = $this->createForm(ProductType::class, $product);
+        //$form->handleRequest($request);
+        $user = $this->getUser();
+
+        if($userId == "" or $userId == null )
+            return $this->redirectToRoute('selectUser');
+
+        $this->addFlash('success', "Utilisateur $user");
+        $this->addFlash('success', "selected user1 $userId");
+        $form = $this->createForm(ProductType::class, $product,
+            ['userId' => $userId //or whatever the variable is called
+                ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
+        );
+
         $form->handleRequest($request);
+        $product->setBusiness($userId);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('product_index');
+            return $this->redirectToRoute('product_index_user',[
+                'userId' => $userId
+            ],301);
         }
 
         return $this->render('product/edit.html.twig', [
@@ -120,4 +215,5 @@ class ProductController extends AbstractController
 
         return $this->redirectToRoute('product_index');
     }
+
 }

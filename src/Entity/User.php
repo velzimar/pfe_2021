@@ -429,9 +429,9 @@ class User implements UserInterface, Serializable
     public function __toString(): string
     {
         // to show the name of the Category in the select
-        return $this->nom;
+        //return $this->nom;
         // to show the id of the Category in the select
-         //return strval($this->id);
+         return strval($this->id);
     }
 
     /**

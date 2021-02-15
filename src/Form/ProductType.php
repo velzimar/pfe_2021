@@ -22,8 +22,6 @@ class ProductType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('qtt')
-
-
         ;
 
         $role = $options['userRole'];
@@ -46,6 +44,7 @@ class ProductType extends AbstractType
             ;
         }else{
             $builder
+                ->add('business')
                 ->add('category', EntityType::class, [
                     'class'=> ProductCategory::class,
                     'multiple'=>false,
