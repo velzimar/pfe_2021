@@ -100,12 +100,25 @@ class ProductController extends AbstractController
 
             $categories = $userId->getProductCategories();
             foreach($categories as $category){
+                if($category->getNom()=="defaultCategory"){
+                    $this->addFlash('success', "this is: $category");
+                    $form->get('category')->setData($category);
+                    echo $product->getCategory();
+                }else
                 $this->addFlash('success', "categories de ce user: $category");
             }
-
             //$product->setBusiness($user);
             $product->setBusiness($userId);
             if ($form->isSubmitted() && $form->isValid()) {
+                if($form->get('imageFile')->getData()==null){
+
+                    $this->addFlash('success', "its null");
+                    echo "its null";
+                    return $this->render('product/new.html.twig', [
+                        'product' => $product,
+                        'form' => $form->createView(),
+                    ]);
+                }
                 $entityManager = $this->getDoctrine()->getManager();
 
                 $entityManager->persist($product);

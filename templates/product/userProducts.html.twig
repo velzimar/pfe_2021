@@ -24,9 +24,9 @@
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>Description</th>
                 <th>Prix</th>
                 <th>Qtt</th>
+                <th>Catégorie</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -35,9 +35,9 @@
             <tr>
                 <td>{{ product.id }}</td>
                 <td>{{ product.nom }}</td>
-                <td>{{ product.description }}</td>
                 <td>{{ product.prix }}</td>
                 <td>{{ product.qtt }}</td>
+                <td>{{ product.category }}</td>
                 <td>
 
                      <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">Edit</a>

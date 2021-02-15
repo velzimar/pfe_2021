@@ -43,6 +43,16 @@
                 <th>Qtt</th>
                 <td>{{ product.qtt }}</td>
             </tr>
+            <tr>
+                <th>Catégorie</th>
+                <td>{{ product.category }}</td>
+            </tr>
+            <tr>
+                <th>Image</th>
+                <td>
+                    <img alt="" src= "{{ vich_uploader_asset(product, 'imageFile') }}" >
+                </td>
+            </tr>
         </tbody>
     </table>
 

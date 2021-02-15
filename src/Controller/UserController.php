@@ -63,7 +63,6 @@ class UserController extends AbstractController
             $this->addFlash('success', 'Utilisateur ajouté avec succès');
             $entityManager->persist($user);
             $defaultCategory = new ProductCategory();
-            $defaultCategory->setId(0);
             $defaultCategory->setBusinessId($user);
             $defaultCategory->setNom("defaultCategory");
             $defaultCategory->setDescription("default category for users");

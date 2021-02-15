@@ -8,6 +8,7 @@ use App\Entity\ProductCategory;
 use App\Repository\ProductCategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,6 +23,9 @@ class ProductType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('qtt')
+            ->add('imageFile', FileType::class, [
+                'required'=>false
+            ])
         ;
 
         $role = $options['userRole'];
