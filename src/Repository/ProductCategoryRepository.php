@@ -36,18 +36,15 @@ class ProductCategoryRepository extends ServiceEntityRepository
     }
     */
 
-
-
-    public function findByUser($value)
+    /*
+    public function findOneBySomeField($value): ?ProductCategory
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.businessId = :val')
+            ->andWhere('p.exampleField = :val')
             ->setParameter('val', $value)
-            //->orderBy('p.id', 'ASC')
-            //->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getOneOrNullResult()
+        ;
     }
-
+    */
 }

@@ -14,7 +14,7 @@ class ProductCategoryType extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
-            ->add('businessId')
+            //->add('businessId')
         ;
     }
 
