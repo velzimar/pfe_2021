@@ -84,27 +84,28 @@ class ProductCategoryController extends AbstractController
     */
 
     /**
-     * @Route("/new", name="product_category_new", methods={"GET","POST"})
+     * @Route("/admin/user_{userId}/new", name="userProductCategories_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, User $userId): Response
     {
         $productCategory = new ProductCategory();
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
         //$id=$this->getUser()->getId();
-        $productCategory->setBusinessId($this->getUser());
+        $productCategory->setBusinessId($userId);
         //$this->addFlash('success', "$id wtf");
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($productCategory);
             $entityManager->flush();
 
-            return $this->redirectToRoute('product_category_index');
+            return $this->redirectToRoute('userProductCategories_index',['userId'=>$userId]);
         }
 
         return $this->render('product_category/new.html.twig', [
             'product_category' => $productCategory,
             'form' => $form->createView(),
+            'userId' => $userId
         ]);
     }
 
@@ -130,7 +131,7 @@ class ProductCategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('product_category_index');
+            return $this->redirectToRoute('userProductCategories_index',['userId'=>$userId]);
         }
 
         return $this->render('product_category/edit.html.twig', [
