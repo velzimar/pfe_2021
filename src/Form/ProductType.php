@@ -11,7 +11,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Vich\UploaderBundle\Form\Type\VichImageType;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class ProductType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -23,45 +24,47 @@ class ProductType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('qtt')
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'allow_delete' => true,
+                'download_label' => '...',
+                'download_uri' => true,
+                'image_uri' => true,
+            ]);/*
             ->add('imageFile', FileType::class, [
-                'required'=>false
-            ])
-        ;
+                'required' => false
+            ]);*/
 
         $role = $options['userRole'];
         //echo $role;
-        if($role){
+        if ($role) {
             $builder
                 ->add('business')
                 ->add('category', EntityType::class, [
-                    'class'=> ProductCategory::class,
-                    'multiple'=>false,
-                    'required'=>false,
-                    'query_builder' => function (ProductCategoryRepository $er) use ($user){
+                    'class' => ProductCategory::class,
+                    'multiple' => false,
+                    'required' => false,
+                    'query_builder' => function (ProductCategoryRepository $er) use ($user) {
                         return $er->createQueryBuilder('u')
                             ->orderBy('u.nom', 'DESC')
                             ->andWhere('u.businessId = :param')
-                            ->setParameter('param',$user)
-                            ;
+                            ->setParameter('param', $user);
                     },
-                ])
-            ;
-        }else{
+                ]);
+        } else {
             $builder
                 ->add('business')
                 ->add('category', EntityType::class, [
-                    'class'=> ProductCategory::class,
-                    'multiple'=>false,
-                    'required'=>false,
-                    'query_builder' => function (ProductCategoryRepository $er) use ($user){
+                    'class' => ProductCategory::class,
+                    'multiple' => false,
+                    'required' => false,
+                    'query_builder' => function (ProductCategoryRepository $er) use ($user) {
                         return $er->createQueryBuilder('u')
                             ->orderBy('u.nom', 'DESC')
                             ->andWhere('u.businessId = :param')
-                            ->setParameter('param',$user)
-                            ;
+                            ->setParameter('param', $user);
                     },
-                ])
-            ;
+                ]);
         }
     }
 
@@ -73,6 +76,6 @@ class ProductType extends AbstractType
         $resolver->setRequired([
             'userId',
             'userRole'
-    ]);
+        ]);
     }
 }

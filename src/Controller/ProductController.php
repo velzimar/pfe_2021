@@ -95,21 +95,22 @@ class ProductController extends AbstractController
             //foreach($role as $rolee){
             //    $this->addFlash('success', "role user: $rolee");
             //}
-
+        $categories = $userId->getProductCategories();
+        foreach($categories as $category){
+            if($category->getNom()=="defaultCategory"){
+                $this->addFlash('success', "this is: $category");
+                 $form->get('category')->setData($category);
+                echo $product->getCategory();
+            }else
+                $this->addFlash('success', "categories de ce user: $category");
+        }
             $form->handleRequest($request);
 
-            $categories = $userId->getProductCategories();
-            foreach($categories as $category){
-                if($category->getNom()=="defaultCategory"){
-                    $this->addFlash('success', "this is: $category");
-                    $form->get('category')->setData($category);
-                    echo $product->getCategory();
-                }else
-                $this->addFlash('success', "categories de ce user: $category");
-            }
+
             //$product->setBusiness($user);
             $product->setBusiness($userId);
             if ($form->isSubmitted() && $form->isValid()) {
+                /*
                 if($form->get('imageFile')->getData()==null){
 
                     $this->addFlash('success', "its null");
@@ -119,6 +120,7 @@ class ProductController extends AbstractController
                         'form' => $form->createView(),
                     ]);
                 }
+                */
                 $entityManager = $this->getDoctrine()->getManager();
 
                 $entityManager->persist($product);
@@ -209,6 +211,15 @@ class ProductController extends AbstractController
         $product->setBusiness($userId);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->get('imageFile')->getData()==null){
+                $this->addFlash('success', "its null");
+
+                $product->setImageFile(null);
+                $product->setFileName(null);
+                $this->getDoctrine()->getManager()->persist($product);
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('product_index_user',[

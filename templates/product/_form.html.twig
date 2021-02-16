@@ -75,7 +75,8 @@
                         }) }}
                     </div>
                 </div>
-            </div><div class="form-row">
+            </div>
+            <div class="form-row">
                 <div class="col-sm-6">
                     <div class="form-group">
                         {{ form_row(form.imageFile,{
@@ -85,6 +86,18 @@
                     </div>
                 </div>
             </div>
+            {#
+            <tr>
+                <th>Image</th>
+                <td>
+                    {% if form.imageFile %}
+                        <img alt="" src= "{{ vich_uploader_asset(product, 'imageFile') }}" >
+                    {% else %}
+                        <img src="{{ asset('/img/bigicon1.png') }}" alt="card-img-top" style="width: 100%; height: auto">
+                    {% endif %}
+                </td>
+            </tr>
+            #}
             <div class="form-buttons-w">
                 <button class="btn btn-primary disabled" type="submit"> {{ button_label }}</button>
 

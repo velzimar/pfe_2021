@@ -50,7 +50,11 @@
             <tr>
                 <th>Image</th>
                 <td>
-                    <img alt="" src= "{{ vich_uploader_asset(product, 'imageFile') }}" >
+                    {% if product.filename %}
+                        <img alt="" src= "{{ vich_uploader_asset(product, 'imageFile') }}" >
+                    {% else %}
+                        <img src="{{ asset('/img/bigicon1.png') }}" alt="card-img-top" style="width: 100%; height: auto">
+                    {% endif %}
                 </td>
             </tr>
         </tbody>
