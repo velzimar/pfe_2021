@@ -8,10 +8,10 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Utilisateurs</a>
+            <a href="{{ path('userProductCategories_index', {'userId': userId}) }}">Catégories</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Edit</a>
+            <a href="#">Détail</a>
         </li>
     </ul>
 {% endblock %}
@@ -35,9 +35,10 @@
         </tbody>
     </table>
 
+{#
     <a href="{{ path('product_category_index') }}">back to list</a>
 
     <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
 
-    {{ include('product_category/_delete_form.html.twig') }}
+    {{ include('product_category/_delete_form.html.twig') }} #}
 {% endblock %}

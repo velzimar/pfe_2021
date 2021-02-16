@@ -47,4 +47,16 @@ class ProductCategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByUser($value)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.businessId = :val')
+            ->setParameter('val', $value)
+            //->orderBy('p.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

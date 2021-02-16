@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ProductCategory;
 use App\Entity\User;
 use App\Form\ProductCategoryType;
+use App\Form\SelectUserTypeForCategory;
 use App\Repository\ProductCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,46 @@ class ProductCategoryController extends AbstractController
     {
         return $this->render('product_category/index.html.twig', [
             'product_categories' => $productCategoryRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/selectUserForCategory_{action}", name="user_product_category_index", methods={"GET","POST"})
+     * @param Request $request
+     * @param $action
+     * @return Response
+     */
+
+    public function selectUserForCategory(Request $request, $action): Response
+    {
+        $first = $this->createForm(SelectUserTypeForCategory::class);
+        $first->handleRequest($request);
+        if ($first->isSubmitted() && $first->isValid()) {
+            $userId = $first->get('businessId')->getData();
+            $this->addFlash('success', "from selectUser $userId");
+            $this->addFlash('success', "action $action");
+
+            return $this->redirectToRoute("userProductCategories_$action",[
+                'userId' => $userId
+            ],301);
+
+        }
+        return $this->render('product_category/selectUserForCategory.html.twig', [
+            'form' => $first->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user_{userId}/", name="userProductCategories_index", methods={"GET","POST"})
+     * @param ProductCategoryRepository $productCategoryRepository
+     * @param User $userId
+     * @return Response
+     */
+    public function userProductCategories(ProductCategoryRepository $productCategoryRepository, User $userId): Response
+    {
+        return $this->render('product_category/userProductCategories.html.twig', [
+            'product_categories' => $productCategoryRepository->findByUser($userId),
+            'userId' => $userId
         ]);
     }
 
@@ -68,19 +109,20 @@ class ProductCategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_category_show", methods={"GET"})
+     * @Route("/admin/user_{userId}/{id}/show", name="product_category_show", methods={"GET"})
      */
-    public function show(ProductCategory $productCategory): Response
+    public function show(ProductCategory $productCategory, User $userId): Response
     {
         return $this->render('product_category/show.html.twig', [
             'product_category' => $productCategory,
+            'userId' => $userId
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="product_category_edit", methods={"GET","POST"})
+     * @Route("/admin/user_{userId}/{id}/edit", name="product_category_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, ProductCategory $productCategory): Response
+    public function edit(Request $request, ProductCategory $productCategory, User $userId): Response
     {
         $form = $this->createForm(ProductCategoryType::class, $productCategory);
         $form->handleRequest($request);
@@ -94,6 +136,7 @@ class ProductCategoryController extends AbstractController
         return $this->render('product_category/edit.html.twig', [
             'product_category' => $productCategory,
             'form' => $form->createView(),
+            'userId' => $userId
         ]);
     }
 

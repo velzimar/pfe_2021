@@ -34,8 +34,10 @@
                 <td>{{ product_category.nom }}</td>
                 <td>{{ product_category.description }}</td>
                 <td>
+                    {#
                     <a href="{{ path('product_category_show', {'id': product_category.id}) }}">show</a>
                     <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
+                    #}
                 </td>
             </tr>
         {% else %}

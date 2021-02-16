@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}select user{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Selectionner un utilisateur</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box">
+
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for flashError in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
+                {{ form_start(form) }}
+                <h5 class="form-header">
+                    Séléctionnez un utilisateur
+                </h5>
+                <div class="form-group">
+                    {{ form_widget(form.businessId,{
+                        'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
+                    }) }}
+                </div>
+                <div class="form-buttons-w">
+                    <button class="btn btn-outline-primary" type="submit"> <span>Suivant</span><i class="os-icon os-icon-arrow-2-right"></i></button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
