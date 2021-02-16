@@ -1110,10 +1110,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ path('product_category_new') }}">Ajouter</a>
+                                        <a href="{{ path('selectUserForCategory', {'action': 'new'}) }}">Ajouter</a>
                                     </li>
                                     <li>
-                                        <a href="#">Lister</a>
+                                        <a href="{{ path('selectUserForCategory', {'action': 'index_category'}) }}">Lister</a>
                                     </li>
 
                                 </ul>

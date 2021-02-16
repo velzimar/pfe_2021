@@ -8,10 +8,10 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Utilisateurs</a>
+            <a href="{{ path('selectUserForCategory', {'action': 'new'}) }}">Selectionner un utilisateur</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Edit</a>
+            <a href="#">Ajouter</a>
         </li>
     </ul>
 {% endblock %}
@@ -28,5 +28,4 @@
 
     {{ include('product_category/_form.html.twig') }}
 
-    <a href="{{ path('product_category_index') }}">back to list</a>
 {% endblock %}

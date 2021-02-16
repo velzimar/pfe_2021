@@ -2,19 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Product;
+use App\Entity\ProductCategory;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SelectUserType extends AbstractType
+class SelectUserTypeForCategory extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('business', EntityType::class, [
+            ->add('businessId', EntityType::class, [
                 'class'=> User::class,
                 'choice_label' => function (User $customer) {
                     return $customer->getNom() . ' ' . $customer->getId();
@@ -28,7 +28,7 @@ class SelectUserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+            'data_class' => ProductCategory::class,
         ]);
     }
 }
