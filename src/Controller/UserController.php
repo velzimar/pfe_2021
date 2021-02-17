@@ -101,10 +101,10 @@ class UserController extends AbstractController
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
         $isAdmin = $user->hasRole('ROLE_ADMIN');
         //$this->addFlash('success', "has role: $isAdmin");
         $form->get('admin')->setData($isAdmin);
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() == $form->get('password')->getData() ) {
 
                 $user->setPassword(

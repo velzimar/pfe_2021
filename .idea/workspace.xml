@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20210216143823.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ProductCategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductCategoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Product.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product_category/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_category/_delete_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product_category/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_category/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/users_images/avatar3-60282552e0d54332556410.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/ProductCategory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ProductCategory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/ProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ProductRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/product_category/userProductCategories.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_category/userProductCategories.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -164,7 +164,7 @@
       <workItem from="1613316125749" duration="10665000" />
       <workItem from="1613393205813" duration="3665000" />
       <workItem from="1613485566702" duration="3686000" />
-      <workItem from="1613575146638" duration="3095000" />
+      <workItem from="1613575146638" duration="4167000" />
     </task>
     <servers />
   </component>

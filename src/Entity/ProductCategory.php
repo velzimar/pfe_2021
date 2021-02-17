@@ -37,7 +37,7 @@ class ProductCategory
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="productCategories")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $businessId;
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\ProductCategory;
 use App\Entity\User;
 use App\Form\ProductType;
 use App\Form\SelectUserType;
@@ -63,6 +64,21 @@ class ProductController extends AbstractController
     {
         return $this->render('product/userProducts.html.twig', [
             'products' => $productRepository->findByUser($userId),
+            'userId' => $userId
+        ]);
+    }
+
+
+    /**
+     * @Route("cat/{userId}/{categoryId}/", name="product_byCategory_index_user", methods={"GET","POST"})
+     * @param ProductRepository $productRepository
+     * @param User $userId
+     * @return Response
+     */
+    public function userProductsByCategory(ProductRepository $productRepository, User $userId, ProductCategory $categoryId): Response
+    {
+        return $this->render('product/userProducts.html.twig', [
+            'products' => $productRepository->findByUserByCategory($userId,$categoryId),
             'userId' => $userId
         ]);
     }

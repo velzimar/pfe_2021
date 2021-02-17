@@ -35,6 +35,20 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByUserByCategory($user,$category)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.business = :user')
+            ->andWhere('p.category = :category')
+            ->setParameter('user', $user)
+            ->setParameter('category', $category)
+            //->orderBy('p.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Product
