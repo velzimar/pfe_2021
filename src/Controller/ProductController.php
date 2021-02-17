@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/", name="product_index", methods={"GET"})
+     * @Route("/admin/all", name="product_index", methods={"GET"})
      * @param ProductRepository $productRepository
      * @return Response
      */
@@ -33,7 +33,7 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("/selectUser_{action}", name="selectUser", methods={"GET","POST"})
+     * @Route("/admin/selectUser_{action}", name="selectUser", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      */
@@ -55,7 +55,7 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("/{userId}/", name="product_index_user", methods={"GET","POST"})
+     * @Route("/admin/{userId}/list", name="product_index_user", methods={"GET","POST"})
      * @param ProductRepository $productRepository
      * @param User $userId
      * @return Response
@@ -70,7 +70,7 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("cat/{userId}/{categoryId}/", name="product_byCategory_index_user", methods={"GET","POST"})
+     * @Route("/admin/{userId}/{categoryId}/list", name="product_byCategory_index_user", methods={"GET","POST"})
      * @param ProductRepository $productRepository
      * @param User $userId
      * @return Response
@@ -84,7 +84,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{userId}/new", name="product_new", methods={"GET","POST"})
+     * @Route("/admin/{userId}/new", name="product_new", methods={"GET","POST"})
      * @param Request $request
      * @param User $userId
      * @return Response
@@ -185,7 +185,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{userId}/{id}/show", name="product_show", methods={"GET","POST"})
+     * @Route("/admin/{userId}/{id}/show", name="product_show", methods={"GET","POST"})
      * @param Product $product
      * @param User $userId
      * @return Response
@@ -199,7 +199,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{userId}/{id}/edit", name="product_edit", methods={"GET","POST"})
+     * @Route("/admin/{userId}/{id}/edit", name="product_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Product $product
      * @param User $userId
@@ -251,7 +251,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{userId}/{id}", name="product_delete", methods={"DELETE"})
+     * @Route("admin/{userId}/{id}/delete", name="product_delete", methods={"DELETE"})
      * @param Request $request
      * @param Product $product
      * @param User $userId
@@ -269,5 +269,7 @@ class ProductController extends AbstractController
             'userId' => $userId
         ],301);
     }
+
+
 
 }
