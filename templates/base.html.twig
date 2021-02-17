@@ -926,7 +926,7 @@
             <ul class="main-menu">
 
 
-                {% if is_granted('ROLE_USER') %}
+                {% if is_granted('ROLE_ADMIN') %}
 
 
                     <li class="sub-header">
@@ -1091,6 +1091,7 @@
                     </div>
                 </li>
 
+                {% endif %}
                     <li class="sub-header">
                         <span>Ma vitrine</span>
                     </li>
@@ -1136,10 +1137,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="#">Ajouter</a>
+                                        <a href="{{ path('myProducts_new') }}">Ajouter</a>
                                     </li>
                                     <li>
-                                        <a href="#">Lister</a>
+                                        <a href="{{ path('myProducts') }}">Lister</a>
                                     </li>
 
                                 </ul>
@@ -1194,7 +1195,7 @@
                         </div>
                     </li>
 
-                {% endif %}
+
                 <li class="sub-header">
                     <span>Elements</span>
                 </li>

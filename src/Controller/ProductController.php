@@ -67,7 +67,18 @@ class ProductController extends AbstractController
             'userId' => $userId
         ]);
     }
-
+    /**
+     * @Route("/myProducts/list", name="myProducts", methods={"GET","POST"})
+     * @param ProductRepository $productRepository
+     * @return Response
+     */
+    public function myProducts(ProductRepository $productRepository): Response
+    {
+        return $this->render('product/index.html.twig', [
+            'products' => $productRepository->findByUser($this->getUser()),
+            'userId' => $this->getUser()
+        ]);
+    }
 
     /**
      * @Route("/admin/{userId}/{categoryId}/list", name="product_byCategory_index_user", methods={"GET","POST"})
@@ -96,17 +107,14 @@ class ProductController extends AbstractController
         //$form = $this->createForm(ProductType::class, $product);
         //$form->handleRequest($request);
         $user = $this->getUser();
-
         if($userId == "" or $userId == null )
             return $this->redirectToRoute('selectUser');
-
             $this->addFlash('success', "Utilisateur $user");
             $this->addFlash('success', "selected user1 $userId");
             $form = $this->createForm(ProductType::class, $product,
                 ['userId' => $userId //or whatever the variable is called
                     ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
             );
-
             //$role = $user->getRoles();
             //foreach($role as $rolee){
             //    $this->addFlash('success', "role user: $rolee");
@@ -121,8 +129,6 @@ class ProductController extends AbstractController
                 $this->addFlash('success', "categories de ce user: $category");
         }
             $form->handleRequest($request);
-
-
             //$product->setBusiness($user);
             $product->setBusiness($userId);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -138,51 +144,56 @@ class ProductController extends AbstractController
                 }
                 */
                 $entityManager = $this->getDoctrine()->getManager();
-
                 $entityManager->persist($product);
                 $entityManager->flush();
-
                 return $this->redirectToRoute('product_index_user',[
                     'userId' => $userId
                 ],301);
             }
-
-/*
-
-        $form = $this->createForm(ProductType::class, $product,
-            ['userId' => $user->getId() //or whatever the variable is called
-            ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
-        );
-
-        //$role = $user->getRoles();
-        //foreach($role as $rolee){
-        //    $this->addFlash('success', "role user: $rolee");
-        //}
-
-        $form->handleRequest($request);
-
-        $categories = $user->getProductCategories();
-        foreach($categories as $category){
-            $this->addFlash('success', "categories de ce user: $category");
-        }
-
-        $product->setBusiness($user);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $entityManager->persist($product);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('product_index');
-        }
-*/
         return $this->render('product/new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
         ]);
-
-
     }
+
+
+    /**
+     * @Route("/myProducts/new", name="myProducts_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function myProducts_new(Request $request): Response
+    {
+        $product = new Product();
+        $user = $this->getUser();
+        $this->addFlash('success', "Utilisateur $user");
+        $form = $this->createForm(ProductType::class, $product,
+            ['userId' => $user //or whatever the variable is called
+                ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
+        );
+        $categories = $user->getProductCategories();
+        foreach($categories as $category){
+            if($category->getNom()=="defaultCategory"){
+                $this->addFlash('success', "this is: $category");
+                $form->get('category')->setData($category);
+                echo $product->getCategory();
+            }else
+                $this->addFlash('success', "categories de ce user: $category");
+        }
+        $form->handleRequest($request);
+        $product->setBusiness($user);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($product);
+            $entityManager->flush();
+            return $this->redirectToRoute('myProducts');
+        }
+        return $this->render('product/new.html.twig', [
+            'product' => $product,
+            'form' => $form->createView(),
+        ]);
+    }
+
 
     /**
      * @Route("/admin/{userId}/{id}/show", name="product_show", methods={"GET","POST"})
@@ -199,6 +210,19 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/myProducts/{id}/show", name="myProducts_show", methods={"GET","POST"})
+     * @param Product $product
+     * @return Response
+     */
+    public function myProducts_show(Product $product): Response
+    {
+        return $this->render('product/myProducts_show.html.twig', [
+            'product' => $product,
+            'userId' => $this->getUser()
+        ]);
+    }
+
+    /**
      * @Route("/admin/{userId}/{id}/edit", name="product_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Product $product
@@ -207,7 +231,6 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product, User $userId): Response
     {
-
         echo $userId->getId();
         //$form = $this->createForm(ProductType::class, $product);
         //$form->handleRequest($request);
@@ -222,12 +245,9 @@ class ProductController extends AbstractController
             ['userId' => $userId //or whatever the variable is called
                 ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
         );
-
         $form->handleRequest($request);
         $product->setBusiness($userId);
-
         if ($form->isSubmitted() && $form->isValid()) {
-
             if ($form->get('imageFile')->getData()==null){
                 $this->addFlash('success', "its null");
 
@@ -235,9 +255,7 @@ class ProductController extends AbstractController
                 $product->setFileName(null);
                 $this->getDoctrine()->getManager()->persist($product);
             }
-
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('product_index_user',[
                 'userId' => $userId
             ],301);
@@ -249,6 +267,46 @@ class ProductController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+
+
+    /**
+     * @Route("/myProducts/{id}/edit", name="myProducts_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Product $product
+     * @return Response
+     */
+    public function myProducts_edit(Request $request, Product $product): Response
+    {
+        $user = $this->getUser();
+        $this->addFlash('success', "Utilisateur $user");
+        $form = $this->createForm(ProductType::class, $product,
+            [
+                'userId' => $user //or whatever the variable is called
+                ,'userRole'=>$user->hasRole('ROLE_ADMIN')
+            ]
+        );
+        $form->handleRequest($request);
+        $product->setBusiness($user);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('imageFile')->getData()==null){
+                $this->addFlash('success', "its null");
+                $product->setImageFile(null);
+                $product->setFileName(null);
+                $this->getDoctrine()->getManager()->persist($product);
+            }
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('myProducts');
+        }
+
+        return $this->render('product/myProducts_edit.html.twig', [
+            'product' => $product,
+            'userId'=> $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
 
     /**
      * @Route("admin/{userId}/{id}/delete", name="product_delete", methods={"DELETE"})
@@ -270,6 +328,20 @@ class ProductController extends AbstractController
         ],301);
     }
 
-
+    /**
+     * @Route("myProducts/{id}/delete", name="myProducts_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Product $product
+     * @return Response
+     */
+    public function MyProducts_delete(Request $request, Product $product): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($product);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('myProducts');
+    }
 
 }
