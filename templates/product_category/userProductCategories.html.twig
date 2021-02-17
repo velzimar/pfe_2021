@@ -43,6 +43,8 @@
                 <td>
                     <a href="{{ path('product_category_show', {'id': product_category.id,'userId': userId}) }}">show</a>
                     <a href="{{ path('product_category_edit', {'id': product_category.id,'userId': userId}) }}">edit</a>
+                    <a href="{{ path('product_index_user', {'userId': userId}) }}">Produits</a>
+                    {# 'id': product_category.id, #}
                 </td>
             </tr>
         {% else %}

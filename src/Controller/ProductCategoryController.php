@@ -142,9 +142,9 @@ class ProductCategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_category_delete", methods={"DELETE"})
+     * @Route("admin/user_{userId}/{id}/delete", name="product_category_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, ProductCategory $productCategory): Response
+    public function delete(Request $request, ProductCategory $productCategory, User $userId): Response
     {
         if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
@@ -152,6 +152,6 @@ class ProductCategoryController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('product_category_index');
+        return $this->redirectToRoute('userProductCategories_index',['userId'=>$userId]);
     }
 }
