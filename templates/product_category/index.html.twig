@@ -1,17 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ProductCategory index{% endblock %}
+{% block title %}Mes catégories{% endblock %}
+
 {% block  breadcrumb %}
 
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="#">Home</a>
         <li class="breadcrumb-item">
-            <a href="#">Edit</a>
+            <a href="#">Mes catégories</a>
         </li>
     </ul>
 {% endblock %}
+
 {% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
 
     <div class="element-wrapper">
         <h6 class="element-header">

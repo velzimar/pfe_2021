@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Product index{% endblock %}
+{% block title %}Produits{% endblock %}
 
 {% block  breadcrumb %}
     <ul class="breadcrumb">
@@ -11,7 +11,7 @@
             <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Selectionner un utilisateur</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Liste</a>
+            <a href="#">Produits</a>
         </li>
     </ul>
 {% endblock %}
@@ -26,40 +26,69 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-    <h1>Product index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Prix</th>
-                <th>Qtt</th>
-                <th>Catégorie</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product in products %}
-            <tr>
-                <td>{{ product.id }}</td>
-                <td>{{ product.nom }}</td>
-                <td>{{ product.prix }}</td>
-                <td>{{ product.qtt }}</td>
-                <td>{{ product.category }}</td>
-                <td>
 
-                     <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">Edit</a>
-                        <a href="{{ path('product_show', {'id': product.id, 'userId':userId}) }}">show</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Les produits de l'utilisateur {{ userId.nom }}
+        </h6>
+        <div class="element-box">
+            <h5 class="form-header">
+                Liste des produits
+            </h5>
+            <div class="form-desc">
+            </div>
+            <div class="table-responsive">
+                <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Qtt</th>
+                        <th>Catégorie</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.nom }}</td>
+                            <td>{{ product.prix }}</td>
+                            <td>{{ product.qtt }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>
 
-    {#  <a href="{{ path('product_new') }}">Create new</a>#}
+                                <a href="{{ path('product_show', {'id': product.id, 'userId':userId}) }}">
+                                    <i class="os-icon os-icon-grid-10"></i>
+                                </a>
+                                <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">
+                                    <i class="os-icon os-icon-ui-49"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {# <a href="{{ path('product_new') }}">Create new</a> #}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
+        });
+    </script>
 {% endblock %}
