@@ -24,7 +24,7 @@
             <div class="form-desc">
             </div>
             <div class="table-responsive">
-                <table id="dataTable1" style="width: 100%;" class="table table-striped table-lightfont">
+                <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
                     <thead>
                     <tr>
                         <th>Id</th>
@@ -59,9 +59,15 @@
 {% endblock %}
 
 {% block javascripts %}
+
     <script>
         $(document).ready(function () {
-            $('#dataTable1').DataTable();
+            $('#dataTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
         });
     </script>
+
 {% endblock %}
