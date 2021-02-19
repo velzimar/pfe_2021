@@ -2,15 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/product/myProducts_edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product/myProducts_show.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/users_images/avatar3-602fc5b65a104513829462.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/product_category/myProductCategories_edit.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/product_category/myProductCategories_new.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/product_category/myProductCategories_show.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/users_images/avatar1-602822ceda86d910311930.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RegistrationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegistrationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/users_images/avatar1-60283c995fb0e019291672.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/users_images/avatar7-602d7467c3a7b814241031.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ProductCategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductCategoryController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product_category/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_category/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product_category/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_category/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +144,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/product_category" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -151,6 +153,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\product_category" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\product" />
     </key>
   </component>
@@ -166,7 +169,8 @@
       <workItem from="1613316125749" duration="10665000" />
       <workItem from="1613393205813" duration="3665000" />
       <workItem from="1613485566702" duration="3686000" />
-      <workItem from="1613575146638" duration="10210000" />
+      <workItem from="1613575146638" duration="10417000" />
+      <workItem from="1613741356415" duration="4182000" />
     </task>
     <servers />
   </component>

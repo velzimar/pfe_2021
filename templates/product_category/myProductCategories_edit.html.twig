@@ -8,9 +8,6 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('userProductCategories_index', {'userId': userId}) }}">Catégories</a>
-        </li>
-        <li class="breadcrumb-item">
             <a href="#">Edit</a>
         </li>
     </ul>
@@ -20,6 +17,9 @@
 
     {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
 
+    {#
+    <a href="{{ path('product_category_index') }}">back to list</a>
 
     {{ include('product_category/_delete_form.html.twig') }}
+    #}
 {% endblock %}

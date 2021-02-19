@@ -6,10 +6,6 @@
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="#">Home</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="#">Utilisateurs</a>
-        </li>
         <li class="breadcrumb-item">
             <a href="#">Edit</a>
         </li>
@@ -34,10 +30,10 @@
                 <td>{{ product_category.nom }}</td>
                 <td>{{ product_category.description }}</td>
                 <td>
-                    {#
-                    <a href="{{ path('product_category_show', {'id': product_category.id}) }}">show</a>
-                    <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
-                    #}
+                    <a href="{{ path('myProductCategories_show', {'id': product_category.id}) }}">show</a>
+
+                    <a href="{{ path('myProductCategories_edit', {'id': product_category.id}) }}">edit</a>
+
                 </td>
             </tr>
         {% else %}

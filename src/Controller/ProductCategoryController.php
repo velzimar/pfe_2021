@@ -20,14 +20,80 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductCategoryController extends AbstractController
 {
     /**
-     * @Route("/", name="product_category_index", methods={"GET"})
+     * @Route("/myProductCategories/list", name="myProductCategories", methods={"GET","POST"})
      */
     public function index(ProductCategoryRepository $productCategoryRepository): Response
     {
         return $this->render('product_category/index.html.twig', [
-            'product_categories' => $productCategoryRepository->findAll(),
+            'product_categories' => $productCategoryRepository->findByUser($this->getUser()),
         ]);
     }
+
+    /**
+     * @Route("/myProductCategories/{id}/show", name="myProductCategories_show", methods={"GET"})
+     */
+    public function myProductCategory_show(ProductCategory $productCategory): Response
+    {
+        return $this->render('product_category/myProductCategories_show.html.twig', [
+            'product_category' => $productCategory,
+            'userId' => $this->getUser()
+        ]);
+    }
+
+    /**
+     * @Route("/myProductCategories/{id}/edit", name="myProductCategories_edit", methods={"GET","POST"})
+     */
+    public function myProductCategory_edit(Request $request, ProductCategory $productCategory): Response
+    {
+        $form = $this->createForm(ProductCategoryType::class, $productCategory);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('myProductCategories');
+        }
+        return $this->render('product_category/myProductCategories_edit.html.twig', [
+            'product_category' => $productCategory,
+            'form' => $form->createView(),
+            'userId' => $this->getUser()
+        ]);
+    }
+
+
+    /**
+     * @Route("/myProductCategories/new", name="myProductCategories_new", methods={"GET","POST"})
+     */
+    public function myProductCategory_new(Request $request): Response
+    {
+        $productCategory = new ProductCategory();
+        $form = $this->createForm(ProductCategoryType::class, $productCategory);
+        $form->handleRequest($request);
+        $productCategory->setBusinessId($this->getUser());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($productCategory);
+            $entityManager->flush();
+            return $this->redirectToRoute('myProductCategories');
+        }
+        return $this->render('product_category/myProductCategories_new.html.twig', [
+            'product_category' => $productCategory,
+            'form' => $form->createView(),
+            'userId' => $this->getUser()
+        ]);
+    }
+
+    /**
+     * @Route("/myProductCategories/{id}/delete", name="myProductCategories_delete", methods={"DELETE"})
+     */
+    public function myProductCategory_delete(Request $request, ProductCategory $productCategory): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$productCategory->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($productCategory);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('myProductCategories');
+    }
+
 
     /**
      * @Route("/admin/selectUserForCategory_{action}", name="user_product_category_index", methods={"GET","POST"})
@@ -35,7 +101,6 @@ class ProductCategoryController extends AbstractController
      * @param $action
      * @return Response
      */
-
     public function selectUserForCategory(Request $request, $action): Response
     {
         $first = $this->createForm(SelectUserTypeForCategory::class);
@@ -151,7 +216,6 @@ class ProductCategoryController extends AbstractController
             $entityManager->remove($productCategory);
             $entityManager->flush();
         }
-
         return $this->redirectToRoute('userProductCategories_index',['userId'=>$userId]);
     }
 }
