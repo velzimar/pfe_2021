@@ -2,16 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/users_images/avatar3-602fc5b65a104513829462.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product_category/myProductCategories_edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product_category/myProductCategories_new.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product_category/myProductCategories_show.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/pfe_2021.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pfe_2021.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/users_images/avatar1-60283c995fb0e019291672.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/users_images/avatar7-602d7467c3a7b814241031.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ProductCategoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductCategoryController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/dataTables.bootstrap4.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/dataTables.bootstrap4.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product_category/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_category/edit.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/product_category/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_category/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,6 +138,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/product_category" />
     <property name="node.js.detected.package.eslint" value="true" />
@@ -170,7 +166,7 @@
       <workItem from="1613393205813" duration="3665000" />
       <workItem from="1613485566702" duration="3686000" />
       <workItem from="1613575146638" duration="10417000" />
-      <workItem from="1613741356415" duration="4182000" />
+      <workItem from="1613741356415" duration="8360000" />
     </task>
     <servers />
   </component>

@@ -12,36 +12,56 @@
     </ul>
 {% endblock %}
 {% block body %}
-    <h1>ProductCategory index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for product_category in product_categories %}
-            <tr>
-                <td>{{ product_category.id }}</td>
-                <td>{{ product_category.nom }}</td>
-                <td>{{ product_category.description }}</td>
-                <td>
-                    <a href="{{ path('myProductCategories_show', {'id': product_category.id}) }}">show</a>
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Mes catégories
+        </h6>
+        <div class="element-box">
+            <h5 class="form-header">
+                Liste des catégories
+            </h5>
+            <div class="form-desc">
+            </div>
+            <div class="table-responsive">
+                <table id="dataTable1" style="width: 100%;" class="table table-striped table-lightfont">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product_category in product_categories %}
+                        <tr>
+                            <td>{{ product_category.id }}</td>
+                            <td>{{ product_category.nom }}</td>
+                            <td>{{ product_category.description }}</td>
+                            <td>
+                                <a href="{{ path('myProductCategories_show', {'id': product_category.id}) }}">show</a>
 
-                    <a href="{{ path('myProductCategories_edit', {'id': product_category.id}) }}">edit</a>
+                                <a href="{{ path('myProductCategories_edit', {'id': product_category.id}) }}">edit</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% endblock %}
 
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#dataTable1').DataTable();
+        });
+    </script>
 {% endblock %}
