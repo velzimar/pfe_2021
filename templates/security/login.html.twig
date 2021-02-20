@@ -17,6 +17,11 @@
                 </h4>
                 <form class="form" method="post" action="{{ path('app_login') }}">
 
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            {% if error.messageKey=="Invalid credentials." %} Mot de passe incorrecte. {% else %} {{ error.messageKey }} {% endif %}
+                        </div>
+                    {% endif %}
                     <div class="form-group">
                         <label  for="inputEmail" >Identifiant</label>
                         <input class="form-control" id="inputEmail" placeholder="Enter your username" type="email" name="email" required value="{{ last_username }}" autofocus>
@@ -30,6 +35,7 @@
                         >
                         <div class="pre-icon os-icon os-icon-fingerprint"></div>
                     </div>
+
                     <div class="buttons-w">
                         <button class="btn btn-primary" type="submit">Se connecter</button>
                         <div class="form-check-inline">

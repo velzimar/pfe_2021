@@ -3,18 +3,129 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
 
+
+    <div id="App">
+        <div class="auth-wrapper">
+            <div class="all-wrapper menu-side with-pattern">
+                <div class="auth-box-w">
+                    <div class="logo-w">
+                        <a href=""><img alt="" style="width: 50%; height:50%" src="{{ asset('img/looper.png') }}"></a>
+                    </div>
+                    <h4 class="auth-header">
+                        S'inscrire
+                    </h4>
+
+                    {{ form_start(registrationForm) }}
+                    <div class="form-group">
+                        {% for flashError in app.flashes('register') %}
+                            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(registrationForm.email,{
+                            'label':"Adresse Email",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
+                        }) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(registrationForm.nom,{
+                                    'label':"Nom",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                                }) }}
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(registrationForm.prenom,{
+                                    'label':"Prenom",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(registrationForm.cin,{
+                                    'label':"Carte d'identité",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                                }) }}
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(registrationForm.phone,{
+                                    'label':"Téléphone",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(registrationForm.businessName,{
+                            'label':"Nom de l'affaire",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                        }) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(registrationForm.businessDescription,{
+                            'label':"Description de l'affaire",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                        }) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(registrationForm.plainPassword,{
+                                    'label':"Mot de passe",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Mot de passe" , 'type':"password" }}
+                                )
+                                }}
+                                <input type="hidden" name="_csrf_token"
+                                       value="{{ csrf_token('authenticate') }}"
+                                >
+                                <div class="help-block form-text text-muted form-control-feedback">
+                                    Minimum of 6 characters
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(registrationForm.confirm,{
+                                    'label':"Confirmer",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Confirmer" , 'type':"password" }}
+                                )
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        {{ form_row(registrationForm.imageFile,{
+                            'label':"Image",
+                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
+                        }) }}
+
+                    </div>
+                    <div class="form-buttons-w">
+                        <button class="btn btn-primary disabled" type="submit"> Enregistrer</button>
+                        <button class="btn" type="reset">Annuler</button>
+                    </div>
+
+                    {{ form_end(registrationForm) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{#
     <h1>Crée un compte</h1>
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.nom) }}
         {{ form_row(registrationForm.prenom) }}
         {{ form_row(registrationForm.cin) }}
@@ -26,7 +137,8 @@
         }) }}
             {{ form_row(registrationForm.confirm) }}
         {{ form_row(registrationForm.imageFile) }}
-        {#  { form_row(registrationForm.admin) } #}
+          { form_row(registrationForm.admin) }
         <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+#}
+
 {% endblock %}

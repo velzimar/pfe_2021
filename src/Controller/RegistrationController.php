@@ -38,7 +38,7 @@ class RegistrationController extends AbstractController
                     )
                 );
             else{
-                $this->addFlash('verify_email_error', 'probleme');
+                $this->addFlash('register', 'Vérifier le mot de passe');
                 return $this->render('registration/register.html.twig', [
                     'registrationForm' => $form->createView(),
                 ]);
@@ -60,7 +60,6 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Bien Crée avec succès');
             // do anything else you need here, like send an email
 
             return $guardHandler->authenticateUserAndHandleSuccess(
