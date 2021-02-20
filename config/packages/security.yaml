@@ -37,4 +37,4 @@ security:
     access_control:
          - { path: ^/product/admin/, roles: ROLE_ADMIN }
          - { path: ^/productCategory/admin/, roles: ROLE_ADMIN }
-         - { path: ^/user, roles: ROLE_USER }
+         - { path: ^/user, roles: ROLE_ADMIN }

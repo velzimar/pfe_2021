@@ -51,11 +51,10 @@ class UserController extends AbstractController
             );
 
             $entityManager = $this->getDoctrine()->getManager();
-            if($form->get('admin')->getData()==true){
+            if ($form->get('admin')->getData() == true) {
 
                 $user->addRole('ROLE_ADMIN');
-            }
-            else{
+            } else {
 
                 $user->removeRoles('ROLE_ADMIN');
             }
@@ -100,37 +99,39 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $lastMail=$user->getEmail();
         $form = $this->createForm(UserType::class, $user);
         $isAdmin = $user->hasRole('ROLE_ADMIN');
         //$this->addFlash('success', "has role: $isAdmin");
         $form->get('admin')->setData($isAdmin);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() == $form->get('password')->getData() ) {
-
-                $user->setPassword(
-                    $passwordEncoder->encodePassword(
-                        $user,
-                        $form->get('password')->getData()
-                    )
-                );
-            if($form->get('admin')->getData()==true){
-
-               // $this->addFlash('success', 'add');
+        if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() == $form->get('password')->getData()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
+            if ($form->get('admin')->getData() == true) {
+                // $this->addFlash('success', 'add');
                 $user->addRole('ROLE_ADMIN');
-            }
-            else{
-               // $this->addFlash('success', 'remove');
+            } else {
+                // $this->addFlash('success', 'remove');
                 $user->removeRoles('ROLE_ADMIN');
             }
             $this->getDoctrine()->getManager()->flush();
-
-            $this->addFlash('success', 'Modification avec succès');
-            return $this->redirectToRoute('user_index');
-
-        }else if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() !== $form->get('password')->getData() ){
-            $this->addFlash('verify_email_error', 'Vérifier le mot de passe');
+            $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
+        } else if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() !== $form->get('password')->getData()) {
+            $this->addFlash('user/edit.html.twig_error', 'Vérifier le mot de passe');
+        }else if($form->isSubmitted() && !$form->isValid()){
+            $this->addFlash('user/edit.html.twig_error', 'Votre email doit être unique');
+            $lastForm = $this->createForm(UserType::class, $user);
+            $lastForm->get('email')->setData($lastMail);
+            return $this->render('user/edit.html.twig', [
+                'user' => $user,
+                'form' => $lastForm->createView(),
+            ]);
         }
-
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
@@ -145,7 +146,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
