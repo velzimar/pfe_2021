@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4ac99f8c5a6f28107fb39ee65e80788e",
+    "content-hash": "37510512f773a09516eca493e459145a",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1814,6 +1814,56 @@
                 }
             ],
             "time": "2020-09-14T14:23:00+00:00"
+        },
+        {
+            "name": "mgilet/notification-bundle",
+            "version": "4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maximilienGilet/notification-bundle.git",
+                "reference": "5dcd3f67d0c200b5d9fd81062d6fa0feffdbdda1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maximilienGilet/notification-bundle/zipball/5dcd3f67d0c200b5d9fd81062d6fa0feffdbdda1",
+                "reference": "5dcd3f67d0c200b5d9fd81062d6fa0feffdbdda1",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-bundle": "*",
+                "symfony/framework-bundle": "^2.7 || ^3.0 || ^4.0 || ^5.0",
+                "twig/twig": "*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mgilet\\NotificationBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maximilien Gilet",
+                    "email": "maximilien248@gmail.com"
+                }
+            ],
+            "description": "A simple Symfony 3 bundle for user notifications",
+            "keywords": [
+                "symfony notification bundle simple"
+            ],
+            "support": {
+                "issues": "https://github.com/maximilienGilet/notification-bundle/issues",
+                "source": "https://github.com/maximilienGilet/notification-bundle/tree/4.0"
+            },
+            "time": "2021-01-07T07:36:31+00:00"
         },
         {
             "name": "monolog/monolog",

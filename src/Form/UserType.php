@@ -27,6 +27,7 @@ class UserType extends AbstractType
             ->add('phone')
             ->add('businessName')
             ->add('businessDescription')
+            ->add('isActive')
             ->add('category_id', EntityType::class, [
                 'choice_label'=>'nom',
                 'class'=> Category::class,

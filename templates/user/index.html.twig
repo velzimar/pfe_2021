@@ -56,6 +56,9 @@
                             Role
                         </th>
                         <th>
+                            Activation
+                        </th>
+                        <th>
 
                         </th>
                     </tr>
@@ -98,6 +101,48 @@
                                 </a>
                             </td>
                             #}
+                            <td class="row-actions">
+
+
+
+                                {% if user.isActive==1 %}
+
+
+                                <div class="users-list-w">
+                                    <div class="user-w with-status status-green">
+                                        <div class="user-avatar-w">
+                                        </div>
+                                        <div class="user-name">
+                                            <div class="user-role">
+
+                                                <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
+
+                                                    Cliquer pour Desactivé
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% else %}
+                                    <div class="users-list-w">
+                                        <div class="user-w with-status status-red">
+                                            <div class="user-avatar-w">
+                                            </div>
+                                            <div class="user-name">
+                                                <div class="user-role">
+                                                    <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
+
+                                                        Cliquer pour Activé
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            </td>
                             <td class="row-actions">
                                 <a href="{{ path('user_edit', {'id': user.id}) }}">
                                     Détails

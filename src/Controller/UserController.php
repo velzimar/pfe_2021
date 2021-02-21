@@ -154,4 +154,16 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index');
     }
+
+    /**
+     * @Route("/toggle/{id}", name="user_toggle_active", methods={"GET","POST"})
+     * @param User $user
+     * @return Response
+     */
+    public function toggleActive(User $user): Response
+    {
+        $user->setIsActive(!$user->getIsActive());
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('user_index');
+    }
 }

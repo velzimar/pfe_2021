@@ -118,6 +118,11 @@ class User implements UserInterface, Serializable
      */
     private $products;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : false}, nullable=true)
+     */
+    private $isActive;
+
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
@@ -460,6 +465,18 @@ class User implements UserInterface, Serializable
                 $product->setBusiness(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
