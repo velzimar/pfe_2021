@@ -123,6 +123,16 @@ class User implements UserInterface, Serializable
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
+     */
+    private $longitude;
+
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
@@ -477,6 +487,30 @@ class User implements UserInterface, Serializable
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): self
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }

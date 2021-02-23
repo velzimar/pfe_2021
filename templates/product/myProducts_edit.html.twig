@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Product{% endblock %}
+
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
@@ -18,7 +19,9 @@
     </ul>
 {% endblock %}
 {% block body %}
+
     <h1>Edit Product</h1>
+
     {{ include('product/_form.html.twig', {'button_label': 'Update', 'action':'edit'}) }}
 
     <form method="post" action="{{ path('myProducts_delete', {'id': product.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
@@ -26,5 +29,4 @@
         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
         <button class="btn">Delete</button>
     </form>
-
 {% endblock %}
