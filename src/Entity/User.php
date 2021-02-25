@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -133,10 +134,20 @@ class User implements UserInterface, Serializable
      */
     private $longitude;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Notification::class, mappedBy="Receiver")
+     */
+    private $ReceivedNotifications;
+
+
+//    private $NotSeenReceivedNotifications;
+
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
         $this->products = new ArrayCollection();
+        $this->ReceivedNotifications = new ArrayCollection();
+        //$this->NotSeenReceivedNotifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -511,6 +522,50 @@ class User implements UserInterface, Serializable
     public function setLongitude(?string $longitude): self
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getReceivedNotifications(): Collection
+    {
+        return $this->ReceivedNotifications;
+    }
+
+/*
+    public function setNotSeenReceivedNotifications(NotificationRepository $repository): self
+    {
+        $this->NotSeenReceivedNotifications = $repository->findNotSeenById($this->getId());
+        return $this;
+    }
+
+    public function getNotSeenReceivedNotifications(): Collection
+    {
+        return $this->NotSeenReceivedNotifications;
+    }
+
+*/
+
+    public function addReceivedNotification(Notification $receivedNotification): self
+    {
+        if (!$this->ReceivedNotifications->contains($receivedNotification)) {
+            $this->ReceivedNotifications[] = $receivedNotification;
+            $receivedNotification->setReceiver($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedNotification(Notification $receivedNotification): self
+    {
+        if ($this->ReceivedNotifications->removeElement($receivedNotification)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedNotification->getReceiver() === $this) {
+                $receivedNotification->setReceiver(null);
+            }
+        }
 
         return $this;
     }

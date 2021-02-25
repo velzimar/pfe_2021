@@ -23,21 +23,20 @@
     <link href="{{ asset('bower_components/slick-carousel/slick/slick.css') }}" rel="stylesheet">
     <link href="{{ asset('css/main.css?version=4.5.0') }}" rel="stylesheet">
 
-{#
-
+    {#
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
-#}
+    #}
 
-{#
+    {#
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">
-#}
+    #}
 
     <title>{% block title %}Welcome!{% endblock %}</title>
     {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
     {% block stylesheets %}
-        {#{{ encore_entry_link_tags('app') }}#}
+        {# {{ encore_entry_link_tags('app') }} #}
     {% endblock %}
 
 </head>
@@ -269,7 +268,6 @@
           </div>
       </div>
   </div>
-
     #}
 
     <div class="layout-w">
@@ -293,8 +291,8 @@
                     <div class="avatar-w">
 
                         {% block user_image %}
-                            <img alt="" src= "{{ vich_uploader_asset(app.user, 'imageFile') }}" >
-                           {# <img alt="" src="/img/avatar1.jpg"> #}
+                            <img alt="" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
+                            {# <img alt="" src="/img/avatar1.jpg"> #}
                         {% endblock %}
 
                     </div>
@@ -303,7 +301,7 @@
                             Maria Gomez
                         </div>
                         <div class="logged-user-role">
-                            Administrator
+                            Administrateur
                         </div>
                     </div>
                 </div>
@@ -322,7 +320,8 @@
                                 <a href="index.html">Dashboard 1</a>
                             </li>
                             <li>
-                                <a href="apps_crypto.html">Crypto Dashboard <strong class="badge badge-danger">Hot</strong></a>
+                                <a href="apps_crypto.html">Crypto Dashboard <strong
+                                            class="badge badge-danger">Hot</strong></a>
                             </li>
                             <li>
                                 <a href="apps_support_dashboard.html">Dashboard 3</a>
@@ -352,7 +351,8 @@
                                 <a href="layouts_menu_side_full_dark.html">Side Menu Dark</a>
                             </li>
                             <li>
-                                <a href="layouts_menu_side_transparent.html">Side Menu Transparent <strong class="badge badge-danger">New</strong></a>
+                                <a href="layouts_menu_side_transparent.html">Side Menu Transparent <strong
+                                            class="badge badge-danger">New</strong></a>
                             </li>
                             <li>
                                 <a href="apps_pipeline.html">Side &amp; Top Dark</a>
@@ -415,7 +415,8 @@
                                 <a href="apps_support_index.html">Tickets Index</a>
                             </li>
                             <li>
-                                <a href="apps_crypto.html">Crypto Dashboard <strong class="badge badge-danger">New</strong></a>
+                                <a href="apps_crypto.html">Crypto Dashboard <strong
+                                            class="badge badge-danger">New</strong></a>
                             </li>
                             <li>
                                 <a href="apps_projects.html">Projects List</a>
@@ -427,7 +428,8 @@
                                 <a href="apps_full_chat.html">Chat Application</a>
                             </li>
                             <li>
-                                <a href="apps_todo.html">To Do Application <strong class="badge badge-danger">New</strong></a>
+                                <a href="apps_todo.html">To Do Application <strong
+                                            class="badge badge-danger">New</strong></a>
                             </li>
                             <li>
                                 <a href="misc_chat.html">Popup Chat</a>
@@ -454,7 +456,8 @@
                                 <a href="misc_invoice.html">Invoice</a>
                             </li>
                             <li>
-                                <a href="ecommerce_order_info.html">Order Info <strong class="badge badge-danger">New</strong></a>
+                                <a href="ecommerce_order_info.html">Order Info <strong
+                                            class="badge badge-danger">New</strong></a>
                             </li>
                             <li>
                                 <a href="rentals_index_grid.html">Property Listing <strong class="badge badge-danger">New</strong></a>
@@ -668,7 +671,9 @@
                         Clean Bootstrap 4 Template
                     </p>
                     <div class="btn-w">
-                        <a class="btn btn-white btn-rounded" href="https://themeforest.net/item/light-admin-clean-bootstrap-dashboard-html-template/19760124?ref=Osetin" target="_blank">Purchase Now</a>
+                        <a class="btn btn-white btn-rounded"
+                           href="https://themeforest.net/item/light-admin-clean-bootstrap-dashboard-html-template/19760124?ref=Osetin"
+                           target="_blank">Purchase Now</a>
                     </div>
                 </div>
             </div>
@@ -697,7 +702,7 @@
                             Maria Gomez
                         </div>
                         <div class="logged-user-role">
-                            Administrator
+                            Administrateur
                         </div>
                     </div>
                     <div class="logged-user-toggler-arrow">
@@ -713,7 +718,7 @@
                                     Maria Gomez
                                 </div>
                                 <div class="logged-user-role">
-                                    Administrator
+                                    Administrateur
                                 </div>
                             </div>
                         </div>
@@ -722,7 +727,8 @@
                         </div>
                         <ul>
                             <li>
-                                <a href="apps_email.html"><i class="os-icon os-icon-mail-01"></i><span>Incoming Mail</span></a>
+                                <a href="apps_email.html"><i
+                                            class="os-icon os-icon-mail-01"></i><span>Incoming Mail</span></a>
                             </li>
                             <li>
                                 <a href="users_profile_big.html"><i class="os-icon os-icon-user-male-circle2"></i><span>Profile Details</span></a>
@@ -734,7 +740,8 @@
                                 <a href="#"><i class="os-icon os-icon-others-43"></i><span>Notifications</span></a>
                             </li>
                             <li>
-                                <a href="{{ path("app_logout") }}"><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
+                                <a href="{{ path("app_logout") }}"><i
+                                            class="os-icon os-icon-signs-11"></i><span>Logout</span></a>
                             </li>
                         </ul>
                     </div>
@@ -939,7 +946,7 @@
                         <span>Administration</span>
                     </li>
                     <li class="selected has-sub-menu">
-                        <a >
+                        <a>
                             <div class="icon-w">
                                 <div class="os-icon os-icon-layout"></div>
                             </div>
@@ -961,14 +968,15 @@
                                         <a href="{{ path('user_index') }}">Lister</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('user_index') }}">Dashboard 3<strong class="badge badge-danger">Hot</strong></a>
+                                        <a href="{{ path('user_index') }}">Dashboard 3<strong
+                                                    class="badge badge-danger">Hot</strong></a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </li>
                     <li class="has-sub-menu">
-                        <a >
+                        <a>
                             <div class="icon-w">
                                 <div class="os-icon os-icon-layers"></div>
                             </div>
@@ -994,119 +1002,15 @@
                     </li>
 
 
-                <li class="sub-header">
-                    <span>Gestion des Vitrines</span>
-                </li>
-                <li class="has-sub-menu">
-                    <a>
-                        <div class="icon-w">
-                            <div class="os-icon os-icon-package"></div>
-                        </div>
-                        <span>Gestion des catégories</span></a>
-                    <div class="sub-menu-w">
-                        <div class="sub-menu-header">
-                            Applications
-                        </div>
-                        <div class="sub-menu-icon">
-                            <i class="os-icon os-icon-package"></i>
-                        </div>
-                        <div class="sub-menu-i">
-                            <ul class="sub-menu">
-                                <li>
-                                    <a href="{{ path('user_product_category_index',{action:'index'}) }}">Lister</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('user_product_category_index',{action:'new'}) }}">Ajouter</a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-                <li class="has-sub-menu">
-                    <a href="#">
-                        <div class="icon-w">
-                            <div class="os-icon os-icon-file-text"></div>
-                        </div>
-                        <span>Gestion des produits</span></a>
-                    <div class="sub-menu-w">
-                        <div class="sub-menu-header">
-                            Pages
-                        </div>
-                        <div class="sub-menu-icon">
-                            <i class="os-icon os-icon-file-text"></i>
-                        </div>
-                        <div class="sub-menu-i">
-                            <ul class="sub-menu">
-                                <li>
-                                     <a href="{{ path('selectUser', {'action': 'new'}) }}">Ajouter</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Lister</a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-                <li class="has-sub-menu">
-                    <a href="#">
-                        <div class="icon-w">
-                            <div class="os-icon os-icon-life-buoy"></div>
-                        </div>
-                        <span>UI Kit</span></a>
-                    <div class="sub-menu-w">
-                        <div class="sub-menu-header">
-                            UI Kit
-                        </div>
-                        <div class="sub-menu-icon">
-                            <i class="os-icon os-icon-life-buoy"></i>
-                        </div>
-                        <div class="sub-menu-i">
-                            <ul class="sub-menu">
-                                <li>
-                                    <a href="uikit_modals.html">Modals <strong class="badge badge-danger">New</strong></a>
-                                </li>
-                                <li>
-                                    <a href="uikit_alerts.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="uikit_grid.html">Grid</a>
-                                </li>
-                                <li>
-                                    <a href="uikit_progress.html">Progress</a>
-                                </li>
-                                <li>
-                                    <a href="uikit_popovers.html">Popover</a>
-                                </li>
-                            </ul><ul class="sub-menu">
-                                <li>
-                                    <a href="uikit_tooltips.html">Tooltips</a>
-                                </li>
-                                <li>
-                                    <a href="uikit_buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="uikit_dropdowns.html">Dropdowns</a>
-                                </li>
-                                <li>
-                                    <a href="uikit_typography.html">Typography</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </li>
-
-                {% endif %}
                     <li class="sub-header">
-                        <span>Ma vitrine</span>
+                        <span>Gestion des Vitrines</span>
                     </li>
                     <li class="has-sub-menu">
                         <a>
                             <div class="icon-w">
                                 <div class="os-icon os-icon-package"></div>
                             </div>
-                            <span>Mes catégories</span></a>
+                            <span>Gestion des catégories</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
                                 Applications
@@ -1117,10 +1021,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                         <a href="{{ path('myProductCategories') }}">Lister</a>
+                                        <a href="{{ path('user_product_category_index',{action:'index'}) }}">Lister</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('myProductCategories_new') }}">Ajouter</a>
+                                        <a href="{{ path('user_product_category_index',{action:'new'}) }}">Ajouter</a>
                                     </li>
 
                                 </ul>
@@ -1132,7 +1036,7 @@
                             <div class="icon-w">
                                 <div class="os-icon os-icon-file-text"></div>
                             </div>
-                            <span>Mes produits</span></a>
+                            <span>Gestion des produits</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
                                 Pages
@@ -1143,10 +1047,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ path('myProducts_new') }}">Ajouter</a>
+                                        <a href="{{ path('selectUser', {'action': 'new'}) }}">Ajouter</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('myProducts') }}">Lister</a>
+                                        <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Lister</a>
                                     </li>
 
                                 </ul>
@@ -1169,7 +1073,8 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="uikit_modals.html">Modals <strong class="badge badge-danger">New</strong></a>
+                                        <a href="uikit_modals.html">Modals <strong
+                                                    class="badge badge-danger">New</strong></a>
                                     </li>
                                     <li>
                                         <a href="uikit_alerts.html">Alerts</a>
@@ -1183,7 +1088,8 @@
                                     <li>
                                         <a href="uikit_popovers.html">Popover</a>
                                     </li>
-                                </ul><ul class="sub-menu">
+                                </ul>
+                                <ul class="sub-menu">
                                     <li>
                                         <a href="uikit_tooltips.html">Tooltips</a>
                                     </li>
@@ -1200,6 +1106,112 @@
                             </div>
                         </div>
                     </li>
+
+                {% endif %}
+                <li class="sub-header">
+                    <span>Ma vitrine</span>
+                </li>
+                <li class="has-sub-menu">
+                    <a>
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-package"></div>
+                        </div>
+                        <span>Mes catégories</span></a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">
+                            Applications
+                        </div>
+                        <div class="sub-menu-icon">
+                            <i class="os-icon os-icon-package"></i>
+                        </div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="{{ path('myProductCategories') }}">Lister</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('myProductCategories_new') }}">Ajouter</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="has-sub-menu">
+                    <a href="#">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-file-text"></div>
+                        </div>
+                        <span>Mes produits</span></a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">
+                            Pages
+                        </div>
+                        <div class="sub-menu-icon">
+                            <i class="os-icon os-icon-file-text"></i>
+                        </div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="{{ path('myProducts_new') }}">Ajouter</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('myProducts') }}">Lister</a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="has-sub-menu">
+                    <a href="#">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-life-buoy"></div>
+                        </div>
+                        <span>UI Kit</span></a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">
+                            UI Kit
+                        </div>
+                        <div class="sub-menu-icon">
+                            <i class="os-icon os-icon-life-buoy"></i>
+                        </div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="uikit_modals.html">Modals <strong
+                                                class="badge badge-danger">New</strong></a>
+                                </li>
+                                <li>
+                                    <a href="uikit_alerts.html">Alerts</a>
+                                </li>
+                                <li>
+                                    <a href="uikit_grid.html">Grid</a>
+                                </li>
+                                <li>
+                                    <a href="uikit_progress.html">Progress</a>
+                                </li>
+                                <li>
+                                    <a href="uikit_popovers.html">Popover</a>
+                                </li>
+                            </ul>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="uikit_tooltips.html">Tooltips</a>
+                                </li>
+                                <li>
+                                    <a href="uikit_buttons.html">Buttons</a>
+                                </li>
+                                <li>
+                                    <a href="uikit_dropdowns.html">Dropdowns</a>
+                                </li>
+                                <li>
+                                    <a href="uikit_typography.html">Typography</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
 
 
                 <li class="sub-header">
@@ -1359,7 +1371,8 @@
                                 <li>
                                     <a href="icon_fonts_eightyshades.html">Eightyshades</a>
                                 </li>
-                            </ul><ul class="sub-menu">
+                            </ul>
+                            <ul class="sub-menu">
                                 <li>
                                     <a href="icon_fonts_entypo.html">Entypo</a>
                                 </li>
@@ -1378,7 +1391,8 @@
                                 <li>
                                     <a href="icon_fonts_batch_icons.html">Batch Icons</a>
                                 </li>
-                            </ul><ul class="sub-menu">
+                            </ul>
+                            <ul class="sub-menu">
                                 <li>
                                     <a href="icon_fonts_dashicons.html">Dashicons</a>
                                 </li>
@@ -1404,7 +1418,9 @@
                     Clean Bootstrap 4 Template
                 </p>
                 <div class="btn-w">
-                    <a class="btn btn-white btn-rounded" href="https://themeforest.net/item/light-admin-clean-bootstrap-dashboard-html-template/19760124?ref=Osetin" target="_blank">Purchase Now</a>
+                    <a class="btn btn-white btn-rounded"
+                       href="https://themeforest.net/item/light-admin-clean-bootstrap-dashboard-html-template/19760124?ref=Osetin"
+                       target="_blank">Purchase Now</a>
                 </div>
             </div>
         </div>
@@ -1426,76 +1442,120 @@
                     <!--------------------
                     START - Messages Link in secondary top menu
                     -------------------->
-                    <div class="messages-notifications os-dropdown-trigger os-dropdown-position-left">
-                        <i class="os-icon os-icon-mail-14"></i>
-                        <div class="new-messages-count">
-                            12
+                    {% block notifications %}
+                        <div class="messages-notifications os-dropdown-trigger os-dropdown-position-left">
+                            <i class="os-icon os-icon-mail-14"></i>
+                            {% if app.user.ReceivedNotifications|length > 0 %}
+                                <div class="new-messages-count">
+                                    {{ app.user.ReceivedNotifications|length }}
+                                </div>
+                            {% endif %}
+
+                            <div class="os-dropdown light message-list">
+                                <ul>
+                                    {% set current_path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+                                    {% for notification in app.user.ReceivedNotifications %}
+                                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                        <script>
+                                            $(document).ready(function () {
+                                                $("#btn-{{ notification.id }}").click(function () {
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: "{{ path('notification_is_seen') }}",
+                                                        data: {notification: "{{ notification.id }}"}
+                                                    })
+                                                        .done(function (data) {
+                                                            alert("clickeeeed")
+                                                            console.log({{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }});
+                                                            if (typeof data.status !== "undefined" && data.status !== "undefined") {
+                                                                // At this point we know that the status is defined,
+                                                                // so we need to check for its value ("OK" in my case)
+                                                                if (data.status === "OK") {
+                                                                    // At this point we know that the server response
+                                                                    // is what we were expecting,
+                                                                    // so retrive the response and use if
+
+                                                                    if (typeof data.message !== "undefined" && data.message !== "undefined") {
+                                                                        // Do whatever you need with data.message
+                                                                    }
+                                                                }
+                                                            }
+                                                        });
+                                                    $("#li-{{ notification.id }}").remove();
+                                                });
+                                            });
+                                        </script>
+                                        <li id="li-{{ notification.id }}">
+                                            <div class="user-avatar-w">
+                                                <img alt=""
+                                                     src="{{ vich_uploader_asset(notification.sender, 'imageFile') }}">
+                                            </div>
+                                            <div class="message-content">
+                                                <h6 class="message-attachments">
+                                                    <a id="btn-{{ notification.id }}">clickme</a>
+                                                </h6>
+                                                <h6 class="message-from">
+                                                    John Mayers
+                                                    {{ notification.sender }}
+                                                </h6>
+                                                <h6 class="message-title">
+                                                    {{ notification.title }}
+                                                </h6>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                    {#
+                                    <li>
+                                        <a href="#">
+                                            <div class="user-avatar-w">
+                                                <img alt="" src="img/avatar2.jpg">
+                                            </div>
+                                            <div class="message-content">
+                                                <h6 class="message-from">
+                                                    Phil Jones
+                                                </h6>
+                                                <h6 class="message-title">
+                                                    Secutiry Updates
+                                                </h6>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="user-avatar-w">
+                                                <img alt="" src="img/avatar3.jpg">
+                                            </div>
+                                            <div class="message-content">
+                                                <h6 class="message-from">
+                                                    Bekky Simpson
+                                                </h6>
+                                                <h6 class="message-title">
+                                                    Vacation Rentals
+                                                </h6>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <div class="user-avatar-w">
+                                                <img alt="" src="img/avatar4.jpg">
+                                            </div>
+                                            <div class="message-content">
+                                                <h6 class="message-from">
+                                                    Alice Priskon
+                                                </h6>
+                                                <h6 class="message-title">
+                                                    Payment Confirmation
+                                                </h6>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    #}
+                                </ul>
+                            </div>
                         </div>
-                        <div class="os-dropdown light message-list">
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <div class="user-avatar-w">
-                                            <img alt="" src="img/avatar1.jpg">
-                                        </div>
-                                        <div class="message-content">
-                                            <h6 class="message-from">
-                                                John Mayers
-                                            </h6>
-                                            <h6 class="message-title">
-                                                Account Update
-                                            </h6>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="user-avatar-w">
-                                            <img alt="" src="img/avatar2.jpg">
-                                        </div>
-                                        <div class="message-content">
-                                            <h6 class="message-from">
-                                                Phil Jones
-                                            </h6>
-                                            <h6 class="message-title">
-                                                Secutiry Updates
-                                            </h6>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="user-avatar-w">
-                                            <img alt="" src="img/avatar3.jpg">
-                                        </div>
-                                        <div class="message-content">
-                                            <h6 class="message-from">
-                                                Bekky Simpson
-                                            </h6>
-                                            <h6 class="message-title">
-                                                Vacation Rentals
-                                            </h6>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <div class="user-avatar-w">
-                                            <img alt="" src="img/avatar4.jpg">
-                                        </div>
-                                        <div class="message-content">
-                                            <h6 class="message-from">
-                                                Alice Priskon
-                                            </h6>
-                                            <h6 class="message-title">
-                                                Payment Confirmation
-                                            </h6>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+
+                    {% endblock %}
                     <!--------------------
                     END - Messages Link in secondary top menu
                     --------------------><!--------------------
@@ -1543,7 +1603,7 @@
                                             Maria Gomez
                                         </div>
                                         <div class="logged-user-role">
-                                            Administrator
+                                            Administratore
                                         </div>
                                     </div>
                                 </div>
@@ -1555,7 +1615,8 @@
                                         <a href="apps_email.html"><i class="os-icon os-icon-mail-01"></i><span>Incoming Mail</span></a>
                                     </li>
                                     <li>
-                                        <a href="users_profile_big.html"><i class="os-icon os-icon-user-male-circle2"></i><span>Profile Details</span></a>
+                                        <a href="users_profile_big.html"><i
+                                                    class="os-icon os-icon-user-male-circle2"></i><span>Profile Details</span></a>
                                     </li>
                                     <li>
                                         <a href="users_profile_small.html"><i class="os-icon os-icon-coins-4"></i><span>Billing Details</span></a>
@@ -1622,7 +1683,10 @@
                                 {% endblock %}
 
 
-                                <a class="btn btn-white btn-sm" href="#"><i class="os-icon os-icon-window-content"></i><span>Customer Comments</span></a><a class="btn btn-white btn-sm" href="#"><i class="os-icon os-icon-wallet-loaded"></i><span>Store Settings</span></a>
+                                <a class="btn btn-white btn-sm" href="#"><i
+                                            class="os-icon os-icon-window-content"></i><span>Customer Comments</span></a><a
+                                        class="btn btn-white btn-sm" href="#"><i
+                                            class="os-icon os-icon-wallet-loaded"></i><span>Store Settings</span></a>
 
 
                             </div>
@@ -1779,7 +1843,8 @@
                         </h6>
                         <div class="element-box-tp">
                             <div class="input-search-w">
-                                <input class="form-control rounded bright" placeholder="Search team members..." type="search">
+                                <input class="form-control rounded bright" placeholder="Search team members..."
+                                       type="search">
                             </div>
                             <div class="users-list-w">
                                 <div class="user-w with-status status-green">
@@ -1912,20 +1977,25 @@
 <script src="{{ asset('js/main.js?version=4.5.0') }}"></script>
 
 <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
     ga('create', 'UA-XXXXXXXX-9', 'auto');
     ga('send', 'pageview');
 </script>
-
 
 {% block javascripts %}
 
 {% endblock %}
 {#
-
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
@@ -1935,8 +2005,6 @@
     $('select').select2();
 </script>
 #}
-
-
 
 
 </body>

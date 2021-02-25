@@ -1,4 +1,3 @@
 test:
     path: /test
     controller: App\test\testController::index
-
