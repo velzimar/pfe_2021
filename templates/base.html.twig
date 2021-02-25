@@ -737,7 +737,7 @@
                                 <a href="users_profile_small.html"><i class="os-icon os-icon-coins-4"></i><span>Billing Details</span></a>
                             </li>
                             <li>
-                                <a href="#"><i class="os-icon os-icon-others-43"></i><span>Notifications</span></a>
+                                <a href="{{ path('myNotifications') }}"><i class="os-icon os-icon-others-43"></i><span>Notifications</span></a>
                             </li>
                             <li>
                                 <a href="{{ path("app_logout") }}"><i
@@ -1442,120 +1442,16 @@
                     <!--------------------
                     START - Messages Link in secondary top menu
                     -------------------->
+
                     {% block notifications %}
-                        <div class="messages-notifications os-dropdown-trigger os-dropdown-position-left">
-                            <i class="os-icon os-icon-mail-14"></i>
-                            {% if app.user.ReceivedNotifications|length > 0 %}
-                                <div class="new-messages-count">
-                                    {{ app.user.ReceivedNotifications|length }}
-                                </div>
-                            {% endif %}
-
-                            <div class="os-dropdown light message-list">
-                                <ul>
-                                    {% set current_path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-                                    {% for notification in app.user.ReceivedNotifications %}
-                                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                                        <script>
-                                            $(document).ready(function () {
-                                                $("#btn-{{ notification.id }}").click(function () {
-                                                    $.ajax({
-                                                        type: "POST",
-                                                        url: "{{ path('notification_is_seen') }}",
-                                                        data: {notification: "{{ notification.id }}"}
-                                                    })
-                                                        .done(function (data) {
-                                                            alert("clickeeeed")
-                                                            console.log({{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }});
-                                                            if (typeof data.status !== "undefined" && data.status !== "undefined") {
-                                                                // At this point we know that the status is defined,
-                                                                // so we need to check for its value ("OK" in my case)
-                                                                if (data.status === "OK") {
-                                                                    // At this point we know that the server response
-                                                                    // is what we were expecting,
-                                                                    // so retrive the response and use if
-
-                                                                    if (typeof data.message !== "undefined" && data.message !== "undefined") {
-                                                                        // Do whatever you need with data.message
-                                                                    }
-                                                                }
-                                                            }
-                                                        });
-                                                    $("#li-{{ notification.id }}").remove();
-                                                });
-                                            });
-                                        </script>
-                                        <li id="li-{{ notification.id }}">
-                                            <div class="user-avatar-w">
-                                                <img alt=""
-                                                     src="{{ vich_uploader_asset(notification.sender, 'imageFile') }}">
-                                            </div>
-                                            <div class="message-content">
-                                                <h6 class="message-attachments">
-                                                    <a id="btn-{{ notification.id }}">clickme</a>
-                                                </h6>
-                                                <h6 class="message-from">
-                                                    John Mayers
-                                                    {{ notification.sender }}
-                                                </h6>
-                                                <h6 class="message-title">
-                                                    {{ notification.title }}
-                                                </h6>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                    {#
-                                    <li>
-                                        <a href="#">
-                                            <div class="user-avatar-w">
-                                                <img alt="" src="img/avatar2.jpg">
-                                            </div>
-                                            <div class="message-content">
-                                                <h6 class="message-from">
-                                                    Phil Jones
-                                                </h6>
-                                                <h6 class="message-title">
-                                                    Secutiry Updates
-                                                </h6>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="user-avatar-w">
-                                                <img alt="" src="img/avatar3.jpg">
-                                            </div>
-                                            <div class="message-content">
-                                                <h6 class="message-from">
-                                                    Bekky Simpson
-                                                </h6>
-                                                <h6 class="message-title">
-                                                    Vacation Rentals
-                                                </h6>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <div class="user-avatar-w">
-                                                <img alt="" src="img/avatar4.jpg">
-                                            </div>
-                                            <div class="message-content">
-                                                <h6 class="message-from">
-                                                    Alice Priskon
-                                                </h6>
-                                                <h6 class="message-title">
-                                                    Payment Confirmation
-                                                </h6>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    #}
-                                </ul>
-                            </div>
-                        </div>
-
+                        {% include "notifications.html.twig" %}
                     {% endblock %}
+
+                    {#
+                    {% block notifications %}
+
+{{ block('notifications') }}
+                    {% endblock %} #}
                     <!--------------------
                     END - Messages Link in secondary top menu
                     --------------------><!--------------------
@@ -1622,7 +1518,7 @@
                                         <a href="users_profile_small.html"><i class="os-icon os-icon-coins-4"></i><span>Billing Details</span></a>
                                     </li>
                                     <li>
-                                        <a href="#"><i class="os-icon os-icon-others-43"></i><span>Notifications</span></a>
+                                        <a href="{{ path('myNotifications') }}"><i class="os-icon os-icon-others-43"></i><span>Notifications</span></a>
                                     </li>
                                     <li>
                                         <a href="#"><i class="os-icon os-icon-signs-11"></i><span>Logout</span></a>

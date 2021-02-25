@@ -23,8 +23,22 @@ class NotificationController extends AbstractController
         ]);
     }
 
+
     /**
-     * @Route("/makeItSeen", name="notification_is_seen", methods={"GET","POST"})
+     * @Route("/notification/myNotifications", name="myNotifications")
+     * @param NotificationRepository $rep
+     * @return Response
+     */
+    public function myNotifications(NotificationRepository $rep): Response
+    {
+        $notifications = $rep->findByUser($this->getUser());
+        return $this->render('notification/index.html.twig', [
+            'controller_name' => 'NotificationController',
+            'notifications' => $notifications
+        ]);
+    }
+    /**
+     * @Route("/notification/makeItSeen", name="notification_is_seen", methods={"GET","POST"})
      * @param Request $request
      * @param NotificationRepository $rep
      * @return Response

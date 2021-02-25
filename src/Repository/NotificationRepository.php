@@ -26,7 +26,7 @@ class NotificationRepository extends ServiceEntityRepository
     public function findNotSeenById($value)
     {
         return $this->createQueryBuilder('n')
-            ->andWhere('n.id = :val')
+            ->andWhere('n.receiver = :val')
             ->andWhere('n.seen = :seen')
             ->setParameter('val', $value)
             ->setParameter('seen', 0)
@@ -49,4 +49,20 @@ class NotificationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+    /**
+     * @param $userId
+     * @return Notification[] Returns an array of Notification objects
+     */
+    public function findByUser($userId): array
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.Receiver = :val')
+            ->setParameter('val', $userId)
+            ->orderBy('n.sending_date','desc')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

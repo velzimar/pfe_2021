@@ -32,6 +32,7 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
+
     <div class="element-wrapper">
         <h6 class="element-header">
             Gestion des utilisateurs
@@ -104,26 +105,25 @@
                             <td class="row-actions">
 
 
-
                                 {% if user.isActive==1 %}
 
 
-                                <div class="users-list-w">
-                                    <div class="user-w with-status status-green">
-                                        <div class="user-avatar-w">
-                                        </div>
-                                        <div class="user-name">
-                                            <div class="user-role">
+                                    <div class="users-list-w">
+                                        <div class="user-w with-status status-green">
+                                            <div class="user-avatar-w">
+                                            </div>
+                                            <div class="user-name">
+                                                <div class="user-role">
 
-                                                <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
+                                                    <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
 
-                                                    Cliquer pour Desactivé
-                                                </a>
+                                                        Cliquer pour Desactivé
+                                                    </a>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
                                 {% else %}
                                     <div class="users-list-w">
@@ -198,7 +198,6 @@
     #}
 
 {% endblock %}
-
 {% block javascripts %}
     <script>
         $(document).ready(function () {

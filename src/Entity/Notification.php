@@ -39,7 +39,7 @@ class Notification
     private $details;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $sending_date;
 
@@ -108,6 +108,12 @@ class Notification
     public function getSendingDate(): ?\DateTimeInterface
     {
         return $this->sending_date;
+    }
+
+    public function getSendingDateString(): string
+    {
+        $date_time = $this->sending_date;
+        return $date_time->format('Y-m-d H:i:s');
     }
 
     public function setSendingDate(\DateTimeInterface $sending_date): self

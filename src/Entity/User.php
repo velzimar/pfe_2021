@@ -140,14 +140,14 @@ class User implements UserInterface, Serializable
     private $ReceivedNotifications;
 
 
-//    private $NotSeenReceivedNotifications;
+    private $NotSeenReceivedNotifications;
 
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->ReceivedNotifications = new ArrayCollection();
-        //$this->NotSeenReceivedNotifications = new ArrayCollection();
+        $this->NotSeenReceivedNotifications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -534,19 +534,21 @@ class User implements UserInterface, Serializable
         return $this->ReceivedNotifications;
     }
 
-/*
-    public function setNotSeenReceivedNotifications(NotificationRepository $repository): self
-    {
-        $this->NotSeenReceivedNotifications = $repository->findNotSeenById($this->getId());
-        return $this;
-    }
 
+    /**
+     * @var $notification Notification
+     * @return Collection|Notification[]
+     */
     public function getNotSeenReceivedNotifications(): Collection
     {
+        $this->NotSeenReceivedNotifications = new ArrayCollection();
+        foreach ($this->ReceivedNotifications as $notification){
+            if (!$notification->getSeen())
+                $this->NotSeenReceivedNotifications[] = $notification;
+        }
+
         return $this->NotSeenReceivedNotifications;
     }
-
-*/
 
     public function addReceivedNotification(Notification $receivedNotification): self
     {
