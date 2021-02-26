@@ -1,6 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New User{% endblock %}
+
+{% block stylesheets %}
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+        #map {
+            height: 400px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+
+    </style>
+{% endblock %}
 {% block  breadcrumb %}
 
     <ul class="breadcrumb">
@@ -19,7 +32,7 @@
 
 
 
-
+{#
     <div class="col-sm-12">
         <div class="element-wrapper">
             <div class="element-box">
@@ -147,6 +160,266 @@
             </div>
         </div>
     </div>
+#}
+    <div class="col-sm-12">
+        <div class="element-wrapper">
 
+            <div class="element-box">
 
+                {% for flashError in app.flashes('verify_email_error') %}
+                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-wallet-loaded"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header">
+                                Gestion de profile
+                            </h5>
+                            <div class="element-inner-desc">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_row(form.email,{
+                        'label':"Adresse Email",
+                        'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
+                    }) }}
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.nom,{
+                                'label':"Nom",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                            }) }}
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.prenom,{
+                                'label':"Prenom",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.cin,{
+                                'label':"Numéro du carte d'identité",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                            }) }}
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.phone,{
+                                'label':"Numéro de téléphone",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.businessName,{
+                        'label':"Nom de l'affaire",
+                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                    }) }}
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.admin,{
+                                'label':"Administrateur",
+                                'attr': {'class': 'form-control' }
+                            }) }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.isActive,{
+                                'label':"Activation",
+                                'attr': {'class': 'form-control' }
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.businessDescription,{
+                        'label':"Description de l'affaire",
+                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                    }) }}
+                </div>
+
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Modal Header</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div id="map"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div type="button" class="os-icon os-icon-map-pin" data-toggle="modal"
+                                 data-target="#myModal">
+                                Ouvrir le map
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">Longitude: <p id="lng"> {{ user.longitude }}</p>
+                            {{ form_row(form.longitude,{
+                                'label':"longitude",
+                                'attr': {'class': 'form-control'}
+                            }) }}
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">Latitude<p id="lat"> {{ user.latitude }}</p>
+                            {{ form_row(form.latitude,{
+                                'label':"latitude",
+                                'attr': {'class': 'form-control'}
+                            }) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.password,{
+                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                            ) }}
+                            <input type="hidden" name="_csrf_token"
+                                   value="{{ csrf_token('authenticate') }}"
+                            >
+                            <div class="help-block form-text text-muted form-control-feedback">
+                                Minimum of 6 characters
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.confirm,{
+                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                            ) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.category_id,{
+                        'label':"Catégorie",
+                        'attr': {'class': 'form-control'  }}) }}
+                </div>
+                <div class="form-group">
+
+                    {{ form_widget(form.imageFile,{
+                        'label':"Image",
+                        'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
+                    }) }}
+
+                </div>
+
+                <div class="form-buttons-w">
+                    <div class="col-sm-4">
+                        <button class="btn btn-primary disabled" type="submit">Crée</button>
+                        <button class="btn" type="reset">Reset</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        /*
+        $(document).ready(function () {
+            $('#formDepot').click(function () {
+                alert("aaa");
+                document.getElementById("product_qtt").value = 1151;
+            });
+        });
+        */
+        let map;
+        let markers = [];
+
+        function initMap() {
+            const uluru = {lat: 36.69858, lng: 10.14278};
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: uluru,
+                mapTypeId: "terrain",
+            });
+            map.addListener("click", (event) => {
+                alert("Latitude: " + event.latLng.lat() + " " + ", longitude: " + event.latLng.lng());
+                deleteMarkers();
+                addMarker(event.latLng);
+
+                document.getElementById("user_longitude").value = event.latLng.lng().toFixed(7);
+                document.getElementById("user_latitude").value = event.latLng.lat().toFixed(8);
+                $("#lat").html(event.latLng.lat().toFixed(8));
+                $("#lng").html(event.latLng.lng().toFixed(7));
+            });
+        }
+
+        function setMapOnAll(map) {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
+
+        function showMarkers() {
+            setMapOnAll(map);
+        }
+
+        function addMarker(location) {
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+            });
+            markers.push(marker);
+        }
+
+        function deleteMarkers() {
+            clearMarkers();
+            markers = [];
+        }
+    </script>
+    {#
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> #}
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBGbVdDprMqKm8-WHOBC8u3GIXrBWbJxw&callback=initMap">
+    </script>
 {% endblock %}

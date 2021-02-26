@@ -29,12 +29,14 @@ class UserType extends AbstractType
             ->add('businessName')
             ->add('businessDescription')
             ->add('isActive')
-            ->add('latitude', HiddenType::class, array(
+            ->add('latitude', HiddenType::class,array(
+                'required'=>true,
                 'attr' => array(
                     'readonly' => true,
                 ),
             ))
             ->add('longitude', HiddenType::class, array(
+                'required'=>true,
                 'attr' => array(
                     'readonly' => true,
                 ),

@@ -106,7 +106,10 @@
 
 
                                 {% if user.isActive==1 %}
+                                <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
 
+                                    Cliquer pour Desactiver
+                                </a> {#
 
                                     <div class="users-list-w">
                                         <div class="user-w with-status status-green">
@@ -124,8 +127,12 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                #}
                                 {% else %}
+                                    <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
+                                        Cliquer pour Activer
+                                    </a>
+                                    {#
                                     <div class="users-list-w">
                                         <div class="user-w with-status status-red">
                                             <div class="user-avatar-w">
@@ -140,13 +147,15 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    #}
                                 {% endif %}
                             </td>
                             <td class="row-actions">
-                                <a href="{{ path('user_edit', {'id': user.id}) }}">
-                                    Détails
-                                </a>
+                                    <a href="{{ path('user_edit', {'id': user.id}) }}">
+
+                                        <button class="mr-2 mb-2 btn btn-primary">Détails
+                                        </button>
+                                    </a>
                             </td>
                         </tr>
                     {% else %}

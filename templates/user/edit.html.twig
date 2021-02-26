@@ -261,13 +261,13 @@
 
     <div class="col-sm-12">
         <div class="element-wrapper">
-
-
             <div class="element-box">
                 <div class="user-profile compact">
-                    <div class="up-head-w" style="background-image:url({{ vich_uploader_asset(user, 'imageFile') }})">
+                    <div class="up-head-w" id="user_profile"
+                         style="background-image:url({{ vich_uploader_asset(user, 'imageFile') }})">
                         <div class="up-social">
-                            <a href="#"><i class="os-icon os-icon-twitter"></i></a><a href="#"><i
+                            <a href="#"><i class="os-icon os-icon-twitter"></i></a>
+                            <a href="#"><i
                                         class="os-icon os-icon-facebook"></i></a>
                         </div>
                         <div class="up-main-info">
@@ -320,7 +320,13 @@
                     </div>
                 </div>
             </div>
-
+            <script>
+                $(document).ready(() => {
+                    $("#user_profile").click(() => {
+                        $('#user_imageFile').trigger('click');
+                    })
+                })
+            </script>
             <div class="element-box">
                 <div class="element-info">
                     <div class="element-info-with-icon">
@@ -489,21 +495,25 @@
                         'label':"Catégorie",
                         'attr': {'class': 'form-control'  }}) }}
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="image">
 
                     {{ form_widget(form.imageFile,{
                         'label':"Image",
                         'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
                     }) }}
-
                 </div>
-
                 <div class="form-buttons-w">
-                    <button class="btn btn-primary disabled" type="submit"> Mettre à jour</button>
-
-                    <button class="btn" type="reset">Reset</button>
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <button class="btn btn-primary disabled" type="submit"> Mettre à jour</button>
+                            <button class="btn" type="reset">Reset</button>
+                        </div>
+                        {{ form_end(form) }}
+                        <div class="col-auto">
+                            {{ include('user/_delete_form.html.twig') }}
+                        </div>
+                    </div>
                 </div>
-                {{ form_end(form) }}
             </div>
         </div>
 

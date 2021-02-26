@@ -69,6 +69,8 @@ class UserController extends AbstractController
             $entityManager->flush();
 
             return $this->redirectToRoute('user_index');
+        }else if($form->isSubmitted() && !$form->isValid()){
+            $this->addFlash('verify_email_error', 'Inserer votre géolocalisation');
         }
 
         return $this->render('user/new.html.twig', [

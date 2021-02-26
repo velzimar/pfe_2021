@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
+use Symfony\Component\Validator\Constraints\Date;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -42,7 +43,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $filename;
 
@@ -53,7 +54,7 @@ class User implements UserInterface, Serializable
     private $imageFile;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      *
      * @var \DateTimeInterface|null
      */
@@ -125,12 +126,14 @@ class User implements UserInterface, Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=8, nullable=true)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="decimal", precision=10, scale=8)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=7, nullable=true)
+     * @Assert\NotBlank()
+     * @ORM\Column(type="decimal", precision=10, scale=7)
      */
     private $longitude;
 
