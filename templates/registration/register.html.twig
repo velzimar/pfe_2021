@@ -113,7 +113,6 @@
                             </div>
                         </div>
                     </div>
-
                     <fieldset class="form-group">
                         <legend><span>Votre Affaire</span></legend>
                         <div class="form-group">
@@ -128,10 +127,13 @@
                                 'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
                             }) }}
                         </div>
+                        <div class="form-group">
+                            {{ form_row(registrationForm.category_id,{
+                                'label':"Catégorie",
+                                'attr': {'class': 'form-control' }
+                            }) }}
+                        </div>
                     </fieldset>
-
-
-
                     <fieldset class="form-group">
                         <legend><span>Géolocalisation</span></legend>
                         <div class="modal fade" id="myModal" role="dialog">

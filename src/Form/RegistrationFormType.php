@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -78,6 +80,12 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('imageFile', FileType::class, [
                 'required'=>false
+            ])
+            ->add('category_id', EntityType::class, [
+                'choice_label'=>'nom',
+                'class'=> Category::class,
+                'multiple'=>false,
+                'required'=>false,
             ])
         ;
     }
