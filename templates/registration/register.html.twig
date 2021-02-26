@@ -2,6 +2,18 @@
 
 {% block title %}Register{% endblock %}
 
+{% block stylesheets %}
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+        #map {
+            height: 400px; /* The height is 400 pixels */
+            width: 100%; /* The width is the width of the web page */
+        }
+
+    </style>
+{% endblock %}
 {% block body %}
 
 
@@ -66,18 +78,14 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        {{ form_row(registrationForm.businessName,{
-                            'label':"Nom de l'affaire",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                        {{ form_row(registrationForm.imageFile,{
+                            'label':"Image",
+                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
                         }) }}
                     </div>
-                    <div class="form-group">
-                        {{ form_row(registrationForm.businessDescription,{
-                            'label':"Description de l'affaire",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
-                        }) }}
-                    </div>
+
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
@@ -105,14 +113,86 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
 
-                        {{ form_row(registrationForm.imageFile,{
-                            'label':"Image",
-                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
-                        }) }}
+                    <fieldset class="form-group">
+                        <legend><span>Votre Affaire</span></legend>
+                        <div class="form-group">
+                            {{ form_row(registrationForm.businessName,{
+                                'label':"Nom",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_row(registrationForm.businessDescription,{
+                                'label':"Description",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                    </fieldset>
 
-                    </div>
+
+
+                    <fieldset class="form-group">
+                        <legend><span>Géolocalisation</span></legend>
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Modal Header</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div id="map"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 "  align="center">
+                                <div class="form-group">
+                                    <div type="button" class="os-icon os-icon-map-pin" data-toggle="modal"
+                                         data-target="#myModal">
+                                        Ouvrir le map
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <input type="text" id="loc" readonly="readonly" class="form-control" value="">
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" >Longitude:
+                                    <input type="text" id="lng" readonly="readonly" class="form-control" value="">
+
+                                </div>
+                                <div class="form-group" hidden>Longitude:
+                                    {{ form_row(registrationForm.longitude,{
+                                        'label':"longitude",
+                                        'attr': {'class': 'form-control'}
+                                    }) }}
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group" >Latitude:
+                                    <input type="text" id="lat" readonly="readonly" class="form-control" value="">
+                                </div>
+                                <div class="form-group" hidden>
+                                    {{ form_row(registrationForm.latitude,{
+                                        'label':"latitude",
+                                        'attr': {'class': 'form-control'}
+                                    }) }}
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
                     <div class="form-buttons-w">
                         <button class="btn btn-primary disabled" type="submit"> Enregistrer</button>
                         <button class="btn" type="reset">Annuler</button>
@@ -141,4 +221,87 @@
         <button type="submit" class="btn">Register</button>
 #}
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        /*
+        $(document).ready(function () {
+            $('#formDepot').click(function () {
+                alert("aaa");
+                document.getElementById("product_qtt").value = 1151;
+            });
+        });
+        */
+        let map;
+        let markers = [];
+
+        function initMap() {
+            const uluru = {lat: 36.69858, lng: 10.14278};
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 12,
+                center: uluru,
+                mapTypeId: "terrain",
+            });
+            map.addListener("click", (event) => {
+                alert("Latitude: " + event.latLng.lat() + " " + ", longitude: " + event.latLng.lng());
+                deleteMarkers();
+                addMarker(event.latLng);
+                document.getElementById("registration_form_longitude").value = event.latLng.lng().toFixed(7);
+                document.getElementById("registration_form_latitude").value = event.latLng.lat().toFixed(8);
+                $("#lat").val(event.latLng.lat().toFixed(8));
+                $("#lng").val(event.latLng.lng().toFixed(7));
+                fetchLocationName(event.latLng.lat(),event.latLng.lng());
+            });
+        }
+
+        function setMapOnAll(map) {
+            for (let i = 0; i < markers.length; i++) {
+                markers[i].setMap(map);
+            }
+        }
+
+        function clearMarkers() {
+            setMapOnAll(null);
+        }
+
+        function showMarkers() {
+            setMapOnAll(map);
+        }
+
+        function addMarker(location) {
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+            });
+            markers.push(marker);
+        }
+
+        function deleteMarkers() {
+            clearMarkers();
+            markers = [];
+        }
+
+        // we take adminArea5 as neighborhood  and adminArea3 as county
+        async function fetchLocationName(lat,lng) {
+            await fetch(
+                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location='+lat+'%2C'+lng+'&outFormat=json&thumbMaps=false',
+            )
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    let x = JSON.stringify(responseJson)
+                    console.log(
+                        //'ADDRESS GEOCODE is BACK!! => ' + x,
+                        'for me => ' + responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5,
+                    );
+                    $("#loc").val(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5)
+                    $("#loc").html(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5);
+                });
+        };
+    </script>
+    {#
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> #}
+    <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBGbVdDprMqKm8-WHOBC8u3GIXrBWbJxw&callback=initMap">
+    </script>
 {% endblock %}

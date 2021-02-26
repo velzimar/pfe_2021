@@ -43,33 +43,19 @@ class RegistrationController extends AbstractController
                     'registrationForm' => $form->createView(),
                 ]);
             }
-
             $entityManager = $this->getDoctrine()->getManager();
-/*
-            if($form->get('admin')->getData()==true){
-
-                $this->addFlash('success', 'add');
-                $user->addRole('ROLE_ADMIN');
-            }
-            else{
-
-                $this->addFlash('success', 'remove');
-                $user->removeRoles('ROLE_ADMIN');
-            }
-*/
             $entityManager->persist($user);
             $entityManager->flush();
-
-            // do anything else you need here, like send an email
-
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
                 $authenticator,
                 'main' // firewall name in security.yaml
             );
+        }else if ($form->isSubmitted() && !$form->isValid()){
+            if($form->get('longitude')->getData()=="")
+                $this->addFlash('register', 'Inserer votre localisation');
         }
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
