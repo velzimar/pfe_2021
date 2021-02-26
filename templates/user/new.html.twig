@@ -31,144 +31,16 @@
 {% block body %}
 
 
-
-{#
     <div class="col-sm-12">
         <div class="element-wrapper">
+            <script>
+                $(document).ready(() => {
+                    $("#user_profile").click(() => {
+                        $('#user_imageFile').trigger('click');
+                    })
+                })
+            </script>
             <div class="element-box">
-
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% for flashError in app.flashes('verify_email_error') %}
-                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-                {% endfor %}
-                {{ form_start(form) }}
-                <h5 class="form-header">
-                    Crée un utilisateur
-                </h5>
-                <div class="form-group">
-                    {{ form_row(form.email,{
-                        'label':"Adresse Email",
-                        'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
-                    }) }}
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.nom,{
-                                'label':"Nom",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
-                            }) }}
-
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.prenom,{
-                                'label':"Prenom",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
-                            }) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            {{ form_row(form.cin,{
-                                'label':"Numéro du carte d'identité",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
-                            }) }}
-
-                        </div>
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            {{ form_row(form.phone,{
-                                'label':"Numéro de téléphone",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
-                            }) }}
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <div class="form-group">
-                            {{ form_row(form.admin,{
-                                'label':"Administrateur",
-                                'attr': {'class': 'form-control' }
-                            }) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    {{ form_row(form.businessName,{
-                        'label':"Nom de l'affaire",
-                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
-                    }) }}
-                </div>
-                <div class="form-group">
-                    {{ form_row(form.businessDescription,{
-                        'label':"Description de l'affaire",
-                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
-                    }) }}
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.password,{
-                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
-                            )
-                            }}
-                            <input type="hidden" name="_csrf_token"
-                                   value="{{ csrf_token('authenticate') }}"
-                            >
-                            <div class="help-block form-text text-muted form-control-feedback">
-                                Minimum of 6 characters
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.confirm,{
-                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
-                            )
-                            }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    {{ form_row(form.category_id,{
-                        'label':"Catégorie",
-                        'attr': {'class': 'form-control' , 'required':'true' }}) }}
-                </div>
-                    <div class="form-group">
-
-                        {{ form_widget(form.imageFile,{
-                            'label':"Image",
-                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file', 'required':'true'  }
-                        }) }}
-
-                    </div>
-                <div class="form-buttons-w">
-                    <button class="btn btn-primary disabled" type="submit"> Crée</button>
-
-                    <button class="btn" type="reset">Reset</button>
-                </div>
-                {{ form_end(form) }}
-            </div>
-        </div>
-    </div>
-#}
-    <div class="col-sm-12">
-        <div class="element-wrapper">
-
-            <div class="element-box">
-
-                {% for flashError in app.flashes('verify_email_error') %}
-                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-                {% endfor %}
                 <div class="element-info">
                     <div class="element-info-with-icon">
                         <div class="element-info-icon">
@@ -176,7 +48,7 @@
                         </div>
                         <div class="element-info-text">
                             <h5 class="element-inner-header">
-                                Gestion de profile
+                                Crée un nouveau utilisateur
                             </h5>
                             <div class="element-inner-desc">
                             </div>
@@ -228,85 +100,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    {{ form_row(form.businessName,{
-                        'label':"Nom de l'affaire",
-                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
-                    }) }}
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.admin,{
-                                'label':"Administrateur",
-                                'attr': {'class': 'form-control' }
-                            }) }}
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.isActive,{
-                                'label':"Activation",
-                                'attr': {'class': 'form-control' }
-                            }) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    {{ form_row(form.businessDescription,{
-                        'label':"Description de l'affaire",
-                        'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
-                    }) }}
-                </div>
-
-                <div class="modal fade" id="myModal" role="dialog">
-                    <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Modal Header</h4>
-                            </div>
-                            <div class="modal-body">
-
-                                <div id="map"></div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="form-group">
-                            <div type="button" class="os-icon os-icon-map-pin" data-toggle="modal"
-                                 data-target="#myModal">
-                                Ouvrir le map
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">Longitude: <p id="lng"> {{ user.longitude }}</p>
-                            {{ form_row(form.longitude,{
-                                'label':"longitude",
-                                'attr': {'class': 'form-control'}
-                            }) }}
-
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="form-group">Latitude<p id="lat"> {{ user.latitude }}</p>
-                            {{ form_row(form.latitude,{
-                                'label':"latitude",
-                                'attr': {'class': 'form-control'}
-                            }) }}
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
@@ -330,27 +123,142 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    {{ form_row(form.category_id,{
-                        'label':"Catégorie",
-                        'attr': {'class': 'form-control'  }}) }}
-                </div>
-                <div class="form-group">
+                <fieldset class="form-group">
+                    <legend><span>Affaire</span></legend>
+                    <div class="form-group">
+                        {{ form_row(form.businessName,{
+                            'label':"Nom",
+                            'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
+                        }) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.businessDescription,{
+                            'label':"Description",
+                            'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
+                        }) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.category_id,{
+                            'label':"Catégorie",
+                            'attr': {'class': 'form-control' }
+                        }) }}
+                    </div>
+                </fieldset>
 
+                <fieldset class="form-group">
+                    <legend><span>Géolocalisation</span></legend>
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Modal Header</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div id="map"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 "  align="center">
+                            <div class="form-group">
+                                <div type="button" class="os-icon os-icon-map-pin" data-toggle="modal"
+                                     data-target="#myModal">
+                                    Ouvrir le map
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <input type="text" id="loc" readonly="readonly" class="form-control" value="">
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group" >Longitude:
+                                <input type="text" id="lng" readonly="readonly" class="form-control" value="{{ form.vars.data.longitude }}">
+                            </div>
+                            <div class="form-group" hidden>Longitude:
+                                {{ form_row(form.longitude,{
+                                    'label':"longitude",
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group" >Latitude:
+                                <input type="text" id="lat" readonly="readonly" class="form-control" value="{{ form.vars.data.latitude }}">
+                            </div>
+                            <div class="form-group" hidden>
+                                {{ form_row(form.latitude,{
+                                    'label':"latitude",
+                                    'attr': {'class': 'form-control'}
+                                }) }}
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Modal Header</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div id="map"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="form-group" id="image" hidden>
                     {{ form_widget(form.imageFile,{
                         'label':"Image",
                         'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
                     }) }}
-
                 </div>
+
+                <fieldset class="form-group">
+                    <legend><span>Administration</span></legend>
+                    <div class="form-group">
+                        {{ form_row(form.admin,{
+                            'label':"Les droits d'administrateur",
+                            'attr': {'class': 'form-control'  }
+                        }) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_row(form.isActive,{
+                            'label':"Activation du compte",
+                            'attr': {'class': 'form-control'   }
+                        }) }}
+                    </div>
+                </fieldset>
 
                 <div class="form-buttons-w">
-                    <div class="col-sm-4">
-                        <button class="btn btn-primary disabled" type="submit">Crée</button>
-                        <button class="btn" type="reset">Reset</button>
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <button class="btn btn-primary disabled" type="submit"> Mettre à jour</button>
+                            <button class="btn" type="reset">Reset</button>
+                        </div>
+                        {{ form_end(form) }}
                     </div>
                 </div>
-                {{ form_end(form) }}
             </div>
         </div>
 
@@ -385,8 +293,9 @@
 
                 document.getElementById("user_longitude").value = event.latLng.lng().toFixed(7);
                 document.getElementById("user_latitude").value = event.latLng.lat().toFixed(8);
-                $("#lat").html(event.latLng.lat().toFixed(8));
-                $("#lng").html(event.latLng.lng().toFixed(7));
+                $("#lat").val(event.latLng.lat().toFixed(8));
+                $("#lng").val(event.latLng.lng().toFixed(7));
+                fetchLocationName(event.latLng.lat(),event.latLng.lng());
             });
         }
 
@@ -416,6 +325,23 @@
             clearMarkers();
             markers = [];
         }
+
+        // we take adminArea5 as neighborhood  and adminArea3 as county
+        async function fetchLocationName(lat,lng) {
+            await fetch(
+                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location='+lat+'%2C'+lng+'&outFormat=json&thumbMaps=false',
+            )
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    let x = JSON.stringify(responseJson)
+                    console.log(
+                        //'ADDRESS GEOCODE is BACK!! => ' + x,
+                        'for me => ' + responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5,
+                    );
+                    $("#loc").val(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5)
+                    $("#loc").html(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5);
+                });
+        };
     </script>
     {#
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> #}
