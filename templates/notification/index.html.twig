@@ -13,14 +13,6 @@
 {% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
 
     <div class="element-wrapper">
         <h6 class="element-header">
@@ -68,60 +60,40 @@
                                 {{ notification.getSendingDateString }}
                             </td>
                             <td class="row-actions">
-                                <button class="mr-2 mb-2 btn btn-primary" data-target="#onboardingTextModal" data-toggle="modal" type="button">Détails</button>
-                                <div aria-hidden="true" class="onboarding-modal modal fade animated" id="onboardingTextModal" role="dialog" tabindex="-1">
+                                <button class="mr-2 mb-2 btn btn-primary" data-target="#onboardingTextModal-{{ notification.id }}"
+                                        data-toggle="modal" type="button">Détails
+                                </button>
+                                <div aria-hidden="true" class="onboarding-modal modal fade animated"
+                                     id="onboardingTextModal-{{ notification.id }}" role="dialog" tabindex="-1">
                                     <div class="modal-dialog modal-centered" role="document">
                                         <div class="modal-content text-center">
-                                            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="close-label">Fermer</span><span class="os-icon os-icon-close"></span></button>
+                                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                                <span class="close-label">Fermer</span><span
+                                                        class="os-icon os-icon-close"></span></button>
                                             <div class="onboarding-media">
                                                 <img alt="" src="{{ asset('img/bigicon2.png') }}" width="200px">
                                             </div>
                                             <div class="onboarding-content with-gradient">
                                                 <h4 class="onboarding-title">
-                                                    {{notification.sender.nom }} {{notification.sender.nom }}: {{notification.title}}
+                                                    {{ notification.sender.nom }} {{ notification.sender.nom }}
+                                                    : {{ notification.title }}
                                                 </h4>
                                                 <div class="onboarding-content">
-                                                    {{notification.details}}
+                                                    {{ notification.details }}
                                                 </div>
                                                 <div class="onboarding-text">
                                                     {{ notification.getSendingDateString }}
                                                 </div>
                                                 <div class="onboarding-">
-                                                    {#
-                                                    <script>
+                                                    <a href="#" id="a-{{ notification.id }}">Marquer comme vu</a>
+                                                   <script>
                                                         $(document).ready(function () {
                                                             $("#a-{{ notification.id }}").click(function () {
-                                                                $.ajax({
-                                                                    type: "POST",
-                                                                    url: "{{ path('notification_is_seen') }}",
-                                                                    data: {notification: "{{ notification.id }}"}
-                                                                })
-                                                                    .done(function (data) {
-                                                                        if (typeof data.status !== "undefined" && data.status !== "undefined") {
-                                                                            // At this point we know that the status is defined,
-                                                                            // so we need to check for its value ("OK" in my case)
-                                                                            if (data.status === "OK") {
-                                                                                if (typeof data.message !== "undefined" && data.message !== "undefined") {
-                                                                                    // Do whatever you need with data.message
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                $("#li-{{ notification.id }}").remove();
-                                                                var total = document.getElementById('val');
-                                                                var number = total.innerHTML;
-                                                                number--;
-                                                                if (number !== 0)
-                                                                    total.innerHTML = number;
-                                                                else {
-                                                                    $("#val").remove();
-                                                                    $("#list").remove();
-                                                                }
+                                                                console.log("clicked"+{{ notification.id }})
+                                                                $('#btn-{{ notification.id }}').trigger('click');
                                                             });
                                                         });
                                                     </script>
-                                                    #}
-                                                    <a id="a-{{ notification.id }}">Marquer comme vu</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,7 +117,7 @@
     <script>
         $(document).ready(function () {
             $('#dataTable').DataTable({
-                order: [[ 3, "desc" ]],
+                order: [[3, "desc"]],
                 language: {
                     url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
                 }

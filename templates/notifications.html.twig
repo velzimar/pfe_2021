@@ -1,120 +1,85 @@
+<div class="messages-notifications os-dropdown-trigger os-dropdown-position-left">
+    <i class="os-icon os-icon-mail-14"></i>
+    {% if app.user.NotSeenReceivedNotifications|length > 0 %}
+        <div id="val" class="new-messages-count">
+            {{ app.user.NotSeenReceivedNotifications|length }}
+        </div>
+        <div class="os-dropdown light message-list" id="list">
+            <ul>
+                {% for notification in app.user.NotSeenReceivedNotifications %}
+                    <li id="li-{{ notification.id }}">
+                        <a>
+                            <div class="user-avatar-w">
+                                <img alt=""
+                                     src="{{ vich_uploader_asset(notification.sender, 'imageFile') }}">
+                            </div>
+                            <div class="message-content">
+                                <h6 class="message-attachments">
+                                    {{ notification.sender.nom }} {{ notification.sender.prenom }}
+                                </h6>
+                                <h6 class="message-from">
+                                    {{ notification.title }}
+                                </h6>
+                                <h6 class="message-title" id="btn-{{ notification.id }}">
+                                    marquer comme vu
+                                </h6>
+                            </div>
+                        </a>
+                    </li>
+                    <script>
+                        console.log($('#li-{{ notification.id }}').length)
+                        $(document).ready(function () {
+                            $("#btn-{{ notification.id }}").click(function () {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "{{ path('notification_is_seen') }}",
+                                    data: {notification: "{{ notification.id }}"}
+                                })
+                                    .done(function (data) {
+                                        if (typeof data.status !== "undefined" && data.status !== "undefined") {
+                                            // At this point we know that the status is defined,
+                                            // so we need to check for its value ("OK" in my case)
+                                            if (data.status === "OK") {
+                                                // At this point we know that the server response
+                                                // is what we were expecting,
+                                                // so retrive the response and use if
 
-    <div class="messages-notifications os-dropdown-trigger os-dropdown-position-left">
-        <i class="os-icon os-icon-mail-14"></i>
-       {#  {% if app.user.NotSeenReceivedNotifications|length > 0 %}#}
-            <div id="val" class="new-messages-count">
-                {{ app.user.NotSeenReceivedNotifications|length }}
-            </div>
-            <div class="os-dropdown light message-list" id="list">
-                <ul>
-                    {% for notification in app.user.NotSeenReceivedNotifications %}
-                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                        <script>
-                            alert("here")
-                            $(document).ready(function () {
-                                $("#btn-{{ notification.id }}").click(function () {
-                                    alert("here")
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "{{ path('notification_is_seen') }}",
-                                        data: {notification: "{{ notification.id }}"}
-                                    })
-                                        .done(function (data) {
-                                            if (typeof data.status !== "undefined" && data.status !== "undefined") {
-                                                // At this point we know that the status is defined,
-                                                // so we need to check for its value ("OK" in my case)
-                                                if (data.status === "OK") {
-                                                    // At this point we know that the server response
-                                                    // is what we were expecting,
-                                                    // so retrive the response and use if
-
-                                                    if (typeof data.message !== "undefined" && data.message !== "undefined") {
-                                                        // Do whatever you need with data.message
-                                                    }
+                                                if (typeof data.message !== "undefined" && data.message !== "undefined") {
+                                                    // Do whatever you need with data.message
                                                 }
                                             }
-                                        });
-                                    $("#li-{{ notification.id }}").remove();
-                                    var total = document.getElementById('val');
-                                    var number = total.innerHTML;
-                                    number--;
-                                    if (number !== 0)
-                                        total.innerHTML = number;
-                                    else {
-                                        $("#val").remove();
-                                        $("#list").remove();
-                                    }
-                                });
+                                        }
+                                    });
+
+                                $("#li-{{ notification.id }}").remove();
+                                var total = document.getElementById('val');
+                                var number = total.innerHTML;
+                                number--;
+                                if (number !== 0)
+                                    total.innerHTML = number;
+                                else {
+                                    $("#val").remove();
+                                    $("#list").remove();
+                                }
                             });
-                        </script>
-                        <li id="li-{{ notification.id }}">
-                            <a>
-                                <div class="user-avatar-w">
-                                    <img alt=""
-                                         src="{{ vich_uploader_asset(notification.sender, 'imageFile') }}">
-                                </div>
-                                <div class="message-content">
-                                    <h6 class="message-attachments">
-                                        {{ notification.sender.nom }} {{ notification.sender.prenom }}
-                                    </h6>
-                                    <h6 class="message-from">
-                                        {{ notification.title }}
-                                    </h6>
-                                    <h6 class="message-title" id="btn-{{ notification.id }}">
-                                        marquer comme vu
-                                    </h6>
-                                </div>
-                            </a>
-                        </li>
-                    {% endfor %}
-                    {#
-                    <li>
-                        <a href="#">
-                            <div class="user-avatar-w">
-                                <img alt="" src="img/avatar2.jpg">
-                            </div>
-                            <div class="message-content">
-                                <h6 class="message-from">
-                                    Phil Jones
-                                </h6>
-                                <h6 class="message-title">
-                                    Secutiry Updates
-                                </h6>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="user-avatar-w">
-                                <img alt="" src="img/avatar3.jpg">
-                            </div>
-                            <div class="message-content">
-                                <h6 class="message-from">
-                                    Bekky Simpson
-                                </h6>
-                                <h6 class="message-title">
-                                    Vacation Rentals
-                                </h6>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <div class="user-avatar-w">
-                                <img alt="" src="img/avatar4.jpg">
-                            </div>
-                            <div class="message-content">
-                                <h6 class="message-from">
-                                    Alice Priskon
-                                </h6>
-                                <h6 class="message-title">
-                                    Payment Confirmation
-                                </h6>
-                            </div>
-                        </a>
-                    </li>
-                    #}
-                </ul>
-            </div>
-       {#  {% endif %}#}
-    </div>
+                        });
+                    </script>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="os-dropdown light message-list" id="list">
+            <ul>
+                <li id="li">
+                    <a>
+                        <div class="message-content">
+                            <h6 class="message-title">
+                                Rien de nouveau
+                            </h6>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+</div>
