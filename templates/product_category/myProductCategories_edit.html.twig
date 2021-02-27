@@ -8,18 +8,19 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
+            <a href="{{ path('myProductCategories') }}">Catégories</a>
+        </li>
+        <li class="breadcrumb-item">
             <a href="#">Edit</a>
         </li>
     </ul>
 {% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('product_category/_myQuickLinks.html.twig') }}
+    {{ include('product_category/_myDelete_form.html.twig') }}
+{% endblock %}
+
 {% block body %}
-    <h1>Edit ProductCategory</h1>
-
-    {{ include('product_category/_form.html.twig', {'button_label': 'Update'}) }}
-
-    {#
-    <a href="{{ path('product_category_index') }}">back to list</a>
-
-    {{ include('product_category/_delete_form.html.twig') }}
-    #}
+    {{ include('product_category/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 {% endblock %}

@@ -95,6 +95,20 @@ class ProductController extends AbstractController
     }
 
     /**
+     * @Route("/myProducts/{categoryId}/list", name="myProducts_byCategory", methods={"GET","POST"})
+     * @param ProductRepository $productRepository
+     * @param ProductCategory $categoryId
+     * @return Response
+     */
+    public function myProductsByCategory(ProductRepository $productRepository, ProductCategory $categoryId): Response
+    {
+        return $this->render('product/userProducts.html.twig', [
+            'products' => $productRepository->findByUserByCategory($this->getUser(),$categoryId),
+            'userId' => $this->getUser()
+        ]);
+    }
+
+    /**
      * @Route("/admin/{userId}/new", name="product_new", methods={"GET","POST"})
      * @param Request $request
      * @param User $userId
