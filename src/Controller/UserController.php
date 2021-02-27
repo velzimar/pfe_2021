@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Entity\ProductCategory;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +16,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/user")
+ * @method User|null getUser()
  */
 class UserController extends AbstractController
 {
@@ -67,7 +70,16 @@ class UserController extends AbstractController
             $defaultCategory->setDescription("default category for users");
             $entityManager->persist($defaultCategory);
             $entityManager->flush();
-
+            if($form->get('isActive')->getData()){
+                $notification = new Notification();
+                $notification
+                    ->setTitle("Votre compte est activé")
+                    ->setSender($this->getUser())
+                    ->setReceiver($user)
+                    ->setSeen(false);
+                $entityManager->persist($notification);
+            }
+            $entityManager->flush();
             return $this->redirectToRoute('user_index');
         }else if($form->isSubmitted() && !$form->isValid()){
             $this->addFlash('verify_email_error', 'Inserer votre géolocalisation');
@@ -101,6 +113,7 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $activeState = $user->getIsActive();
         $lastMail=$user->getEmail();
         $form = $this->createForm(UserType::class, $user);
         $isAdmin = $user->hasRole('ROLE_ADMIN');
@@ -121,7 +134,18 @@ class UserController extends AbstractController
                 // $this->addFlash('success', 'remove');
                 $user->removeRoles('ROLE_ADMIN');
             }
-            $this->getDoctrine()->getManager()->flush();
+
+            $manager = $this->getDoctrine()->getManager();
+            if($form->get('isActive')->getData() && !$activeState){
+                $notification = new Notification();
+                $notification
+                    ->setTitle("Votre compte est activé")
+                    ->setSender($this->getUser())
+                    ->setReceiver($user)
+                    ->setSeen(false);
+                $manager->persist($notification);
+            }
+            $manager->flush();
             $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
         } else if ($form->isSubmitted() && $form->isValid() && $form->get('confirm')->getData() !== $form->get('password')->getData()) {
             $this->addFlash('user/edit.html.twig_error', 'Vérifier le mot de passe');
@@ -165,7 +189,17 @@ class UserController extends AbstractController
     public function toggleActive(User $user): Response
     {
         $user->setIsActive(!$user->getIsActive());
-        $this->getDoctrine()->getManager()->flush();
+        $manager = $this->getDoctrine()->getManager();
+        if($user->getIsActive()){
+            $notification = new Notification();
+            $notification
+                ->setTitle("Votre compte est activé")
+                ->setSender($this->getUser())
+                ->setReceiver($user)
+                ->setSeen(false);
+            $manager->persist($notification);
+        }
+        $manager->flush();
         return $this->redirectToRoute('user_index');
     }
 }
