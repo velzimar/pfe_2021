@@ -203,9 +203,10 @@ class ProductController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('myProducts');
         }
-        return $this->render('product/new.html.twig', [
+        return $this->render('product/myProducts_new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
+            'userId'=>$this->getUser()
         ]);
     }
 

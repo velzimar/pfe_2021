@@ -8,13 +8,16 @@
         <li class="breadcrumb-item">
             <a href="#">Home</a>
         <li class="breadcrumb-item">
-            <a href="#">Mes produits</a>
+            <a href="{{ path('myProducts') }}">Mes produits</a>
         </li>
     </ul>
 {% endblock %}
 
+{% block QuickLink1 %}
+    {{ include('product/_myQuickLinks.html.twig') }}
+{% endblock %}
 {% block body %}
-
+{#
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
             {{ message }}
@@ -23,7 +26,7 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-
+#}
     <div class="element-wrapper">
         <h6 class="element-header">
             Mes produits

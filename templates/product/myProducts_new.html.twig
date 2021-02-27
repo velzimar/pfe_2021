@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Product{% endblock %}
-
+{% block title %}New Product{% endblock %}
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
@@ -11,17 +10,13 @@
             <a href="{{ path('myProducts') }}">Mes produits</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Modifier</a>
+            <a href="#">Ajouter</a>
         </li>
     </ul>
 {% endblock %}
 
-{% block QuickLink1 %}
-    {{ include('product/_myQuickLinks.html.twig') }}
-    {{ include('product/myDelete_form.html.twig') }}
-{% endblock %}
 
 {% block body %}
-    {{ include('product/_form.html.twig', {'button_label': 'Mettre à jour', 'action':'edit'}) }}
+    {{ include('product/_form.html.twig', {'button_label': 'Crée', 'action':'new'}) }}
 
 {% endblock %}
