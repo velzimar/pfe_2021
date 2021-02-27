@@ -29,7 +29,7 @@
 
     <div class="element-wrapper">
         <h6 class="element-header">
-            Les catégories des affaire
+            Les catégories des affaires
         </h6>
         <div class="element-box">
             <h5 class="form-header">
@@ -43,7 +43,6 @@
                     <tr>
                         <th>Id</th>
                         <th>Nom</th>
-                        <th>Description</th>
                         <th>actions</th>
                     </tr>
                     </thead>
@@ -52,7 +51,6 @@
                         <tr>
                             <td>{{ category.id }}</td>
                             <td>{{ category.nom }}</td>
-                            <td>{{ category.description }}</td>
                             <td>
                                 <a href="{{ path('category_show', {'id': category.id}) }}">
                                     <i class="os-icon os-icon-grid-10"></i>

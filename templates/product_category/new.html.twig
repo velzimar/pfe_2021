@@ -24,9 +24,6 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-    <h1>Create new ProductCategory</h1>
 
-    {{ include('product_category/_form.html.twig') }}
-
-    <a href="{{ path('product_category_index') }}">back to list</a>
+    {{ include('product_category/_form.html.twig',{'button_label':"Crée"}) }}
 {% endblock %}

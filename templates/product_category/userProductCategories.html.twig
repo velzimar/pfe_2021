@@ -16,6 +16,10 @@
     </ul>
 {% endblock %}
 
+{% block QuickLink1 %}
+    {{ include('product_category/_quickLinks.html.twig') }}
+{% endblock %}
+
 {% block body %}
 
     {% for message in app.flashes('success') %}
@@ -43,7 +47,6 @@
                     <tr>
                         <th>Id</th>
                         <th>Nom</th>
-                        <th>Description</th>
                         <th>Liste des produits</th>
                         <th>actions</th>
                     </tr>
@@ -53,7 +56,6 @@
                         <tr>
                             <td>{{ product_category.id }}</td>
                             <td>{{ product_category.nom }}</td>
-                            <td>{{ product_category.description }}</td>
                             <td>
                                 <a href="{{ path('product_byCategory_index_user', {'userId': userId, 'categoryId':product_category.id}) }}">Produits</a>
                             </td>

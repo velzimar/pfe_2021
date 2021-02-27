@@ -15,31 +15,47 @@
         </li>
     </ul>
 {% endblock %}
-{% block body %}
-    <h1>ProductCategory</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product_category.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ product_category.nom }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product_category.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+
+{% block QuickLink1 %}
+    {{ include('product_category/_quickLinks.html.twig') }}
 
     {{ include('product_category/_delete_form.html.twig', {'userId': userId}) }}
-{#
-    <a href="{{ path('product_category_index') }}">back to list</a>
+{% endblock %}
 
-    <a href="{{ path('product_category_edit', {'id': product_category.id}) }}">edit</a>
+{% block body %}
 
-#}
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Les catégories de l'utilisateur {{ userId.nom }}
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                    Détails du catégorie
+                </h5>
+                <div class="form-desc">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ product_category.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ product_category.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ product_category.description }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

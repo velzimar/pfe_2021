@@ -26,24 +26,40 @@
 
 
 {% endblock %}
-{% block body %}
-    <h1>Category</h1>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ category.id }}</td>
-        </tr>
-        <tr>
-            <th>Nom</th>
-            <td>{{ category.nom }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ category.description }}</td>
-        </tr>
-        </tbody>
-    </table>
+{% block body %}
+
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Les catégories des affaires
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                    Détails du catégorie
+                </h5>
+                <div class="form-desc">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ category.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ category.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ category.description }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
