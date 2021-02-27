@@ -1,42 +1,16 @@
-
-{# % if action='edit' %} #}
-{#{% endif %} #}
-{#
-{{ form_start(form) }}
-
-    {% do form.business.setRendered() %}
-    {{ form_row(form.nom) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.prix) }}
-    {{ form_row(form.qtt) }}
-    {{ form_row(form.category) }}
-
-                        {{ form_widget(form.imageFile,{
-                            'label':"Image",
-                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file', 'required':'true'  }
-                        }) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
-#}
-
-
 <div class="col-sm-12">
     <div class="element-wrapper">
+        <h6 class="element-header">
+            Les produits de l'utilisateur {{ userId.nom }}
+        </h6>
         <div class="element-box">
-
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success">
-                    {{ message }}
+            <h5 class="form-header">
+                {{ button_label }} un produit
+            </h5>
+                <div class="form-desc">
                 </div>
-            {% endfor %}
-            {% for flashError in app.flashes('verify_email_error') %}
-                <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-            {% endfor %}
             {{ form_start(form) }}
             {% do form.business.setRendered() %}
-            <h5 class="form-header">
-                {{ action }}
-            </h5>
             <div class="form-group">
                 {{ form_row(form.nom,{
                     'label':"Nom",
@@ -86,18 +60,6 @@
                     </div>
                 </div>
             </div>
-            {#
-            <tr>
-                <th>Image</th>
-                <td>
-                    {% if form.imageFile %}
-                        <img alt="" src= "{{ vich_uploader_asset(product, 'imageFile') }}" >
-                    {% else %}
-                        <img src="{{ asset('/img/bigicon1.png') }}" alt="card-img-top" style="width: 100%; height: auto">
-                    {% endif %}
-                </td>
-            </tr>
-            #}
             <div class="form-buttons-w">
                 <button class="btn btn-primary disabled" type="submit"> {{ button_label }}</button>
 

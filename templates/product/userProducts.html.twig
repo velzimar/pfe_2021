@@ -16,8 +16,12 @@
     </ul>
 {% endblock %}
 
-{% block body %}
 
+{% block QuickLink1 %}
+    {{ include('product/_quickLinks.html.twig') }}
+{% endblock %}
+{% block body %}
+{#
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
             {{ message }}
@@ -27,7 +31,7 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
 
-
+#}
     <div class="element-wrapper">
         <h6 class="element-header">
             Les produits de l'utilisateur {{ userId.nom }}

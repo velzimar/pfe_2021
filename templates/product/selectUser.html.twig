@@ -12,37 +12,12 @@
     </ul>
 {% endblock %}
 {% block body %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
 
-
-    {#
-    <h1>select user</h1>
-    {{ form_start(form) }}
-    {{ form_row(form.business) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-    {{ form_end(form) }}
-
-    #}
 
     <div class="col-sm-12">
         <div class="element-wrapper">
             <div class="element-box">
 
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% for flashError in app.flashes('verify_email_error') %}
-                    <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-                {% endfor %}
                 {{ form_start(form) }}
                 <h5 class="form-header">
                     Séléctionnez un utilisateur

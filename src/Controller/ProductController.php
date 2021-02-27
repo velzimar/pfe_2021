@@ -116,7 +116,7 @@ class ProductController extends AbstractController
      */
     public function new(Request $request, User $userId): Response
     {
-        echo $userId->getId();
+        //echo $userId->getId();
         $product = new Product();
         //$form = $this->createForm(ProductType::class, $product);
         //$form->handleRequest($request);
@@ -138,7 +138,7 @@ class ProductController extends AbstractController
             if($category->getNom()=="defaultCategory"){
                 $this->addFlash('success', "this is: $category");
                  $form->get('category')->setData($category);
-                echo $product->getCategory();
+                //echo $product->getCategory();
             }else
                 $this->addFlash('success', "categories de ce user: $category");
         }
@@ -167,6 +167,7 @@ class ProductController extends AbstractController
         return $this->render('product/new.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
+            'userId' => $userId
         ]);
     }
 
@@ -190,7 +191,7 @@ class ProductController extends AbstractController
             if($category->getNom()=="defaultCategory"){
                 $this->addFlash('success', "this is: $category");
                 $form->get('category')->setData($category);
-                echo $product->getCategory();
+                //echo $product->getCategory();
             }else
                 $this->addFlash('success', "categories de ce user: $category");
         }
@@ -245,7 +246,7 @@ class ProductController extends AbstractController
      */
     public function edit(Request $request, Product $product, User $userId): Response
     {
-        echo $userId->getId();
+        //echo $userId->getId();
         //$form = $this->createForm(ProductType::class, $product);
         //$form->handleRequest($request);
         $user = $this->getUser();

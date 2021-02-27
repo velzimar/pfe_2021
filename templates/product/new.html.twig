@@ -10,21 +10,16 @@
             <a href="{{ path('selectUser', {'action': 'new'}) }}">Selectionner un utilisateur</a>
         </li>
         <li class="breadcrumb-item">
+            <a href="{{ path('product_index_user', {'userId': userId }) }}">Produits</a>
+        </li>
+        <li class="breadcrumb-item">
             <a href="#">Ajouter</a>
         </li>
     </ul>
 {% endblock %}
-{% block body %}
-    {% for message in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ message }}
-        </div>
-    {% endfor %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
-    <h1>Create new Product</h1>
 
-    {{ include('product/_form.html.twig', {'button_label': 'Ajouter', 'action':'new'}) }}
+
+{% block body %}
+    {{ include('product/_form.html.twig', {'button_label': 'Crée', 'action':'new'}) }}
 
 {% endblock %}
