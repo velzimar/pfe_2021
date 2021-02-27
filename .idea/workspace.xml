@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/product/_myQuickLinks.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product/myDelete_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product/myProducts_new.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/myProducts_edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/myProducts_edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/myProducts_show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/myProducts_show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ProductType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ProductType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/_form.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +188,7 @@
       <workItem from="1613827752162" duration="11713000" />
       <workItem from="1614068019464" duration="11672000" />
       <workItem from="1614342665401" duration="16055000" />
-      <workItem from="1614434536219" duration="15028000" />
+      <workItem from="1614434536219" duration="19172000" />
     </task>
     <servers />
   </component>
