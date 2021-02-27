@@ -12,6 +12,10 @@
         </li>
     </ul>
 {% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('category/_quickLinks.html.twig') }}
+{% endblock %}
 {% block body %}
 
     {% for message in app.flashes('success') %}
@@ -69,7 +73,6 @@
         </div>
     </div>
 
-    <a href="{{ path('category_new') }}">Create new</a>
 {% endblock %}
 
 {% block javascripts %}

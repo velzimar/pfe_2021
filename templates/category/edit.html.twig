@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Edit Category{% endblock %}
+
+
 {% block  breadcrumb %}
 
     <ul class="breadcrumb">
@@ -15,12 +17,10 @@
         </li>
     </ul>
 {% endblock %}
-{% block body %}
-    <h1>Edit Category</h1>
-
-    {{ include('category/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('category_index') }}">back to list</a>
-
+{% block QuickLink1 %}
+    {{ include('category/_quickLinks.html.twig') }}
     {{ include('category/_delete_form.html.twig') }}
+{% endblock %}
+{% block body %}
+    {{ include('category/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
 {% endblock %}
