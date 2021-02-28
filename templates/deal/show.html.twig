@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deal{% endblock %}
+
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('deal_index_user', {'userId': userId }) }}">deals</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Détails</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('deal/_quickLinks.html.twig') }}
+    {{ include('deal/_delete_form.html.twig') }}
+{% endblock %}
+{% block body %}
+
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Les deals de l'utilisateur {{ userId.nom }}
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                    Détails du deal
+                </h5>
+                <div class="form-desc">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ deal.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Nom</th>
+                            <td>{{ deal.nom }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ deal.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Prix</th>
+                            <td>{{ deal.prix }}</td>
+                        </tr>
+                        <tr>
+                            <th>Qtt</th>
+                            <td>{{ deal.qtt }}</td>
+                        </tr>
+                        <tr>
+                            <th>Catégorie</th>
+                            <td>{{ deal.category }}</td>
+                        </tr>
+                        <tr>
+                            <th>Image</th>
+                            <td>
+                                {% if deal.filename %}
+                                    <img alt="" src= "{{ vich_uploader_asset(deal, 'imageFile') }}" >
+                                {% else %}
+                                    <img src="{{ asset('/img/bigicon1.png') }}" alt="card-img-top" style="width: 100%; height: auto">
+                                {% endif %}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+<a class="btn btn-danger" style="color: white" >
+    <form id="my_form" method="post" action="{{ path('myDeals_delete', {'id': deal.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ deal.id) }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span id="my_span">Supprimer ce deal</span>
+    </form>
+</a>
+<script>
+    $('#my_span').on('click', function() {
+        $('#my_form').submit();
+    });
+</script>

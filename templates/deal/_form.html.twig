@@ -1,0 +1,71 @@
+<div class="col-sm-12">
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Les deals de l'utilisateur {{ userId.nom }}
+        </h6>
+        <div class="element-box">
+            <h5 class="form-header">
+                {{ button_label }} un deal
+            </h5>
+                <div class="form-desc">
+                </div>
+            {{ form_start(form) }}
+            {% do form.business.setRendered() %}
+            <div class="form-group">
+                {{ form_row(form.nom,{
+                    'label':"Nom",
+                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                }) }}
+            </div>
+                    <div class="form-group">
+                        {{ form_row(form.description,{
+                            'label':"Description",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer la description" ,'required':"required", 'type':"text" }
+                        }) }}
+                    </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        {{ form_row(form.prix,{
+                            'label':"Prix",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le prix" ,'required':"required", 'type':"prix" }
+                        }) }}
+
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        {{ form_row(form.qtt,{
+                            'label':"Quantité",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer la quantité" ,'required':"required", 'type':"text" }
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_row(form.category,{
+                            'label':"Catégorie",
+                            'attr': {'class': 'form-control','required':"required" }
+                        }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_row(form.imageFile,{
+                            'label':"Image",
+                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
+                        }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-buttons-w">
+                <button class="btn btn-primary disabled" type="submit"> {{ button_label }}</button>
+
+                <button class="btn" type="reset">Reset</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

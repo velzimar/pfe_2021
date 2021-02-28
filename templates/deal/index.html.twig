@@ -1,27 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Catégories des deals{% endblock %}
+{% block title %}Mes deals{% endblock %}
 
 {% block  breadcrumb %}
+
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="#">Home</a>
-        </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('user_deal_category_index', {'action': 'index'}) }}">Selectionner un utilisateur</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="#">Catégories</a>
+            <a href="{{ path('myDeals') }}">Mes deals</a>
         </li>
     </ul>
 {% endblock %}
 
 {% block QuickLink1 %}
-    {{ include('deal_category/_quickLinks.html.twig') }}
+    {{ include('deal/_myQuickLinks.html.twig') }}
 {% endblock %}
-
 {% block body %}
-
+{#
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">
             {{ message }}
@@ -30,14 +26,14 @@
     {% for flashError in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-
+#}
     <div class="element-wrapper">
         <h6 class="element-header">
-            Les catégories de l'utilisateur {{ userId.nom }}
+            Mes deals
         </h6>
         <div class="element-box">
             <h5 class="form-header">
-                Liste des catégories
+                Liste des deals
             </h5>
             <div class="form-desc">
             </div>
@@ -47,25 +43,27 @@
                     <tr>
                         <th>Id</th>
                         <th>Nom</th>
-                     {#    <th>Liste des deals</th> #}
+                        <th>Description</th>
+                        <th>Prix</th>
+                        <th>Qtt</th>
+                        <th>Categorie</th>
                         <th>actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for deal_category in deal_categories %}
+                    {% for deal in deals %}
                         <tr>
-                            <td>{{ deal_category.id }}</td>
-                            <td>{{ deal_category.nom }}</td>
-
+                            <td>{{ deal.id }}</td>
+                            <td>{{ deal.nom }}</td>
+                            <td>{{ deal.description }}</td>
+                            <td>{{ deal.prix }}</td>
+                            <td>{{ deal.qtt }}</td>
+                            <td>{{ deal.category }}</td>
                             <td>
-                                <a href="{{ path('deal_byCategory_index_user', {'userId': userId, 'categoryId':deal_category.id}) }}">Deals</a>
-                            </td>
-
-                            <td>
-                                <a href="{{ path('deal_category_show', {'id': deal_category.id,'userId': userId}) }}">
+                                <a href="{{ path('myDeals_show', {'id': deal.id}) }}">
                                     <i class="os-icon os-icon-grid-10"></i>
                                 </a>
-                                <a href="{{ path('deal_category_edit', {'id': deal_category.id,'userId': userId}) }}">
+                                <a href="{{ path('myDeals_edit', {'id': deal.id}) }}">
                                     <i class="os-icon os-icon-ui-49"></i>
                                 </a>
                             </td>
@@ -80,10 +78,8 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 {% block javascripts %}
-
     <script>
         $(document).ready(function () {
             $('#dataTable').DataTable({
@@ -93,5 +89,4 @@
             });
         });
     </script>
-
 {% endblock %}

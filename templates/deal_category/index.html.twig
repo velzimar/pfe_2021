@@ -43,7 +43,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Nom</th>
-                       {#  <th>Deals</th>#}
+                         <th>Deals</th>
                         <th>actions</th>
                     </tr>
                     </thead>
@@ -52,11 +52,11 @@
                         <tr>
                             <td>{{ deal_category.id }}</td>
                             <td>{{ deal_category.nom }}</td>
-{#
+
                             <td>
-                                <a href="{{ path('myDeals_byCategory', { 'categoryId':deal_category.id}) }}">Produits</a>
+                                <a href="{{ path('myDeals_byCategory', { 'categoryId':deal_category.id}) }}">Deals</a>
                             </td>
-#}
+
                             <td>
                                 <a href="{{ path('myDealCategories_show', {'id': deal_category.id}) }}">
                                     <i class="os-icon os-icon-grid-10"></i>

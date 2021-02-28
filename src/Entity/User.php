@@ -120,6 +120,22 @@ class User implements UserInterface, Serializable
      */
     private $products;
 
+
+    //for deal
+    /**
+     * @ORM\OneToMany(targetEntity=DealCategory::class, mappedBy="businessId")
+     */
+    private $dealCategories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Deal::class, mappedBy="business")
+     */
+    private $deals;
+    //end for deals
+
+
+
+
     /**
      * @ORM\Column(type="boolean", options={"default" : false}, nullable=true)
      */
@@ -149,6 +165,8 @@ class User implements UserInterface, Serializable
     {
         $this->productCategories = new ArrayCollection();
         $this->products = new ArrayCollection();
+        $this->dealCategories = new ArrayCollection();
+        $this->deals = new ArrayCollection();
         $this->ReceivedNotifications = new ArrayCollection();
         $this->NotSeenReceivedNotifications = new ArrayCollection();
     }
@@ -455,6 +473,38 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+
+    // for deals
+    /**
+     * @return Collection|DealCategory[]
+     */
+    public function getDealCategories(): Collection
+    {
+        return $this->dealCategories;
+    }
+
+    public function addDealCategory(DealCategory $dealCategory): self
+    {
+        if (!$this->dealCategories->contains($dealCategory)) {
+            $this->dealCategories[] = $dealCategory;
+            $dealCategory->setBusinessId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDealCategory(DealCategory $dealCategory): self
+    {
+        if ($this->dealCategories->removeElement($dealCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($dealCategory->getBusinessId() === $this) {
+                $dealCategory->setBusinessId(null);
+            }
+        }
+
+        return $this;
+    }
+    //end for deals
     public function __toString(): string
     {
         // to show the name of the Category in the select
@@ -492,6 +542,40 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+
+    // for deals
+
+    /**
+     * @return Collection|Deal[]
+     */
+    public function getDeals(): Collection
+    {
+        return $this->deals;
+    }
+
+    public function addDeal(Deal $deal): self
+    {
+        if (!$this->deals->contains($deal)) {
+            $this->deals[] = $deal;
+        $deal->setBusiness($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeal(Deal $deal): self
+    {
+        if ($this->deals->removeElement($deal)) {
+            // set the owning side to null (unless already changed)
+            if ($deal->getBusiness() === $this) {
+                $deal->setBusiness(null);
+            }
+        }
+
+        return $this;
+    }
+
+    //end for deals
 
     public function getIsActive(): ?bool
     {

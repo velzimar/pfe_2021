@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Deal{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a href="{{ path('deal_index_user', {'userId': userId }) }}">Deals</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Modifier</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('deal/_quickLinks.html.twig') }}
+    {{ include('deal/_delete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('deal/_form.html.twig', {'button_label': 'Mettre à jour', 'action':'edit'}) }}
+
+{% endblock %}
