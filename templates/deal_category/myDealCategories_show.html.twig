@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DealCategory{% endblock %}
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myDealCategories') }}">Catégories</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Détail</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('deal_category/_myQuickLinks.html.twig') }}
+    <a class="btn btn-white btn-sm" href="{{ path('myDealCategories_edit', {'id': deal_category.id}) }}"><i
+                class="os-icon os-icon-delivery-box-2"></i>
+        <span>Modifier cette catégorie</span>
+    </a>
+    {{ include('deal_category/_myDelete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+<div class="col-sm-12">
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Mes catégories
+        </h6>
+        <div class="element-box">
+            <h5 class="form-header">
+                Détails du catégorie
+            </h5>
+            <div class="form-desc">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ deal_category.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ deal_category.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ deal_category.description }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
