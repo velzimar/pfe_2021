@@ -2,28 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/deal_images/au2-603bf7b8ef2b5768943846.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/DealController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/DealType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/_delete_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/_myQuickLinks.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/_quickLinks.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/myDeals_edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/myDeals_new.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/myDeals_show.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/myDelete_form.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/new.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/selectUser.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/show.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/deal/userDeals.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/deal_category/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal_category/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/deal_category/userDealCategories.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal_category/userDealCategories.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/userProducts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/userProducts.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,7 +192,8 @@
       <workItem from="1614068019464" duration="11672000" />
       <workItem from="1614342665401" duration="16055000" />
       <workItem from="1614434536219" duration="19377000" />
-      <workItem from="1614532480289" duration="9052000" />
+      <workItem from="1614532480289" duration="9129000" />
+      <workItem from="1614607775078" duration="2327000" />
     </task>
     <servers />
   </component>
