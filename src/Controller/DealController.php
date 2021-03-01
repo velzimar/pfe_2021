@@ -289,6 +289,7 @@ class DealController extends AbstractController
         $form->handleRequest($request);
         $deal->setBusiness($userId);
         if ($form->isSubmitted() && $form->isValid()) {
+            /*
             if ($form->get('imageFile')->getData()==null){
                 $this->addFlash('success', "its null");
 
@@ -296,6 +297,7 @@ class DealController extends AbstractController
                 $deal->setFileName(null);
                 $this->getDoctrine()->getManager()->persist($deal);
             }
+            */
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('deal_index_user',[
                 'userId' => $userId
@@ -330,12 +332,14 @@ class DealController extends AbstractController
         $form->handleRequest($request);
         $deal->setBusiness($user);
         if ($form->isSubmitted() && $form->isValid()) {
+            /*
             if ($form->get('imageFile')->getData()==null){
                 $this->addFlash('success', "its null");
                 $deal->setImageFile(null);
                 $deal->setFileName(null);
                 $this->getDoctrine()->getManager()->persist($deal);
             }
+            */
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('myDeals');
         }

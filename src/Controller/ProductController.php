@@ -264,6 +264,7 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         $product->setBusiness($userId);
         if ($form->isSubmitted() && $form->isValid()) {
+/*
             if ($form->get('imageFile')->getData()==null){
                 $this->addFlash('success', "its null");
 
@@ -271,6 +272,7 @@ class ProductController extends AbstractController
                 $product->setFileName(null);
                 $this->getDoctrine()->getManager()->persist($product);
             }
+*/
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('product_index_user',[
                 'userId' => $userId
@@ -305,12 +307,14 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         $product->setBusiness($user);
         if ($form->isSubmitted() && $form->isValid()) {
+            /*
             if ($form->get('imageFile')->getData()==null){
                 $this->addFlash('success', "its null");
                 $product->setImageFile(null);
                 $product->setFileName(null);
                 $this->getDoctrine()->getManager()->persist($product);
             }
+            */
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('myProducts');
         }
