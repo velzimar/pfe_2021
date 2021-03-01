@@ -36,10 +36,14 @@
             <div class="order-box">
                 <div class="order-details-box">
                     <div class="order-main-info">
-                        <span>Nom & prenom</span><strong>{{ userId.nom }} {{ userId.prenom }}</strong>
+                        <a href="{{ path('user_edit', {'id': userId.id}) }}">
+                            <span>Nom & prenom</span><strong>{{ userId.nom }} {{ userId.prenom }}</strong>
+                        </a>
                     </div>
                     <div class="order-sub-info">
-                        <span>Identifiant</span><strong>#{{ userId.id }}</strong>
+                        <a href="{{ path('user_edit', {'id': userId.id}) }}">
+                            <span>Identifiant</span><strong>#{{ userId.id }}</strong>
+                        </a>
                     </div>
                 </div>
                 <div class="order-items-table">

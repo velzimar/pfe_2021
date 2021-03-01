@@ -32,51 +32,58 @@
     {% endfor %}
 
     <div class="element-wrapper">
-        <h6 class="element-header">
-            Les catégories de l'utilisateur {{ userId.nom }}
-        </h6>
         <div class="element-box">
-            <h5 class="form-header">
-                Liste des catégories
-            </h5>
-            <div class="form-desc">
-            </div>
-            <div class="table-responsive">
-                <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
-                    <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Nom</th>
-                     {#    <th>Liste des deals</th> #}
-                        <th>actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for deal_category in deal_categories %}
-                        <tr>
-                            <td>{{ deal_category.id }}</td>
-                            <td>{{ deal_category.nom }}</td>
+            <div class="order-box">
+                <div class="order-details-box">
+                    <div class="order-main-info">
+                        <a href="{{ path('user_edit', {'id': userId.id}) }}">
+                            <span>Nom & prenom</span><strong>{{ userId.nom }} {{ userId.prenom }}</strong>
+                        </a>
+                    </div>
+                    <div class="order-sub-info">
+                        <a href="{{ path('user_edit', {'id': userId.id}) }}">
+                            <span>Identifiant</span><strong>#{{ userId.id }}</strong>
+                        </a>
+                    </div>
+                </div>
 
-                            <td>
-                                <a href="{{ path('deal_byCategory_index_user', {'userId': userId, 'categoryId':deal_category.id}) }}">Deals</a>
-                            </td>
-
-                            <td>
-                                <a href="{{ path('deal_category_show', {'id': deal_category.id,'userId': userId}) }}">
-                                    <i class="os-icon os-icon-grid-10"></i>
-                                </a>
-                                <a href="{{ path('deal_category_edit', {'id': deal_category.id,'userId': userId}) }}">
-                                    <i class="os-icon os-icon-ui-49"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    {% else %}
+                <div class="table-responsive">
+                    <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
+                        <thead>
                         <tr>
-                            <td colspan="6">no records found</td>
+                            <th>Id</th>
+                            <th>Nom</th>
+                            <th>Liste des deals</th>
+                            <th>actions</th>
                         </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {% for deal_category in deal_categories %}
+                            <tr>
+                                <td>{{ deal_category.id }}</td>
+                                <td>{{ deal_category.nom }}</td>
+
+                                <td>
+                                    <a href="{{ path('deal_byCategory_index_user', {'userId': userId, 'categoryId':deal_category.id}) }}">Deals</a>
+                                </td>
+
+                                <td>
+                                    <a href="{{ path('deal_category_show', {'id': deal_category.id,'userId': userId}) }}">
+                                        <i class="os-icon os-icon-grid-10"></i>
+                                    </a>
+                                    <a href="{{ path('deal_category_edit', {'id': deal_category.id,'userId': userId}) }}">
+                                        <i class="os-icon os-icon-ui-49"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

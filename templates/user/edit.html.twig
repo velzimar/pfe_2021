@@ -292,27 +292,75 @@
                             </g>
                         </svg>
                     </div>
+                </div>
+            </div>
+            <div class="element-box">
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-wallet-loaded"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header">
+                                Vitrine
+                            </h5>
+                            <div class="element-inner-desc">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-profile compact">
                     <div class="up-contents">
                         <div class="m-b">
                             <div class="row m-b">
                                 <div class="col-sm-6 b-r b-b">
                                     <div class="el-tablo centered padded-v">
-                                        <div class="value">
-                                            25
-                                        </div>
-                                        <div class="label">
-                                            Products Sold
-                                        </div>
+                                        <a href="{{ path('product_index_user',{'userId': user }) }}">
+                                            <div class="value">
+                                                {{ user.getProducts|length }}
+                                            </div>
+                                            <div class="label">
+                                                Produits
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 b-b">
                                     <div class="el-tablo centered padded-v">
-                                        <div class="value">
-                                            315
-                                        </div>
-                                        <div class="label">
-                                            Friends
-                                        </div>
+                                        <a href="{{ path('userProductCategories_index',{'userId': user }) }}">
+                                            <div class="value">
+                                                {{ user.getProductCategories|length }}
+                                            </div>
+                                            <div class="label">
+                                                Catégories de produits
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-b">
+                                <div class="col-sm-6 b-r b-b">
+                                    <div class="el-tablo centered padded-v">
+                                        <a href="{{ path('deal_index_user',{'userId': user }) }}">
+                                            <div class="value">
+                                                {{ user.getDeals|length }}
+                                            </div>
+                                            <div class="label">
+                                                Deals
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 b-b">
+                                    <div class="el-tablo centered padded-v">
+                                        <a href="{{ path('userDealCategories_index',{'userId': user }) }}">
+                                            <div class="value">
+                                                {{ user.getDealCategories|length }}
+                                            </div>
+                                            <div class="label">
+                                                Catégories de deal
+                                            </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +383,7 @@
                         </div>
                         <div class="element-info-text">
                             <h5 class="element-inner-header">
-                                Gestion de profile
+                                Profile
                             </h5>
                             <div class="element-inner-desc">
                             </div>
@@ -411,10 +459,10 @@
                     </div>
                 </div>
                 <fieldset class="form-group">
-                    <legend><span>Votre Affaire</span></legend>
+                    <legend><span>Affaire</span></legend>
                     <div class="form-group">
                         {{ form_row(form.businessName,{
-                            'label':"Nom",
+                            'label':"Nom commercial",
                             'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
                         }) }}
                     </div>
