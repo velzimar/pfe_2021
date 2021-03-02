@@ -80,6 +80,21 @@ class Deal
      */
     private $business;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_add;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_end;
+
+    /**
+     * @ORM\Column(type="decimal", precision=10, scale=3, nullable=true)
+     */
+    private $real_price;
+
 
     public function getId(): ?int
     {
@@ -214,5 +229,41 @@ class Deal
     public function setFilename(?string $filename): void
     {
         $this->filename = $filename;
+    }
+
+    public function getDateAdd(): ?\DateTimeInterface
+    {
+        return $this->date_add;
+    }
+
+    public function setDateAdd(?\DateTimeInterface $date_add): self
+    {
+        $this->date_add = $date_add;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?\DateTimeInterface
+    {
+        return $this->date_end;
+    }
+
+    public function setDateEnd(?\DateTimeInterface $date_end): self
+    {
+        $this->date_end = $date_end;
+
+        return $this;
+    }
+
+    public function getRealPrice(): ?string
+    {
+        return $this->real_price;
+    }
+
+    public function setRealPrice(?string $real_price): self
+    {
+        $this->real_price = $real_price;
+
+        return $this;
     }
 }
