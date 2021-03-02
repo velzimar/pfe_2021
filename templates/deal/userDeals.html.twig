@@ -36,57 +36,176 @@
                         </a>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
-                        <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Nom</th>
-                            <th>Prix</th>
-                            <th>Qtt</th>
-                            <th>Catégorie</th>
-                            <th>actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for deal in deals %}
+                <div class="order-items-table">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-lightborder">
+                            <thead id="head">
                             <tr>
-                                <td>{{ deal.id }}</td>
-                                <td>{{ deal.nom }}</td>
-                                <td>{{ deal.prix }}</td>
-                                <td>{{ deal.qtt }}</td>
-                                <td>{{ deal.category }}</td>
-                                <td>
+                                <th>
+                                    Image
+                                </th>
+                                <th>
+                                    Info
+                                </th>
+                                <th>
+                                    Quantité
+                                </th>
+                                <th>
+                                    Prix <strong>(dt)</strong>
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for deal in deals %}
+                                <tr>
+                                    <td>
+                                        {% if deal.filename %}
+                                            <div class="product-image"
+                                                 style="background-image: url({{ vich_uploader_asset(deal, 'imageFile') }})"></div>
+                                        {% else %}
+                                            <div class="product-image"
+                                                 style="background-image: url({{ asset('/img/bigicon1.png') }})"></div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="product-name">
+                                            {{ deal.nom }}
+                                        </div>
+                                        {#
+                                        <div class="product-details">
+                                            <span>Catégorie: </span><strong> {{ deal.category }}</strong>
+                                        </div>
+                                        #}
+                                    </td>
 
-                                    <a href="{{ path('deal_show', {'id': deal.id, 'userId':userId}) }}">
-                                        <i class="os-icon os-icon-grid-10"></i>
-                                    </a>
-                                    <a href="{{ path('deal_edit', {'id': deal.id, 'userId':userId}) }}">
-                                        <i class="os-icon os-icon-ui-49"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="6">no records found</td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                                    <td class="text-md-left">
+                                        <div class="product-price">
+                                            {{ deal.qtt }}
+                                        </div>
+                                    </td>
+                                    <td class="text-md-left">
+                                        <div class="product-price">
+                                            {{ deal.prix }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="row row-actions" style="border-top:none ;border-bottom:none">
+                                            <div class="col">
+                                                <a class="product-remove-btn"
+                                                   href="{{ path('deal_show', {'id': deal.id, 'userId':userId}) }}">
+                                                    <div class="os-icon os-icon-grid-10"></div>
+                                                </a>
+                                            </div>
+                                            <div class="col">
+                                                <a class="product-remove-btn"
+                                                   href="{{ path('deal_edit', {'id': deal.id, 'userId':userId}) }}">
+                                                    <div class="os-icon os-icon-ui-49"></div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+            {#
+            <div class="table-responsive">
+                <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Qtt</th>
+                        <th>Catégorie</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.nom }}</td>
+                            <td>{{ product.prix }}</td>
+                            <td>{{ product.qtt }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>
+
+                                <a href="{{ path('product_show', {'id': product.id, 'userId':userId}) }}">
+                                    <i class="os-icon os-icon-grid-10"></i>
+                                </a>
+                                <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">
+                                    <i class="os-icon os-icon-ui-49"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            #}
         </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
     <script>
+
+
         $(document).ready(function () {
+            // Setup - add a text input to each footer cell
+            $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
+            $('#dataTable thead tr:eq(1) th').each(function (i) {
+
+                var title = $(this).text();
+                if(title.search("Info")!==-1 || title.search("Quantit")!==-1|| title.search("Pri")!==-1){
+                    $(this).html('<input class="form-control" type="text" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }else{
+                    $(this).html('<input type="text" hidden/>');
+
+                }
+
+            });
+
+            var table = $('#dataTable').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
+                "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
+
+        });
+
+        /*
+        $(document).ready(function () {
+
+
             $('#dataTable').DataTable({
                 language: {
                     url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
                 }
             });
-        });
+        });*/
     </script>
 {% endblock %}
