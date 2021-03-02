@@ -49,6 +49,14 @@
                             <th>Description</th>
                             <td>{{ deal_category.description }}</td>
                         </tr>
+
+                        <tr>
+                            <th>Description</th>
+                            <td>
+                                <a href="{{ path('deal_byCategory_index_user', {'userId': userId, 'categoryId':deal_category.id}) }}">Deals</a>
+                            </td>
+                        </tr>
+
                         </tbody>
                     </table>
                 </div>

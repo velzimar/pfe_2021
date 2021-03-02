@@ -102,7 +102,7 @@ class ProductController extends AbstractController
      */
     public function myProductsByCategory(ProductRepository $productRepository, ProductCategory $categoryId): Response
     {
-        return $this->render('product/userProducts.html.twig', [
+        return $this->render('product/index.html.twig', [
             'products' => $productRepository->findByUserByCategory($this->getUser(),$categoryId),
             'userId' => $this->getUser()
         ]);

@@ -202,7 +202,7 @@ class DealController extends AbstractController
      */
     public function myDealsByCategory(DealRepository $dealRepository, DealCategory $categoryId): Response
     {
-        return $this->render('deal/userDeals.html.twig', [
+        return $this->render('deal/index.html.twig', [
             'deals' => $dealRepository->findByUserByCategory($this->getUser(),$categoryId),
             'userId' => $this->getUser()
         ]);
