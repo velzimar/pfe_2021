@@ -50,6 +50,13 @@
                         <th>Description</th>
                         <td>{{ product_category.description }}</td>
                     </tr>
+
+                    <tr>
+                        <th>Produits</th>
+                        <td>
+                            <a href="{{ path('myProducts_byCategory', { 'categoryId':product_category.id}) }}">Produits</a>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

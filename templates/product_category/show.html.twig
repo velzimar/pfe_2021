@@ -49,11 +49,15 @@
                             <th>Description</th>
                             <td>{{ product_category.description }}</td>
                         </tr>
+                        <tr>
+                            <th>Produits</th>
+                            <td>
+                                <a href="{{ path('product_byCategory_index_user', {'userId': userId, 'categoryId':product_category.id}) }}">Produits</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
-
-
             </div>
         </div>
     </div>
