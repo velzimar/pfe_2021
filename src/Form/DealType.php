@@ -7,6 +7,8 @@ use App\Entity\DealCategory;
 use App\Repository\DealCategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,6 +25,31 @@ class DealType extends AbstractType
             ->add('description')
             ->add('prix')
             ->add('qtt')
+            ->add('date_add', DateTimeType::class, [
+                'label'=>"Date d'activation",
+                'required'=>true,
+                'widget'=>'single_text',
+                ])
+            ->add('duration', DateIntervalType::class, [
+                'label'=>"Durée",
+                'required'=>true,
+                'widget'=>'choice',
+                'months' => array_combine(range(0, 12), range(0, 12)),
+                'days' => array_combine(range(0, 30), range(0, 30)),
+                'hours' => array_combine(range(0, 23), range(0, 23)),
+                'minutes' => array_combine(range(0, 59), range(0, 59)),
+                'with_years' => false,
+                'with_months' => true,
+                'with_days'   => true,
+                'with_hours'  => true,
+                'with_minutes'  => true,
+                'labels' => [
+                    'months' => "Mois",
+                    'days' => "Jours",
+                    'hours' => "Heures",
+                    'minutes' => "Minutes",
+                ]
+            ])
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,

@@ -121,18 +121,13 @@ class DealController extends AbstractController
         //$product->setBusiness($user);
         $deal->setBusiness($userId);
         if ($form->isSubmitted() && $form->isValid()) {
-            /*
-            if($form->get('imageFile')->getData()==null){
-
-                $this->addFlash('success', "its null");
-                echo "its null";
-                return $this->render('product/new.html.twig', [
-                    'product' => $product,
-                    'form' => $form->createView(),
-                ]);
-            }
-            */
             $entityManager = $this->getDoctrine()->getManager();
+
+            $date=$deal->getDateAdd()->format("Y-m-d H:i:s");
+            $this->addFlash('success', $date);
+            $newDate = new \DateTime($date);
+            $deal->setEndDate($newDate->add($deal->getDuration()));
+
             $entityManager->persist($deal);
             $entityManager->flush();
             return $this->redirectToRoute('deal_index_user',[
@@ -298,6 +293,11 @@ class DealController extends AbstractController
                 $this->getDoctrine()->getManager()->persist($deal);
             }
             */
+            $date=$deal->getDateAdd()->format("Y-m-d H:i:s");
+            $this->addFlash('success', $date);
+            $newDate = new \DateTime($date);
+            $deal->setEndDate($newDate->add($deal->getDuration()));
+
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('deal_index_user',[
                 'userId' => $userId

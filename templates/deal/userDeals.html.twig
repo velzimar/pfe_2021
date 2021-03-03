@@ -21,6 +21,16 @@
     {{ include('deal/_quickLinks.html.twig') }}
 {% endblock %}
 {% block body %}
+    {#
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+    #}
     <div class="element-wrapper">
         <div class="element-box">
             <div class="order-box">

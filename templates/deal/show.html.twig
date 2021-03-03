@@ -55,6 +55,18 @@
                             <td>{{ deal.qtt }}</td>
                         </tr>
                         <tr>
+                            <th>Date Ajout</th>
+                            <td>{{ deal.getDateAdd |date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Durée</th>
+                            <td> {{ deal.getEndDate.diff(deal.getDateAdd)|date("%MM:%dJ:%HH:%iMin:%ssec") }}</td>
+                        </tr>
+                        <tr>
+                            <th>DateFin</th>
+                            <td> {{ deal.getEndDate |date('Y-m-d H:i:s') }}</td>
+                        </tr>
+                        <tr>
                             <th>Catégorie</th>
                             <td>{{ deal.category }}</td>
                         </tr>

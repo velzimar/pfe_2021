@@ -85,15 +85,21 @@ class Deal
      */
     private $date_add;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $date_end;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=3, nullable=true)
      */
     private $real_price;
+
+    /**
+     * @ORM\Column(type="dateinterval", nullable=true)
+     */
+    private $duration;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $end_date;
 
 
     public function getId(): ?int
@@ -243,17 +249,9 @@ class Deal
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTimeInterface
-    {
-        return $this->date_end;
-    }
 
-    public function setDateEnd(?\DateTimeInterface $date_end): self
-    {
-        $this->date_end = $date_end;
 
-        return $this;
-    }
+
 
     public function getRealPrice(): ?string
     {
@@ -264,6 +262,36 @@ class Deal
     {
         $this->real_price = $real_price;
 
+        return $this;
+    }
+
+    public function getDuration(): ?\DateInterval
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(?\DateInterval $duration): self
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->end_date;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $date
+     * @return $this
+     */
+    public function setEndDate(?\DateTimeInterface $date): self
+    {
+        $this->end_date = $date;
         return $this;
     }
 }
