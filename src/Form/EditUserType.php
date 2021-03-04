@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserType extends AbstractType
+class EditUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -28,7 +28,6 @@ class UserType extends AbstractType
             ->add('phone')
             ->add('businessName')
             ->add('businessDescription')
-            ->add('isActive')
             ->add('latitude', HiddenType::class,array(
                 'required'=>true,
                 'attr' => array(
@@ -47,43 +46,10 @@ class UserType extends AbstractType
                 'multiple'=>false,
                 'required'=>false,
             ])
-            ->add('password', PasswordType::class, [
-                'required'=>false,
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
-            ->add('confirm', PasswordType::class, [
-                'required'=>false,
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ])
-
             ->add('imageFile', FileType::class, [
                 'required'=>false
             ])
+
             ->add('admin', CheckboxType::class, [
                 'mapped' => false,
                 'required'=>false

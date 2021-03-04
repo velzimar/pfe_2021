@@ -16,39 +16,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class UserType extends AbstractType
+class MyPassword_change extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('nom')
-            ->add('prenom')
-            ->add('cin')
-            ->add('phone')
-            ->add('businessName')
-            ->add('businessDescription')
-            ->add('isActive')
-            ->add('latitude', HiddenType::class,array(
+            ->add('old_password', PasswordType::class, [
+                'label'=>'Ancien mot de passe',
                 'required'=>true,
-                'attr' => array(
-                    'readonly' => true,
-                ),
-            ))
-            ->add('longitude', HiddenType::class, array(
-                'required'=>true,
-                'attr' => array(
-                    'readonly' => true,
-                ),
-            ))
-            ->add('category_id', EntityType::class, [
-                'choice_label'=>'nom',
-                'class'=> Category::class,
-                'multiple'=>false,
-                'required'=>false,
+                'mapped' => false,
             ])
             ->add('password', PasswordType::class, [
-                'required'=>false,
+                'label'=>'Nouveau mot de passe',
+                'required'=>true,
+                'mapped' => false,
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'constraints' => [
@@ -64,7 +45,8 @@ class UserType extends AbstractType
                 ],
             ])
             ->add('confirm', PasswordType::class, [
-                'required'=>false,
+                'label'=>'Confirmer',
+                'required'=>true,
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
@@ -79,14 +61,6 @@ class UserType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-
-            ->add('imageFile', FileType::class, [
-                'required'=>false
-            ])
-            ->add('admin', CheckboxType::class, [
-                'mapped' => false,
-                'required'=>false
             ])
         ;
     }

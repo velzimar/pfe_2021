@@ -17,6 +17,15 @@
                 </h4>
                 <form class="form" method="post" action="{{ path('app_login') }}">
 
+
+                    {% for message in app.flashes('user/edit.html.twig_error') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for flashError in app.flashes('user/edit.html.twig_success') %}
+                        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                    {% endfor %}
                     {% if error %}
                         <div class="alert alert-danger">
                             {% if error.messageKey=="Invalid credentials." %} Mot de passe incorrecte. {% else %} {{ error.messageKey }} {% endif %}

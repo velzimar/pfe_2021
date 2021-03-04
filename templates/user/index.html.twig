@@ -15,7 +15,11 @@
 
     {% block QuickLink1 %}
 
-        <a class="btn btn-white btn-sm" href="{{ path('user_new') }}">
+        {% set role="user_new" %}
+        {% if is_granted('ROLE_SUPER') %}
+            {% set role="super_new" %}
+        {% endif %}
+        <a class="btn btn-white btn-sm" href="{{ path(role) }}">
             <i class="os-icon os-icon-delivery-box-2"></i>
             <span>Crée un nouveau utilisateur</span>
         </a>
@@ -104,32 +108,35 @@
                             #}
                             <td class="row-actions">
 
+                                {% set role="user_toggle_active" %}
+                                {% if is_granted('ROLE_SUPER') %}
+                                    {% set role="super_toggle_active" %}
+                                {% endif %}
 
                                 {% if user.isActive==1 %}
-                                <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
+                                    <a href="{{ path(role, {'id': user.id}) }}">
 
-                                    Cliquer pour Desactiver
-                                </a> {#
+                                        Cliquer pour Desactiver
+                                    </a> {#
+                                <div class="users-list-w">
+                                    <div class="user-w with-status status-green">
+                                        <div class="user-avatar-w">
+                                        </div>
+                                        <div class="user-name">
+                                            <div class="user-role">
 
-                                    <div class="users-list-w">
-                                        <div class="user-w with-status status-green">
-                                            <div class="user-avatar-w">
-                                            </div>
-                                            <div class="user-name">
-                                                <div class="user-role">
+                                                <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
 
-                                                    <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
+                                                    Cliquer pour Desactivé
+                                                </a>
 
-                                                        Cliquer pour Desactivé
-                                                    </a>
-
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
                                 #}
                                 {% else %}
-                                    <a href="{{ path('user_toggle_active', {'id': user.id}) }}">
+                                    <a href="{{ path(role, {'id': user.id}) }}">
                                         Cliquer pour Activer
                                     </a>
                                     {#
@@ -151,11 +158,16 @@
                                 {% endif %}
                             </td>
                             <td class="row-actions">
-                                    <a href="{{ path('user_edit', {'id': user.id}) }}">
 
-                                        <button class="mr-2 mb-2 btn btn-primary">Détails
-                                        </button>
-                                    </a>
+                                {% set role="user_edit" %}
+                                {% if is_granted('ROLE_SUPER') %}
+                                    {% set role="super_edit" %}
+                                {% endif %}
+                                <a href="{{ path(role, {'id': user.id}) }}">
+
+                                    <button class="mr-2 mb-2 btn btn-primary">Détails
+                                    </button>
+                                </a>
                             </td>
                         </tr>
                     {% else %}

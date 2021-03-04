@@ -14,6 +14,7 @@
 
     </style>
 {% endblock %}
+
 {% block  breadcrumb %}
 
     <ul class="breadcrumb">
@@ -21,23 +22,16 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('user_index') }}">Utilisateurs</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="#">Détails</a>
+            <a href="#">Profile</a>
         </li>
     </ul>
 {% endblock %}
 
     {% block QuickLink1 %}
 
-        {% set role="user_profile_password_edit" %}
-        {% if is_granted('ROLE_SUPER') %}
-            {% set role="super_profile_password_edit" %}
-        {% endif %}
-        <a class="btn btn-white btn-sm" href="{{ path(role,{'id':user}) }}">
+        <a class="btn btn-white btn-sm" href="{{ path('my_profile_password_edit') }}">
             <i class="os-icon os-icon-delivery-box-2"></i>
-            <span>Changer le mot de passe</span>
+            <span>Changer ma mot de passe</span>
         </a>
 
     {% endblock %}
@@ -58,7 +52,7 @@
             <div class="element-box">
                 <div class="user-profile compact">
                     <div class="up-head-w" id="user_profile"
-                         style="background-image:url({{ vich_uploader_asset(user, 'imageFile') }})">
+                         style="background-image:url({{ vich_uploader_asset(app.user, 'imageFile') }})">
                         <div class="up-social">
                             <a href="#"><i class="os-icon os-icon-twitter"></i></a>
                             <a href="#"><i
@@ -66,11 +60,11 @@
                         </div>
                         <div class="up-main-info">
                             <h2 class="up-header">
-                                {{ user.nom }} {{ user.prenom }}
+                                {{ app.user.nom }} {{ app.user.prenom }}
                             </h2>
                             <h6 class="up-sub-header">
                                 {% set r = "Utilisateur" %}
-                                {% for role in user.roles %}
+                                {% for role in app.user.roles %}
                                     {% if role=="ROLE_ADMIN" %} {% set r = "Administrateur" %} {% endif %}
                                 {% endfor %}
                                 {{ r }}
@@ -109,9 +103,9 @@
                             <div class="row m-b">
                                 <div class="col-sm-6 b-r b-b">
                                     <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('product_index_user',{'userId': user }) }}">
+                                        <a href="{{ path('product_index_user',{'userId': app.user }) }}">
                                             <div class="value">
-                                                {{ user.getProducts|length }}
+                                                {{ app.user.getProducts|length }}
                                             </div>
                                             <div class="label">
                                                 Produits
@@ -121,9 +115,9 @@
                                 </div>
                                 <div class="col-sm-6 b-b">
                                     <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('userProductCategories_index',{'userId': user }) }}">
+                                        <a href="{{ path('userProductCategories_index',{'userId': app.user }) }}">
                                             <div class="value">
-                                                {{ user.getProductCategories|length }}
+                                                {{ app.user.getProductCategories|length }}
                                             </div>
                                             <div class="label">
                                                 Catégories de produits
@@ -135,9 +129,9 @@
                             <div class="row m-b">
                                 <div class="col-sm-6 b-r b-b">
                                     <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('deal_index_user',{'userId': user }) }}">
+                                        <a href="{{ path('deal_index_user',{'userId': app.user }) }}">
                                             <div class="value">
-                                                {{ user.getDeals|length }}
+                                                {{ app.user.getDeals|length }}
                                             </div>
                                             <div class="label">
                                                 Deals
@@ -147,9 +141,9 @@
                                 </div>
                                 <div class="col-sm-6 b-b">
                                     <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('userDealCategories_index',{'userId': user }) }}">
+                                        <a href="{{ path('userDealCategories_index',{'userId': app.user }) }}">
                                             <div class="value">
-                                                {{ user.getDealCategories|length }}
+                                                {{ app.user.getDealCategories|length }}
                                             </div>
                                             <div class="label">
                                                 Catégories de deal
@@ -185,6 +179,8 @@
                     </div>
                 </div>
                 {{ form_start(form) }}
+
+                {% do form.admin.setRendered %}
                 <div class="form-group">
                     {{ form_row(form.email,{
                         'label':"Adresse Email",
@@ -229,7 +225,31 @@
                         </div>
                     </div>
                 </div>
+                {#
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.password,{
+                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                            ) }}
+                            <input type="hidden" name="_csrf_token"
+                                   value="{{ csrf_token('authenticate') }}"
+                            >
+                            <div class="help-block form-text text-muted form-control-feedback">
+                                Minimum of 6 characters
+                            </div>
 
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form_row(form.confirm,{
+                                'attr': {'class': 'form-control' ,'placeholder':"Enter le mot de passe" , 'type':"password" }}
+                            ) }}
+                        </div>
+                    </div>
+                </div>
+                #}
                 <fieldset class="form-group">
                     <legend><span>Affaire</span></legend>
                     <div class="form-group">
@@ -341,17 +361,6 @@
                     }) }}
                 </div>
 
-                {% if is_granted('ROLE_SUPER') %}
-                    <div class="form-group">
-                        {{ form_row(form.admin,{
-                            'label':"Les droits d'administrateur",
-                            'attr': {'class': 'form-control'  }
-                        }) }}
-                    </div>
-
-                {% else %}
-                    {% do form.admin.setRendered %}
-                {% endif %}
 
                 <div class="form-buttons-w">
                     <div class="row">
@@ -360,11 +369,6 @@
                             <button class="btn" type="reset">Reset</button>
                         </div>
                         {{ form_end(form) }}
-                        {% if is_granted('ROLE_SUPER') %}
-                            <div class="col-auto">
-                                {{ include('user/_delete_form.html.twig') }}
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -236,12 +236,17 @@
 
                 <fieldset class="form-group">
                     <legend><span>Administration</span></legend>
+                    {% if is_granted('ROLE_SUPER') %}
                     <div class="form-group">
                         {{ form_row(form.admin,{
                             'label':"Les droits d'administrateur",
                             'attr': {'class': 'form-control'  }
                         }) }}
                     </div>
+
+                    {% else %}
+                        {% do form.admin.setRendered %}
+                    {% endif %}
                     <div class="form-group">
                         {{ form_row(form.isActive,{
                             'label':"Activation du compte",
