@@ -72,11 +72,14 @@ class UserController extends AbstractController
 
             $this->addFlash('success', 'Utilisateur ajouté avec succès');
             $entityManager->persist($user);
-            $defaultCategory = new ProductCategory();
-            $defaultCategory->setBusinessId($user);
-            $defaultCategory->setNom("defaultCategory");
-            $defaultCategory->setDescription("default category for users");
-            $entityManager->persist($defaultCategory);
+            if ($form->get('vendeur')->getData() == true) {
+                $defaultCategory = new ProductCategory();
+                $defaultCategory->setBusinessId($user);
+                $defaultCategory->setNom("Ma première catégorie");
+                $defaultCategory->setDescription("Catégorie par défaut.");
+                $entityManager->persist($defaultCategory);
+            }
+
             $entityManager->flush();
             if ($form->get('isActive')->getData()) {
                 $notification = new Notification();
@@ -265,22 +268,18 @@ class UserController extends AbstractController
             );
 
             $entityManager = $this->getDoctrine()->getManager();
-            if ($form->get('admin')->getData() == true) {
 
-                $user->addRole('ROLE_ADMIN');
-            } else {
-
-                $user->removeRoles('ROLE_ADMIN');
-            }
 
             $this->addFlash('success', 'Utilisateur ajouté avec succès');
             $user->addRole("ROLE_SELLER");
             $entityManager->persist($user);
-            $defaultCategory = new ProductCategory();
-            $defaultCategory->setBusinessId($user);
-            $defaultCategory->setNom("defaultCategory");
-            $defaultCategory->setDescription("default category for users");
-            $entityManager->persist($defaultCategory);
+
+                $defaultCategory = new ProductCategory();
+                $defaultCategory->setBusinessId($user);
+                $defaultCategory->setNom("Ma première catégorie");
+                $defaultCategory->setDescription("Catégorie par défaut.");
+                $entityManager->persist($defaultCategory);
+
             $entityManager->flush();
             if ($form->get('isActive')->getData()) {
                 $notification = new Notification();
