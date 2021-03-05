@@ -21,10 +21,14 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('user_index') }}">Utilisateurs</a>
+            {% set role="user_index" %}
+            {% if is_granted('ROLE_SUPER') %}
+                {% set role="super_index" %}
+            {% endif %}
+            <a href="{{ path(role) }}">Utilisateurs</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Détails</a>
+            <a href="#">Profile</a>
         </li>
     </ul>
 {% endblock %}
@@ -69,11 +73,7 @@
                                 {{ user.nom }} {{ user.prenom }}
                             </h2>
                             <h6 class="up-sub-header">
-                                {% set r = "Utilisateur" %}
-                                {% for role in user.roles %}
-                                    {% if role=="ROLE_ADMIN" %} {% set r = "Administrateur" %} {% endif %}
-                                {% endfor %}
-                                {{ r }}
+                                {{ user.getMainRole }}
                             </h6>
                         </div>
                         <svg class="decor" width="842px" height="219px" viewBox="0 0 842 219"
@@ -344,13 +344,20 @@
                 {% if is_granted('ROLE_SUPER') %}
                     <div class="form-group">
                         {{ form_row(form.admin,{
-                            'label':"Les droits d'administrateur",
+                            'label':"Administrateur",
                             'attr': {'class': 'form-control'  }
                         }) }}
                     </div>
 
+                    <div class="form-group">
+                        {{ form_row(form.vendeur,{
+                            'label':"Vendeur",
+                            'attr': {'class': 'form-control'  }
+                        }) }}
+                    </div>
                 {% else %}
                     {% do form.admin.setRendered %}
+                    {% do form.vendeur.setRendered %}
                 {% endif %}
 
                 <div class="form-buttons-w">

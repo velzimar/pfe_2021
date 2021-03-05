@@ -35,6 +35,10 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
+    role_hierarchy:
+          ROLE_SUPER: [ ROLE_ADMIN, ROLE_SELLER]
+          ROLE_ADMIN: [ ROLE_USER ]
+          ROLE_SELLER: [ ROLE_USER ]
     access_control:
             #For Super
          - { path: ^/user/super/, roles: ROLE_SUPER }
@@ -43,4 +47,9 @@ security:
          - { path: ^/productCategory/admin/, roles: ROLE_ADMIN }
          - { path: ^/deal/admin/, roles: ROLE_ADMIN }
          - { path: ^/dealCategory/admin/, roles: ROLE_ADMIN }
-         - { path: ^/user/, roles: ROLE_ADMIN }
+         - { path: ^/user/admin/, roles: ROLE_ADMIN }
+            #For sellers
+         - { path: ^/deal/myDeals/, roles: ROLE_SELLER }
+         - { path: ^/dealCategory/myDealCategories/, roles: ROLE_SELLER }
+         - { path: ^/product/myProducts/, roles: ROLE_SELLER }
+         - { path: ^/productCategory/myProductCategories/, roles: ROLE_SELLER }

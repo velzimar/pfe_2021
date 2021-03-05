@@ -41,8 +41,8 @@ class DealController extends AbstractController
     {
         $first = $this->createForm(SelectUserType::class);
         $first->handleRequest($request);
-        if ($first->isSubmitted() && $first->isValid()) {
-            $userId = $first->get('business')->getData();
+        if ($first->isSubmitted() && $first->get('id')->getData()!=null) {
+            $userId = $first->get('id')->getData();
             $this->addFlash('success', "from selectUser $userId");
             return $this->redirectToRoute("deal_$action",[
                 'userId' => $userId

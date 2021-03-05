@@ -439,7 +439,7 @@
                             </a>
                             <div class="sub-menu-w">
                                 <div class="sub-menu-header">
-                                    Dashboard
+                                    Utilisateurs
                                 </div>
                                 <div class="sub-menu-icon">
                                     <i class="os-icon os-icon-layout"></i>
@@ -467,7 +467,7 @@
                             </a>
                             <div class="sub-menu-w">
                                 <div class="sub-menu-header">
-                                    Dashboard
+                                    Utilisateurs
                                 </div>
                                 <div class="sub-menu-icon">
                                     <i class="os-icon os-icon-layout"></i>
@@ -479,10 +479,6 @@
                                         </li>
                                         <li>
                                             <a href="{{ path('user_index') }}">Lister</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ path('user_index') }}">Dashboard 3<strong
-                                                        class="badge badge-danger">Hot</strong></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -497,7 +493,7 @@
                             <span>Catégories des affaires</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Menu Styles
+                                Catégories des affaires
                             </div>
                             <div class="sub-menu-icon">
                                 <i class="os-icon os-icon-layers"></i>
@@ -526,7 +522,7 @@
                             <span>Catégories des produits</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Applications
+                                Catégories des produits
                             </div>
                             <div class="sub-menu-icon">
                                 <i class="os-icon os-icon-package"></i>
@@ -534,10 +530,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ path('user_product_category_index',{action:'index'}) }}">Lister</a>
+                                        <a href="{{ path('user_product_category_index',{action:'new'}) }}">Ajouter</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('user_product_category_index',{action:'new'}) }}">Ajouter</a>
+                                        <a href="{{ path('user_product_category_index',{action:'index'}) }}">Lister</a>
                                     </li>
 
                                 </ul>
@@ -552,7 +548,7 @@
                             <span>Les produits</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Pages
+                                Les produits
                             </div>
                             <div class="sub-menu-icon">
                                 <i class="os-icon os-icon-file-text"></i>
@@ -578,7 +574,7 @@
                             <span>Catégories des Deals</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Applications
+                                Catégories des Deals
                             </div>
                             <div class="sub-menu-icon">
                                 <i class="os-icon os-icon-package"></i>
@@ -586,10 +582,10 @@
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
                                     <li>
-                                        <a href="{{ path('user_deal_category_index',{action:'index'}) }}">Lister</a>
+                                        <a href="{{ path('user_deal_category_index',{action:'new'}) }}">Ajouter</a>
                                     </li>
                                     <li>
-                                        <a href="{{ path('user_deal_category_index',{action:'new'}) }}">Ajouter</a>
+                                        <a href="{{ path('user_deal_category_index',{action:'index'}) }}">Lister</a>
                                     </li>
 
                                 </ul>
@@ -604,7 +600,7 @@
                             <span>Les deals</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
-                                Pages
+                                Les deals
                             </div>
                             <div class="sub-menu-icon">
                                 <i class="os-icon os-icon-file-text"></i>
@@ -624,6 +620,7 @@
                     </li>
 
                 {% endif %}
+                {% if is_granted('ROLE_SELLER') %}
                 <li class="sub-header">
                     <span>Ma vitrine</span>
                 </li>
@@ -635,7 +632,7 @@
                         <span>Catégories des produits</span></a>
                     <div class="sub-menu-w">
                         <div class="sub-menu-header">
-                            Applications
+                            Catégories des produits
                         </div>
                         <div class="sub-menu-icon">
                             <i class="os-icon os-icon-package"></i>
@@ -643,10 +640,10 @@
                         <div class="sub-menu-i">
                             <ul class="sub-menu">
                                 <li>
-                                    <a href="{{ path('myProductCategories') }}">Lister</a>
+                                    <a href="{{ path('myProductCategories_new') }}">Ajouter</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('myProductCategories_new') }}">Ajouter</a>
+                                    <a href="{{ path('myProductCategories') }}">Lister</a>
                                 </li>
 
                             </ul>
@@ -661,7 +658,7 @@
                         <span>Mes produits</span></a>
                     <div class="sub-menu-w">
                         <div class="sub-menu-header">
-                            Pages
+                            Mes produits
                         </div>
                         <div class="sub-menu-icon">
                             <i class="os-icon os-icon-file-text"></i>
@@ -687,7 +684,7 @@
                         <span>Catégories des deals</span></a>
                     <div class="sub-menu-w">
                         <div class="sub-menu-header">
-                            Applications
+                            Catégories des deals
                         </div>
                         <div class="sub-menu-icon">
                             <i class="os-icon os-icon-package"></i>
@@ -695,10 +692,10 @@
                         <div class="sub-menu-i">
                             <ul class="sub-menu">
                                 <li>
-                                    <a href="{{ path('myDealCategories') }}">Lister</a>
+                                    <a href="{{ path('myDealCategories_new') }}">Ajouter</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('myDealCategories_new') }}">Ajouter</a>
+                                    <a href="{{ path('myDealCategories') }}">Lister</a>
                                 </li>
 
                             </ul>
@@ -713,7 +710,7 @@
                         <span>Mes Deals</span></a>
                     <div class="sub-menu-w">
                         <div class="sub-menu-header">
-                            Pages
+                            Mes Deals
                         </div>
                         <div class="sub-menu-icon">
                             <i class="os-icon os-icon-file-text"></i>
@@ -726,11 +723,11 @@
                                 <li>
                                     <a href="{{ path('myDeals') }}">Lister</a>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
                 </li>
+                {% endif %}
             </ul>
             <div class="side-menu-magic">
                 <h4>

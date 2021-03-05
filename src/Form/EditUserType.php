@@ -54,6 +54,10 @@ class EditUserType extends AbstractType
                 'mapped' => false,
                 'required'=>false
             ])
+            ->add('vendeur', CheckboxType::class, [
+                'mapped' => false,
+                'required'=>false
+            ])
         ;
     }
 

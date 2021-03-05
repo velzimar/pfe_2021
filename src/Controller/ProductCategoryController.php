@@ -5,13 +5,12 @@ namespace App\Controller;
 use App\Entity\ProductCategory;
 use App\Entity\User;
 use App\Form\ProductCategoryType;
-use App\Form\SelectUserTypeForCategory;
+use App\Form\SelectUserType;
 use App\Repository\ProductCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/productCategory")
@@ -103,17 +102,13 @@ class ProductCategoryController extends AbstractController
      */
     public function selectUserForCategory(Request $request, $action): Response
     {
-        $first = $this->createForm(SelectUserTypeForCategory::class);
+        $first = $this->createForm(SelectUserType::class);
         $first->handleRequest($request);
-        if ($first->isSubmitted() && $first->isValid()) {
-            $userId = $first->get('businessId')->getData();
-            $this->addFlash('success', "from selectUser $userId");
-            $this->addFlash('success', "action $action");
-
+        if ($first->isSubmitted() && $first->get('id')->getData() != null) {
+            $userId = $first->get('id')->getData();
             return $this->redirectToRoute("userProductCategories_$action",[
                 'userId' => $userId
             ],301);
-
         }
         return $this->render('product_category/selectUserForCategory.html.twig', [
             'form' => $first->createView(),

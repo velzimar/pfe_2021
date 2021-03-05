@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\DealCategory;
 use App\Entity\User;
 use App\Form\DealCategoryType;
+use App\Form\SelectUserType;
 use App\Form\SelectUserTypeForCategory;
 use App\Repository\DealCategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -108,10 +109,10 @@ class DealCategoryController extends AbstractController
 
     public function selectUserForCategory(Request $request, $action): Response
     {
-        $first = $this->createForm(SelectUserTypeForCategory::class);
+        $first = $this->createForm(SelectUserType::class);
         $first->handleRequest($request);
-        if ($first->isSubmitted() && $first->isValid()) {
-            $userId = $first->get('businessId')->getData();
+        if ($first->isSubmitted() && $first->get('id')->getData()!=null) {
+            $userId = $first->get('id')->getData();
             $this->addFlash('success', "from selectUser $userId");
             $this->addFlash('success', "action $action");
 

@@ -21,7 +21,11 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('user_index') }}">Utilisateurs</a>
+            {% set role="user_index" %}
+            {% if is_granted('ROLE_SUPER') %}
+                {% set role="super_index" %}
+            {% endif %}
+            <a href="{{ path(role) }}">Utilisateurs</a>
         </li>
         <li class="breadcrumb-item disabled">
             <a href="#">Crée</a>
@@ -168,7 +172,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12 "  align="center">
+                        <div class="col-sm-12 " align="center">
                             <div class="form-group">
                                 <div type="button" class="os-icon os-icon-map-pin" data-toggle="modal"
                                      data-target="#myModal">
@@ -182,8 +186,9 @@
                             </div>
                         </div>
                         <div class="col-sm-12">
-                            <div class="form-group" >Longitude:
-                                <input type="text" id="lng" readonly="readonly" class="form-control" value="{{ form.vars.data.longitude }}">
+                            <div class="form-group">Longitude:
+                                <input type="text" id="lng" readonly="readonly" class="form-control"
+                                       value="{{ form.vars.data.longitude }}">
                             </div>
                             <div class="form-group" hidden>Longitude:
                                 {{ form_row(form.longitude,{
@@ -193,8 +198,9 @@
                             </div>
                         </div>
                         <div class="col-sm-12">
-                            <div class="form-group" >Latitude:
-                                <input type="text" id="lat" readonly="readonly" class="form-control" value="{{ form.vars.data.latitude }}">
+                            <div class="form-group">Latitude:
+                                <input type="text" id="lat" readonly="readonly" class="form-control"
+                                       value="{{ form.vars.data.latitude }}">
                             </div>
                             <div class="form-group" hidden>
                                 {{ form_row(form.latitude,{
@@ -237,15 +243,21 @@
                 <fieldset class="form-group">
                     <legend><span>Administration</span></legend>
                     {% if is_granted('ROLE_SUPER') %}
-                    <div class="form-group">
-                        {{ form_row(form.admin,{
-                            'label':"Les droits d'administrateur",
-                            'attr': {'class': 'form-control'  }
-                        }) }}
-                    </div>
-
+                        <div class="form-group">
+                            {{ form_row(form.admin,{
+                                'label':"Administrateur",
+                                'attr': {'class': 'form-control'  }
+                            }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_row(form.vendeur,{
+                                'label':"Vendeur",
+                                'attr': {'class': 'form-control'  }
+                            }) }}
+                        </div>
                     {% else %}
                         {% do form.admin.setRendered %}
+                        {% do form.vendeur.setRendered %}
                     {% endif %}
                     <div class="form-group">
                         {{ form_row(form.isActive,{
@@ -300,7 +312,7 @@
                 document.getElementById("user_latitude").value = event.latLng.lat().toFixed(8);
                 $("#lat").val(event.latLng.lat().toFixed(8));
                 $("#lng").val(event.latLng.lng().toFixed(7));
-                fetchLocationName(event.latLng.lat(),event.latLng.lng());
+                fetchLocationName(event.latLng.lat(), event.latLng.lng());
             });
         }
 
@@ -332,9 +344,9 @@
         }
 
         // we take adminArea5 as neighborhood  and adminArea3 as county
-        async function fetchLocationName(lat,lng) {
+        async function fetchLocationName(lat, lng) {
             await fetch(
-                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location='+lat+'%2C'+lng+'&outFormat=json&thumbMaps=false',
+                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location=' + lat + '%2C' + lng + '&outFormat=json&thumbMaps=false',
             )
                 .then((response) => response.json())
                 .then((responseJson) => {

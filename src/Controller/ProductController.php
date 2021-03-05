@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\ProductType;
 use App\Form\SelectUserType;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,8 +42,8 @@ class ProductController extends AbstractController
     {
         $first = $this->createForm(SelectUserType::class);
         $first->handleRequest($request);
-        if ($first->isSubmitted() && $first->isValid()) {
-            $userId = $first->get('business')->getData();
+        if ($first->isSubmitted() && $first->get('id')->getData() != null) {
+            $userId = $first->get('id')->getData();
             $this->addFlash('success', "from selectUser $userId");
             return $this->redirectToRoute("product_$action",[
                 'userId' => $userId

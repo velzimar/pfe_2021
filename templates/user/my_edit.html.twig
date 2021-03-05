@@ -63,11 +63,7 @@
                                 {{ app.user.nom }} {{ app.user.prenom }}
                             </h2>
                             <h6 class="up-sub-header">
-                                {% set r = "Utilisateur" %}
-                                {% for role in app.user.roles %}
-                                    {% if role=="ROLE_ADMIN" %} {% set r = "Administrateur" %} {% endif %}
-                                {% endfor %}
-                                {{ r }}
+                                {{ app.user.getMainRole }}
                             </h6>
                         </div>
                         <svg class="decor" width="842px" height="219px" viewBox="0 0 842 219"

@@ -258,8 +258,10 @@ class User implements UserInterface, Serializable
             return "SuperAdmin";
         }else if(in_array("ROLE_ADMIN", $this->roles)){
             return "Admin";
+        }else if(in_array("ROLE_SELLER", $this->roles)){
+            return "Vendeur";
         }else{
-            return "Utilisateur";
+            return "Invité";
         }
     }
 
