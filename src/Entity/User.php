@@ -209,6 +209,22 @@ class User implements UserInterface, Serializable
 
         return array_unique($roles);
     }
+    /**
+     * @see UserInterface
+     */
+    public function getMainRole(): string
+    {
+        if (in_array("ROLE_SUPER", $this->roles)) {
+            return "SuperAdmin";
+        }else if(in_array("ROLE_ADMIN", $this->roles)){
+            return "Admin";
+        }else if(in_array("ROLE_SELLER", $this->roles)){
+            return "Vendeur";
+        }else{
+            return "Invité";
+        }
+    }
+
 
     public function setRoles(array $roles): self
     {
@@ -249,21 +265,7 @@ class User implements UserInterface, Serializable
     }
 
 
-    /**
-     * @see UserInterface
-     */
-    public function getMainRole(): string
-    {
-        if (in_array("ROLE_SUPER", $this->roles)) {
-            return "SuperAdmin";
-        }else if(in_array("ROLE_ADMIN", $this->roles)){
-            return "Admin";
-        }else if(in_array("ROLE_SELLER", $this->roles)){
-            return "Vendeur";
-        }else{
-            return "Invité";
-        }
-    }
+
 
 
 

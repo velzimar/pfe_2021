@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -101,7 +100,15 @@ class UserAuthAuthenticator extends AbstractFormLoginAuthenticator implements Pa
             return new RedirectResponse($targetPath);
         }
 */
-        return new RedirectResponse($this->urlGenerator->generate('myProducts'));
+        $role = $token->getUser()->getMainRole();
+        if($role == "Vendeur")
+            return new RedirectResponse($this->urlGenerator->generate('myProducts'));
+        else if ($role == "Admin")
+            return new RedirectResponse($this->urlGenerator->generate('user_index'));
+        else if ($role == "SuperAdmin")
+            return new RedirectResponse($this->urlGenerator->generate('super_index'));
+        else
+            return new RedirectResponse($this->urlGenerator->generate('myProducts'));
        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
