@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductOptionsController!{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% for option in options %}
+        {{ option.nom }}
+        {{ option.choices|json_encode }}
+    {% endfor %}
+</div>
+{% endblock %}

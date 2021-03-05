@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+<script>
+</script>
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                </h5>
+                <div class="form-desc">
+                </div>
+                {{ form_start(form) }}
+                <div class="form-group">
+                    {{ form_row(form.nom,{
+                        'label':"Nom",
+                        'attr': {'class': 'form-control', 'type':"text" }
+                    }) }}
+                </div>
+
+                <input id="input_for_choices"/>
+                <div class="form-group">
+                    {{ form_row(form.choices,{
+                        'label':"Choices",
+                        'attr': {'class': 'form-control '}
+                    }) }}
+                </div>
+                <div class="form-buttons-w">
+
+                    <button class="btn btn-primary " type="button" onclick="_add()">Insert option</button>
+                    <button class="btn btn-danger " onclick="_delete()">Remove selected fruit</button>
+
+                </div>
+
+
+                <div class="form-buttons-w">
+
+                    <button class="btn btn-primary disabled" type="submit"> sub</button>
+
+                    <button class="btn" type="reset">Reset</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function _add() {
+            var x = document.getElementById("product_options_choices");
+            var j = document.getElementById("input_for_choices");
+            for (i = 0; i < x.length; ++i){
+                if (x.options[i].value === j.value){
+                    alert("Hyndai is available");
+                    j.value=null;
+                    return;
+                }
+            }
+
+          //  $("#myMultipleSelect2").append($newOption).trigger('change');
+
+            //var option = $("<option selected='selected'></option>").text(j.value)
+            var option = document.createElement("option")
+            option.text = j.value;
+            option.selected = true;
+            //x.options[x.selectedIndex].setAttribute('selected');
+            x.add(option);
+            j.value=null;
+        }
+
+
+        function _delete() {
+
+            var x = document.getElementById("product_options_choices");
+            x.remove(x.selectedIndex);
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#product_options_choices').select2();
+        });
+    </script>
+{% endblock %}
