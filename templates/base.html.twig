@@ -200,7 +200,7 @@
                             {{ app.user.nom }}
                         </div>
                         <div class="logged-user-role">
-                            Administrateur
+                            {{ app.user.getMainRole }}
                         </div>
                     </div>
                     <div class="logged-user-toggler-arrow">
@@ -213,10 +213,10 @@
                             </div>
                             <div class="logged-user-info-w">
                                 <div class="logged-user-name">
-                                    Maria Gomez
+                                    {{ app.user.nom }}
                                 </div>
                                 <div class="logged-user-role">
-                                    Administrateur
+                                    {{ app.user.getMainRole }}
                                 </div>
                             </div>
                         </div>
@@ -425,9 +425,9 @@
             <ul class="main-menu">
                 {% if is_granted('ROLE_ADMIN') %}
 
-                        <li class="sub-header">
-                            <span>Administration</span>
-                        </li>
+                    <li class="sub-header">
+                        <span>Administration</span>
+                    </li>
 
                     {% if is_granted('ROLE_SUPER') %}
                         <li class="selected has-sub-menu">
@@ -435,7 +435,7 @@
                                 <div class="icon-w">
                                     <div class="os-icon os-icon-layout"></div>
                                 </div>
-                                <span>Administrateurs</span>
+                                <span>Utilisateurs</span>
                             </a>
                             <div class="sub-menu-w">
                                 <div class="sub-menu-header">
@@ -814,7 +814,7 @@
                                             {{ app.user.nom }}
                                         </div>
                                         <div class="logged-user-role">
-                                            Administrateur
+                                            {{ app.user.getMainRole }}
                                         </div>
                                     </div>
                                 </div>
@@ -857,12 +857,19 @@
             <div class="content-panel-toggler">
                 <i class="os-icon os-icon-grid-squares-22"></i><span>Sidebar</span>
             </div>
+
             <div class="content-i">
                 <div class="content-box">
 
-                    {% block body %}
 
-                    {% endblock %}
+                    <div class="row">
+                        <div class="col-sm-12">
+
+                            {% block body %}
+
+                            {% endblock %}
+                        </div>
+                    </div>
 
                 </div>
 
@@ -1033,91 +1040,9 @@
               -------------------->
 
                     {% if is_granted('ROLE_ADMIN') %}
-                        <div class="element-wrapper">
-                            <h6 class="element-header">
-                                Administrateurs
-                            </h6>
-                            <div class="element-box-tp">
-                                <div class="input-search-w">
-                                    <input class="form-control rounded bright" placeholder="Search team members..."
-                                           type="search">
-                                </div>
-                                <div class="users-list-w">
-                                    <div class="user-w with-status status-green">
-                                        <div class="user-avatar-w">
-                                            <div class="user-avatar">
-                                                <img alt="" src="img/avatar1.jpg">
-                                            </div>
-                                        </div>
-                                        <div class="user-name">
-                                            <h6 class="user-title">
-                                                John Mayers
-                                            </h6>
-                                            <div class="user-role">
-                                                Account Manager
-                                            </div>
-                                        </div>
-                                        <a class="user-action" href="users_profile_small.html">
-                                            <div class="os-icon os-icon-email-forward"></div>
-                                        </a>
-                                    </div>
-                                    <div class="user-w with-status status-green">
-                                        <div class="user-avatar-w">
-                                            <div class="user-avatar">
-                                                <img alt="" src="img/avatar2.jpg">
-                                            </div>
-                                        </div>
-                                        <div class="user-name">
-                                            <h6 class="user-title">
-                                                Ben Gossman
-                                            </h6>
-                                            <div class="user-role">
-                                                Administrator
-                                            </div>
-                                        </div>
-                                        <a class="user-action" href="users_profile_small.html">
-                                            <div class="os-icon os-icon-email-forward"></div>
-                                        </a>
-                                    </div>
-                                    <div class="user-w with-status status-red">
-                                        <div class="user-avatar-w">
-                                            <div class="user-avatar">
-                                                <img alt="" src="img/avatar3.jpg">
-                                            </div>
-                                        </div>
-                                        <div class="user-name">
-                                            <h6 class="user-title">
-                                                Phil Nokorin
-                                            </h6>
-                                            <div class="user-role">
-                                                HR Manger
-                                            </div>
-                                        </div>
-                                        <a class="user-action" href="users_profile_small.html">
-                                            <div class="os-icon os-icon-email-forward"></div>
-                                        </a>
-                                    </div>
-                                    <div class="user-w with-status status-green">
-                                        <div class="user-avatar-w">
-                                            <div class="user-avatar">
-                                                <img alt="" src="img/avatar4.jpg">
-                                            </div>
-                                        </div>
-                                        <div class="user-name">
-                                            <h6 class="user-title">
-                                                Jenny Miksa
-                                            </h6>
-                                            <div class="user-role">
-                                                Lead Developer
-                                            </div>
-                                        </div>
-                                        <a class="user-action" href="users_profile_small.html">
-                                            <div class="os-icon os-icon-email-forward"></div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {{ render(controller(
+                            'App\\Controller\\UserController::teamMembers'
+                        )) }}
                     {% endif %}
                     <!--------------------
                     END - Team Members
@@ -1127,6 +1052,7 @@
                 END - Sidebar
                 -------------------->
             </div>
+
         </div>
     </div>
     <div class="display-type"></div>

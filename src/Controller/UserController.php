@@ -8,13 +8,11 @@ use App\Entity\User;
 use App\Form\EditUserType;
 use App\Form\MyPassword_change;
 use App\Form\UserType;
-use App\Repository\NotificationRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\BasePasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -496,5 +494,20 @@ class UserController extends AbstractController
         }
         $manager->flush();
         return $this->redirectToRoute('user_index');
+    }
+
+    // TEAM MEMBERS
+    /**
+     * @param UserRepository $rep
+     * @return Response
+     */
+    public function teamMembers(UserRepository $rep): Response
+    {
+        $admins = $rep->findByRole("ROLE_ADMIN");
+
+        return $this->render(
+            'teamMembers.html.twig',
+            array('admins' => $admins)
+        );
     }
 }

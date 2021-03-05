@@ -86,12 +86,13 @@
                             <td>
                                 {#
                                 {{ user.roles ? user.roles|json_encode : '' }}
-                                #}
                                 {% set r = "Utilisateur" %}
                                 {% for role in user.roles %}
                                     {% if role=="ROLE_ADMIN" %} {% set r = "Administrateur" %} {% endif %}
                                 {% endfor %}
                                 {{ r }}
+                                #}
+                                {{ user.getMainRole }}
                             </td>
                             {#
                             <td class="text-center">

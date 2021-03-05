@@ -247,6 +247,24 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+
+
+    /**
+     * @see UserInterface
+     */
+    public function getMainRole(): string
+    {
+        if (in_array("ROLE_SUPER", $this->roles)) {
+            return "SuperAdmin";
+        }else if(in_array("ROLE_ADMIN", $this->roles)){
+            return "Admin";
+        }else{
+            return "Utilisateur";
+        }
+    }
+
+
+
     /**
      * @see UserInterface
      */
@@ -658,7 +676,6 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
-
 
 
 }
