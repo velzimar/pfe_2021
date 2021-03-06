@@ -10,8 +10,8 @@
 {% endblock %}
 
 {% block body %}
-<script>
-</script>
+    <script>
+    </script>
     <div class="col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
@@ -22,74 +22,163 @@
                 <div class="form-desc">
                 </div>
                 {{ form_start(form) }}
+                <div class="form-buttons-w">
+                    <button class="btn btn-primary disabled" type="submit">Enregistrer</button>
+                    <button class="btn" type="reset">Annuler</button>
+                </div>
                 <div class="form-group">
                     {{ form_row(form.nom,{
+                        'id':'nom',
                         'label':"Nom",
                         'attr': {'class': 'form-control', 'type':"text" }
                     }) }}
                 </div>
-
                 <input id="input_for_choices"/>
                 <div class="form-group">
                     {{ form_row(form.choices,{
+                        'id':'product_options_choices',
                         'label':"Choices",
                         'attr': {'class': 'form-control '}
                     }) }}
                 </div>
-                <div class="form-buttons-w">
-
-                    <button class="btn btn-primary " type="button" onclick="_add()">Insert option</button>
-                    <button class="btn btn-danger " onclick="_delete()">Remove selected fruit</button>
-
-                </div>
-
-
-                <div class="form-buttons-w">
-
-                    <button class="btn btn-primary disabled" type="submit"> sub</button>
-
-                    <button class="btn" type="reset">Reset</button>
-                </div>
                 {{ form_end(form) }}
+
+                <div class="form-buttons-w">
+                    <button class="btn btn-primary " type="button" onclick="_add()">Inserer</button>
+                    <button class="btn btn-danger " onclick="_delete()">Supprimer</button>
+                    <button class="btn btn-danger " onclick="_save()">Ajouter cette option</button>
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="col-sm-12">
+        <div class="element-wrapper" >
+
+            <div class="element-box" >
+                <div class="form-group" id="newOptions_container" >
+
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     <script>
+
+        var all_choices = [];
+
         function _add() {
             var x = document.getElementById("product_options_choices");
             var j = document.getElementById("input_for_choices");
-            for (i = 0; i < x.length; ++i){
-                if (x.options[i].value === j.value){
-                    alert("Hyndai is available");
-                    j.value=null;
+            if (j.value === null || j.value === "" || j.value.trim() === "") {
+                alert("cannot be null")
+                j.value = null;
+                return;
+            }
+            for (i = 0; i < x.length; ++i) {
+                if (x.options[i].value === j.value) {
+                    alert("existe deja");
+                    j.value = null;
                     return;
                 }
             }
-
-          //  $("#myMultipleSelect2").append($newOption).trigger('change');
-
-            //var option = $("<option selected='selected'></option>").text(j.value)
             var option = document.createElement("option")
             option.text = j.value;
             option.selected = true;
-            //x.options[x.selectedIndex].setAttribute('selected');
             x.add(option);
-            j.value=null;
+            j.value = null;
         }
 
+        function _save() {
+            var name = document.getElementById("nom").value;
+            if (name === null || name === "" || name.trim() === "") {
+                alert("nom cannot be null")
+                document.getElementById("nom").value = null;
+                return;
+            }
+            for (var f = 0; f < all_choices.length; f++) {
+                if (all_choices[f]['nom'] === name) {
+                    alert("nom existe deja");
+                    document.getElementById("nom").value = null;
+                    return
+                }
+            }
+            var elements = document.getElementById("product_options_choices");
+            var json_obj = {};
+            var results = [];
+            for (var i = 0; i < elements.length; i++) {
+                var element = elements[i];
+                //var strSel = element.options[element.selectedIndex].text;
+                results.push(element.text);
+            }
+            //alert(results);
+            if (results.length > 0) {
+                var nom = document.getElementById("nom");
+                json_obj = {nom: nom.value, choices: results};
+                all_choices.push(json_obj);
+
+
+                var choicesElement = "<div class='row' id='row_for_"+nom.value+"' ><div class='col-sm-6'><ul id='choices_for_"+nom.value+"'><li class='form-control' style='width:100%;word-break:break-all;border: #047bf8;background-color: #047bf8;overflow-wrap: break-word;height: fit-content;'><h5 style='color: #ccd9e8;'>"+nom.value+"</h5></li>"
+                results.forEach(option => choicesElement+="<li class='form-control' style='width:100%;word-break:break-all;overflow-wrap: break-word;height: fit-content;'><h5 style='color: #ccd9e8;'><h6>"+option+"</h6></li>");
+                choicesElement +="</ul></div>"
+                choicesElement += "<div class='col-sm-6'><div class='form-buttons-w'><button class='btn btn-primary' data-num='' name='"+nom.value+"' id='Edit_"+nom.value+"' type='button' '>Modifier</button><button class='btn btn-danger' data-num='' id='Delete_"+nom.value+"' type='button' '>Supprimer</button></div></div></div>"
+                $("#newOptions_container").append(choicesElement);
+                editElement = $("#Edit_"+nom.value)
+                editElement.data("num",json_obj);
+                editElement.on("click", function () {
+                    console.log($(this).data("num"));
+
+                    alert(JSON.stringify($(this).data("num")))
+                });
+                editElement = $("#Delete_"+nom.value)
+                editElement.data("num",json_obj);
+                editElement.on("click", function () {
+                    alert("the element is"+JSON.stringify($(this).data("num")))
+                    for (var k = 0; k < all_choices.length; k++) {
+                        alert("current table"+JSON.stringify(all_choices[k]))
+                    }
+                    //delete from json
+                    for (var t = 0; t < all_choices.length; t++) {
+                        alert($(this).data("num")["nom"])
+                        if(all_choices[t]["nom"]===$(this).data("num")["nom"]){
+                            all_choices.splice(t,1)
+                            t--
+                        }
+                    }
+
+                    for (var k2 = 0; k2 < all_choices.length; k2++) {
+                        alert("after delete table"+JSON.stringify(all_choices[k2]))
+                    }
+                    document.getElementById("row_for_"+$(this).data('num')['nom']).remove();
+                });
+
+            } else {
+                alert("choix ne doit pas etre vide");
+                return
+            }
+
+            $('#product_options_choices').children().remove().end()
+            document.getElementById("input_for_choices").value = null;
+            document.getElementById("nom").value = null;
+
+
+        }
 
         function _delete() {
-
             var x = document.getElementById("product_options_choices");
             x.remove(x.selectedIndex);
         }
+
+
+
+
     </script>
+    {#
     <script>
         $(document).ready(function() {
             $('#product_options_choices').select2();
         });
     </script>
+    #}
 {% endblock %}

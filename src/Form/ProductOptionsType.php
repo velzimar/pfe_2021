@@ -15,11 +15,14 @@ class ProductOptionsType extends AbstractType{
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nom')
+            ->add('nom', TextType::class,[
+                'mapped' => false
+            ])
             ->add('choices', ChoiceType::class, [
                 'mapped' => false,
                 'required'=>false,
                 'multiple'=> true,
+                'attr' => ['readonly' => true],
             ])
         ;
     }
