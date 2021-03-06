@@ -21,10 +21,11 @@
                 </h5>
                 <div class="form-desc">
                 </div>
+                {#
                 {{ form_start(form) }}
                 <div class="form-buttons-w">
                     <button class="btn btn-primary disabled" type="submit">Enregistrer</button>
-                    <button class="btn" type="reset">Annuler</button>
+                    <button class="btn" type="reset" >Annuler</button>
                 </div>
                 <div class="form-group">
                     {{ form_row(form.nom,{
@@ -33,7 +34,6 @@
                         'attr': {'class': 'form-control', 'type':"text" }
                     }) }}
                 </div>
-                <input id="input_for_choices"/>
                 <div class="form-group">
                     {{ form_row(form.choices,{
                         'id':'product_options_choices',
@@ -42,11 +42,20 @@
                     }) }}
                 </div>
                 {{ form_end(form) }}
+                #}
 
+                <input id="nom" class='form-control'/>
+                <input id="input_for_choices"/>
+                <div>
+                    <label for="product_options_choices">Choices</label>
+                    <select id="product_options_choices"  readonly="readonly" class="form-control" multiple="multiple"></select>
+                </div>
                 <div class="form-buttons-w">
                     <button class="btn btn-primary " type="button" onclick="_add()">Inserer</button>
                     <button class="btn btn-danger " onclick="_delete()">Supprimer</button>
                     <button class="btn btn-danger " onclick="_save()">Ajouter cette option</button>
+                    <button class="btn btn-danger " onclick=" _check_json_content()">check json</button>
+                    <button id="post-btn">I'm a button</button>
                 </div>
             </div>
         </div>
@@ -72,7 +81,7 @@
             var x = document.getElementById("product_options_choices");
             var j = document.getElementById("input_for_choices");
             if (j.value === null || j.value === "" || j.value.trim() === "") {
-                alert("cannot be null")
+                alert("Inserer le choix")
                 j.value = null;
                 return;
             }
@@ -93,7 +102,7 @@
         function _save() {
             var name = document.getElementById("nom").value;
             if (name === null || name === "" || name.trim() === "") {
-                alert("nom cannot be null")
+                alert("Inserer le nom d'option")
                 document.getElementById("nom").value = null;
                 return;
             }
@@ -124,20 +133,29 @@
                 choicesElement +="</ul></div>"
                 choicesElement += "<div class='col-sm-6'><div class='form-buttons-w'><button class='btn btn-primary' data-num='' name='"+nom.value+"' id='Edit_"+nom.value+"' type='button' '>Modifier</button><button class='btn btn-danger' data-num='' id='Delete_"+nom.value+"' type='button' '>Supprimer</button></div></div></div>"
                 $("#newOptions_container").append(choicesElement);
+
+
                 editElement = $("#Edit_"+nom.value)
                 editElement.data("num",json_obj);
                 editElement.on("click", function () {
-                    console.log($(this).data("num"));
-
-                    alert(JSON.stringify($(this).data("num")))
-                });
-                editElement = $("#Delete_"+nom.value)
-                editElement.data("num",json_obj);
-                editElement.on("click", function () {
-                    alert("the element is"+JSON.stringify($(this).data("num")))
-                    for (var k = 0; k < all_choices.length; k++) {
-                        alert("current table"+JSON.stringify(all_choices[k]))
+                    var jsonObj = $(this).data("num");
+                    var choicesElement =  document.getElementById("product_options_choices")
+                    var choicesInputElement =  document.getElementById("input_for_choices")
+                    var nomElement = document.getElementById("nom")
+                    //clearing old choices
+                    $('#product_options_choices').children().remove().end()
+                    nomElement.value = null;
+                    choicesInputElement.value = null;
+                    //adding the selected object choices to the element for edit
+                    for(var x=0; x<jsonObj["choices"].length; x++){
+                        var opt = document.createElement('option');
+                        opt.appendChild( document.createTextNode(jsonObj["choices"][x]) );
+                        opt.value = x;
+                        opt.selected = true;
+                        choicesElement.appendChild(opt);
                     }
+                    //adding the selected object name for edit
+                    nomElement.value = jsonObj["nom"];
                     //delete from json
                     for (var t = 0; t < all_choices.length; t++) {
                         alert($(this).data("num")["nom"])
@@ -146,10 +164,34 @@
                             t--
                         }
                     }
+                    document.getElementById("row_for_"+$(this).data('num')['nom']).remove();
+                });
 
+
+                editElement = $("#Delete_"+nom.value)
+                editElement.data("num",json_obj);
+                editElement.on("click", function () {
+                    //alert("the element is"+JSON.stringify($(this).data("num")))
+                    /*
+                    for (var k = 0; k < all_choices.length; k++) {
+                        alert("current table"+JSON.stringify(all_choices[k]))
+                    }
+                    */
+                    //delete from json
+                    for (var t = 0; t < all_choices.length; t++) {
+                        alert($(this).data("num")["nom"])
+                        if(all_choices[t]["nom"]===$(this).data("num")["nom"]){
+                            all_choices.splice(t,1)
+                            t--
+                        }
+                    }
+                    /*
                     for (var k2 = 0; k2 < all_choices.length; k2++) {
                         alert("after delete table"+JSON.stringify(all_choices[k2]))
                     }
+
+                     */
+                    //delete from view
                     document.getElementById("row_for_"+$(this).data('num')['nom']).remove();
                 });
 
@@ -170,7 +212,34 @@
             x.remove(x.selectedIndex);
         }
 
+        function _check_json_content(){
+            if(all_choices.length===0) alert("check => json is empty")
+            var jsoncheck = []
+            for (var k = 0; k < all_choices.length; k++) {
+                jsoncheck.push(JSON.stringify(all_choices[k]))
+            }
+            alert("check => "+jsoncheck)
+        }
 
+        const button = document.getElementById('post-btn');
+
+        $("#post-btn").click(function(e) {
+            alert("am clicked")
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('product_options') }}",//post how you get this URL please...
+                data: {array:all_choices},//jQ will sort this out for you
+                success: function(response)
+                {
+                    console.log("sucees");
+                },
+                error: function()
+                {
+                    console.log('an error occured');
+                }
+            });
+        });
 
 
     </script>

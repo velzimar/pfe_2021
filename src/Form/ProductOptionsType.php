@@ -16,7 +16,8 @@ class ProductOptionsType extends AbstractType{
     {
         $builder
             ->add('nom', TextType::class,[
-                'mapped' => false
+                'mapped' => false,
+                'required'=>false,
             ])
             ->add('choices', ChoiceType::class, [
                 'mapped' => false,
