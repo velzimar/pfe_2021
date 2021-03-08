@@ -14,7 +14,10 @@
 {% endblock %}
 
 {% block QuickLink1 %}
-    {{ include('product/_myQuickLinks.html.twig') }}
+    <a class="btn btn-white btn-sm" href="{{ path('myProducts_new') }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span>Crée un nouveau produit</span>
+    </a>
 {% endblock %}
 {% block body %}
     {#
@@ -107,6 +110,13 @@
                                                 <a class="product-remove-btn"
                                                    href="{{ path('myProducts_edit', {'id': product.id}) }}">
                                                     <div class="os-icon os-icon-ui-49"></div>
+                                                </a>
+                                            </div>
+
+                                            <div class="col">
+                                                <a class="product-remove-btn"
+                                                   href="{{ path('thisProductOptions',{'id':product.id}) }}">
+                                                    Options
                                                 </a>
                                             </div>
                                         </div>

@@ -33,6 +33,11 @@ class ProductOptions
      */
     private $product;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $NbMaxSelected;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +75,18 @@ class ProductOptions
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getNbMaxSelected(): ?int
+    {
+        return $this->NbMaxSelected;
+    }
+
+    public function setNbMaxSelected(int $NbMaxSelected): self
+    {
+        $this->NbMaxSelected = $NbMaxSelected;
 
         return $this;
     }

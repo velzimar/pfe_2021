@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use App\Entity\ProductOptions;
 use App\Entity\User;
 use App\Form\ProductOptionsType;
 use App\Repository\ProductOptionsRepository;
+use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,43 +21,43 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ProductOptionsController extends AbstractController
 {
-    /*
-     * @Route("/list", name="product_options")
+    /**
+     * @Route("/{id}/allOptions", name="thisProductOptions", methods={"GET","POST"})
      * @param ProductOptionsRepository $rep
+     * @param Product $product
      * @return Response
      */
-    /*
-    public function index(ProductOptionsRepository $rep): Response
+
+    public function index(ProductOptionsRepository $rep, Product $product): Response
     {
         return $this->render('product_options/index.html.twig', [
             'controller_name' => 'ProductOptionsController',
-            'options' => $rep->findAll()
+            'options' => $rep->findBy(['product' => $product]),
+            'product'=>$product
         ]);
     }
-*/
+
 
     /**
-     * @Route("/new", name="new_option", methods={"GET","POST"})
-     * @param Request $request
+     * @Route("/{id}/new", name="new_option", methods={"GET","POST"})
+     * @param ProductOptionsRepository $rep
+     * @param Product $product
      * @return Response
      */
 
-    public function newOption(Request $request): Response
+    public function newOption( ProductOptionsRepository $rep, Product $product): Response
     {
-        $options = new ProductOptions();
-        /*
-        $form = $this->createForm(ProductOptionsType::class,$options);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($options);
-            $entityManager->flush();
-            return $this->redirectToRoute('product_options');
+        $list = [];
+        $i=0;
+        $options = $rep->findBy(['product' => $product]);
+        foreach ($options as $option){
+            $list[$i]=$option->getNom();
+            $i++;
         }
-        */
+       // dump($list);die();
         return $this->render('product_options/new.html.twig', [
-            //'product' => $options,
-            //'form' => $form->createView()
+            'id' => $product,
+            'optionNames' => $list,
         ]);
     }
 
@@ -63,18 +66,28 @@ class ProductOptionsController extends AbstractController
      * @Route("/list", name="product_options", methods={"GET","POST"})
      * @param Request $request
      * @param ProductOptionsRepository $rep
+     * @return JsonResponse
      */
-    public function ajaxGetProductsAction(Request $request,ProductOptionsRepository $rep): JsonResponse
+    public function ajaxGetProductsAction(Request $request,ProductRepository $rep): JsonResponse
     {
-        $output=array();
+        $product=null;
         $em = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
-            $p = new ProductOptions();
-            $p->setNom("test");
-            $p->setChoices(["test"]);
-            $em->persist($p);
-            $em->flush();
-            dump("aaa");
+            for($i=0;$i<sizeof($request->request->get('array'));$i++){
+                $p = new ProductOptions();
+                dump($request->request->get('array')[$i]["nom"]);
+                dump($request->request->get('array')[$i]["choices"]);
+                dump($request->request->get('array')[$i]["selectedNbChoices"]);
+                dump($request->request->get('array')[$i]["product"]);
+                $p->setNom($request->request->get('array')[$i]["nom"]);
+                $p->setChoices($request->request->get('array')[$i]["choices"]);
+                $p->setNbMaxSelected(intval($request->request->get('array')[$i]["selectedNbChoices"]));
+                $productId=intval($request->request->get('array')[$i]["product"]);
+                $product = $rep->findOneBy(['id'=>$productId]);
+                $p->setProduct($product);
+                $em->persist($p);
+                $em->flush();
+            }
             /*
             $themes = $em->getRepository('WebSiteBackBundle:theme');
             $themes = $themes->findAll();
@@ -87,53 +100,36 @@ class ProductOptionsController extends AbstractController
 
                $response = new Response();*/
             //            return $response->setContent($json);
-            return new JsonResponse($output);
+            return new JsonResponse([
+                'success'  => true,
+                'redirect' => $this->generateUrl('thisProductOptions',[
+                    'id'=> $product,
+                ])
+            ]);
+
 
         }
         return new JsonResponse('no results found', Response::HTTP_NOT_FOUND);
     }
-    /*
+
+    /**
+     * @Route("/admin/{product}/{option}/delete", name="option_delete", methods={"DELETE"}, requirements={"option"=".+"})
+     * @param Request $request
+     * @param Product $product
+     * @param ProductOptions $option
+     * @param ProductOptionsRepository $rep
+     * @return Response
+     */
+    public function delete(Request $request, Product $product,ProductOptions $option, ProductOptionsRepository $rep): Response
     {
-        echo "aaa";
-        return $this->render('product_options/index.html.twig', [
-            'controller_name' => 'ProductOptionsController',
-            'options' => $rep->findAll()
-        ]);
-
-        // This is optional.
-        // Only include it if the function is reserved for ajax calls only.
-
-
-        if(isset($request->request))
-        {
-
-            $template_id = $request->request->get('array');
-            $template_id = intval($template_id);
-            dump("heeeeeeeeeeeeeeeeeere");
-            dump($template_id);die();
-
-            if ($template_id == 0)
-            {
-                // You can customize error messages
-                // However keep in mind that this data is visible client-side
-                // You shouldn't give out clues to what went wrong to potential attackers
-                return new JsonResponse(array(
-                    'status' => 'Error',
-                    'message' => 'Error'),
-                    400);
-            }
-
-            // Check that the template object really exists and fetch it
-
-
-            $templateRepository = $entityManager->getRepository('PinkGeekBundle:Template');
-            $template = $templateRepository->findOneBy(array(
-                'id' => $template_id
-            ));
-
-
+        if ($this->isCsrfTokenValid('delete'.$option->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($option);
+            $entityManager->flush();
         }
 
-
-    }*/
+        return $this->redirectToRoute('thisProductOptions',[
+            'id'=> $product,
+        ],301);
+    }
 }

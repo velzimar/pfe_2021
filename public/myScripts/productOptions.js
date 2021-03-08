@@ -54,6 +54,14 @@ function _save() {
             return
         }
     }
+
+    for (var k = 0; k < option_names.length; k++) {
+        if (option_names[k] === name) {
+            alert("Le nom du l'option doit être unique");
+            document.getElementById("nom").value = null;
+            return
+        }
+    }
     var elements = document.getElementById("product_options_choices");
     let selectedNbChoices = $("#nbChoix option:selected").val();
     var json_obj = {};
@@ -66,7 +74,7 @@ function _save() {
     //alert(results);
     if (results.length > 0) {
         var nom = document.getElementById("nom");
-        json_obj = {nom: nom.value, choices: results, selectedNbChoices: selectedNbChoices};
+        json_obj = {nom: nom.value, choices: results, selectedNbChoices: selectedNbChoices, product:product_id};
         all_choices.push(json_obj);
 
 
@@ -173,10 +181,15 @@ $("#post-btn").click(function (e) {
     e.preventDefault();
     $.ajax({
         type: "POST",
-        url: "{{ path('product_options') }}",//post how you get this URL please...
+        url: "/productOptions/list",//post how you get this URL please...
         data: {array: all_choices},//jQ will sort this out for you
         success: function (response) {
-            console.log("sucees");
+            console.log('aaaaa');
+            if (response.success) {
+                console.log('sucess');
+                window.location.href = response.redirect; // <-- HERE
+            }
+
         },
         error: function () {
             console.log('an error occured');
