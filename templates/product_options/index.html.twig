@@ -59,9 +59,11 @@
                                 <th>Actions</th>
                                 <td>
                                     <div>
-                                        <button class="btn btn-primary" data-num="" name="zz" id="Edit_zz" type="button">
-                                            Modifier
-                                        </button>
+
+                                        <a class="btn btn-white btn-sm" href="{{ path('edit_this_option',{'product':product.id, 'id':option.id}) }}">
+                                            <i class="os-icon os-icon-delivery-box-2"></i>
+                                            <span>Modifier cette option</span>
+                                        </a>
                                         <a class="btn btn-danger" style="color: white" >
                                             <form id="my_form_{{ option.id }}" method="post" action="{{ path('option_delete', {'option': option.id, 'product':option.product.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
                                                 <input type="hidden" name="_method" value="DELETE">

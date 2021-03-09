@@ -2,14 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/myScripts/editProductOptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/product_options/edit.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/myScripts/productOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/myScripts/productOptions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RegistrationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegistrationController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/ProductOptions.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ProductOptions.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/product_options/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product_options/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/new.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +165,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/product_options" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/myScripts" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -175,11 +177,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\myScripts" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\product_options" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\user" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Form" />
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -207,7 +209,8 @@
       <workItem from="1614870010341" duration="24442000" />
       <workItem from="1614950279206" duration="25113000" />
       <workItem from="1615045328765" duration="18394000" />
-      <workItem from="1615212237056" duration="24659000" />
+      <workItem from="1615212237056" duration="24705000" />
+      <workItem from="1615282461077" duration="13329000" />
     </task>
     <servers />
   </component>
@@ -225,17 +228,5 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/public/myScripts/productOptions.js</url>
-          <line>46</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

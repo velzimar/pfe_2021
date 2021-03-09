@@ -1,0 +1,295 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+
+        <li class="breadcrumb-item">
+            <a href="{{ path('myProducts') }}">Mes produits</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('thisProductOptions',{'id':id.id}) }}">Options</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Modifier une option</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <script>
+
+        //alert("aa")
+
+        const product_id = {% if id is defined %}'{{ id.id }}'{% else %} null {% endif %}
+
+        let current_length;
+
+
+        function getJSonObject(value) {
+            return $.parseJSON(value.replace(/&quot;/ig, '"'));
+        }
+        //alert("aa")
+
+        var storeJSON = getJSonObject("{{optionNames|json_encode()}}");
+        var option_names = []
+        $.each(storeJSON, function(k,v){
+            //alert('Key = ' + k + '\n' + 'Value = ' + v);
+            option_names.push(v)
+        });
+        //alert(option_names)
+
+        var le = getJSonObject("{{current_length|json_encode()}}");
+       // alert(le)
+        current_length = le
+        option_id = '{{ option.id }}';
+        alert(option_id)
+
+    </script>
+
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                {{ id.nom }} {{ current_length }}
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                    Options
+                </h5>
+                <div class="form-desc">
+                    Ajouter des options pour votre produit
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="nom">Nom de l'option</label>
+                            <input maxlength="30" id="nom" class='form-control' value="{{ option.nom }}"/>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="nbChoix">Nombre maximum de choix à selectionner</label>
+                            <select id="nbChoix" class="form-control">
+                                {% set i=0 %}
+                                {% for number in option.choices %}
+                                    {% set i=i+1 %}
+                                <option value="{{ i }}"
+                                        {% if i==option.NbMaxSelected %} selected {% endif %}
+                                >{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="input_for_choices">Le choix</label>
+                            <input maxlength="30" id="input_for_choices" class='form-control'/>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="test"></label>
+                            <div id="test" class="row">
+                                <div class="col-sm-3">
+                                    <button style="line-height: 2;" class="btn btn-outline-primary " type="button"
+                                            onclick="_add()">Ajouter
+                                    </button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button style="line-height: 2;" class="btn btn-outline-danger " onclick="_delete()">
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <select id="product_options_choices" readonly="readonly" class="form-control"
+                            multiple="multiple">
+                        {% set i=0 %}
+                        {% for choix in option.choices %}
+                            {% set i=i+1 %}
+                            <option value="{{ choix }}">{{ choix }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-buttons-w">
+                    <div class="row">
+                        <div class="col-auto">
+                            <button hidden class="btn btn-danger " onclick=" _check_json_content()">check json</button>
+                            <a  id="post-btn" class="btn btn-secondary" href="{{ path('thisProductOptions',{'id':id.id}) }}">Terminer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="newOptions_container">
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    {#
+    <script src="{{ asset('/myScripts/editProductOptions.js') }}"></script>
+    #}
+
+    <script>
+
+        var all_choices = [];
+        //var current_length = 0
+        function setCurrent_length(y, selectedElement) {
+            //alert("selectedelement " + selectedElement)
+            let list = $("#nbChoix");
+            list.children().remove().end()
+            current_length = y;
+            for (let i = 1; i <= y; i++) {
+                if (i.toString() === selectedElement) {
+                    // alert("i= " + i + " selected: " + selectedElement)
+
+                    list.append($("<option selected    />").val(i).text(i));
+                } else
+                    list.append($("<option     />").val(i).text(i));
+            }
+            //alert(current_length)
+        }
+
+        function _add() {
+            var x = document.getElementById("product_options_choices");
+            var j = document.getElementById("input_for_choices");
+            if (j.value === null || j.value === "" || j.value.trim() === "") {
+                alert("Inserer le choix")
+                j.value = null;
+                return;
+            }
+            for (i = 0; i < x.length; ++i) {
+                if (x.options[i].value === j.value) {
+                    alert("Choix existe déja");
+                    j.value = null;
+                    return;
+                }
+            }
+            var option = document.createElement("option")
+            option.text = j.value;
+            option.selected = true;
+            x.add(option);
+            j.value = null;
+            setCurrent_length(current_length + 1)
+        }
+
+
+        function _delete() {
+            var x = document.getElementById("product_options_choices");
+            x.remove(x.selectedIndex);
+            setCurrent_length(current_length - 1)
+        }
+
+        function _check_json_content() {
+            if (all_choices.length === 0) alert("check => json is empty")
+            var jsoncheck = []
+            for (var k = 0; k < all_choices.length; k++) {
+                jsoncheck.push(JSON.stringify(all_choices[k]))
+            }
+            alert("check => " + jsoncheck)
+        }
+
+        const button = document.getElementById('post-btn');
+
+
+
+        $("#post-btn").click(function (e) {
+
+            e.preventDefault();
+                var name = document.getElementById("nom").value;
+                if (name === null || name === "" || name.trim() === "") {
+                    alert("Inserer le nom du l'option")
+                    document.getElementById("nom").value = null;
+                    return;
+                }
+
+                for (var k = 0; k < option_names.length; k++) {
+                    if (option_names[k] === name) {
+                        alert("Le nom du l'option doit être unique");
+                        document.getElementById("nom").value = null;
+                        return
+                    }
+                }
+                var elements = document.getElementById("product_options_choices");
+                let selectedNbChoices = $("#nbChoix option:selected").val();
+                var json_obj = {};
+                var results = [];
+                for (var i = 0; i < elements.length; i++) {
+                    var element = elements[i];
+                    //var strSel = element.options[element.selectedIndex].text;
+                    results.push(element.text);
+                }
+                //alert(results);
+                if (results.length > 0) {
+                    var nom = document.getElementById("nom");
+                    json_obj = {nom: nom.value, choices: results, selectedNbChoices: selectedNbChoices, product:product_id};
+                    all_choices[0]=json_obj;
+                } else {
+                    alert("Remplir les choix");
+                    return
+                }
+                //setCurrent_length(0)
+                alert(all_choices[0]["nom"])
+            alert(all_choices[0]["choices"])
+            alert(all_choices[0]["selectedNbChoices"])
+            //alert(all_choices[0]["product"])
+
+alert(all_choices.length);
+
+            if(all_choices.length === 0){
+                $.ajax({
+                    type: "POST",
+                    url: "/productOptions/editOption",//post how you get this URL please...
+                    data: {array: [], product_id: product_id},//jQ will sort this out for you
+                    success: function (response) {
+                        console.log('empty');
+                        if (response.success) {
+                            console.log('sucess');
+                            window.location.href = response.redirect; // <-- HERE
+                        }
+                    },
+                    error: function (response) {
+                        console.log('an error occured');
+                        if (!response.success) {
+                            console.log('fail');
+                        }
+                    }
+                });
+            }
+            $.ajax({
+                type: "POST",
+                url: "/productOptions/editOption",//post how you get this URL please...
+                data: {array: all_choices, product_id: product_id, option_id: parseInt(option_id)},//jQ will sort this out for you
+                success: function (response) {
+                    console.log('a2');
+                    if (response.success) {
+                        console.log('sucess');
+                    //    window.location.href = response.redirect; // <-- HERE
+                    }
+                },
+                error: function (response) {
+                    console.log('error');
+                    if (!response.success) {
+                        console.log('fail');
+                    }
+                },
+                empty: function (empty) {
+                    console.log('empty');
+                    if (!empty.empty) {
+                        console.log('empty');
+                    }
+                }
+            });
+
+
+        });
+
+    </script>
+{% endblock %}

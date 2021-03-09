@@ -44,6 +44,8 @@ class RegistrationController extends AbstractController
                 ]);
             }
             $entityManager = $this->getDoctrine()->getManager();
+            $user->setRoles(["ROLE_SELLER"]);
+            $user->setIsActive(0);
             $entityManager->persist($user);
             $entityManager->flush();
             return $guardHandler->authenticateUserAndHandleSuccess(

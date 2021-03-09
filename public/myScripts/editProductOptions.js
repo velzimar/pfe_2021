@@ -8,7 +8,7 @@ function setCurrent_length(y, selectedElement) {
     current_length = y;
     for (let i = 1; i <= y; i++) {
         if (i.toString() === selectedElement) {
-           // alert("i= " + i + " selected: " + selectedElement)
+            // alert("i= " + i + " selected: " + selectedElement)
 
             list.append($("<option selected    />").val(i).text(i));
         } else

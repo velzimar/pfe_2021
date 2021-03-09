@@ -137,7 +137,7 @@ class User implements UserInterface, Serializable
 
 
     /**
-     * @ORM\Column(type="boolean", options={"default" : false}, nullable=true)
+     * @ORM\Column(type="boolean", options={"default" : false}, nullable=false)
      */
     private $isActive;
 

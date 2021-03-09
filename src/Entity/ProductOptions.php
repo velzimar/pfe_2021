@@ -6,6 +6,12 @@ use App\Repository\ProductOptionsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table(
+ *    name="product_options",
+ *    uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="unique_productId_nom", columns={"nom", "product_id"})
+ *    }
+ * )
  * @ORM\Entity(repositoryClass=ProductOptionsRepository::class)
  */
 class ProductOptions
@@ -29,7 +35,7 @@ class ProductOptions
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="productOptions")
-     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $product;
 

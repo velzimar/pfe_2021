@@ -63,7 +63,6 @@
                     <div class="avatar-w">
                         {% block user_image %}
                             <img alt="" src="{{ vich_uploader_asset(app.user, 'imageFile') }}">
-                            {# <img alt="" src="/img/avatar1.jpg"> #}
                         {% endblock %}
                     </div>
                     <div class="logged-user-info-w">
@@ -71,7 +70,7 @@
                             {{ app.user.nom }}
                         </div>
                         <div class="logged-user-role">
-
+                            {{ app.user.getMainRole }}
                         </div>
                     </div>
                 </div>
