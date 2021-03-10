@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/myScripts/userProductOptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/product_options/admin/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/product_options/admin/new.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/myScripts/editProductOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/myScripts/editProductOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/ProductType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ProductType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/myProducts_show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/myProducts_show.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product_options/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/userProducts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/userProducts.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,10 +175,10 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\myScripts" />
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\product_options\admin" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\product_options" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\user" />
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Form" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -207,7 +208,7 @@
       <workItem from="1615045328765" duration="18394000" />
       <workItem from="1615212237056" duration="24705000" />
       <workItem from="1615282461077" duration="14529000" />
-      <workItem from="1615388087414" duration="9503000" />
+      <workItem from="1615388087414" duration="12138000" />
     </task>
     <servers />
   </component>

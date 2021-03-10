@@ -67,7 +67,9 @@
                                     Prix <strong>(dt)</strong>
                                 </th>
                                 <th>
+                                </th>
 
+                                <th>
                                 </th>
                             </tr>
                             </thead>
@@ -104,6 +106,15 @@
                                         </div>
                                     </td>
                                     <td>
+
+                                        <div class="col">
+                                            <a class="product-remove-btn"
+                                               href="{{ path('userProductOptions',{'id':product.id, 'user':userId}) }}">
+                                                Options
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="row row-actions" style="border-top:none ;border-bottom:none">
                                             <div class="col">
                                                 <a class="product-remove-btn"
@@ -115,12 +126,6 @@
                                                 <a class="product-remove-btn"
                                                    href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">
                                                     <div class="os-icon os-icon-ui-49"></div>
-                                                </a>
-                                            </div>
-                                            <div class="col">
-                                                <a class="product-remove-btn"
-                                                   href="{{ path('thisProductOptions',{'id':product.id}) }}">
-                                                    Options
                                                 </a>
                                             </div>
                                         </div>

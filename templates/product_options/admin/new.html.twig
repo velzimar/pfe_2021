@@ -1,0 +1,308 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        <li class="breadcrumb-item">
+            <a href="{{ path('product_index_user', {'userId': user }) }}">Produits</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('userProductOptions',{'id':id.id, 'user':user}) }}">Options</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Ajouter une option</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <script>
+
+        const user_id = '{{ user.id }}'
+        alert(user_id)
+
+        const product_id = {% if id is defined %}'{{ id.id }}'{% else %} null {% endif %}
+
+        function getJSonObject(value) {
+            return $.parseJSON(value.replace(/&quot;/ig, '"'));
+        }
+
+        var storeJSON = getJSonObject("{{optionNames|json_encode()}}");
+        var option_names = []
+        $.each(storeJSON, function(k,v){
+            //alert('Key = ' + k + '\n' + 'Value = ' + v);
+            option_names.push(v)
+        });
+        alert(option_names)
+    </script>
+
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Option pour le produit {{ id.nom }} pour le vendeur {{ user.nom }} {{ user.prenom }}
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                    Options
+                </h5>
+                <div class="form-desc">
+                    Ajouter des options pour un produit
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="nom">Nom de l'option</label>
+                            <input maxlength="30" id="nom" class='form-control'/>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label for="nbChoix">Nombre maximum de choix à selectionner</label>
+                            <select id="nbChoix" class="form-control"></select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="input_for_choices">Le choix</label>
+                            <input maxlength="30" id="input_for_choices" class='form-control'/>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="test"></label>
+                            <div id="test" class="row">
+                                <div class="col-sm-3">
+                                    <button style="line-height: 2;" class="btn btn-outline-primary " type="button"
+                                            onclick="_add()">Ajouter
+                                    </button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button style="line-height: 2;" class="btn btn-outline-danger " onclick="_delete()">
+                                        Supprimer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <select id="product_options_choices" readonly="readonly" class="form-control"
+                            multiple="multiple"></select>
+                </div>
+                <div class="form-buttons-w">
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <button class="btn btn-outline-secondary " onclick="_save()">Ajouter cette option</button>
+                        </div>
+                        <div class="col-auto">
+                            <button hidden class="btn btn-danger " onclick=" _check_json_content()">check json</button>
+                            <button  id="post-btn" class="btn btn-secondary" >Terminer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" id="newOptions_container">
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('/myScripts/userProductOptions.js') }}"></script>
+    {#
+    <script>
+
+        var all_choices = [];
+        let current_length = 0
+
+        function setCurrent_length(y, selectedElement) {
+            alert("selectedelement " + selectedElement)
+            let list = $("#nbChoix");
+            list.children().remove().end()
+            current_length = y;
+            for (let i = 1; i <= y; i++) {
+                if (i.toString() === selectedElement) {
+                    alert("i= " + i + " selected: " + selectedElement)
+
+                    list.append($("<option selected    />").val(i).text(i));
+                } else
+                    list.append($("<option     />").val(i).text(i));
+            }
+            alert(current_length)
+        }
+
+        function _add() {
+            var x = document.getElementById("product_options_choices");
+            var j = document.getElementById("input_for_choices");
+            if (j.value === null || j.value === "" || j.value.trim() === "") {
+                alert("Inserer le choix")
+                j.value = null;
+                return;
+            }
+            for (i = 0; i < x.length; ++i) {
+                if (x.options[i].value === j.value) {
+                    alert("existe deja");
+                    j.value = null;
+                    return;
+                }
+            }
+            var option = document.createElement("option")
+            option.text = j.value;
+            option.selected = true;
+            x.add(option);
+            j.value = null;
+            setCurrent_length(current_length + 1)
+        }
+
+        function _save() {
+            var name = document.getElementById("nom").value;
+            if (name === null || name === "" || name.trim() === "") {
+                alert("Inserer le nom d'option")
+                document.getElementById("nom").value = null;
+                return;
+            }
+            for (var f = 0; f < all_choices.length; f++) {
+                if (all_choices[f]['nom'] === name) {
+                    alert("nom existe deja");
+                    document.getElementById("nom").value = null;
+                    return
+                }
+            }
+            var elements = document.getElementById("product_options_choices");
+            let selectedNbChoices = $("#nbChoix option:selected").val();
+            var json_obj = {};
+            var results = [];
+            for (var i = 0; i < elements.length; i++) {
+                var element = elements[i];
+                //var strSel = element.options[element.selectedIndex].text;
+                results.push(element.text);
+            }
+            //alert(results);
+            if (results.length > 0) {
+                var nom = document.getElementById("nom");
+                json_obj = {nom: nom.value, choices: results, selectedNbChoices: selectedNbChoices};
+                all_choices.push(json_obj);
+
+
+                var choicesElement = "<div class='element-box' id='row_for_" + nom.value + "' ><div class='form-desc'><table class='table'><tbody><tr><th>Nom du l'option</th><td>" + nom.value + "</td></tr><tr><th>Les choix</th><td><ul id='choices_for_azeae'>"
+                results.forEach(option => choicesElement += "<li style='width:100%;word-break:break-all;overflow-wrap: break-word;height: fit-content;'><h5 style='color: #ccd9e8;'><h6>" + option + "</h6></li>");
+                choicesElement += "</ul></td></tr><tr><th>Nombre maximum de choix à selectionner</th><td>" + selectedNbChoices + "</td></tr><tr><th>Actions</th><td><div>"
+                choicesElement += "<button class='btn btn-primary' data-num='' name='" + nom.value + "' id='Edit_" + nom.value + "' type='button' '>Modifier</button><button class='btn btn-danger' data-num='' id='Delete_" + nom.value + "' type='button' '>Supprimer</button></div></td></tr></tbody></table></div></div>"
+                $("#newOptions_container").append(choicesElement);
+
+
+                editElement = $("#Edit_" + nom.value)
+                editElement.data("num", json_obj);
+                editElement.on("click", function () {
+                    var jsonObj = $(this).data("num");
+                    var choicesElement = document.getElementById("product_options_choices")
+                    var choicesInputElement = document.getElementById("input_for_choices")
+                    var nomElement = document.getElementById("nom")
+                    //clearing old choices
+                    $('#product_options_choices').children().remove().end()
+                    nomElement.value = null;
+                    choicesInputElement.value = null;
+                    //adding the selected object choices to the element for edit
+                    alert("heeeeere" + jsonObj["selectedNbChoices"])
+                    setCurrent_length(jsonObj["choices"].length, jsonObj["selectedNbChoices"])
+                    for (var x = 0; x < jsonObj["choices"].length; x++) {
+                        var opt = document.createElement('option');
+                        opt.appendChild(document.createTextNode(jsonObj["choices"][x]));
+                        opt.value = x;
+                        opt.selected = true;
+                        choicesElement.appendChild(opt);
+                    }
+                    //adding the selected object name for edit
+                    nomElement.value = jsonObj["nom"];
+                    //delete from json
+                    for (var t = 0; t < all_choices.length; t++) {
+                        //alert($(this).data("num")["nom"])
+                        if (all_choices[t]["nom"] === $(this).data("num")["nom"]) {
+                            all_choices.splice(t, 1)
+                            t--
+                        }
+                    }
+                    document.getElementById("row_for_" + $(this).data('num')['nom']).remove();
+                });
+
+
+                editElement = $("#Delete_" + nom.value)
+                editElement.data("num", json_obj);
+                editElement.on("click", function () {
+                    //alert("the element is"+JSON.stringify($(this).data("num")))
+                    /*
+                    for (var k = 0; k < all_choices.length; k++) {
+                        alert("current table"+JSON.stringify(all_choices[k]))
+                    }
+                    */
+                    //delete from json
+                    for (var t = 0; t < all_choices.length; t++) {
+                        //alert($(this).data("num")["nom"])
+                        if (all_choices[t]["nom"] === $(this).data("num")["nom"]) {
+                            all_choices.splice(t, 1)
+                            t--
+                        }
+                    }
+                    /*
+                    for (var k2 = 0; k2 < all_choices.length; k2++) {
+                        alert("after delete table"+JSON.stringify(all_choices[k2]))
+                    }
+
+                     */
+                    //delete from view
+                    document.getElementById("row_for_" + $(this).data('num')['nom']).remove();
+                });
+
+            } else {
+                alert("choix ne doit pas etre vide");
+                return
+            }
+            $('#product_options_choices').children().remove().end()
+            document.getElementById("input_for_choices").value = null;
+            document.getElementById("nom").value = null;
+
+            setCurrent_length(0)
+        }
+
+        function _delete() {
+            var x = document.getElementById("product_options_choices");
+            x.remove(x.selectedIndex);
+            setCurrent_length(current_length - 1)
+        }
+
+        function _check_json_content() {
+            if (all_choices.length === 0) alert("check => json is empty")
+            var jsoncheck = []
+            for (var k = 0; k < all_choices.length; k++) {
+                jsoncheck.push(JSON.stringify(all_choices[k]))
+            }
+            alert("check => " + jsoncheck)
+        }
+
+        const button = document.getElementById('post-btn');
+
+        $("#post-btn").click(function (e) {
+            alert("am clicked")
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('product_options') }}",//post how you get this URL please...
+                data: {array: all_choices},//jQ will sort this out for you
+                success: function (response) {
+                    console.log("sucees");
+                },
+                error: function () {
+                    console.log('an error occured');
+                }
+            });
+        });
+
+
+    </script>
+    #}
+{% endblock %}

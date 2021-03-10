@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\ProductOptionsType;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,6 +38,23 @@ class ProductOptionsController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/user_{user}/product_{id}/allOptions", name="userProductOptions", methods={"GET","POST"})
+     * @param ProductOptionsRepository $rep
+     * @param User $user
+     * @param Product $product
+     * @return Response
+     */
+
+    public function userProductOption(ProductOptionsRepository $rep, User $user,Product $product): Response
+    {
+        return $this->render('product_options/admin/index.html.twig', [
+            'controller_name' => 'ProductOptionsController',
+            'options' => $rep->findBy(['product' => $product]),
+            'product'=>$product,
+            'user'=>$user
+        ]);
+    }
 
     /**
      * @Route("/myOptions/{id}/new", name="new_option", methods={"GET","POST"})
@@ -59,6 +77,32 @@ class ProductOptionsController extends AbstractController
             'optionNames' => $list,
         ]);
     }
+
+
+    /**
+     * @Route("/admin/user_{user}/product_{id}/new", name="user_new_option", methods={"GET","POST"})
+     * @param ProductOptionsRepository $rep
+     * @param User $user
+     * @param Product $product
+     * @return Response
+     */
+    public function userNewOption( ProductOptionsRepository $rep, User $user ,Product $product): Response
+    {
+        $list = [];
+        $i=0;
+        $options = $rep->findBy(['product' => $product]);
+        foreach ($options as $option){
+            $list[$i]=$option->getNom();
+            $i++;
+        }
+        // dump($list);die();
+        return $this->render('product_options/admin/new.html.twig', [
+            'id' => $product,
+            'optionNames' => $list,
+            'user' => $user
+        ]);
+    }
+
 
     /**
      * @Route("/admin/{id}/new", name="new_option_for_admin", methods={"GET","POST"})
@@ -165,6 +209,67 @@ class ProductOptionsController extends AbstractController
             'success'  => false,
         ]);
     }
+
+    /**
+     * @Route("/admin/new", name="user_product_options", methods={"GET","POST"})
+     * @param Request $request
+     * @param UserRepository $userRep
+     * @param ProductOptionsRepository $opRep
+     * @param ProductRepository $rep
+     * @return JsonResponse
+     */
+    public function userAjaxGetProductsAction(Request $request,UserRepository $userRep,ProductOptionsRepository $opRep,ProductRepository $rep): JsonResponse
+    {
+        $product=null;
+        $em = $this->getDoctrine()->getManager();
+        if ($request->isXmlHttpRequest()) {
+            $product = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
+            $user = $userRep->findOneBy(['id'=>$request->request->get('user_id')]);
+          // dump($user);die();
+            if($request->request->get('array')==[]){
+                $product = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
+                return new JsonResponse([
+                    'success'  => true,
+                    'redirect' => $this->generateUrl('userProductOptions',[
+                        'id'=> $product,
+                        'user'=> $user
+                    ])
+                ]);
+            }else{
+                for($i=0;$i<sizeof($request->request->get('array'));$i++){
+                    $op = null;
+                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"]]);
+                    if($op!=null){
+                        continue;
+                    }
+                    $p = new ProductOptions();
+                    dump($request->request->get('array')[$i]["nom"]);
+                    dump($request->request->get('array')[$i]["choices"]);
+                    dump($request->request->get('array')[$i]["selectedNbChoices"]);
+                    dump($request->request->get('array')[$i]["product"]);
+                    $p->setNom($request->request->get('array')[$i]["nom"]);
+                    $p->setChoices($request->request->get('array')[$i]["choices"]);
+                    $p->setNbMaxSelected(intval($request->request->get('array')[$i]["selectedNbChoices"]));
+                    $productId=intval($request->request->get('array')[$i]["product"]);
+                    $product = $rep->findOneBy(['id'=>$productId]);
+                    $p->setProduct($product);
+                    $em->persist($p);
+                    $em->flush();
+                }
+                return new JsonResponse([
+                    'success'  => true,
+                    'redirect' => $this->generateUrl('userProductOptions',[
+                        'id'=> $product,
+                        'user'=> $user
+                    ])
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+
 
     /**
      * @Route("/editOption", name="edit_product_options", methods={"GET","POST"})
