@@ -15,13 +15,15 @@
     </ul>
 {% endblock %}
 
-
 {% block QuickLink1 %}
     {{ include('product/_myQuickLinks.html.twig') }}
+    <a class="btn btn-white btn-sm" href="{{ path('myProducts_edit', {'id': product.id}) }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span>Modifier ce produit</span>
+    </a>
     {{ include('product/myDelete_form.html.twig') }}
 {% endblock %}
 {% block body %}
-
     <div class="col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
@@ -56,71 +58,27 @@
                         </tr>
                         <tr>
                             <th>Catégorie</th>
-                            <td>{{ product.category }}</td>
-                        </tr>
-                        <tr>
-                            <th>Image</th>
                             <td>
-                                {% if product.filename %}
-                                    <img alt="" src= "{{ vich_uploader_asset(product, 'imageFile') }}" >
-                                {% else %}
-                                    <img src="{{ asset('/img/bigicon1.png') }}" alt="card-img-top" style="width: 100%; height: auto">
-                                {% endif %}
+                                <a class="product-remove-btn"
+                                   href="{{ path('myProductCategories_show', {'id':product.category.id}) }}">
+                                    {{ product.category }}
+                                </a>
                             </td>
                         </tr>
+
+                        {% if product.filename %}
+                            <tr>
+                                <th>Image</th>
+                                <td>
+                                    <img alt="" src="{{ vich_uploader_asset(product, 'imageFile') }}">
+                                </td>
+                            </tr>
+                        {% endif %}
                         </tbody>
                     </table>
-
                 </div>
-
-
             </div>
         </div>
     </div>
 
 {% endblock %}
-{#
-{% block body %}
-    <h1>Product</h1>
-
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ product.id }}</td>
-        </tr>
-        <tr>
-            <th>Nom</th>
-            <td>{{ product.nom }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ product.description }}</td>
-        </tr>
-        <tr>
-            <th>Prix</th>
-            <td>{{ product.prix }}</td>
-        </tr>
-        <tr>
-            <th>Qtt</th>
-            <td>{{ product.qtt }}</td>
-        </tr>
-        <tr>
-            <th>Catégorie</th>
-            <td>{{ product.category }}</td>
-        </tr>
-        <tr>
-            <th>Image</th>
-            <td>
-                {% if product.filename %}
-                    <img alt="" src= "{{ vich_uploader_asset(product, 'imageFile') }}" >
-                {% else %}
-                    <img src="{{ asset('/img/bigicon1.png') }}" alt="card-img-top" style="width: 100%; height: auto">
-                {% endif %}
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-{% endblock %}
-#}
