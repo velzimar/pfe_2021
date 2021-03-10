@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/myScripts/userProductOptions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product_options/admin/index.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/product_options/admin/new.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/myScripts/userEditProductOptions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/product_options/admin/edit.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/userProducts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/userProducts.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product_options/admin/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/admin/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +161,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/myScripts" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/product_options/admin" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -174,8 +173,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\myScripts" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\product_options\admin" />
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\myScripts" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\product_options" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\user" />
@@ -208,7 +207,8 @@
       <workItem from="1615045328765" duration="18394000" />
       <workItem from="1615212237056" duration="24705000" />
       <workItem from="1615282461077" duration="14529000" />
-      <workItem from="1615388087414" duration="12138000" />
+      <workItem from="1615388087414" duration="16106000" />
+      <workItem from="1615407220480" duration="1293000" />
     </task>
     <servers />
   </component>
