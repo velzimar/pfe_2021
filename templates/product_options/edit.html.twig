@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}New Product{% endblock %}
+{% block QuickLink1 %}
+    <a class="btn btn-white btn-sm" href="{{ path('new_option',{'id':id.id}) }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span>Ajouter une nouvelle option</span>
+    </a>
+{% endblock %}
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
@@ -271,7 +277,7 @@ alert(all_choices.length);
                     console.log('a2');
                     if (response.success) {
                         console.log('sucess');
-                    //    window.location.href = response.redirect; // <-- HERE
+                        window.location.href = response.redirect; // <-- HERE
                     }
                 },
                 error: function (response) {

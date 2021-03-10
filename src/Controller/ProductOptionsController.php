@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductOptionsController extends AbstractController
 {
     /**
-     * @Route("/{id}/allOptions", name="thisProductOptions", methods={"GET","POST"})
+     * @Route("/myOptions/{id}/allOptions", name="thisProductOptions", methods={"GET","POST"})
      * @param ProductOptionsRepository $rep
      * @param Product $product
      * @return Response
@@ -39,7 +39,7 @@ class ProductOptionsController extends AbstractController
 
 
     /**
-     * @Route("/{id}/new", name="new_option", methods={"GET","POST"})
+     * @Route("/myOptions/{id}/new", name="new_option", methods={"GET","POST"})
      * @param ProductOptionsRepository $rep
      * @param Product $product
      * @return Response
@@ -60,9 +60,31 @@ class ProductOptionsController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/admin/{id}/new", name="new_option_for_admin", methods={"GET","POST"})
+     * @param ProductOptionsRepository $rep
+     * @param Product $product
+     * @return Response
+     */
+    public function newOptionForAdmin( ProductOptionsRepository $rep, Product $product): Response
+    {
+        $list = [];
+        $i=0;
+        $options = $rep->findBy(['product' => $product]);
+        foreach ($options as $option){
+            $list[$i]=$option->getNom();
+            $i++;
+        }
+        // dump($list);die();
+        return $this->render('product_options/new.html.twig', [
+            'id' => $product,
+            'optionNames' => $list,
+        ]);
+    }
+
 
     /**
-     * @Route("/{product}/{id}/edit", name="edit_this_option", methods={"GET","POST"})
+     * @Route("/myOptions/{product}/{id}/edit", name="edit_this_option", methods={"GET","POST"})
      * @param ProductOptionsRepository $rep
      * @param Product $product
      * @param ProductOptions $product_options
@@ -194,7 +216,7 @@ class ProductOptionsController extends AbstractController
     }
 
     /**
-     * @Route("/admin/{product}/{option}/delete", name="option_delete", methods={"DELETE"}, requirements={"option"=".+"})
+     * @Route("/myOptions/{product}/{option}/delete", name="option_delete", methods={"DELETE"}, requirements={"option"=".+"})
      * @param Request $request
      * @param Product $product
      * @param ProductOptions $option

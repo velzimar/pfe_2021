@@ -61,6 +61,9 @@
                                     Prix (dt)
                                 </th>
                                 <th>
+                                    Options
+                                </th>
+                                <th>
                                     Actions
                                 </th>
                             </tr>
@@ -99,6 +102,15 @@
                                         </div>
                                     </td>
                                     <td>
+
+                                        <div class="col">
+                                            <a class="product-remove-btn"
+                                               href="{{ path('thisProductOptions',{'id':product.id}) }}">
+                                                Options
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
                                         <div class="row row-actions" style="border-top:none ;border-bottom:none">
                                             <div class="col">
                                                 <a class="product-remove-btn"
@@ -113,12 +125,6 @@
                                                 </a>
                                             </div>
 
-                                            <div class="col">
-                                                <a class="product-remove-btn"
-                                                   href="{{ path('thisProductOptions',{'id':product.id}) }}">
-                                                    Options
-                                                </a>
-                                            </div>
                                         </div>
                                     </td>
                                 </tr>

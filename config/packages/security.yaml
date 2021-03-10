@@ -48,8 +48,10 @@ security:
          - { path: ^/deal/admin/, roles: ROLE_ADMIN }
          - { path: ^/dealCategory/admin/, roles: ROLE_ADMIN }
          - { path: ^/user/admin/, roles: ROLE_ADMIN }
+         - { path: ^/productOptions/admin/, roles: ROLE_ADMIN }
             #For sellers
          - { path: ^/deal/myDeals/, roles: ROLE_SELLER }
          - { path: ^/dealCategory/myDealCategories/, roles: ROLE_SELLER }
          - { path: ^/product/myProducts/, roles: ROLE_SELLER }
          - { path: ^/productCategory/myProductCategories/, roles: ROLE_SELLER }
+         - { path: ^/productOptions/myOptions/, roles: ROLE_SELLER }
