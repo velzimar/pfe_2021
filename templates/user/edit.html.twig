@@ -375,7 +375,7 @@
                         </div>
 
                         <div class="col-auto">
-                            <button class="btn" type="reset">Reset</button>
+                            <button class="btn" type="reset">Annuler</button>
                         </div>
                         {{ form_end(form) }}
                     </div>
@@ -387,7 +387,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
+{#     <script>
         admin = $("#admin_checkbox")
         seller = $("#seller_checkbox")
         admin_div = admin.children('div')
@@ -421,8 +421,8 @@
                 deleteMarkers();
                 addMarker(event.latLng);
 
-                document.getElementById("user_longitude").value = event.latLng.lng().toFixed(7);
-                document.getElementById("user_latitude").value = event.latLng.lat().toFixed(8);
+                document.getElementById("edit_user_longitude").value = event.latLng.lng().toFixed(7);
+                document.getElementById("edit_user_latitude").value = event.latLng.lat().toFixed(8);
                 $("#lat").val(event.latLng.lat().toFixed(8));
                 $("#lng").val(event.latLng.lng().toFixed(7));
                 fetchLocationName(event.latLng.lat(), event.latLng.lng());
@@ -474,6 +474,11 @@
                 });
         }
     </script>
+#}
+
+
+    <script src="{{ asset("/myScripts/user/editUser.js") }}"></script>
+
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBGbVdDprMqKm8-WHOBC8u3GIXrBWbJxw&callback=initMap">
     </script>

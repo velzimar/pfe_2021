@@ -16,7 +16,6 @@
 {% endblock %}
 {% block body %}
 
-
     <div id="App">
         <div class="auth-wrapper">
             <div class="all-wrapper menu-side with-pattern">
@@ -79,21 +78,29 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        {{ form_row(registrationForm.imageFile,{
-                            'label':"Image",
-                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
-                        }) }}
-                    </div>
+                    <div class="row">
 
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                {{ form_label(registrationForm.imageFile,null,{
+                                    'label':'Image',
+                                    'label_attr': {'class': 'custom-file-label','for':'registration_form_imageFile_file'}
+                                }) }}
+                                {{ form_widget(registrationForm.imageFile) }}
+
+                                <script>
+                                    $("#registration_form_imageFile_file").addClass("custom-file-input")
+                                </script>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 {{ form_row(registrationForm.plainPassword,{
                                     'label':"Mot de passe",
                                     'attr': {'class': 'form-control' ,'placeholder':"Mot de passe" , 'type':"password" }}
-                                )
-                                }}
+                                ) }}
                                 <input type="hidden" name="_csrf_token"
                                        value="{{ csrf_token('authenticate') }}"
                                 >
@@ -108,8 +115,7 @@
                                 {{ form_row(registrationForm.confirm,{
                                     'label':"Confirmer",
                                     'attr': {'class': 'form-control' ,'placeholder':"Confirmer" , 'type':"password" }}
-                                )
-                                }}
+                                ) }}
                             </div>
                         </div>
                     </div>
@@ -150,14 +156,15 @@
                                         <div id="map"></div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                        </button>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 "  align="center">
+                            <div class="col-sm-12 " align="center">
                                 <div class="form-group">
                                     <div type="button" class="os-icon os-icon-map-pin" data-toggle="modal"
                                          data-target="#myModal">
@@ -171,7 +178,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <div class="form-group" >Longitude:
+                                <div class="form-group">Longitude:
                                     <input type="text" id="lng" readonly="readonly" class="form-control" value="">
 
                                 </div>
@@ -183,7 +190,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-12">
-                                <div class="form-group" >Latitude:
+                                <div class="form-group">Latitude:
                                     <input type="text" id="lat" readonly="readonly" class="form-control" value="">
                                 </div>
                                 <div class="form-group" hidden>
@@ -199,110 +206,17 @@
                         <button class="btn btn-primary disabled" type="submit"> Enregistrer</button>
                         <button class="btn" type="reset">Annuler</button>
                     </div>
-
                     {{ form_end(registrationForm) }}
 
                 </div>
             </div>
         </div>
     </div>
-{#
-    <h1>Crée un compte</h1>
-        {{ form_row(registrationForm.nom) }}
-        {{ form_row(registrationForm.prenom) }}
-        {{ form_row(registrationForm.cin) }}
-        {{ form_row(registrationForm.phone) }}
-        {{ form_row(registrationForm.businessName) }}
-        {{ form_row(registrationForm.businessDescription) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-            {{ form_row(registrationForm.confirm) }}
-        {{ form_row(registrationForm.imageFile) }}
-          { form_row(registrationForm.admin) }
-        <button type="submit" class="btn">Register</button>
-#}
 
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        /*
-        $(document).ready(function () {
-            $('#formDepot').click(function () {
-                alert("aaa");
-                document.getElementById("product_qtt").value = 1151;
-            });
-        });
-        */
-        let map;
-        let markers = [];
-
-        function initMap() {
-            const uluru = {lat: 36.69858, lng: 10.14278};
-            map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 12,
-                center: uluru,
-                mapTypeId: "terrain",
-            });
-            map.addListener("click", (event) => {
-                alert("Latitude: " + event.latLng.lat() + " " + ", longitude: " + event.latLng.lng());
-                deleteMarkers();
-                addMarker(event.latLng);
-                document.getElementById("registration_form_longitude").value = event.latLng.lng().toFixed(7);
-                document.getElementById("registration_form_latitude").value = event.latLng.lat().toFixed(8);
-                $("#lat").val(event.latLng.lat().toFixed(8));
-                $("#lng").val(event.latLng.lng().toFixed(7));
-                fetchLocationName(event.latLng.lat(),event.latLng.lng());
-            });
-        }
-
-        function setMapOnAll(map) {
-            for (let i = 0; i < markers.length; i++) {
-                markers[i].setMap(map);
-            }
-        }
-
-        function clearMarkers() {
-            setMapOnAll(null);
-        }
-
-        function showMarkers() {
-            setMapOnAll(map);
-        }
-
-        function addMarker(location) {
-            const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-            });
-            markers.push(marker);
-        }
-
-        function deleteMarkers() {
-            clearMarkers();
-            markers = [];
-        }
-
-        // we take adminArea5 as neighborhood  and adminArea3 as county
-        async function fetchLocationName(lat,lng) {
-            await fetch(
-                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location='+lat+'%2C'+lng+'&outFormat=json&thumbMaps=false',
-            )
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    let x = JSON.stringify(responseJson)
-                    console.log(
-                        //'ADDRESS GEOCODE is BACK!! => ' + x,
-                        'for me => ' + responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5,
-                    );
-                    $("#loc").val(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5)
-                    $("#loc").html(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5);
-                });
-        };
-    </script>
-    {#
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> #}
+    <script  src="{{ asset('/myScripts/user/register.js') }}"></script>
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBGbVdDprMqKm8-WHOBC8u3GIXrBWbJxw&callback=initMap">
     </script>

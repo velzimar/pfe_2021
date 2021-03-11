@@ -131,7 +131,7 @@
                     <legend><span>Affaire</span></legend>
                     <div class="form-group">
                         {{ form_row(form.businessName,{
-                            'label':"Nom",
+                            'label':"Nom commercial",
                             'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
                         }) }}
                     </div>
@@ -243,26 +243,23 @@
                 <fieldset class="form-group">
                     <legend><span>Administration</span></legend>
                     {% if is_granted('ROLE_SUPER') %}
-                        <div class="form-group">
+                        <div id="admin_checkbox">
                             {{ form_row(form.admin,{
-                                'label':"Administrateur",
-                                'attr': {'class': 'form-control'  }
+                                'label':"Administrateur"
                             }) }}
                         </div>
-                        <div class="form-group">
+                        <div id="seller_checkbox">
                             {{ form_row(form.vendeur,{
-                                'label':"Vendeur",
-                                'attr': {'class': 'form-control'  }
+                                'label':"Vendeur"
                             }) }}
                         </div>
                     {% else %}
                         {% do form.admin.setRendered %}
                         {% do form.vendeur.setRendered %}
                     {% endif %}
-                    <div class="form-group">
+                    <div id="active_checkbox">
                         {{ form_row(form.isActive,{
-                            'label':"Activation du compte",
-                            'attr': {'class': 'form-control'   }
+                            'label':"Activation du compte"
                         }) }}
                     </div>
                 </fieldset>
@@ -270,8 +267,11 @@
                 <div class="form-buttons-w">
                     <div class="row">
                         <div class="col-auto mr-auto">
-                            <button class="btn btn-primary disabled" type="submit"> Mettre à jour</button>
-                            <button class="btn" type="reset">Reset</button>
+                            <button class="btn btn-primary " type="submit"> Mettre à jour</button>
+                        </div>
+
+                        <div class="col-auto">
+                            <button class="btn" type="reset">Annuler</button>
                         </div>
                         {{ form_end(form) }}
                     </div>
@@ -284,84 +284,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        /*
-        $(document).ready(function () {
-            $('#formDepot').click(function () {
-                alert("aaa");
-                document.getElementById("product_qtt").value = 1151;
-            });
-        });
-        */
-        let map;
-        let markers = [];
 
-        function initMap() {
-            const uluru = {lat: 36.69858, lng: 10.14278};
-            map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 12,
-                center: uluru,
-                mapTypeId: "terrain",
-            });
-            map.addListener("click", (event) => {
-                alert("Latitude: " + event.latLng.lat() + " " + ", longitude: " + event.latLng.lng());
-                deleteMarkers();
-                addMarker(event.latLng);
-
-                document.getElementById("user_longitude").value = event.latLng.lng().toFixed(7);
-                document.getElementById("user_latitude").value = event.latLng.lat().toFixed(8);
-                $("#lat").val(event.latLng.lat().toFixed(8));
-                $("#lng").val(event.latLng.lng().toFixed(7));
-                fetchLocationName(event.latLng.lat(), event.latLng.lng());
-            });
-        }
-
-        function setMapOnAll(map) {
-            for (let i = 0; i < markers.length; i++) {
-                markers[i].setMap(map);
-            }
-        }
-
-        function clearMarkers() {
-            setMapOnAll(null);
-        }
-
-        function showMarkers() {
-            setMapOnAll(map);
-        }
-
-        function addMarker(location) {
-            const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-            });
-            markers.push(marker);
-        }
-
-        function deleteMarkers() {
-            clearMarkers();
-            markers = [];
-        }
-
-        // we take adminArea5 as neighborhood  and adminArea3 as county
-        async function fetchLocationName(lat, lng) {
-            await fetch(
-                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location=' + lat + '%2C' + lng + '&outFormat=json&thumbMaps=false',
-            )
-                .then((response) => response.json())
-                .then((responseJson) => {
-                    let x = JSON.stringify(responseJson)
-                    console.log(
-                        //'ADDRESS GEOCODE is BACK!! => ' + x,
-                        'for me => ' + responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5,
-                    );
-                    $("#loc").val(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5)
-                    $("#loc").html(responseJson.results[0].locations[0].adminArea3 + ", " + responseJson.results[0].locations[0].adminArea5);
-                });
-        };
-    </script>
-    {#
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> #}
+    <script href="{{ asset('/myScripts/user/newUser.js') }}"> </script>
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBGbVdDprMqKm8-WHOBC8u3GIXrBWbJxw&callback=initMap">
     </script>

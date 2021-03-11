@@ -156,8 +156,10 @@ class UserController extends AbstractController
     {
         $lastMail = $user->getEmail();
         $isAdmin = $user->hasRole("ROLE_ADMIN");
+        $isSeller = $user->hasRole("ROLE_SELLER");
         $form = $this->createForm(EditUserType::class, $user);
         $form->get('admin')->setData($isAdmin);
+        $form->get('vendeur')->setData($isSeller);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -167,6 +169,14 @@ class UserController extends AbstractController
             } else {
 
                 $user->removeRoles('ROLE_ADMIN');
+            }
+
+            if ($form->get('vendeur')->getData() == true) {
+
+                $user->addRole('ROLE_SELLER');
+            } else {
+
+                $user->removeRoles('ROLE_SELLER');
             }
             $manager = $this->getDoctrine()->getManager();
             $manager->flush();
