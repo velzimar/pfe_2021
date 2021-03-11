@@ -161,6 +161,11 @@ class User implements UserInterface, Serializable
 
     private $NotSeenReceivedNotifications;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Delivery::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $delivery;
+
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
@@ -677,6 +682,28 @@ class User implements UserInterface, Serializable
                 $receivedNotification->setReceiver(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDelivery(): ?Delivery
+    {
+        return $this->delivery;
+    }
+
+    public function setDelivery(?Delivery $delivery): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($delivery === null && $this->delivery !== null) {
+            $this->delivery->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($delivery !== null && $delivery->getUser() !== $this) {
+            $delivery->setUser($this);
+        }
+
+        $this->delivery = $delivery;
 
         return $this;
     }
