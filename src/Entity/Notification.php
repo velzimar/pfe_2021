@@ -19,6 +19,7 @@ class Notification
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $sender;
 

@@ -43,6 +43,9 @@
             <i class="os-icon os-icon-delivery-box-2"></i>
             <span>Changer le mot de passe</span>
         </a>
+        {% if is_granted('ROLE_SUPER') %}
+            {{ include('user/_delete_form.html.twig') }}
+        {% endif %}
 
     {% endblock %}
 
@@ -167,6 +170,7 @@
                     $("#user_profile").click(() => {
                         $('#edit_user_imageFile').trigger('click');
                     })
+
                 })
             </script>
             <div class="element-box">
@@ -275,7 +279,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12 "  align="center">
+                        <div class="col-sm-12 " align="center">
                             <div class="form-group">
                                 <div type="button" class="os-icon os-icon-map-pin" data-toggle="modal"
                                      data-target="#myModal">
@@ -289,8 +293,9 @@
                             </div>
                         </div>
                         <div class="col-sm-12">
-                            <div class="form-group" >Longitude:
-                                <input type="text" id="lng" readonly="readonly" class="form-control" value="{{ form.vars.data.longitude }}">
+                            <div class="form-group">Longitude:
+                                <input type="text" id="lng" readonly="readonly" class="form-control"
+                                       value="{{ form.vars.data.longitude }}">
                             </div>
                             <div class="form-group" hidden>Longitude:
                                 {{ form_row(form.longitude,{
@@ -300,8 +305,9 @@
                             </div>
                         </div>
                         <div class="col-sm-12">
-                            <div class="form-group" >Latitude:
-                                <input type="text" id="lat" readonly="readonly" class="form-control" value="{{ form.vars.data.latitude }}">
+                            <div class="form-group">Latitude:
+                                <input type="text" id="lat" readonly="readonly" class="form-control"
+                                       value="{{ form.vars.data.latitude }}">
                             </div>
                             <div class="form-group" hidden>
                                 {{ form_row(form.latitude,{
@@ -342,19 +348,21 @@
                 </div>
 
                 {% if is_granted('ROLE_SUPER') %}
-                    <div class="form-group">
-                        {{ form_row(form.admin,{
-                            'label':"Administrateur",
-                            'attr': {'class': 'form-control'  }
-                        }) }}
-                    </div>
 
-                    <div class="form-group">
-                        {{ form_row(form.vendeur,{
-                            'label':"Vendeur",
-                            'attr': {'class': 'form-control'  }
-                        }) }}
-                    </div>
+                    <fieldset class="form-group">
+                        <legend><span>Droits d'accès</span></legend>
+                        <div id="admin_checkbox">
+                            {{ form_row(form.admin,{
+                                'label':"Administrateur"
+                            }) }}
+                        </div>
+
+                        <div id="seller_checkbox">
+                            {{ form_row(form.vendeur,{
+                                'label':"Vendeur"
+                            }) }}
+                        </div>
+                    </fieldset>
                 {% else %}
                     {% do form.admin.setRendered %}
                     {% do form.vendeur.setRendered %}
@@ -363,39 +371,45 @@
                 <div class="form-buttons-w">
                     <div class="row">
                         <div class="col-auto mr-auto">
-                            <button class="btn btn-primary disabled" type="submit"> Mettre à jour</button>
+                            <button class="btn btn-primary" type="submit"> Mettre à jour</button>
+                        </div>
+
+                        <div class="col-auto">
                             <button class="btn" type="reset">Reset</button>
                         </div>
                         {{ form_end(form) }}
-                        {% if is_granted('ROLE_SUPER') %}
-                            <div class="col-auto">
-                                {{ include('user/_delete_form.html.twig') }}
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
 {% endblock %}
 
 {% block javascripts %}
     <script>
-        /*
-        $(document).ready(function () {
-            $('#formDepot').click(function () {
-                alert("aaa");
-                document.getElementById("product_qtt").value = 1151;
-            });
-        });
-        */
+        admin = $("#admin_checkbox")
+        seller = $("#seller_checkbox")
+        admin_div = admin.children('div')
+        seller_div = seller.children('div')
+        admin_label = admin_div.children("label")
+        admin_input = admin_div.children("input[type=checkbox]")
+        seller_label = seller_div.children("label")
+        seller_input = seller_div.children("input[type=checkbox]")
+        admin_div.addClass("custom-control custom-checkbox")
+        seller_div.addClass("custom-control custom-checkbox")
+        seller_label.addClass("custom-control-label")
+        seller_input.addClass("custom-control-input")
+        seller_label.before(seller_input)
+        admin_label.addClass("custom-control-label")
+        admin_input.addClass("custom-control-input")
+        admin_label.before(admin_input)
+
         let map;
         let markers = [];
 
         function initMap() {
-            fetchLocationName($("#lat").val(),$("#lng").val());
+            fetchLocationName($("#lat").val(), $("#lng").val());
             const uluru = {lat: 36.69858, lng: 10.14278};
             map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 12,
@@ -411,7 +425,7 @@
                 document.getElementById("user_latitude").value = event.latLng.lat().toFixed(8);
                 $("#lat").val(event.latLng.lat().toFixed(8));
                 $("#lng").val(event.latLng.lng().toFixed(7));
-                fetchLocationName(event.latLng.lat(),event.latLng.lng());
+                fetchLocationName(event.latLng.lat(), event.latLng.lng());
             });
         }
 
@@ -443,9 +457,9 @@
         }
 
         // we take adminArea5 as neighborhood  and adminArea3 as county
-        async function fetchLocationName(lat,lng) {
+        async function fetchLocationName(lat, lng) {
             await fetch(
-                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location='+lat+'%2C'+lng+'&outFormat=json&thumbMaps=false',
+                'https://www.mapquestapi.com/geocoding/v1/reverse?key=HADD5t74PYRGaP3WeBDm36TWGYlRHTBQ&location=' + lat + '%2C' + lng + '&outFormat=json&thumbMaps=false',
             )
                 .then((response) => response.json())
                 .then((responseJson) => {

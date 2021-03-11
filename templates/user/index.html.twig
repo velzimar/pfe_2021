@@ -37,7 +37,12 @@
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
     #}
-
+    <style>
+        .order-box .order-items-table .product-remove-btn {
+            color: #E08989;
+            font-size: 16px;
+        }
+    </style>
     <div class="element-wrapper">
         <h6 class="element-header">
             Gestion des utilisateurs
@@ -48,75 +53,79 @@
             </h5>
             <div class="form-desc">
             </div>
-            <div class="table-responsive">
-                <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
-                    <thead>
-                    <tr>
-                        <th>
-                            Id
-                        </th>
-                        <th>
-                            Email
-                        </th>
-                        <th>
-                            Role
-                        </th>
-                        <th>
-                            Activation
-                        </th>
-                        <th>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
 
-                    {% for user in users %}
-                        <tr>
-                            <td>
-                                {{ user.id }}
-                            </td>
-                            <td class="text-right">
-                                {{ user.email }}
-                            </td>
-                            <td>
-                                {{ user.getMainRole }}
-                            </td>
-                            <td class="row-actions">
-                                {% set role="user_toggle_active" %}
-                                {% if is_granted('ROLE_SUPER') %}
-                                    {% set role="super_toggle_active" %}
-                                {% endif %}
-                                {% if user.isActive==1 %}
-                                    <a href="{{ path(role, {'id': user.id}) }}">
-                                        Cliquer pour Desactiver
-                                    </a>
-                                {% else %}
-                                    <a href="{{ path(role, {'id': user.id}) }}">
-                                        Cliquer pour Activer
-                                    </a>
-                                {% endif %}
-                            </td>
-                            <td class="row-actions">
+            <div class="order-box">
+                <div class="order-items-table">
 
-                                {% set role="user_edit" %}
-                                {% if is_granted('ROLE_SUPER') %}
-                                    {% set role="super_edit" %}
-                                {% endif %}
-                                <a href="{{ path(role, {'id': user.id}) }}">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-lightborder">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Id
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Role
+                                </th>
+                                <th>
+                                    Activation
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
 
-                                    <button class="mr-2 mb-2 btn btn-primary">Détails
-                                    </button>
-                                </a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">no records found</td>
-                        </tr>
-                    {% endfor %}
+                            {% for user in users %}
+                                <tr>
+                                    <td>
+                                        {{ user.id }}
+                                    </td>
+                                    <td>
+                                        {{ user.email }}
+                                    </td>
+                                    <td>
+                                        {{ user.getMainRole }}
+                                    </td>
+                                    <td class="row-actions">
+                                        {% set role="user_toggle_active" %}
+                                        {% if is_granted('ROLE_SUPER') %}
+                                            {% set role="super_toggle_active" %}
+                                        {% endif %}
+                                        {% if user.isActive==1 %}
+                                            <a href="{{ path(role, {'id': user.id}) }}" class="product-remove-btn">
+                                                Désactiver
+                                            </a>
+                                        {% else %}
+                                            <a href="{{ path(role, {'id': user.id}) }}" class="product-remove-btn">
+                                                Activer
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                    <td class="row-actions">
 
-                    </tbody>
-                </table>
+                                        {% set role="user_edit" %}
+                                        {% if is_granted('ROLE_SUPER') %}
+                                            {% set role="super_edit" %}
+                                        {% endif %}
+                                        <a href="{{ path(role, {'id': user.id}) }}" class="product-remove-btn">
+                                            <div class="os-icon os-icon-ui-49"></div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5">no records found</td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

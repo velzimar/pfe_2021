@@ -228,7 +228,7 @@ class UserController extends AbstractController
             $manager->persist($notification);
         }
         $manager->flush();
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute('super_index');
     }
 
     //ADMINISTRATEUR
