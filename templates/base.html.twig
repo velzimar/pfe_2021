@@ -429,35 +429,8 @@
                     <li class="sub-header">
                         <span>Administration</span>
                     </li>
-
-                    {# START test #}
-
-
-                    {# end test #}
                     {% if is_granted('ROLE_SUPER') %}
-                        <li class="selected has-sub-menu">
-                            <a>
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-layout"></div>
-                                </div>
-                                <span>Test</span>
-                            </a>
-                            <div class="sub-menu-w">
-                                <div class="sub-menu-header">
-                                    Test
-                                </div>
-                                <div class="sub-menu-icon">
-                                    <i class="os-icon os-icon-layout"></i>
-                                </div>
-                                <div class="sub-menu-i">
-                                    <ul class="sub-menu">
-                                        <li>
-                                            <a href="{{ path('new_delivery',{'id':app.user}) }}">new</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
+
 
                         <li class="selected has-sub-menu">
                             <a>
@@ -545,6 +518,17 @@
                         </div>
                     </li>
 
+                    <li class="sub-header">
+                        <span>Gestion de livraison</span>
+                    </li>
+                    <li class="has-sub-menu">
+                        <a href="{{ path('selectUserForDelivery') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-package"></div>
+                            </div>
+                            <span>Livraison</span>
+                        </a>
+                    </li>
                     <li class="sub-header">
                         <span>Gestion des Vitrines</span>
                     </li>
@@ -653,8 +637,21 @@
                         </div>
                     </li>
 
+
                 {% endif %}
                 {% if is_granted('ROLE_SELLER') %}
+                    <li class="sub-header">
+                        <span>Je délivre</span>
+                    </li>
+                    <li class="has-sub-menu">
+                        <a href="{{ path('my_new_delivery',{'id':app.user}) }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-package"></div>
+                            </div>
+                            <span>Gestion de livraison</span>
+                        </a>
+                    </li>
+
                 <li class="sub-header">
                     <span>Ma vitrine</span>
                 </li>

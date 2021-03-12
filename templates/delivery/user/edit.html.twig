@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New delivery{% endblock %}
+{% block title %}Modifier{% endblock %}
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
@@ -22,14 +22,25 @@
         }
     </style>
     <script>
+        const delivery_id = {{ delivery.id }}
         const user_id = {{ user.id }}
+
+            function getJSonObject(value) {
+                return $.parseJSON(value.replace(/&quot;/ig, '"'));
+            }
+        var storeJSON = getJSonObject("{{ array|json_encode() }}");
+        var option_names = []
+        $.each(storeJSON, function (k, v) {
+           // alert('Key = ' + k + '\n' + 'Value = ' + v);
+            option_names.push(v)
+        });
+        //alert(option_names)
+        var receivedInfo = getJSonObject("{{ info|json_encode() }}");
+        //alert(JSON.stringify(receivedInfo))
     </script>
 
     <div class="col-sm-12">
         <div class="element-wrapper">
-            <h6 class="element-header">
-                Gestion de livraison pour le vendeur {{ user.nom }} {{ user.prenom }}
-            </h6>
             <div class="element-box">
                 <h5 class="form-header">
                     Livraison
@@ -42,12 +53,12 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <label for="cout">Cout de livraison</label>
-                            <input value="0" maxlength="11" id="cout" class='form-control' type="number"
+                            <input value="{{ info.cout }}" maxlength="11" id="cout" class='form-control' type="number"
                                    onchange="_verifCout()"/>
                         </div>
                         <div class="col-sm-6">
                             <label for="seuil">Seuil minimal pour livraison gratuit</label>
-                            <input value="0" maxlength="11" id="seuil" class='form-control' type="number"
+                            <input value="{{ info.seuil }}" maxlength="11" id="seuil" class='form-control' type="number"
                                    onchange="_verifSeuil()"/>
                         </div>
                     </div>
@@ -70,7 +81,7 @@
                     <button id="save" class="btn btn-outline-dark" onclick="_reset()">Déselectionner tous</button>
                 </div>
                 <div class="custom-control custom-switch">
-                    <input class="custom-control-input" type="checkbox" id="flexSwitchCheckDefault">
+                    <input class="custom-control-input" type="checkbox" id="flexSwitchCheckDefault" {% if info.activation==true %}checked {% endif %}>
                     <label id="activationLabel" class="custom-control-label" for="flexSwitchCheckDefault"
                            onclick="_toggleActive()">Activer la livraison</label>
                 </div>
@@ -78,13 +89,14 @@
                 <div class="form-buttons-w">
                     <div class="row">
                         <div class="col-auto mr-auto">
+
                             <button class="btn btn-outline-dark" data-target="#onboardingTextModal"
                                     data-toggle="modal" type="button" onclick="_fill()">Vérifier
                             </button>
                         </div>
                         <div class="col-auto">
                             <button id="post-btn" class="btn btn-dark">Enregistrer</button>
-                            <button id="post-btn" class="btn btn-dark" onclick="_check_json_content()">Vérifier Json</button>
+                            <button id="post-btn" class="btn btn-dark" onclick="_check_json_content()">VérifierJson</button>
 
                             <div aria-hidden="true" class="onboarding-modal modal fade animated"
                                  id="onboardingTextModal" role="dialog" tabindex="-1">
@@ -101,6 +113,7 @@
                                             </div>
                                             <div class="onboarding-text" id="_ville">
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -117,39 +130,15 @@
 {% block javascripts %}
     {#
     <script>
-        json = [
-            {
-                country: "tunis",
-                cities: [{name: "tunis1", selected: false}, {name: "tunis2", selected: false}, {
-                    name: "tunis3",
-                    selected: false
-                }],
-            },
-            {
-                country: "nabeul",
-                cities: [{name: "nabeul1", selected: false}, {name: "nabeul2", selected: false}, {
-                    name: "nabeul3",
-                    selected: false
-                }],
-            },
-            {
-                country: "sousse",
-                cities: [{name: "sss1", selected: false}, {name: "nsssl2", selected: false}, {
-                    name: "sssl3",
-                    selected: false
-                }],
-            }
-        ]
+        json = option_names
+        input_json = receivedInfo
 
-        let activation = false;
-        let cout = 0;
-        let seuil = 0;
+        let activation = input_json["activation"];
+        let cout = input_json["cout"];
+        let seuil = input_json["seuil"];
 
-        input_json = {
-            activation: false,
-            cout: 0,
-            seuil: 0
-        }
+        //init inputs
+
 
         let select_country = $("#select_country")
         let select_city = $("#select_city")
@@ -175,22 +164,22 @@
         function update_activation(a) {
             activation = a
             input_json["activation"] = a
-          //  alert(activation)
-         //   alert(input_json["activation"])
+         //   alert(activation)
+          //  alert(input_json["activation"])
         }
 
         function update_cout(a) {
             cout = a
             input_json["cout"] = a
-          //  alert(cout)
-          //  alert(input_json["cout"])
+           // alert(cout)
+           // alert(input_json["cout"])
         }
 
         function update_seuil(a) {
             seuil = a
             input_json["seuil"] = a
-          //  alert(seuil)
-          //  alert(input_json["seuil"])
+            //alert(seuil)
+           // alert(input_json["seuil"])
         }
 
         function update_country(c) {
@@ -204,9 +193,9 @@
             $.each(json[country]["cities"], function (k, v) {
                 json[country]["cities"][k]["selected"] = false
             });
-          //  alert(c)
+            //alert(c)
             $.each(c, function (key, val) {
-            //    alert(val)
+               // alert(val)
                 json[country]["cities"][val]["selected"] = true
             });
 
@@ -241,7 +230,7 @@
 
 
         function _delete() {
-         //   alert("unselect")
+            //alert("unselect")
             select_city.children("option").prop("selected", false)
             $.each(json[country]["cities"], function (k, v) {
                 json[country]["cities"][k]["selected"] = false
@@ -249,8 +238,8 @@
 
         }
 
-        function _reset() {
-          //  alert("unselectall")
+        function _reset(){
+            //alert("unselectall")
             select_city.children("option").prop("selected", false)
             json = [
                 {
@@ -296,7 +285,7 @@
             element = $("#cout")
             value = parseFloat(element.val())
             if (Number.isInteger(value) && value >= 0 && value.toString().length <= 11) {
-          //      alert("pass")
+                //alert("pass")
                 update_cout(parseInt(value))
             } else {
                 alert("Vérifier le cout ")
@@ -309,7 +298,7 @@
             element = $("#seuil")
             value = parseFloat(element.val())
             if (Number.isInteger(value) && value >= 0 && value.toString().length <= 11) {
-           //     alert("pass")
+               // alert("pass")
                 update_seuil(parseInt(value))
             } else {
                 alert("Vérifier le seuil")
@@ -355,15 +344,16 @@
         }
 
         $("#post-btn").click(function (e) {
-           // alert("am clicked")
+            //alert("am clicked")
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "/delivery/userDelivery/" + user_id + "/response",//post how you get this URL please...
+                url: "/delivery/myDelivery/" + user_id + "/edit/"+delivery_id+"/response",//post how you get this URL please...
                 data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
                 success: function (response) {
                     console.log("sucees");
                     console.log(response.msg);
+
                     window.location.href=(response.redirect);
                 },
                 error: function () {
@@ -373,5 +363,5 @@
         });
     </script>
     #}
-    <script src="{{ asset('/myScripts/delivery/admin/new.js') }}"></script>
+    <script src="{{ asset('myScripts/delivery/user/edit.js') }}"></script>
 {% endblock %}

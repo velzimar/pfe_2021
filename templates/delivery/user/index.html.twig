@@ -27,9 +27,6 @@
 
     <div class="col-sm-12">
         <div class="element-wrapper">
-            <h6 class="element-header">
-                Gestion de livraison pour le vendeur {{ user.nom }} {{ user.prenom }}
-            </h6>
             <div class="element-box">
                 <h5 class="form-header">
                     Livraison
@@ -175,22 +172,22 @@
         function update_activation(a) {
             activation = a
             input_json["activation"] = a
-          //  alert(activation)
-         //   alert(input_json["activation"])
+           // alert(activation)
+          //  alert(input_json["activation"])
         }
 
         function update_cout(a) {
             cout = a
             input_json["cout"] = a
-          //  alert(cout)
-          //  alert(input_json["cout"])
+           // alert(cout)
+            //alert(input_json["cout"])
         }
 
         function update_seuil(a) {
             seuil = a
             input_json["seuil"] = a
-          //  alert(seuil)
-          //  alert(input_json["seuil"])
+           // alert(seuil)
+           // alert(input_json["seuil"])
         }
 
         function update_country(c) {
@@ -206,7 +203,7 @@
             });
           //  alert(c)
             $.each(c, function (key, val) {
-            //    alert(val)
+              //  alert(val)
                 json[country]["cities"][val]["selected"] = true
             });
 
@@ -241,7 +238,7 @@
 
 
         function _delete() {
-         //   alert("unselect")
+            //alert("unselect")
             select_city.children("option").prop("selected", false)
             $.each(json[country]["cities"], function (k, v) {
                 json[country]["cities"][k]["selected"] = false
@@ -250,7 +247,7 @@
         }
 
         function _reset() {
-          //  alert("unselectall")
+            //alert("unselectall")
             select_city.children("option").prop("selected", false)
             json = [
                 {
@@ -296,7 +293,7 @@
             element = $("#cout")
             value = parseFloat(element.val())
             if (Number.isInteger(value) && value >= 0 && value.toString().length <= 11) {
-          //      alert("pass")
+               // alert("pass")
                 update_cout(parseInt(value))
             } else {
                 alert("Vérifier le cout ")
@@ -309,7 +306,7 @@
             element = $("#seuil")
             value = parseFloat(element.val())
             if (Number.isInteger(value) && value >= 0 && value.toString().length <= 11) {
-           //     alert("pass")
+              //  alert("pass")
                 update_seuil(parseInt(value))
             } else {
                 alert("Vérifier le seuil")
@@ -355,15 +352,16 @@
         }
 
         $("#post-btn").click(function (e) {
-           // alert("am clicked")
+            //alert("am clicked")
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "/delivery/userDelivery/" + user_id + "/response",//post how you get this URL please...
+                url: "/delivery/myDelivery/" + user_id + "/response",//post how you get this URL please...
                 data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
                 success: function (response) {
                     console.log("sucees");
                     console.log(response.msg);
+
                     window.location.href=(response.redirect);
                 },
                 error: function () {
@@ -373,5 +371,5 @@
         });
     </script>
     #}
-    <script src="{{ asset('/myScripts/delivery/admin/new.js') }}"></script>
+    <script src="{{ asset('myScripts/delivery/user/new.js') }}"></script>
 {% endblock %}
