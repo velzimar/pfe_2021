@@ -2,18 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/myScripts/delivery/admin/edit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/myScripts/delivery/admin/new.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/myScripts/delivery/user/edit.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/myScripts/delivery/user/new.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/delivery/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/delivery/selectUserForDelivery.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/delivery/user/edit.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/delivery/user/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/test/calendar.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/DeliveryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/DeliveryController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Product.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/delivery/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/delivery/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +19,13 @@
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -216,7 +219,9 @@
       <workItem from="1615388087414" duration="16106000" />
       <workItem from="1615407220480" duration="1293000" />
       <workItem from="1615466485155" duration="23981000" />
-      <workItem from="1615558559116" duration="21760000" />
+      <workItem from="1615558559116" duration="21802000" />
+      <workItem from="1615652141427" duration="1163000" />
+      <workItem from="1615657855249" duration="12365000" />
     </task>
     <servers />
   </component>

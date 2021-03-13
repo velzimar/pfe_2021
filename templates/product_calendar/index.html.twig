@@ -1,0 +1,166 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}calendar{% endblock %}
+{% block  breadcrumb %}
+
+{% endblock %}
+
+{% block body %}
+
+    <style>
+
+        body {
+            margin: 40px 10px;
+            padding: 20px;
+            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+            font-size: 14px;
+        }
+
+        #calendar {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+    </style>
+    {{ form_start(form) }}{# % do form.slots.setRendered %} #}
+    <button type="submit" onclick="_save()">gooo</button>
+    {{ form_end(form) }}
+
+
+    <div id='calendar'></div>
+    <button onclick="_checkjson()">CHECK JSON</button>
+    <button onclick="_save()">save</button>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        const duration = '01:20:00';
+        var a = duration.split(':'); // split it at the colons
+        const duration_in_minutes = (+a[0]) * 60  + (+a[1]);
+        //alert(duration_in_minutes)
+        //alert(duration)
+        var calendar;
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var calendarEl = document.getElementById('calendar');
+
+            calendar= new FullCalendar.Calendar(calendarEl, {
+                locale: 'fr',
+                navLinks: false,
+                monthMode:false,
+                allDaySlot: false,
+                expandRows:true,
+                headerToolbar: {
+                    right: 'timeGridWeek'
+                },
+                slotDuration: duration,
+                initialDate: '2020-09-12',
+                selectable: true,
+                selectMirror: false,
+                eventOverlap:false,
+
+                dayHeaderFormat:{ weekday: 'short' },
+                select: function(arg) {
+
+                    // var title = prompt('Event Title:');
+
+                    //  if (title) {
+                    var exist = 0
+                    $.each(calendar.getEvents(), function (k, v) {
+                        //alert('Key = ' + k + '\n' + 'Value = ' + v);
+                        if(JSON.stringify(arg.start)===JSON.stringify(v["start"])){
+
+                            alert("start1"+JSON.stringify(v["start"]))
+                            alert("start2"+JSON.stringify(arg.start))
+                            alert("exist")
+                            exist=1
+                        }
+
+                    });
+                    if(!exist){
+
+                       // import { toDuration } from '@fullcalendar/moment'
+                        var a = moment(arg.start.toString("YYYY-MM-DD HH:mm"));
+                        var b = moment(arg.end.toString("YYYY-MM-DD HH:mm"));
+                        var diffMinutes = b.diff(a, 'minutes')
+                        alert(diffMinutes)
+
+                        alert(arg.start)
+                        var date = moment(arg.start).format('YYYY-MM-DD');
+                        alert(date)
+
+                        const t = moment(date); // Thursday Feb 2015
+                        const dow = t.day();
+                        alert(dow);
+
+                        if(diffMinutes > duration_in_minutes) {
+                            alert("Selectionner seulement un timeslot");
+                            return false;
+                        }
+                        calendar.addEvent({
+                            title: " ",
+                            start: arg.start,
+                            end: arg.end,
+                        })
+                        _save()
+                        //}
+                        calendar.unselect()
+                    }
+                },
+                eventClick: function(arg) {
+                    if (confirm('Are you sure you want to delete this event?')) {
+                        arg.event.remove()
+                        _save()
+                    }
+                },
+                editable: true,
+                dayMaxEvents: true, // allow "more" link when too many events
+                events: [
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T09:20:00',
+                        end: '2020-09-12T10:40:00',
+
+                    },
+
+                    {
+                        title: 'Meeting',
+                        start: '2020-09-12T10:40:00',
+                        end: '2020-09-12T12:00:00',
+                    },
+                ],
+                initialView: 'timeGridWeek'
+            });
+            calendar.render();
+
+
+        });
+        let json_to_send
+        function _save(){
+            json_to_send = [{slots:[]},{slots:[]},{slots:[]},{slots:[]},{slots:[]},{slots:[]},{slots:[]}]
+            alert(JSON.stringify(calendar.getEvents()))
+            //cleaning before sending to controller
+            $.each(calendar.getEvents(), function (k, v) {
+
+
+                var date = moment(v["start"]).format('YYYY-MM-DD');
+                const t = moment(date); // Thursday Feb 2015
+                var day = t.day();
+                //alert(day);
+
+
+                var start = moment(v["start"]).format('hh:mm:ss');
+                var end = moment(v["end"]).format('hh:mm:ss');
+                /*
+                alert(day)
+                alert(start)
+                alert(end)
+                */
+                json_to_send[day]["slots"].push({start:start,end:end})
+            });
+            alert(JSON.stringify(json_to_send))
+            $("#product_calendar_slots").val(JSON.stringify(json_to_send))
+        }
+
+    </script>
+{% endblock %}

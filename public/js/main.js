@@ -90,6 +90,8 @@ $(function () {
   });
   $('.floated-chat-w .chat-messages').perfectScrollbar(); // #2. CALENDAR INIT
 
+
+/*
   if ($("#fullCalendar").length) {
     var calendar, d, date, m, y;
     date = new Date();
@@ -138,7 +140,7 @@ $(function () {
     });
   } // #3. FORM VALIDATION
 
-
+*/
   if ($('#formValidate').length) {
     $('#formValidate').validator();
   } // #4. DATE RANGE PICKER

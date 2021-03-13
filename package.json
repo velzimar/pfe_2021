@@ -1,0 +1,7 @@
+{
+  "name": "pfe_2021",
+  "version": "1.0.0",
+  "dependencies": {
+    "@fullcalendar/moment": "^5.5.0"
+  }
+}
