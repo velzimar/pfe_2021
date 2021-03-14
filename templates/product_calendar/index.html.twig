@@ -20,36 +20,141 @@
             max-width: 1100px;
             margin: 0 auto;
         }
+        .fc-v-event .fc-event-main-frame {
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+        }
     </style>
-    {{ form_start(form) }}{# % do form.slots.setRendered %} #}
-    <button type="submit" onclick="_save()">gooo</button>
-    {{ form_end(form) }}
 
 
-    <div id='calendar'></div>
-    <button onclick="_checkjson()">CHECK JSON</button>
+
+    {# % do form.slots.setRendered %} #}
+
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box">
+                <h5 class="form-header">
+                </h5>
+                <div class="form-desc">
+                </div>
+                {{ form_start(form) }}
+
+                <div class="form-group">
+                    {{ form_row(form.period,{
+                        'value':"00:15",
+                        'id':'period',
+                        'label':"Période",
+                        'attr': {'class': 'form-control'}
+                    }) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.start,{
+                        'label':"Date d'activation",
+                        'attr': {'class': 'form-control'}
+                    }) }}
+                </div>
+                <div class="form-group">
+                    {{ form_row(form.end,{
+                        'label':"Dernièr jour ouvert pour réservation",
+                        'attr': {'class': 'form-control' }
+                    }) }}
+                </div>
+                <div id="active_checkbox">
+                    {{ form_row(form.isActive,{
+                        'label':"Activer la réservation"
+                    }) }}
+                </div>
+                <div class="form-buttons-w">
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <button class="btn btn-primary " type="submit" onclick="_save()"> Save</button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn" type="reset">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box">
+                <div id='calendar'>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <button onclick="_save()">save</button>
+
 {% endblock %}
 
 
 {% block javascripts %}
     <script>
-        const duration = '01:20:00';
+
+        let duration = '00:15:00';
+        generate_calendar()
+        let json_to_send
+        function updateDuration(d) {
+            duration = d + ":00";
+            generate_calendar();
+        }
+
+        $("#active_checkbox").change(function () {
+            d = $(this).val();
+          alert(d)
+        })
+
+        $("#period").change(function () {
+            d = $(this).val();
+            hour = parseInt(d[0] + d[1])
+            minute = parseInt(d[3] + d[4])
+            //alert(hour)
+            //alert(minute)
+            if (d[2] === ":" && hour >= 0 && hour <= 23 && (minute > 0 || hour > 0) && minute <= 59 && d.length===5) {
+              //  alert("true")
+
+                updateDuration(d)
+            } else {
+                alert("false")
+                $("#period").val('')
+            }
+        })
+        admin = $("#active_checkbox")
+        admin_div = admin.children('div')
+        admin_label = admin_div.children("label")
+        admin_input = admin_div.children("input[type=checkbox]")
+        admin_div.addClass("custom-control custom-checkbox")
+        admin_label.addClass("custom-control-label")
+        admin_input.addClass("custom-control-input")
+        admin_label.before(admin_input)
+
+
         var a = duration.split(':'); // split it at the colons
-        const duration_in_minutes = (+a[0]) * 60  + (+a[1]);
+        const duration_in_minutes = (+a[0]) * 60 + (+a[1]);
         //alert(duration_in_minutes)
         //alert(duration)
         var calendar;
-        document.addEventListener('DOMContentLoaded', function() {
+
+        function generate_calendar() {
+            //alert("enterer")
+
+            // document.addEventListener('DOMContentLoaded', function () {
 
             var calendarEl = document.getElementById('calendar');
 
-            calendar= new FullCalendar.Calendar(calendarEl, {
+
+            calendar = new FullCalendar.Calendar(calendarEl, {
+
                 locale: 'fr',
                 navLinks: false,
-                monthMode:false,
+                monthMode: false,
                 allDaySlot: false,
-                expandRows:true,
+                expandRows: true,
                 headerToolbar: {
                     right: 'timeGridWeek'
                 },
@@ -57,10 +162,10 @@
                 initialDate: '2020-09-12',
                 selectable: true,
                 selectMirror: false,
-                eventOverlap:false,
+                eventOverlap: false,
 
-                dayHeaderFormat:{ weekday: 'short' },
-                select: function(arg) {
+                dayHeaderFormat: {weekday: 'short'},
+                select: function (arg) {
 
                     // var title = prompt('Event Title:');
 
@@ -68,32 +173,32 @@
                     var exist = 0
                     $.each(calendar.getEvents(), function (k, v) {
                         //alert('Key = ' + k + '\n' + 'Value = ' + v);
-                        if(JSON.stringify(arg.start)===JSON.stringify(v["start"])){
+                        if (JSON.stringify(arg.start) === JSON.stringify(v["start"])) {
 
-                            alert("start1"+JSON.stringify(v["start"]))
-                            alert("start2"+JSON.stringify(arg.start))
+                           //alert("start1" + JSON.stringify(v["start"]))
+                           // alert("start2" + JSON.stringify(arg.start))
                             alert("exist")
-                            exist=1
+                            exist = 1
                         }
 
                     });
-                    if(!exist){
+                    if (!exist) {
 
-                       // import { toDuration } from '@fullcalendar/moment'
+                        // import { toDuration } from '@fullcalendar/moment'
                         var a = moment(arg.start.toString("YYYY-MM-DD HH:mm"));
                         var b = moment(arg.end.toString("YYYY-MM-DD HH:mm"));
                         var diffMinutes = b.diff(a, 'minutes')
-                        alert(diffMinutes)
+                        //alert(diffMinutes)
 
-                        alert(arg.start)
+                       // alert(arg.start)
                         var date = moment(arg.start).format('YYYY-MM-DD');
-                        alert(date)
+                       // alert(date)
 
                         const t = moment(date); // Thursday Feb 2015
                         const dow = t.day();
-                        alert(dow);
+                       // alert(dow);
 
-                        if(diffMinutes > duration_in_minutes) {
+                        if (diffMinutes > duration_in_minutes) {
                             alert("Selectionner seulement un timeslot");
                             return false;
                         }
@@ -107,37 +212,27 @@
                         calendar.unselect()
                     }
                 },
-                eventClick: function(arg) {
+                eventClick: function (arg) {
                     if (confirm('Are you sure you want to delete this event?')) {
                         arg.event.remove()
                         _save()
                     }
                 },
-                editable: true,
+                editable: false,
                 dayMaxEvents: true, // allow "more" link when too many events
-                events: [
-                    {
-                        title: 'Meeting',
-                        start: '2020-09-12T09:20:00',
-                        end: '2020-09-12T10:40:00',
-
-                    },
-
-                    {
-                        title: 'Meeting',
-                        start: '2020-09-12T10:40:00',
-                        end: '2020-09-12T12:00:00',
-                    },
-                ],
+                events: [],
                 initialView: 'timeGridWeek'
             });
             calendar.render();
 
 
-        });
-        let json_to_send
-        function _save(){
-            json_to_send = [{slots:[]},{slots:[]},{slots:[]},{slots:[]},{slots:[]},{slots:[]},{slots:[]}]
+            // });
+
+        }
+
+
+        function _save() {
+            json_to_send = [{slots: []}, {slots: []}, {slots: []}, {slots: []}, {slots: []}, {slots: []}, {slots: []}]
             alert(JSON.stringify(calendar.getEvents()))
             //cleaning before sending to controller
             $.each(calendar.getEvents(), function (k, v) {
@@ -156,7 +251,7 @@
                 alert(start)
                 alert(end)
                 */
-                json_to_send[day]["slots"].push({start:start,end:end})
+                json_to_send[day]["slots"].push({start: start, end: end})
             });
             alert(JSON.stringify(json_to_send))
             $("#product_calendar_slots").val(JSON.stringify(json_to_send))

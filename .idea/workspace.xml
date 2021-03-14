@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ProductCalendarController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductCalendarController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ProductCalendarType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ProductCalendarType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product_calendar/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_calendar/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,7 +220,7 @@
       <workItem from="1615558559116" duration="21802000" />
       <workItem from="1615652141427" duration="1163000" />
       <workItem from="1615657855249" duration="12380000" />
-      <workItem from="1615748649481" duration="745000" />
+      <workItem from="1615748649481" duration="9679000" />
     </task>
     <servers />
   </component>
