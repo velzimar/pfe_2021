@@ -83,7 +83,7 @@ class Product
     private $business;
 
     /**
-     * @ORM\OneToMany(targetEntity=ProductOptions::class, mappedBy="product_id")
+     * @ORM\OneToMany(targetEntity=ProductOptions::class, mappedBy="product")
      */
     private $productOptions;
 
