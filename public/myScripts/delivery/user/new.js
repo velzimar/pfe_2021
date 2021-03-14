@@ -240,7 +240,7 @@ $("#post-btn").click(function (e) {
     e.preventDefault();
     $.ajax({
         type: "POST",
-        url: "/delivery/myDelivery/" + user_id + "/response",//post how you get this URL please...
+        url: "/delivery/myDelivery/response",//post how you get this URL please...
         data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
         success: function (response) {
             console.log("sucees");

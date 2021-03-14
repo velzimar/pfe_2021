@@ -167,13 +167,13 @@ class DeliveryController extends AbstractController
 
     //USER
     /**
-     * @Route("/myDelivery/{id}/", name="my_new_delivery", methods={"GET","POST"})
-     * @param User $user
+     * @Route("/myDelivery/", name="my_new_delivery", methods={"GET","POST"})
      * @param DeliveryRepository $deliveryRepository
      * @return Response
      */
-    public function newOption(User $user, DeliveryRepository $deliveryRepository): Response
+    public function newOption(DeliveryRepository $deliveryRepository): Response
     {
+        $user = $this->getUser();
         $result = null;
         $result = $deliveryRepository->findOneBy(["user"=>$user]);
         if ($result===null)
@@ -216,14 +216,15 @@ class DeliveryController extends AbstractController
 
 
     /**
-     * @Route("/myDelivery/{id}/response", name="my_new_delivery_response", methods={"GET","POST"})
+     * @Route("/myDelivery/response", name="my_new_delivery_response", methods={"GET","POST"})
      * @param Request $request
-     * @param User $user
      * @return JsonResponse
      */
 
-    public function myDeliveryResponse(Request $request, User $user): JsonResponse
+    public function myDeliveryResponse(Request $request): JsonResponse
     {
+
+        $user = $this->getUser();
         $product=null;
         $em = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
@@ -254,15 +255,15 @@ class DeliveryController extends AbstractController
     }
 
     /**
-     * @Route("/myDelivery/{id}/edit/{delivery}/response", name="my_edit_delivery_response", methods={"GET","POST"})
+     * @Route("/myDelivery/edit/{delivery}/response", name="my_edit_delivery_response", methods={"GET","POST"})
      * @param Request $request
-     * @param User $user
      * @param Delivery $delivery
      * @return JsonResponse
      */
 
-    public function myDeliveryResponseEdit(Request $request, User $user,Delivery $delivery): JsonResponse
+    public function myDeliveryResponseEdit(Request $request,Delivery $delivery): JsonResponse
     {
+        $user = $this->getUser();
         $product=null;
         $em = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
@@ -286,8 +287,4 @@ class DeliveryController extends AbstractController
             'success'  => false,
         ]);
     }
-
-
-
-
 }
