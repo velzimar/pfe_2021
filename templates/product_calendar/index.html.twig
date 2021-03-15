@@ -2,6 +2,20 @@
 
 {% block title %}calendar{% endblock %}
 {% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Selectionner un utilisateur</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('product_index_user', {'userId': user }) }}">Produits</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Réservation</a>
+        </li>
+    </ul>
 
 {% endblock %}
 
