@@ -1,0 +1,87 @@
+<div class="col-sm-12">
+    <div class="element-wrapper">
+        <div class="element-box">
+            <h5 class="form-header">
+                {{ button_label }} un service
+            </h5>
+            <div class="form-desc">
+            </div>
+            {{ form_start(form) }}
+            {% do form.business.setRendered() %}
+            <div class="form-group">
+                {{ form_row(form.nom,{
+                    'label':"Nom",
+                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                }) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.description,{
+                    'label':"Description",
+                    'attr': {'class': 'form-control' ,'placeholder':"Entrer la description" ,'required':"required", 'type':"text" }
+                }) }}
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        {{ form_row(form.prix,{
+                            'label':"Prix",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le prix" ,'required':"required", 'type':"prix" }
+                        }) }}
+
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        {{ form_row(form.qtt,{
+                            'label':"Quantité",
+                            'attr': {'class': 'form-control' ,'placeholder':"Entrer la quantité" ,'required':"required", 'type':"text" }
+                        }) }}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        {{ form_row(form.category,{
+                            'label':"Catégorie",
+                            'attr': {'class': 'form-control','required':"required" }
+                        }) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    {{ form_label(form.imageFile,null,{
+                        'label':'Image',
+                        'label_attr': {'class': 'custom-file-label','for':'service_imageFile_file'}
+                    }) }}
+                    {{ form_widget(form.imageFile) }}
+                    <script>
+                        $("#service_imageFile_file").addClass("custom-file-input")
+
+                        vich = $(".vich-image")
+                        vich_div = vich.children('div')
+                        delete_label = vich_div.children("label")
+                        delete_input = vich_div.children("input[type=checkbox]")
+
+                        vich.children('a').removeAttr('download').css('pointer-events', 'none');
+                        vich_div.addClass("custom-control custom-checkbox")
+                        delete_label.addClass("custom-control-label")
+                        delete_input.addClass("custom-control-input")
+                        delete_label.before(delete_input);
+                    </script>
+                </div>
+            </div>
+
+            <div class="form-buttons-w">
+                <div class="row">
+                    <div class="col-auto mr-auto">
+                        <button class="btn btn-primary " type="submit"> {{ button_label }}</button>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn" type="reset">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>

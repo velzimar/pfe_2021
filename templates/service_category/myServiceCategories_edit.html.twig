@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ServiceCategory{% endblock %}
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myServiceCategories') }}">Catégories</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Edit</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('service_category/_myQuickLinks.html.twig') }}
+    {{ include('service_category/_myDelete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+    {{ include('service_category/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+{% endblock %}

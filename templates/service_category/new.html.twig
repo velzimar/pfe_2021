@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ServiceCategory{% endblock %}
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('userServiceCategories_index', {'userId': userId}) }}">Catégories</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Ajouter</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    {{ include('service_category/_form.html.twig',{'button_label':"Crée"}) }}
+{% endblock %}

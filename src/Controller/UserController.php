@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\DealCategory;
 use App\Entity\Notification;
 use App\Entity\ProductCategory;
+use App\Entity\ServiceCategory;
 use App\Entity\User;
 use App\Form\EditUserType;
 use App\Form\MyPassword_change;
@@ -73,14 +75,34 @@ class UserController extends AbstractController
             $this->addFlash('success', 'Utilisateur ajouté avec succès');
             $entityManager->persist($user);
             if ($form->get('vendeur')->getData() == true) {
+
+                //init product category
                 $defaultCategory = new ProductCategory();
                 $defaultCategory->setBusinessId($user);
                 $defaultCategory->setNom("Ma première catégorie");
                 $defaultCategory->setDescription("Catégorie par défaut.");
                 $entityManager->persist($defaultCategory);
+
+                $entityManager->flush();
+                //init deal category
+                $defaultCategory = new DealCategory();
+                $defaultCategory->setBusinessId($user);
+                $defaultCategory->setNom("Ma première catégorie");
+                $defaultCategory->setDescription("Catégorie par défaut.");
+                $entityManager->persist($defaultCategory);
+
+                $entityManager->flush();
+                //init service category
+                $defaultCategory = new ServiceCategory();
+                $defaultCategory->setBusinessId($user);
+                $defaultCategory->setNom("Ma première catégorie");
+                $defaultCategory->setDescription("Catégorie par défaut.");
+                $entityManager->persist($defaultCategory);
+
+                $entityManager->flush();
             }
 
-            $entityManager->flush();
+            //$entityManager->flush();
             if ($form->get('isActive')->getData()) {
                 $notification = new Notification();
                 $notification
@@ -284,13 +306,30 @@ class UserController extends AbstractController
             $user->addRole("ROLE_SELLER");
             $entityManager->persist($user);
 
+            //init product category
                 $defaultCategory = new ProductCategory();
                 $defaultCategory->setBusinessId($user);
                 $defaultCategory->setNom("Ma première catégorie");
                 $defaultCategory->setDescription("Catégorie par défaut.");
                 $entityManager->persist($defaultCategory);
+                $entityManager->flush();
 
+            //init deal category
+            $defaultCategory = new DealCategory();
+            $defaultCategory->setBusinessId($user);
+            $defaultCategory->setNom("Ma première catégorie");
+            $defaultCategory->setDescription("Catégorie par défaut.");
+            $entityManager->persist($defaultCategory);
             $entityManager->flush();
+
+            //init service category
+            $defaultCategory = new ServiceCategory();
+            $defaultCategory->setBusinessId($user);
+            $defaultCategory->setNom("Ma première catégorie");
+            $defaultCategory->setDescription("Catégorie par défaut.");
+            $entityManager->persist($defaultCategory);
+            $entityManager->flush();
+
             if ($form->get('isActive')->getData()) {
                 $notification = new Notification();
                 $notification

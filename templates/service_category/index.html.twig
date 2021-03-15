@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes catégories{% endblock %}
+
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        <li class="breadcrumb-item">
+            <a href="#">Mes catégories</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('service_category/_myQuickLinks.html.twig') }}
+{% endblock %}
+{% block body %}
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Mes catégories
+        </h6>
+        <div class="element-box">
+            <h5 class="form-header">
+                Liste des catégories
+            </h5>
+            <div class="form-desc">
+            </div>
+            <div class="table-responsive">
+                <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Services</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for service_category in service_categories %}
+                        <tr>
+                            <td>{{ service_category.id }}</td>
+                            <td>{{ service_category.nom }}</td>
+
+                            <td>
+                                <a href="{{ path('myServices_byCategory', { 'categoryId':service_category.id}) }}">Services</a>
+                            </td>
+                            <td>
+                                <a href="{{ path('myServiceCategories_show', {'id': service_category.id}) }}">
+                                    <i class="os-icon os-icon-grid-10"></i>
+                                </a>
+                                <a href="{{ path('myServiceCategories_edit', {'id': service_category.id}) }}">
+                                    <i class="os-icon os-icon-ui-49"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

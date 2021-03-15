@@ -130,6 +130,21 @@
                                 <div class="icon-w">
                                     <div class="os-icon os-icon-layers"></div>
                                 </div>
+                                <span>Gestion des services</span></a>
+                            <ul class="sub-menu">
+                                <li>
+                                    <a href="{{ path('user_service_category_index',{action:'index'}) }}">Catégories</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('selectUserForService', {'action': 'index_user'}) }}">Services</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="has-sub-menu">
+                            <a href="#">
+                                <div class="icon-w">
+                                    <div class="os-icon os-icon-layers"></div>
+                                </div>
                                 <span>Gestion des deals</span></a>
                             <ul class="sub-menu">
                                 <li>
@@ -583,6 +598,68 @@
                             </div>
                         </div>
                     </li>
+
+
+
+
+
+                    <li class="has-sub-menu">
+                        <a>
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-package"></div>
+                            </div>
+                            <span>Catégories des services</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Catégories des services
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-package"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ path('user_service_category_index',{action:'new'}) }}">Ajouter</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('user_service_category_index',{action:'index'}) }}">Lister</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="has-sub-menu">
+                        <a href="#">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-file-text"></div>
+                            </div>
+                            <span>Les services</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Les services
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-file-text"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ path('selectUserForService', {'action': 'new'}) }}">Ajouter</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('selectUserForService', {'action': 'index_user'}) }}">Lister</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+
+
+
+
                     <li class="has-sub-menu">
                         <a>
                             <div class="icon-w">
@@ -654,6 +731,8 @@
                 <li class="sub-header">
                     <span>Ma vitrine</span>
                 </li>
+
+
                 <li class="has-sub-menu">
                     <a>
                         <div class="icon-w">
@@ -706,6 +785,70 @@
                         </div>
                     </div>
                 </li>
+
+
+
+
+
+
+                    <li class="has-sub-menu">
+                        <a>
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-package"></div>
+                            </div>
+                            <span>Catégories des services</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Catégories des services
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-package"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ path('myServiceCategories_new') }}">Ajouter</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('myServiceCategories') }}">Lister</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="has-sub-menu">
+                        <a href="#">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-file-text"></div>
+                            </div>
+                            <span>Mes services</span></a>
+                        <div class="sub-menu-w">
+                            <div class="sub-menu-header">
+                                Mes services
+                            </div>
+                            <div class="sub-menu-icon">
+                                <i class="os-icon os-icon-file-text"></i>
+                            </div>
+                            <div class="sub-menu-i">
+                                <ul class="sub-menu">
+                                    <li>
+                                        <a href="{{ path('myServices_new') }}">Ajouter</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('myServices') }}">Lister</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+
+
+
+
+
+
                 <li class="has-sub-menu">
                     <a>
                         <div class="icon-w">

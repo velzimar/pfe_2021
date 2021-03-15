@@ -119,7 +119,18 @@ class User implements UserInterface, Serializable
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="business")
      */
     private $products;
+    //for services
+    /**
+     * @ORM\OneToMany(targetEntity=ServiceCategory::class, mappedBy="businessId")
+     */
+    private $serviceCategories;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="business")
+     */
+    private $services;
+
+    //end for services
 
     //for deal
     /**
@@ -499,7 +510,39 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+    // for services
+    /**
+     * @return Collection|ServiceCategory[]
+     */
+    public function getServiceCategories(): Collection
+    {
+        return $this->serviceCategories;
+    }
 
+    public function addServiceCategory(ServiceCategory $serviceCategory): self
+    {
+        if (!$this->serviceCategories->contains($serviceCategory)) {
+            $this->serviceCategories[] = $serviceCategory;
+            $serviceCategory->setBusinessId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServiceCategory(ServiceCategory $serviceCategory): self
+    {
+        if ($this->serviceCategories->removeElement($serviceCategory)) {
+            // set the owning side to null (unless already changed)
+            if ($serviceCategory->getBusinessId() === $this) {
+                $serviceCategory->setBusinessId(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    //end for services
 
     // for deals
     /**
@@ -570,6 +613,38 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+
+    //for services
+    /**
+     * @return Collection|Service[]
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Service $service): self
+    {
+        if (!$this->services->contains($service)) {
+            $this->services[] = $service;
+            $service->setBusiness($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): self
+    {
+        if ($this->services->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getBusiness() === $this) {
+                $service->setBusiness(null);
+            }
+        }
+
+        return $this;
+    }
+    //end for services
     // for deals
 
     /**

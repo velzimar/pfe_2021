@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\DealCategory;
+use App\Entity\ProductCategory;
+use App\Entity\ServiceCategory;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\UserAuthAuthenticator;
@@ -47,6 +50,31 @@ class RegistrationController extends AbstractController
             $user->setRoles(["ROLE_SELLER"]);
             $user->setIsActive(0);
             $entityManager->persist($user);
+            $entityManager->flush();
+
+            //init product category
+            $defaultCategory = new ProductCategory();
+            $defaultCategory->setBusinessId($user);
+            $defaultCategory->setNom("Ma première catégorie");
+            $defaultCategory->setDescription("Catégorie par défaut.");
+            $entityManager->persist($defaultCategory);
+
+            $entityManager->flush();
+            //init deal category
+            $defaultCategory = new DealCategory();
+            $defaultCategory->setBusinessId($user);
+            $defaultCategory->setNom("Ma première catégorie");
+            $defaultCategory->setDescription("Catégorie par défaut.");
+            $entityManager->persist($defaultCategory);
+
+            $entityManager->flush();
+            //init service category
+            $defaultCategory = new ServiceCategory();
+            $defaultCategory->setBusinessId($user);
+            $defaultCategory->setNom("Ma première catégorie");
+            $defaultCategory->setDescription("Catégorie par défaut.");
+            $entityManager->persist($defaultCategory);
+
             $entityManager->flush();
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,

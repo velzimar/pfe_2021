@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ServiceCategory{% endblock %}
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myServiceCategories') }}">Catégories</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Détail</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {{ include('service_category/_myQuickLinks.html.twig') }}
+    <a class="btn btn-white btn-sm" href="{{ path('myServiceCategories_edit', {'id': service_category.id}) }}"><i
+                class="os-icon os-icon-delivery-box-2"></i>
+        <span>Modifier cette catégorie</span>
+    </a>
+    {{ include('service_category/_myDelete_form.html.twig') }}
+{% endblock %}
+
+{% block body %}
+<div class="col-sm-12">
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Mes catégories
+        </h6>
+        <div class="element-box">
+            <h5 class="form-header">
+                Détails du catégorie
+            </h5>
+            <div class="form-desc">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Id</th>
+                        <td>{{ service_category.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <td>{{ service_category.nom }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ service_category.description }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Services</th>
+                        <td>
+                            <a href="{{ path('myServices_byCategory', { 'categoryId':service_category.id}) }}">Services</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
