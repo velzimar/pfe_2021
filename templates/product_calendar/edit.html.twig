@@ -40,7 +40,7 @@
                     {{ product.nom }}
                 </h5>
                 <div class="form-desc">
-                    Gestion de réservation
+                    Gestion de réservation edit
                 </div>
                 {{ form_start(form) }}
 
@@ -53,6 +53,13 @@
                 </div>
                 <div id="active_checkbox">
                     {{ form_row(form.isActive,{
+                        'label':"Activer la réservation",
+                    }) }}
+                </div>
+
+                <div >
+                    {{ form_row(form.slots,{
+                        'id':'slots',
                         'label':"Activer la réservation",
                     }) }}
                 </div>
@@ -76,9 +83,27 @@
 
 {% block javascripts %}
     <script>
-        generate_calendar()
-        let json_to_send
 
+
+        function getJSonObject(value) {
+            return $.parseJSON(value.replace(/&quot;/ig, '"'));
+        }
+
+        var storeJSON = getJSonObject("{{ slots|json_encode() }}");
+        var option_names = []
+        $.each(storeJSON, function (k, v) {
+            //alert('Key = ' + k + '\n' + 'Value = ' + v);
+            option_names.push(v)
+            $.each(storeJSON[k], function (k, v) {
+
+                //alert(v["start"]+"   "+v["end"])
+            });
+        });
+        //$("#slots").val("["+option_names+"]")
+        let json_to_send = option_names
+        alert(JSON.stringify(json_to_send))
+
+        generate_calendar()
         $("#active_checkbox").change(function () {
             d = $(this).val();
             //alert(d)
@@ -103,16 +128,22 @@
             var calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
                 allDaySlot:false,
+                eventTimeFormat: { // like '14:30:00'
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    meridiem: false,hour12: false
+                },
                 height: "auto",
                 locale: 'fr',
                 navLinks: false,
                 monthMode: false,
                 expandRows: true,
-
                 headerToolbar: {
                     right: 'timeGridWeek',
 
                 },
+                slotMaxTime:"23:45:00",
                 buttonText:{
                     "week":"Semaine"
                 },
@@ -121,13 +152,7 @@
                 selectable: true,
                 selectMirror: false,
                 eventOverlap: false,
-                eventTimeFormat: { // like '14:30:00'
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                    meridiem: false,hour12: false
-                },
-                slotMaxTime:"23:45:00",
+
                 dayHeaderFormat: {weekday: 'short'},
                 select: function (arg) {
 
@@ -141,16 +166,16 @@
 
                             //alert("start1" + JSON.stringify(v["start"]))
                             // alert("start2" + JSON.stringify(arg.start))
-                            alert("exist")
+                            alert("exist1")
                             exist = 1
                         }else if (JSON.stringify(arg.end) === JSON.stringify(v["end"])){
-                            alert("exist")
+                            alert("exist2")
                             exist = 1
                         }else if (JSON.stringify(arg.end) < JSON.stringify(v["end"])  && JSON.stringify(arg.start) > JSON.stringify(v["start"])){
-                            alert("exist")
+                            alert("exist3")
                             exist = 1
                         }else if (JSON.stringify(arg.end) > JSON.stringify(v["end"])  && JSON.stringify(arg.start) < JSON.stringify(v["start"])){
-                            alert("exist")
+                            alert("exist4")
                             exist = 1
                         }
 
@@ -197,6 +222,34 @@
                 events: [],
                 initialView: 'timeGridWeek',
             });
+            $.each(json_to_send, function (k, v) {
+                //alert("aa")
+                $.each(json_to_send[k], function (a, c) {
+
+                   // alert(c["start"]+"   "+c["end"])
+
+
+
+                    s = 6+k+""+" "+c["start"]
+                    e = 6+k+""+" "+c["end"]
+
+                    if(6+k<10){
+
+                        s="0"+s
+                        e="0"+e
+                    }
+
+                    //alert("2020-09-"+s)
+                    //alert("2020-09-"+e)
+                    calendar.addEvent({
+                        title: " ",
+                        start: "2020-09-"+s,
+                        end: "2020-09-"+e,
+                    })
+                });
+                //alert(v["start"]+"   "+v["end"])
+            });
+
             calendar.render();
 
             // });
@@ -215,7 +268,7 @@
                 var day = t.day();
                 //alert(day);
 
-                alert(v["start"])
+
                 var start = moment(v["start"]).format('HH:mm:ss');
                 var end = moment(v["end"]).format('HH:mm:ss');
                 /*
@@ -226,7 +279,7 @@
                 json_to_send[day].push({start: start, end: end})
             });
            // alert(JSON.stringify(json_to_send))
-            $("#product_calendar_slots").val(JSON.stringify(json_to_send))
+            $("#slots").val(JSON.stringify(json_to_send))
         }
 
     </script>

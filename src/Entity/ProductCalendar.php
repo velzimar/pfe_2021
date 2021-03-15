@@ -22,20 +22,6 @@ class ProductCalendar
      */
     private $product;
 
-    /**
-     * @ORM\Column(type="time")
-     */
-    private $period;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $start;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $end;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -64,41 +50,7 @@ class ProductCalendar
         return $this;
     }
 
-    public function getPeriod(): ?\DateTimeInterface
-    {
-        return $this->period;
-    }
 
-    public function setPeriod(\DateTimeInterface $period): self
-    {
-        $this->period = $period;
-
-        return $this;
-    }
-
-    public function getStart(): ?\DateTimeInterface
-    {
-        return $this->start;
-    }
-
-    public function setStart(?\DateTimeInterface $start): self
-    {
-        $this->start = $start;
-
-        return $this;
-    }
-
-    public function getEnd(): ?\DateTimeInterface
-    {
-        return $this->end;
-    }
-
-    public function setEnd(?\DateTimeInterface $end): self
-    {
-        $this->end = $end;
-
-        return $this;
-    }
 
     public function getIsActive(): ?bool
     {
