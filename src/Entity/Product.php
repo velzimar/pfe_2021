@@ -87,11 +87,6 @@ class Product
      */
     private $productOptions;
 
-    /**
-     * @ORM\OneToOne(targetEntity=ProductCalendar::class, mappedBy="product", cascade={"persist", "remove"})
-     */
-    private $productCalendar;
-
     public function __construct()
     {
         $this->productOptions = new ArrayCollection();
@@ -245,7 +240,7 @@ class Product
     {
         if (!$this->productOptions->contains($productOption)) {
             $this->productOptions[] = $productOption;
-            $productOption->setProductId($this);
+            $productOption->setProduct($this);
         }
 
         return $this;
@@ -255,33 +250,14 @@ class Product
     {
         if ($this->productOptions->removeElement($productOption)) {
             // set the owning side to null (unless already changed)
-            if ($productOption->getProductId() === $this) {
-                $productOption->setProductId(null);
+            if ($productOption->getProduct() === $this) {
+                $productOption->setProduct(null);
             }
         }
 
         return $this;
     }
 
-    public function getProductCalendar(): ?ProductCalendar
-    {
-        return $this->productCalendar;
-    }
 
-    public function setProductCalendar(?ProductCalendar $productCalendar): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($productCalendar === null && $this->productCalendar !== null) {
-            $this->productCalendar->setProduct(null);
-        }
 
-        // set the owning side of the relation if necessary
-        if ($productCalendar !== null && $productCalendar->getProduct() !== $this) {
-            $productCalendar->setProduct($this);
-        }
-
-        $this->productCalendar = $productCalendar;
-
-        return $this;
-    }
 }
