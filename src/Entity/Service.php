@@ -84,15 +84,15 @@ class Service
 
 
 
-    /*
+    /**
      * @ORM\OneToMany(targetEntity=ServiceOptions::class, mappedBy="service")
      */
-   // private $serviceOptions;
+    private $serviceOptions;
 
-    /*
+    /**
      * @ORM\OneToOne(targetEntity=ServiceCalendar::class, mappedBy="service", cascade={"persist", "remove"})
      */
-    //private $serviceCalendar;
+    private $serviceCalendar;
 
 
 
@@ -237,10 +237,10 @@ class Service
         $this->filename = $filename;
     }
 
-    /*
+    /**
      * @return Collection|ServiceOptions[]
      */
-    /*
+
     public function getServiceOptions(): Collection
     {
         return $this->serviceOptions;
@@ -289,6 +289,6 @@ class Service
 
         return $this;
     }
-    */
+
 
 }
