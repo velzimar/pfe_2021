@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Product{% endblock %}
+{% block title %}New Service{% endblock %}
 
 {% block QuickLink1 %}
-    <a class="btn btn-white btn-sm" href="{{ path('user_new_option',{'user': user,'id':id.id}) }}">
+    <a class="btn btn-white btn-sm" href="{{ path('user_new_option_service',{'user': user,'id':id.id}) }}">
         <i class="os-icon os-icon-delivery-box-2"></i>
         <span>Ajouter une nouvelle option</span>
     </a>
@@ -14,10 +14,10 @@
         <li class="breadcrumb-item">
             <a href="#">Home</a>
         <li class="breadcrumb-item">
-            <a href="{{ path('product_index_user', {'userId': user }) }}">Produits</a>
+            <a href="{{ path('service_index_user', {'userId': user }) }}">Services</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('userProductOptions',{'id':id.id, 'user':user}) }}">Options</a>
+            <a href="{{ path('userServiceOptions',{'id':id.id, 'user':user}) }}">Options</a>
         </li>
         <li class="breadcrumb-item">
             <a href="#">Modifier une option</a>
@@ -27,7 +27,7 @@
 
 {% block body %}
     <script>
-        let product_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
+        let service_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
 
         let user_id = ('{{ user.id }}')
         let current_length;
@@ -54,14 +54,14 @@
     <div class="col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Le produit {{ id.nom }} de vendeur {{ user.nom }} {{ user.prenom }}
+                Le service {{ id.nom }} de vendeur {{ user.nom }} {{ user.prenom }}
             </h6>
             <div class="element-box">
                 <h5 class="form-header">
                     Options
                 </h5>
                 <div class="form-desc">
-                    Ajouter des options pour un produit
+                    Ajouter des options pour un service
                 </div>
                 <div class="form-group">
                     <div class="row">
@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <select id="product_options_choices" readonly="readonly" class="form-control"
+                    <select id="service_options_choices" readonly="readonly" class="form-control"
                             multiple="multiple">
                         {% set i=0 %}
                         {% for choix in option.choices %}
@@ -134,5 +134,5 @@
 
 {% endblock %}
 {% block javascripts %}
-     <script src="{{ asset('/myScripts/userEditProductOptions.js') }}"></script>
+     <script src="{{ asset('/myScripts/service/userEditServiceOptions.js') }}"></script>
 {% endblock %}

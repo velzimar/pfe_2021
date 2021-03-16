@@ -19,7 +19,7 @@
 
 {% block body %}
     <script>
-        const product_id = {% if id is defined %}'{{ id.id }}'{% else %} null {% endif %}
+        let product_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
 
         function getJSonObject(value) {
             return $.parseJSON(value.replace(/&quot;/ig, '"'));

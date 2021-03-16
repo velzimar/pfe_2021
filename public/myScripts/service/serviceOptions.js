@@ -18,7 +18,7 @@ function setCurrent_length(y, selectedElement) {
 }
 
 function _add() {
-    var x = document.getElementById("product_options_choices");
+    var x = document.getElementById("service_options_choices");
     var j = document.getElementById("input_for_choices");
     if (j.value === null || j.value === "" || j.value.trim() === "") {
         alert("Inserer le choix")
@@ -62,7 +62,7 @@ function _save() {
             return
         }
     }
-    var elements = document.getElementById("product_options_choices");
+    var elements = document.getElementById("service_options_choices");
     let selectedNbChoices = $("#nbChoix option:selected").val();
     var json_obj = {};
     var results = [];
@@ -74,7 +74,7 @@ function _save() {
     //alert(results);
     if (results.length > 0) {
         var nom = document.getElementById("nom");
-        json_obj = {nom: nom.value, choices: results, selectedNbChoices: selectedNbChoices, product:product_id};
+        json_obj = {nom: nom.value, choices: results, selectedNbChoices: selectedNbChoices, service:service_id};
         all_choices.push(json_obj);
 
 
@@ -89,11 +89,11 @@ function _save() {
         editElement.data("num", json_obj);
         editElement.on("click", function () {
             var jsonObj = $(this).data("num");
-            var choicesElement = document.getElementById("product_options_choices")
+            var choicesElement = document.getElementById("service_options_choices")
             var choicesInputElement = document.getElementById("input_for_choices")
             var nomElement = document.getElementById("nom")
             //clearing old choices
-            $('#product_options_choices').children().remove().end()
+            $('#service_options_choices').children().remove().end()
             nomElement.value = null;
             choicesInputElement.value = null;
             //adding the selected object choices to the element for edit
@@ -151,7 +151,7 @@ function _save() {
         alert("Remplir les choix");
         return
     }
-    $('#product_options_choices').children().remove().end()
+    $('#service_options_choices').children().remove().end()
     document.getElementById("input_for_choices").value = null;
     document.getElementById("nom").value = null;
 
@@ -159,7 +159,7 @@ function _save() {
 }
 
 function _delete() {
-    var x = document.getElementById("product_options_choices");
+    var x = document.getElementById("service_options_choices");
     x.remove(x.selectedIndex);
     setCurrent_length(current_length - 1)
 }
@@ -182,8 +182,8 @@ $("#post-btn").click(function (e) {
 
         $.ajax({
             type: "POST",
-            url: "/productOptions/admin/new",//post how you get this URL please...
-            data: {array: [], product_id: product_id, user_id: user_id},//jQ will sort this out for you
+            url: "/serviceOptions/list",//post how you get this URL please...
+            data: {array: [], service_id: service_id},//jQ will sort this out for you
             success: function (response) {
                 console.log('empty');
                 if (response.success) {
@@ -202,8 +202,8 @@ $("#post-btn").click(function (e) {
     e.preventDefault();
     $.ajax({
         type: "POST",
-        url: "/productOptions/admin/new",//post how you get this URL please...
-        data: {array: all_choices, product_id: product_id, user_id: user_id},//jQ will sort this out for you
+        url: "/serviceOptions/list",//post how you get this URL please...
+        data: {array: all_choices, service_id: service_id},//jQ will sort this out for you
         success: function (response) {
             console.log('aaaaa');
             if (response.success) {

@@ -1,23 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Product{% endblock %}
-
+{% block title %}New Service{% endblock %}
 {% block QuickLink1 %}
-    <a class="btn btn-white btn-sm" href="{{ path('user_new_option',{'user': user,'id':id.id}) }}">
+    <a class="btn btn-white btn-sm" href="{{ path('new_option_service',{'id':id.id}) }}">
         <i class="os-icon os-icon-delivery-box-2"></i>
         <span>Ajouter une nouvelle option</span>
     </a>
 {% endblock %}
-
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="#">Home</a>
+
         <li class="breadcrumb-item">
-            <a href="{{ path('product_index_user', {'userId': user }) }}">Produits</a>
+            <a href="{{ path('myServices') }}">Mes services</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('userProductOptions',{'id':id.id, 'user':user}) }}">Options</a>
+            <a href="{{ path('thisServiceOptions',{'id':id.id}) }}">Options</a>
         </li>
         <li class="breadcrumb-item">
             <a href="#">Modifier une option</a>
@@ -27,9 +26,8 @@
 
 {% block body %}
     <script>
-        let product_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
-
-        let user_id = ('{{ user.id }}')
+        //alert("aa")
+        let service_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
         let current_length;
         function getJSonObject(value) {
             return $.parseJSON(value.replace(/&quot;/ig, '"'));
@@ -43,25 +41,23 @@
         });
         //alert(option_names)
         var le = getJSonObject("{{current_length|json_encode()}}");
-        // alert(le)
+       // alert(le)
         current_length = le
         option_id = '{{ option.id }}';
-        // alert(option_id)
-
-
+       // alert(option_id)
     </script>
 
     <div class="col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Le produit {{ id.nom }} de vendeur {{ user.nom }} {{ user.prenom }}
+                {{ id.nom }} {{ current_length }}
             </h6>
             <div class="element-box">
                 <h5 class="form-header">
                     Options
                 </h5>
                 <div class="form-desc">
-                    Ajouter des options pour un produit
+                    Ajouter des options pour votre service
                 </div>
                 <div class="form-group">
                     <div class="row">
@@ -108,7 +104,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <select id="product_options_choices" readonly="readonly" class="form-control"
+                    <select id="service_options_choices" readonly="readonly" class="form-control"
                             multiple="multiple">
                         {% set i=0 %}
                         {% for choix in option.choices %}
@@ -121,7 +117,7 @@
                     <div class="row">
                         <div class="col-sm-3 float-right">
                             <button hidden class="btn btn-danger" onclick=" _check_json_content()">check json</button>
-                            <button  id="post-btn" class="btn btn-secondary" >Terminer</button>
+                            <a  id="post-btn" class="btn btn-secondary" href="{{ path('thisServiceOptions',{'id':id.id}) }}">Terminer</a>
                         </div>
                     </div>
                 </div>
@@ -134,5 +130,5 @@
 
 {% endblock %}
 {% block javascripts %}
-     <script src="{{ asset('/myScripts/userEditProductOptions.js') }}"></script>
+    <script src="{{ asset('/myScripts/service/editServiceOptions.js') }}"></script>
 {% endblock %}

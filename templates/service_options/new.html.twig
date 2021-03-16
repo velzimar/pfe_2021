@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Product{% endblock %}
+{% block title %}New Service{% endblock %}
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
             <a href="#">Home</a>
         <li class="breadcrumb-item">
-            <a href="{{ path('product_index_user', {'userId': user }) }}">Produits</a>
+            <a href="{{ path('myServices') }}">Mes services</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('userProductOptions',{'id':id.id, 'user':user}) }}">Options</a>
+            <a href="{{ path('thisServiceOptions',{'id':id.id}) }}">Options</a>
         </li>
         <li class="breadcrumb-item">
             <a href="#">Ajouter une option</a>
@@ -19,11 +19,7 @@
 
 {% block body %}
     <script>
-
-        const user_id = '{{ user.id }}'
-        alert(user_id)
-
-        let product_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
+        let service_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
 
         function getJSonObject(value) {
             return $.parseJSON(value.replace(/&quot;/ig, '"'));
@@ -41,14 +37,14 @@
     <div class="col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Option pour le produit {{ id.nom }} pour le vendeur {{ user.nom }} {{ user.prenom }}
+                {{ id.nom }}
             </h6>
             <div class="element-box">
                 <h5 class="form-header">
                     Options
                 </h5>
                 <div class="form-desc">
-                    Ajouter des options pour un produit
+                    Ajouter des options pour votre service
                 </div>
                 <div class="form-group">
                     <div class="row">
@@ -89,7 +85,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <select id="product_options_choices" readonly="readonly" class="form-control"
+                    <select id="service_options_choices" readonly="readonly" class="form-control"
                             multiple="multiple"></select>
                 </div>
                 <div class="form-buttons-w">
@@ -99,7 +95,7 @@
                         </div>
                         <div class="col-auto">
                             <button hidden class="btn btn-danger " onclick=" _check_json_content()">check json</button>
-                            <button  id="post-btn" class="btn btn-secondary" >Terminer</button>
+                            <a  id="post-btn" class="btn btn-secondary" href="{{ path('thisServiceOptions',{'id':id.id}) }}">Terminer</a>
                         </div>
                     </div>
                 </div>
@@ -113,7 +109,7 @@
 
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('/myScripts/userProductOptions.js') }}"></script>
+    <script src="{{ asset('/myScripts/service/serviceOptions.js') }}"></script>
     {#
     <script>
 
@@ -137,7 +133,7 @@
         }
 
         function _add() {
-            var x = document.getElementById("product_options_choices");
+            var x = document.getElementById("service_options_choices");
             var j = document.getElementById("input_for_choices");
             if (j.value === null || j.value === "" || j.value.trim() === "") {
                 alert("Inserer le choix")
@@ -173,7 +169,7 @@
                     return
                 }
             }
-            var elements = document.getElementById("product_options_choices");
+            var elements = document.getElementById("service_options_choices");
             let selectedNbChoices = $("#nbChoix option:selected").val();
             var json_obj = {};
             var results = [];
@@ -200,11 +196,11 @@
                 editElement.data("num", json_obj);
                 editElement.on("click", function () {
                     var jsonObj = $(this).data("num");
-                    var choicesElement = document.getElementById("product_options_choices")
+                    var choicesElement = document.getElementById("service_options_choices")
                     var choicesInputElement = document.getElementById("input_for_choices")
                     var nomElement = document.getElementById("nom")
                     //clearing old choices
-                    $('#product_options_choices').children().remove().end()
+                    $('#service_options_choices').children().remove().end()
                     nomElement.value = null;
                     choicesInputElement.value = null;
                     //adding the selected object choices to the element for edit
@@ -262,7 +258,7 @@
                 alert("choix ne doit pas etre vide");
                 return
             }
-            $('#product_options_choices').children().remove().end()
+            $('#service_options_choices').children().remove().end()
             document.getElementById("input_for_choices").value = null;
             document.getElementById("nom").value = null;
 
@@ -270,7 +266,7 @@
         }
 
         function _delete() {
-            var x = document.getElementById("product_options_choices");
+            var x = document.getElementById("service_options_choices");
             x.remove(x.selectedIndex);
             setCurrent_length(current_length - 1)
         }
@@ -291,7 +287,7 @@
             e.preventDefault();
             $.ajax({
                 type: "POST",
-                url: "{{ path('product_options') }}",//post how you get this URL please...
+                url: "{{ path('service_options') }}",//post how you get this URL please...
                 data: {array: all_choices},//jQ will sort this out for you
                 success: function (response) {
                     console.log("sucees");

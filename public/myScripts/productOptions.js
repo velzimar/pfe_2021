@@ -26,6 +26,7 @@ function _add() {
         return;
     }
     for (i = 0; i < x.length; ++i) {
+        //alert(x.options[i].value)
         if (x.options[i].value === j.value) {
             alert("Choix existe déja");
             j.value = null;
@@ -102,7 +103,7 @@ function _save() {
             for (var x = 0; x < jsonObj["choices"].length; x++) {
                 var opt = document.createElement('option');
                 opt.appendChild(document.createTextNode(jsonObj["choices"][x]));
-                opt.value = x;
+                opt.value = jsonObj["choices"][x];
                 opt.selected = true;
                 choicesElement.appendChild(opt);
             }

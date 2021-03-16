@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ServiceOptionsController!{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        <li class="breadcrumb-item">
+            <a href="{{ path('service_index_user', {'userId': user }) }}">Services</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Options</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block QuickLink1 %}
+
+    <a class="btn btn-white btn-sm" href="{{ path('user_new_option_service',{'user': user,'id':service.id}) }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span>Ajouter une nouvelle option</span>
+    </a>
+
+{% endblock %}
+{% block body %}
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                {{ service.nom }} de vendeur {{ user.nom }} {{ user.prenom }}
+            </h6>
+            {% for option in options %}
+
+                <div class="form-group" id="newOptions_container">
+                    <div class="element-box" id="row_for_{{ option.id }}">
+                        <div class="form-desc">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <th>Nom du l'option</th>
+                                    <td>{{ option.nom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Les choix</th>
+                                    <td>
+                                        <ul id="choices_for_{{ option.id }}">
+
+                                            {% for choix in option.choices %}
+                                                <li style="width:100%;word-break:break-all;overflow-wrap: break-word;height: fit-content;">
+                                                    <h5 style="color: #ccd9e8;"></h5><h6>
+                                                        {{ choix }}
+                                                    </h6>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Nombre maximum de choix à selectionner</th>
+                                    <td>{{ option.getNbMaxSelected }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Actions</th>
+                                    <td>
+                                        <div>
+
+                                            <a class="btn btn-primary" href="{{ path('edit_user_option_service',{'service':service.id, 'id':option.id,'user':user.id}) }}">
+
+                                                <span>Modifier</span>
+                                            </a>
+                                            <a class="btn btn-danger" style="color: white" >
+                                                <form id="my_form_{{ option.id }}" method="post" action="{{ path('user_option_delete_service', {'user':user.id,'option': option.id, 'service':option.service.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ option.id) }}">
+
+                                                    <span id="my_span_{{ option.id }}">Supprimer</span>
+                                                </form>
+                                                <script>
+                                                    $('#my_span_{{ option.id }}').on('click', function() {
+                                                        $('#my_form_{{ option.id }}').submit();
+                                                    });
+                                                </script>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
