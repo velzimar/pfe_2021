@@ -20,7 +20,6 @@ class ServiceType extends AbstractType
             ->add('nom')
             ->add('description')
             ->add('prix')
-            ->add('qtt')
             ->add('imageFile', VichImageType::class, [
                 'required' => false,
                 'allow_delete' => true,

@@ -66,11 +66,6 @@ class Service
     private $prix;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $qtt;
-
-    /**
      * @ORM\ManyToOne(targetEntity=ServiceCategory::class, inversedBy="services")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
@@ -143,17 +138,7 @@ class Service
         return $this;
     }
 
-    public function getQtt(): ?int
-    {
-        return $this->qtt;
-    }
 
-    public function setQtt(int $qtt): self
-    {
-        $this->qtt = $qtt;
-
-        return $this;
-    }
 
     public function getCategory(): ?ServiceCategory
     {

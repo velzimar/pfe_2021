@@ -55,9 +55,6 @@
                                     Catégorie
                                 </th>
                                 <th>
-                                    Quantité
-                                </th>
-                                <th>
                                     Prix (dt)
                                 </th>
                                 <th>
@@ -88,11 +85,6 @@
                                            href="{{ path('myServiceCategories_show', {'id':service.category.id}) }}">
                                             {{ service.category }}
                                         </a>
-                                    </td>
-                                    <td class="text-md-left">
-                                        <div class="product-price">
-                                            {{ service.qtt }}
-                                        </div>
                                     </td>
                                     <td class="text-md-left">
                                         <div class="product-price">
@@ -153,7 +145,7 @@
             $('#dataTable thead tr:eq(1) th').each(function (i) {
 
                 var title = $(this).text();
-                if (title.search("Cat") !== -1 || title.search("Info") !== -1 || title.search("Quantit") !== -1 || title.search("Pri") !== -1) {
+                if (title.search("Cat") !== -1 || title.search("Info") !== -1 || title.search("Pri") !== -1) {
                     $(this).html('<input class="form-control" type="text" />');
 
                     $('input', this).on('keyup change', function () {
