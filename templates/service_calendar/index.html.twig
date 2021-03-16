@@ -23,13 +23,6 @@
 
     <style>
 
-        body {
-            margin: 40px 10px;
-            padding: 20px;
-            font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-            font-size: 14px;
-        }
-
         #calendar {
             max-width: 1800px;
             margin: 0 auto;
@@ -116,6 +109,7 @@
 
             var calendarEl = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(calendarEl, {
+                displayEventTime : false,
                 allDaySlot:false,
                 height: "auto",
                 locale: 'fr',
