@@ -250,7 +250,7 @@ class Service
     {
         if (!$this->serviceOptions->contains($serviceOption)) {
             $this->serviceOptions[] = $serviceOption;
-            $serviceOption->setServiceId($this);
+            $serviceOption->setService($this);
         }
 
         return $this;
@@ -260,8 +260,8 @@ class Service
     {
         if ($this->serviceOptions->removeElement($serviceOption)) {
             // set the owning side to null (unless already changed)
-            if ($serviceOption->getServiceId() === $this) {
-                $serviceOption->setServiceId(null);
+            if ($serviceOption->getService() === $this) {
+                $serviceOption->setService(null);
             }
         }
 

@@ -35,16 +35,34 @@
         <div class="element-box">
             <div class="order-box">
                 <div class="order-details-box">
-                    <div class="order-main-info">
-                        <a href="{{ path('user_edit', {'id': userId.id}) }}">
-                            <span>Nom & prenom</span><strong>{{ userId.nom }} {{ userId.prenom }}</strong>
-                        </a>
-                    </div>
-                    <div class="order-sub-info">
-                        <a href="{{ path('user_edit', {'id': userId.id}) }}">
-                            <span>Identifiant</span><strong>#{{ userId.id }}</strong>
-                        </a>
-                    </div>
+                    {% if is_granted('ROLE_SUPER') %}
+                        <div class="order-main-info">
+                            <a href="{{ path('super_edit', {'id': userId.id}) }}">
+                                <span>Nom & prenom</span><strong>{{ userId.nom }} {{ userId.prenom }}</strong>
+                            </a>
+                        </div>
+                        <div class="order-sub-info">
+                            <a href="{{ path('super_edit', {'id': userId.id}) }}">
+                                <span>Identifiant</span><strong>#{{ userId.id }}</strong>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="order-main-info">
+                            <a href="{{ path('user_edit', {'id': userId.id}) }}">
+                                <span>Nom & prenom</span><strong>{{ userId.nom }} {{ userId.prenom }}</strong>
+                            </a>
+                        </div>
+                        <div class="order-sub-info">
+                            <a href="{{ path('user_edit', {'id': userId.id}) }}">
+                                <span>Identifiant</span><strong>#{{ userId.id }}</strong>
+                            </a>
+                        </div>
+                    {% endif %}
+
+
+
+
+
                 </div>
                 <div class="order-items-table">
                     <div class="table-responsive">
