@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Service.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Service.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/ServiceType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ServiceType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service/myServices_show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/myServices_show.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/show.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service/userServices.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/userServices.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +218,7 @@
       <workItem from="1615657855249" duration="12380000" />
       <workItem from="1615748649481" duration="9695000" />
       <workItem from="1615814341347" duration="26515000" />
-      <workItem from="1615901086861" duration="7593000" />
+      <workItem from="1615901086861" duration="8557000" />
     </task>
     <servers />
   </component>
