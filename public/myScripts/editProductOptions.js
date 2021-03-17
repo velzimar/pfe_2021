@@ -16,27 +16,54 @@ function setCurrent_length(y, selectedElement) {
     }
     //alert(current_length)
 }
-
 function _add() {
+    //added for price
+    var price = document.getElementById("input_for_prices");
+    if(price.value === '' || price.value === 0){
+        alert("Vérifier le prix");
+        return;
+    }
+
+
     var x = document.getElementById("product_options_choices");
     var j = document.getElementById("input_for_choices");
+
     if (j.value === null || j.value === "" || j.value.trim() === "") {
         alert("Inserer le choix")
         j.value = null;
         return;
     }
     for (i = 0; i < x.length; ++i) {
+        //alert(x.options[i].value)
         if (x.options[i].value === j.value) {
             alert("Choix existe déja");
             j.value = null;
             return;
         }
     }
+    op = "<option selected value='"+j.value+"' data-price='"+price.value+"' data-name='"+j.value+"' >"+j.value + " à "+price.value+ " dt"+"</option>"
+    /*
     var option = document.createElement("option")
-    option.text = j.value;
+    option.value = j.value;
+    option.text = j.value + " à "+price.value+ " dt";
     option.selected = true;
-    x.add(option);
-    j.value = null;
+    option.data_price=price.value*/
+    $("#product_options_choices").append(op);
+
+
+    /*
+    $("#product_options_choices").append($('<option />')  // Create new <option> element
+            .val(j.value)            // Set value as "Hello"
+            .text(j.value + " à "+price.value+ " dt")           // Set textContent as "Hello"
+            .prop('selected', true)  // Mark it selected
+            .data({                  // Set multiple data-* attributes
+                price: price.value,
+                name:j.value
+            })
+        );
+    */
+    $("#input_for_choices").val("");
+    price.value = null;
     setCurrent_length(current_length + 1)
 }
 
@@ -80,11 +107,12 @@ $("#post-btn").click(function (e) {
     let selectedNbChoices = $("#nbChoix option:selected").val();
     var json_obj = {};
     var results = [];
-    for (var i = 0; i < elements.length; i++) {
-        var element = elements[i];
-        //var strSel = element.options[element.selectedIndex].text;
-        results.push(element.text);
-    }
+    var es = $("#product_options_choices option");
+    var v = $.map(es, e => {
+        alert($(e).val());alert($(e).data('price'))
+
+        results.push({name:$(e).data('name'),price:$(e).data('price')});
+    }  )
     //alert(results);
     if (results.length > 0) {
         var nom = document.getElementById("nom");

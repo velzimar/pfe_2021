@@ -31,9 +31,11 @@ class ProductOptionsController extends AbstractController
 
     public function index(ProductOptionsRepository $rep, Product $product): Response
     {
+        $options = $rep->findBy(['product' => $product]);
+
         return $this->render('product_options/index.html.twig', [
             'controller_name' => 'ProductOptionsController',
-            'options' => $rep->findBy(['product' => $product]),
+            'options' => $options,
             'product'=>$product
         ]);
     }

@@ -87,6 +87,10 @@
                             <label for="input_for_choices">Le choix</label>
                             <input maxlength="30" id="input_for_choices" class='form-control'/>
                         </div>
+                        <div class="col-sm-2">
+                            <label for="input_for_prices">Le prix</label>
+                            <input maxlength="14" type="number" id="input_for_prices" class='form-control'/>
+                        </div>
                         <div class="col-sm-6" id="test">
                             <label for="test"></label>
                             <div id="test" class="row">
@@ -107,10 +111,15 @@
                 <div class="form-group">
                     <select id="product_options_choices" readonly="readonly" class="form-control"
                             multiple="multiple">
-                        {% set i=0 %}
+                        {% set nom="" %}
+                        {% set prix="" %}
                         {% for choix in option.choices %}
-                            {% set i=i+1 %}
-                            <option value="{{ choix }}">{{ choix }}</option>
+                            {% set i=0 %}
+                            {% for c in choix %}
+                                {% if i==0 %}{% set nom=c %}{% else %}{%  set prix=c %}{% endif %}
+                                {% set i=i+1 %}
+                             {% endfor %}
+                            <option selected value="{{ nom }}" data-price="{{ prix }}" data-name="{{ nom }}" >{{ nom }} à {{ prix }} dt</option>
                         {% endfor %}
                     </select>
                 </div>

@@ -67,15 +67,20 @@
                             <label for="input_for_choices">Le choix</label>
                             <input maxlength="30" id="input_for_choices" class='form-control'/>
                         </div>
-                        <div class="col-sm-6">
+
+                        <div class="col-sm-2">
+                            <label for="input_for_prices">Le prix</label>
+                            <input maxlength="14" type="number" id="input_for_prices" class='form-control'/>
+                        </div>
+                        <div class="col-sm-4">
                             <label for="test"></label>
                             <div id="test" class="row">
-                                <div class="col-sm-3">
+                                <div class="col col-auto mr-auto">
                                     <button style="line-height: 2;" class="btn btn-outline-primary " type="button"
                                             onclick="_add()">Ajouter
                                     </button>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col col-auto ">
                                     <button style="line-height: 2;" class="btn btn-outline-danger " onclick="_delete()">
                                         Supprimer
                                     </button>
