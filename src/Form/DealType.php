@@ -10,6 +10,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateIntervalType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -23,8 +25,13 @@ class DealType extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
-            ->add('prix')
-            ->add('qtt')
+            ->add('prix', NumberType::class,[
+                'scale'=>3,
+            ])
+            ->add('real_price', NumberType::class,[
+                'scale'=>3,
+            ])
+            ->add('qtt', IntegerType::class)
             ->add('date_add', DateTimeType::class, [
                 'label'=>"Date d'activation",
                 'required'=>true,
@@ -54,8 +61,8 @@ class DealType extends AbstractType
                 'required' => false,
                 'allow_delete' => true,
                 //'download_label' => '...',
-                //'download_uri' => false,
-                //'image_uri' => true,
+                'download_uri' => false,
+                'image_uri' => true,
                 'delete_label' => "Supprimer l'image",
             ]);/*
             ->add('imageFile', FileType::class, [

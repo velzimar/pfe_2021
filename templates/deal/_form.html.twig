@@ -1,4 +1,43 @@
 <div class="col-sm-12">
+    <script>
+        var change_tag_name = function (selector, tagname) {
+            var old_elm = $(selector);
+            //Create a jquery element based on selector
+            var original_elements = old_elm.get();
+            //Get the array of original dom objects
+            //Note: We get the original dom objects because jQuery objects do not provide access to the attributes array
+            for (var i = 0; i < original_elements.length; i += 1) {
+                var original_element = original_elements[i];
+                //Create reference to original element in dom
+                var new_elm = $(document.createElement(tagname));
+                //Create new element with desired tagname
+                new_elm.html($(original_element).html());
+                //Add original element's inner elements to new element
+
+                var original_attributes = original_element.attributes;
+                //Create an array of the original element's attributes;
+                var attributes = {};
+                //Create a new generic object that will hold the attributes for the new element
+
+                for (var j = 0; j < original_attributes.length; j += 1) {
+                    var attribute = original_attributes[j];
+                    var name = attribute.nodeName;
+                    //Note: The attributes "nodeName","localName",and "name" appear to have the same value, so I just chose one. It's entirely possible that these could have different values in different contexts...
+                    //var name = attribute.localName;
+                    //var name = attribute.name;
+                    //Note: The attributes "nodeValue","textContext",and "value" appear to have the same value, so I just chose one. It's entirely possible that these could have different values in different contexts...
+                    //var value = attribute.textContext;
+                    //var value = attribute.value;
+                    attributes[name] = attribute.nodeValue;
+                }
+                //Populate attributes object
+                new_elm.attr(attributes);
+                //Assign attributes from old element to new element
+                $(original_element).replaceWith(new_elm);
+                //Replace old_element with new element
+            }
+        }
+    </script>
     <div class="element-wrapper">
         <h6 class="element-header">
             Les deals de l'utilisateur {{ userId.nom }}
@@ -7,65 +46,208 @@
             <h5 class="form-header">
                 {{ button_label }} un deal
             </h5>
-                <div class="form-desc">
-                </div>
+            <div class="form-desc">
+            </div>
+            {% form_theme form 'bootstrap_4_layout.html.twig' %}
             {{ form_start(form) }}
             {% do form.business.setRendered() %}
+            {{ form_row(form.nom,{
+                'label':"Nom",
+            }) }}
+            {{ form_row(form.description,{
+                'label':"Description",
+            }) }}
+            <div class="row">
+
+                <div class="col-sm-3">
+                    {{ form_row(form.real_price,{
+                        'label':"Prix réel",
+                    }) }}
+
+                </div>
+                <div class="col-sm-3">
+                    {{ form_row(form.prix,{
+                        'label': "Prix après réduction"
+                    }) }}
+                </div>
+                <div class="col-sm-3">
+                    {{ form_row(form.qtt,{
+                        'label':"Nombre de codes",
+                    }) }}
+                </div>
+                <div class="col-sm-3">
+                    {{ form_row(form.category,{
+                        'label':"Catégorie",
+                    }) }}
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-sm-6">
+                    {{ form_row(form.imageFile,{
+                        'label':'Image',
+                    }) }}
+                    <script>
+                        vich = $(".vich-image")
+                        vich_div = vich.children('div .form-group').children("div")
+                        vich_div.removeClass()
+                        vich_div.addClass("custom-control")
+                        delete_label = vich_div.children("label")
+                        delete_input = vich_div.children("input[type=checkbox]")
+                        vich.children('a').removeAttr('download').css('pointer-events', 'none');
+                        delete_label.removeClass()
+                        delete_input.removeClass()
+                        delete_label.addClass("custom-control-label")
+                        delete_input.addClass("custom-control-input")
+                        delete_label.before(delete_input);
+                        $("div.col-sm-6 fieldset legend").removeClass()
+                        change_tag_name($("div .col-sm-6 fieldset legend"), "label")
+                        change_tag_name($("div .col-sm-6 fieldset"), "div")
+                    </script>
+                </div>
+            </div>
+            <fieldset class="form-group">
+                <legend><span>Activation</span></legend>
+                <div class="row">
+                    <div class="col-sm-4">
+                        {{ form_row(form.date_add,{
+                            'label':"Date d'activation",
+                        }) }}
+                    </div>
+                    <div class="col-sm-8">
+                        {{ form_row(form.duration,{
+                            'label':"Durée d'activation",
+                        }) }}
+                    </div>
+                    <script>
+                        $("div .col-sm-8 fieldset legend").removeClass()
+                        change_tag_name($("div .col-sm-8 fieldset legend"), "label")
+                        change_tag_name($("div .col-sm-8 fieldset"), "div")
+                    </script>
+                </div>
+            </fieldset>
+        </div>
+        <div class="form-buttons-w">
+            <button class="btn btn-primary disabled" type="submit"> {{ button_label }}</button>
+
+            <button class="btn" type="reset">Reset</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{#
+{% do form.business.setRendered() %}
             <div class="form-group">
                 {{ form_row(form.nom,{
                     'label':"Nom",
                     'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
                 }) }}
             </div>
-                    <div class="form-group">
-                        {{ form_row(form.description,{
-                            'label':"Description",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer la description" ,'required':"required", 'type':"text" }
-                        }) }}
-                    </div>
+            <div class="form-group">
+                {{ form_row(form.description,{
+                    'label':"Description",
+                    'attr': {'class': 'form-control' ,'placeholder':"Entrer la description" ,'required':"required", 'type':"text" }
+                }) }}
+            </div>
             <div class="row">
+
                 <div class="col-sm-3">
                     <div class="form-group">
-                        {{ form_row(form.prix,{
-                            'label':"Prix",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le prix" ,'required':"required", 'type':"prix" }
+                        {{ form_row(form.real_price,{
+                            'label':"Prix réel",
+                            'attr': {'class': 'form-control' }
                         }) }}
 
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        {{ form_row(form.qtt,{
-                            'label':"Nombre de codes",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le nombre de code" ,'required':"required", 'type':"text" }
-                        }) }}
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        {{ form_row(form.category,{
-                            'label':"Catégorie",
-                            'attr': {'class': 'form-control','required':"required" }
-                        }) }}
-                    </div>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        {{ form_row(form.imageFile,{
-                            'label':"Image",
-                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
-                        }) }}
-                    </div>
-                </div>
-            </div>
-            <div class="form-buttons-w">
-                <button class="btn btn-primary disabled" type="submit"> {{ button_label }}</button>
 
-                <button class="btn" type="reset">Reset</button>
-            </div>
-            {{ form_end(form) }}
-        </div>
+                        {{ form_label(form.prix,{
+                        }) }}
+                        {{ form_widget(form.prix,{
+                            'attr': {'class': 'form-control' }
+                        }) }}
+                        {{ form_errors(form.prix,{
+                        }) }}</div></div>
+<div class="custom-file">
+    <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+    <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+    <div class="invalid-feedback">Example invalid custom file feedback</div>
+</div>
+<div class="col-sm-3">
+    <div class="form-group">
+        {{ form_row(form.qtt,{
+            'label':"Nombre de codes",
+            'attr': {'class': 'form-control' }
+        }) }}
     </div>
 </div>
+<div class="col-sm-3">
+    <div class="form-group">
+        {{ form_row(form.category,{
+            'label':"Catégorie",
+            'attr': {'class': 'form-control' }
+        }) }}
+    </div>
+</div>
+</div>
+
+<div class="col-sm-6">
+    <div class="form-group">
+        {{ form_label(form.imageFile,null,{
+            'label':'Image',
+            'label_attr': {'class': 'custom-file-label','for':'deal_imageFile_file'}
+        }) }}
+        {{ form_widget(form.imageFile) }}
+        <script>
+            $("#deal_imageFile_file").addClass("custom-file-input")
+
+            vich = $(".vich-image")
+            vich_div = vich.children('div')
+            delete_label = vich_div.children("label")
+            delete_input = vich_div.children("input[type=checkbox]")
+
+            vich.children('a').removeAttr('download').css('pointer-events', 'none');
+            vich_div.addClass("custom-control custom-checkbox")
+            delete_label.addClass("custom-control-label")
+            delete_input.addClass("custom-control-input")
+            delete_label.before(delete_input);
+        </script>
+    </div>
+</div>
+<fieldset class="form-group">
+    <legend><span>Activation</span></legend>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                {{ form_row(form.date_add,{
+                    'label':"Date d'activation",
+                    'attr': {'class': 'form-control' }
+                }) }}
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="form-group">
+                {{ form_row(form.duration,{
+                    'label':"Durée d'activation",
+                }) }}
+            </div>
+            <script>
+                $("#deal_duration").children("table").children("thead").remove();
+                $("#deal_duration_months").addClass("form-control").parent().before("<td><label for='deal_duration_months'>Mois</label></td>")
+                $("#deal_duration_days").addClass("form-control").parent().before("<td><label for='deal_duration_days'>Jours</label></td>")
+                $("#deal_duration_hours").addClass("form-control").parent().before("<td><label for='deal_duration_hours'>Heures</label></td>")
+                $("#deal_duration_minutes").addClass("form-control").parent().before("<td><label for='deal_duration_minutes'>Minutes</label></td>")
+            </script>
+        </div>
+    </div>
+</fieldset>
+</div>
+<div class="form-buttons-w">
+    <button class="btn btn-primary disabled" type="submit"> {{ button_label }}</button>
+
+    <button class="btn" type="reset">Reset</button>
+</div>
+#}

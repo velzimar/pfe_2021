@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\DealRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -18,7 +20,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * )
  * @ORM\Entity(repositoryClass=DealRepository::class)
  * @Vich\Uploadable()
+ * @UniqueEntity("nom")
  */
+
 class Deal
 {
     /**
@@ -50,6 +54,7 @@ class Deal
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank
      */
     private $nom;
 
@@ -59,16 +64,21 @@ class Deal
     private $description;
 
     /**
+     * @Assert\NotBlank
+     * @Assert\Positive
      * @ORM\Column(type="decimal", precision=10, scale=3)
      */
     private $prix;
 
     /**
+     * @Assert\NotBlank
+     * @Assert\Positive
      * @ORM\Column(type="integer")
      */
     private $qtt;
 
     /**
+     * @Assert\NotBlank
      * @ORM\ManyToOne(targetEntity=DealCategory::class, inversedBy="deals")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
@@ -81,18 +91,22 @@ class Deal
     private $business;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\NotBlank
+     * @ORM\Column(type="datetime", nullable=false)
      */
     private $date_add;
 
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=3, nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Positive
+     * @ORM\Column(type="decimal", precision=10, scale=3, nullable=false)
      */
     private $real_price;
 
     /**
-     * @ORM\Column(type="dateinterval", nullable=true)
+     * @Assert\NotBlank
+     * @ORM\Column(type="dateinterval", nullable=false)
      */
     private $duration;
 
