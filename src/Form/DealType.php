@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -25,6 +26,9 @@ class DealType extends AbstractType
         $builder
             ->add('nom')
             ->add('description')
+            ->add('submit',SubmitType::class,[
+
+            ])
             ->add('prix', NumberType::class,[
                 'scale'=>3,
             ])

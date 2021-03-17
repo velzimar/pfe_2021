@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/migrations/Version20210317091814.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Deal.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Deal.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Form/DealType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/DealType.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/ProductType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ProductType.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/deal/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/deal/userDeals.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/userDeals.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +220,7 @@
       <workItem from="1615748649481" duration="9695000" />
       <workItem from="1615814341347" duration="26515000" />
       <workItem from="1615901086861" duration="10590000" />
-      <workItem from="1615967333324" duration="11495000" />
+      <workItem from="1615967333324" duration="12347000" />
     </task>
     <servers />
   </component>

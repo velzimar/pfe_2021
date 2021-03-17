@@ -127,11 +127,18 @@
                 </div>
             </fieldset>
         </div>
-        <div class="form-buttons-w">
-            <button class="btn btn-primary disabled" type="submit"> {{ button_label }}</button>
+        <div class="row">
+            <div class="col col-auto mr-auto">
 
-            <button class="btn" type="reset">Reset</button>
+                {{ form_row(form.submit) }}
+            </div>
+            <div class="col col-auto ">
+
+                <button class="btn" type="reset">Annuler</button>
+            </div>
         </div>
+
+
         {{ form_end(form) }}
     </div>
 </div>
