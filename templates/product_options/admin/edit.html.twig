@@ -45,92 +45,22 @@
         var le = getJSonObject("{{current_length|json_encode()}}");
         // alert(le)
         current_length = le
-        option_id = '{{ option.id }}';
+        let option_id = '{{ option.id }}';
         // alert(option_id)
 
+        let price_id = "input_for_prices"
+        let choice_input_native_id = "input_for_choices"
+        let choices_native_id = "product_options_choices"
+        let choice_number_native_id = "nbChoix"
+        let name_id = "nom"
+        let ajax_post_url = "/productOptions/admin/edit"
+        let ajax_post_type = "POST"
+        let post_button_native_id = "post-btn"
 
     </script>
 
-    <div class="col-sm-12">
-        <div class="element-wrapper">
-            <h6 class="element-header">
-                Le produit {{ id.nom }} de vendeur {{ user.nom }} {{ user.prenom }}
-            </h6>
-            <div class="element-box">
-                <h5 class="form-header">
-                    Options
-                </h5>
-                <div class="form-desc">
-                    Ajouter des options pour un produit
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="nom">Nom de l'option</label>
-                            <input maxlength="30" id="nom" class='form-control' value="{{ option.nom }}"/>
-                        </div>
+    {{ include('editOption.html.twig',{description:"Modifier une option", secondHeader: "Options", firstHeader: "Le produit " ~ {{ id.nom }} " de vendeur " ~ {{ user.nom }} ~ " "~ {{ user.prenom }} }) }}
 
-                        <div class="col-sm-6">
-                            <label for="nbChoix">Nombre maximum de choix à selectionner</label>
-                            <select id="nbChoix" class="form-control">
-                                {% set i=0 %}
-                                {% for number in option.choices %}
-                                    {% set i=i+1 %}
-                                <option value="{{ i }}"
-                                        {% if i==option.NbMaxSelected %} selected {% endif %}
-                                >{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="input_for_choices">Le choix</label>
-                            <input maxlength="30" id="input_for_choices" class='form-control'/>
-                        </div>
-                        <div class="col-sm-6" id="test">
-                            <label for="test"></label>
-                            <div id="test" class="row">
-                                <div class="col-auto mr-auto">
-                                    <button style="line-height: 2;" class="btn btn-outline-primary " type="button"
-                                            onclick="_add()">Ajouter
-                                    </button>
-                                </div>
-                                <div class="col-auto">
-                                    <button style="line-height: 2;" class="btn btn-outline-danger " onclick="_delete()">
-                                        Supprimer
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <select id="product_options_choices" readonly="readonly" class="form-control"
-                            multiple="multiple">
-                        {% set i=0 %}
-                        {% for choix in option.choices %}
-                            {% set i=i+1 %}
-                            <option value="{{ choix }}">{{ choix }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-buttons-w">
-                    <div class="row">
-                        <div class="col-sm-3 float-right">
-                            <button hidden class="btn btn-danger" onclick=" _check_json_content()">check json</button>
-                            <button  id="post-btn" class="btn btn-secondary" >Terminer</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group" id="newOptions_container">
-
-            </div>
-        </div>
-    </div>
 
 {% endblock %}
 {% block javascripts %}

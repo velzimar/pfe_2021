@@ -1,0 +1,87 @@
+
+<div class="col-sm-12">
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            {{ firstHeader }}
+        </h6>
+        <div class="element-box">
+            <h5 class="form-header">
+                {{ secondHeader }}
+            </h5>
+            <div class="form-desc">
+                {{ description }}
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="nom">Nom de l'option</label>
+                        <input maxlength="30" id="nom" class='form-control' value="{{ option.nom }}"/>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label for="nbChoix">Nombre maximum de choix à selectionner</label>
+                        <select id="nbChoix" class="form-control">
+                            {% set i=0 %}
+                            {% for number in option.choices %}
+                                {% set i=i+1 %}
+                                <option value="{{ i }}"
+                                        {% if i==option.NbMaxSelected %} selected {% endif %}
+                                >{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="input_for_choices">Le choix</label>
+                        <input maxlength="30" id="input_for_choices" class='form-control'/>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="input_for_prices">Le prix</label>
+                        <input maxlength="14" type="number" id="input_for_prices" class='form-control'/>
+                    </div>
+                    <div class="col-sm-6" id="test">
+                        <label for="test"></label>
+                        <div id="test" class="row">
+                            <div class="col-auto mr-auto">
+                                <button style="line-height: 2;" class="btn btn-outline-primary " type="button"
+                                        onclick="_add()">Ajouter
+                                </button>
+                            </div>
+                            <div class="col-auto">
+                                <button style="line-height: 2;" class="btn btn-outline-danger " onclick="_delete()">
+                                    Supprimer
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <select id="product_options_choices" readonly="readonly" class="form-control"
+                        multiple="multiple">
+                    {% set nom="" %}
+                    {% set prix="" %}
+                    {% for choix in option.choices %}
+                        {% set i=0 %}
+                        {% for c in choix %}
+                            {% if i==0 %}{% set nom=c %}{% else %}{%  set prix=c %}{% endif %}
+                            {% set i=i+1 %}
+                        {% endfor %}
+                        <option selected value="{{ nom }}" data-price="{{ prix }}" data-name="{{ nom }}" >{{ nom }} à {{ prix }} dt</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-buttons-w">
+                <div class="row">
+                    <div class="col-sm-3 float-right">
+                        <button  class="btn btn-danger" onclick=" _check_json_content()">check json</button>
+                        <button  id="post-btn" class="btn btn-secondary" >Terminer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

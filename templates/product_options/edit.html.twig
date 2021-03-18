@@ -44,10 +44,22 @@
         var le = getJSonObject("{{current_length|json_encode()}}");
        // alert(le)
         current_length = le
-        option_id = '{{ option.id }}';
        // alert(option_id)
-    </script>
+        let option_id = '{{ option.id }}';
+        // alert(option_id)
 
+        let price_id = "input_for_prices"
+        let choice_input_native_id = "input_for_choices"
+        let choices_native_id = "product_options_choices"
+        let choice_number_native_id = "nbChoix"
+        let name_id = "nom"
+        let ajax_post_url = "/productOptions/editOption"
+        let ajax_post_type = "POST"
+        let post_button_native_id = "post-btn"
+
+
+    </script>
+{#
     <div class="col-sm-12">
         <div class="element-wrapper">
             <h6 class="element-header">
@@ -126,17 +138,17 @@
                 <div class="form-buttons-w">
                     <div class="row">
                         <div class="col-sm-3 float-right">
-                            <button hidden class="btn btn-danger" onclick=" _check_json_content()">check json</button>
-                            <a  id="post-btn" class="btn btn-secondary" href="{{ path('thisProductOptions',{'id':id.id}) }}">Terminer</a>
+                            <button  class="btn btn-danger" onclick=" _check_json_content()">check json</button>
+                            <button  id="post-btn" class="btn btn-secondary" >Terminer</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="form-group" id="newOptions_container">
-
-            </div>
         </div>
     </div>
+#}
+
+    {{ include('editOption.html.twig',{description:"Modifier une option", secondHeader: "Options", firstHeader: id.nom }) }}
 
 {% endblock %}
 {% block javascripts %}

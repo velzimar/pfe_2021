@@ -46,7 +46,12 @@
                                             {% for choix in option.choices %}
                                                 <li style="width:100%;word-break:break-all;overflow-wrap: break-word;height: fit-content;">
                                                     <h5 style="color: #ccd9e8;"></h5><h6>
-                                                        {{ choix }}
+                                                        {% set i=0 %}
+                                                        {% for c in choix %}
+                                                            {% if i==0 %}{{ c }}{% else %} à {{ c }} dt{% endif %}
+                                                            {% set i=i+1 %}
+
+                                                        {% endfor %}
                                                     </h6>
                                                 </li>
                                             {% endfor %}
