@@ -252,7 +252,7 @@ jquery_post_button.click(function (e) {
             return
         }
     }
-
+/*
     for (let k = 0; k < option_names.length; k++) {
         if (option_names[k] === name_input_native.value.trim()) {
             alert("Le nom du l'option doit être unique");
@@ -260,6 +260,28 @@ jquery_post_button.click(function (e) {
             return
         }
     }
+*/
+
+    let responseStatus = false
+    let data_to_check = {product_id: product_id, option_name: name_input_native.value.trim(), option_id: option_id}
+
+    $.ajax({
+        type: check_type,
+        async: false,
+        url: check_url,
+        data: data_to_check,//jQ will sort this out for you
+        success: function (response) {
+            console.log('empty');
+            if (response.success) {
+                responseStatus = true;
+            }else{
+                alert("Le nom de l'option doit être unique")
+                responseStatus = false;
+
+            }
+        },
+    });
+    if(!responseStatus) return;
 
     let selectedNbChoices = $(choice_number_jquery_id + " option:selected").val();
     let json_obj = {};

@@ -70,10 +70,14 @@ function _add() {
         }
     }
 
+
+
     choices_jquery.append("<option selected value='" + choice_input_native.value.trim() + "' data-price='" + parseFloat(price_native.value) + "' data-name='" + choice_input_native.value.trim() + "' >" + choice_input_native.value.trim() + " à " + parseFloat(price_native.value) + " dt" + "</option>");
     choice_input_jquery.val("");
     price_native.value = null;
     setCurrent_length(current_length + 1)
+
+
 }
 
 function _save() {
@@ -90,6 +94,7 @@ function _save() {
         }
     }
 
+/*
     for (let k = 0; k < option_names.length; k++) {
         if (option_names[k] === name_input_native.value.trim()) {
             alert("Le nom du l'option doit être unique");
@@ -97,6 +102,27 @@ function _save() {
             return
         }
     }
+*/
+
+    let responseStatus = false
+    let data_to_check = {product_id: product_id, option_name: name_input_native.value.trim()}
+
+    $.ajax({
+        type: check_type,
+        async: false,
+        url: check_url,
+        data: data_to_check,//jQ will sort this out for you
+        success: function (response) {
+            console.log('empty');
+            if (response.success) {
+                responseStatus = true;
+            }else{
+                alert("Le nom de l'option doit être unique")
+                responseStatus = false;
+            }
+        },
+    });
+    if(!responseStatus) return;
 
     let selectedNbChoices = $(choice_number_jquery_id + " option:selected").val();
     let json_obj = {};

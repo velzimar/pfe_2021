@@ -219,7 +219,7 @@ class ProductOptionsController extends AbstractController
             }else{
                 for($i=0;$i<sizeof($request->request->get('array'));$i++){
                     $op = null;
-                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"]]);
+                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"],'product'=>$product->getId()]);
                     if($op!=null){
                         continue;
                     }
@@ -278,7 +278,7 @@ class ProductOptionsController extends AbstractController
             }else{
                 for($i=0;$i<sizeof($request->request->get('array'));$i++){
                     $op = null;
-                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"]]);
+                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"],'product'=>$product->getId()]);
                     if($op!=null){
                         continue;
                     }
@@ -304,6 +304,35 @@ class ProductOptionsController extends AbstractController
                     ])
                 ]);
             }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+
+
+    /**
+     * @Route("/checkUnique/", name="admin_check_unique", methods={"GET","POST"})
+     * @param Request $request
+     * @param ProductOptionsRepository $opRep
+     * @param ProductRepository $rep
+     * @return JsonResponse
+     */
+    public function admin_check_unique(Request $request,ProductOptionsRepository $opRep,ProductRepository $rep): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            $thisOption = null;
+            if($request->request->has('option_id')){
+                $thisOption = $opRep->find(['id'=>$request->request->get('option_id')]);
+                //$thisOptionName = $thisOption->getNom();
+            }
+            $product = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
+            $option_name = $request->request->get('option_name');
+            // dump($user);die();
+            $res = $opRep->findOneBy(['nom'=>$option_name,'product'=>$product->getId()]);
+            return new JsonResponse([
+                'success'  => $res===null || $res===$thisOption,
+            ]);
         }
         return new JsonResponse([
             'success'  => false,

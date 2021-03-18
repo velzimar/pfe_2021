@@ -45,6 +45,8 @@
         let ajax_post_type = "POST"
         let post_button_native_id = "post-btn"
         let container_id = "newOptions_container"
+        let check_url = "/productOptions/checkUnique/"
+        let check_type = "POST"
 
     </script>
     {{ include('options.html.twig',{description:"Ajouter des options pour un produit", firstHeader: id.nom ~ " de l'utilisateur " ~ user.nom , secondHeader:"Options"}) }}

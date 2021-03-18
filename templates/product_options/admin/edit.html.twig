@@ -57,12 +57,15 @@
         let ajax_post_type = "POST"
         let post_button_native_id = "post-btn"
 
+        let check_url = "/productOptions/checkUnique/"
+        let check_type = "POST"
+
     </script>
 
-    {{ include('editOption.html.twig',{description:"Modifier une option", secondHeader: "Options", firstHeader: "Le produit " ~ {{ id.nom }} " de vendeur " ~ {{ user.nom }} ~ " "~ {{ user.prenom }} }) }}
+    {{ include('editOption.html.twig',{description:"Modifier une option", secondHeader: "Options", firstHeader: "Le produit " ~ id.nom ~ " de vendeur " ~  user.nom ~ " "~  user.prenom  }) }}
 
 
 {% endblock %}
 {% block javascripts %}
-     <script src="{{ asset('/myScripts/userEditProductOptions.js') }}"></script>
+     <script src="{{ asset('/myScripts/editProductOptions.js') }}"></script>
 {% endblock %}
