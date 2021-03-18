@@ -20,20 +20,6 @@
 {% block body %}
     <script>
         let product_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
-
-        function getJSonObject(value) {
-            return $.parseJSON(value.replace(/&quot;/ig, '"'));
-        }
-
-        let storeJSON = getJSonObject("{{ optionNames|json_encode() }}");
-
-        let option_names = []
-        $.each(storeJSON, function (k, v) {
-            //alert('Key = ' + k + '\n' + 'Value = ' + v);
-            option_names.push(v)
-        });
-        alert(option_names)
-
         let price_id = "input_for_prices"
         let choice_input_native_id = "input_for_choices"
         let choices_native_id = "product_options_choices"

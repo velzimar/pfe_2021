@@ -1,13 +1,18 @@
 //from user
 /*
-let price_id = "input_for_prices"
-let choice_input_native_id = "input_for_choices"
-let choices_native_id = "product_options_choices"
-let choice_number_native_id = "nbChoix"
-let name_id = "nom"
-let ajax_post_url = "/productOptions/list"
-let ajax_post_type = "POST"
-let post_button_native_id = "post-btn"
+        const user_id =
+        let product_id =
+        let price_id = "input_for_prices"
+        let choice_input_native_id = "input_for_choices"
+        let choices_native_id = "product_options_choices"
+        let choice_number_native_id = "nbChoix"
+        let name_id = "nom"
+        let ajax_post_url = "/productOptions/admin/new"
+        let ajax_post_type = "POST"
+        let post_button_native_id = "post-btn"
+        let container_id = "newOptions_container"
+        let check_url = "/productOptions/checkUnique/"
+        let check_type = "POST"
 */
 //from script
 
@@ -32,7 +37,7 @@ let choice_number_jquery = $(choice_number_jquery_id)
 let post_button_jquery_id = "#" + post_button_native_id
 let jquery_post_button = $(post_button_jquery_id)
 
-let container_jquery_id = "#"+container_id;
+let container_jquery_id = "#" + container_id;
 let container_jquery = $(container_jquery_id)
 
 function setCurrent_length(y, selectedElement) {
@@ -71,7 +76,6 @@ function _add() {
     }
 
 
-
     choices_jquery.append("<option selected value='" + choice_input_native.value.trim() + "' data-price='" + parseFloat(price_native.value) + "' data-name='" + choice_input_native.value.trim() + "' >" + choice_input_native.value.trim() + " à " + parseFloat(price_native.value) + " dt" + "</option>");
     choice_input_jquery.val("");
     price_native.value = null;
@@ -94,15 +98,6 @@ function _save() {
         }
     }
 
-/*
-    for (let k = 0; k < option_names.length; k++) {
-        if (option_names[k] === name_input_native.value.trim()) {
-            alert("Le nom du l'option doit être unique");
-            name_input_native.value = null;
-            return
-        }
-    }
-*/
 
     let responseStatus = false
     let data_to_check = {product_id: product_id, option_name: name_input_native.value.trim()}
@@ -116,13 +111,13 @@ function _save() {
             console.log('empty');
             if (response.success) {
                 responseStatus = true;
-            }else{
+            } else {
                 alert("Le nom de l'option doit être unique")
                 responseStatus = false;
             }
         },
     });
-    if(!responseStatus) return;
+    if (!responseStatus) return;
 
     let selectedNbChoices = $(choice_number_jquery_id + " option:selected").val();
     let json_obj = {};
