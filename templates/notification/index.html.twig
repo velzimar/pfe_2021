@@ -60,7 +60,8 @@
                                 {{ notification.getSendingDateString }}
                             </td>
                             <td class="row-actions">
-                                <button class="mr-2 mb-2 btn btn-primary" data-target="#onboardingTextModal-{{ notification.id }}"
+                                <button class="mr-2 mb-2 btn btn-primary"
+                                        data-target="#onboardingTextModal-{{ notification.id }}"
                                         data-toggle="modal" type="button">Détails
                                 </button>
                                 <div aria-hidden="true" class="onboarding-modal modal fade animated"
@@ -75,7 +76,14 @@
                                             </div>
                                             <div class="onboarding-content with-gradient">
                                                 <h4 class="onboarding-title">
-                                                    {{ notification.sender.nom }} {{ notification.sender.nom }}
+                                                    {% set role="user_edit" %}
+                                                    {% if is_granted('ROLE_SUPER') %}
+                                                        {% set role="super_edit" %}
+                                                    {% endif %}
+                                                    <a href="{{ path(role, {'id': notification.sender.id}) }}"
+                                                       class="product-remove-btn">
+                                                        {{ notification.sender.nom }} {{ notification.sender.prenom }}
+                                                    </a>
                                                     : {{ notification.title }}
                                                 </h4>
                                                 <div class="onboarding-content">
@@ -86,10 +94,10 @@
                                                 </div>
                                                 <div class="onboarding-">
                                                     <a href="#" id="a-{{ notification.id }}">Marquer comme vu</a>
-                                                   <script>
+                                                    <script>
                                                         $(document).ready(function () {
                                                             $("#a-{{ notification.id }}").click(function () {
-                                                                console.log("clicked"+{{ notification.id }})
+                                                                console.log("clicked" +{{ notification.id }})
                                                                 $('#btn-{{ notification.id }}').trigger('click');
                                                             });
                                                         });

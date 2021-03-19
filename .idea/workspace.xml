@@ -2,18 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Entity/Contact.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Form/ContactType.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/contact/contact.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/contact/contactForm.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/pfe_2021.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pfe_2021.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/myScripts/productOptions.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/myScripts/productOptions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/myScripts/userEditProductOptions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/myScripts/userProductOptions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ProductOptionsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ServiceOptionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ServiceOptionsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_options/admin/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/admin/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_options/admin/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/admin/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_options/admin/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/admin/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_options/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_options/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_options/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/NotificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/NotificationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/notification/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/notification/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/teamMembers.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/teamMembers.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,6 +163,8 @@
       <path value="$PROJECT_DIR$/vendor/geocoder-php/plugin" />
       <path value="$PROJECT_DIR$/vendor/php-http/promise" />
       <path value="$PROJECT_DIR$/vendor/php-http/discovery" />
+      <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/vendor/symfony/swiftmailer-bundle" />
     </include_path>
   </component>
   <component name="ProblemsViewState">
@@ -174,7 +182,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Controller" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/contact" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -186,11 +194,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller" />
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Repository" />
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\contact" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Entity" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Form" />
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates" />
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller" />
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Repository" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -231,7 +239,8 @@
       <workItem from="1615901086861" duration="10590000" />
       <workItem from="1615967333324" duration="20168000" />
       <workItem from="1616081577671" duration="18108000" />
-      <workItem from="1616160820937" duration="4827000" />
+      <workItem from="1616160820937" duration="6123000" />
+      <workItem from="1616170823060" duration="9866000" />
     </task>
     <servers />
   </component>

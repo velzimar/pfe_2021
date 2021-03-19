@@ -472,14 +472,29 @@ class UserController extends AbstractController
 
 
 
-    // TEAM MEMBERS
+    // TEAM MEMBERS as SELLER
     /**
      * @param UserRepository $rep
      * @return Response
      */
-    public function teamMembers(UserRepository $rep): Response
+    public function send_as_seller(UserRepository $rep): Response
     {
         $admins = $rep->findByRole("ROLE_ADMIN");
+
+        return $this->render(
+            'teamMembers.html.twig',
+            array('admins' => $admins)
+        );
+    }
+
+    // TEAM MEMBERS as Admin
+    /**
+     * @param UserRepository $rep
+     * @return Response
+     */
+    public function send_as_admin(UserRepository $rep): Response
+    {
+        $admins = $rep->findByRoleNot("ROLE_SELLER","ROLE_SELLER");
 
         return $this->render(
             'teamMembers.html.twig',

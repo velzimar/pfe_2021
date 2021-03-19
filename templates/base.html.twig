@@ -1211,7 +1211,11 @@
 
                     {% if is_granted('ROLE_ADMIN') %}
                         {{ render(controller(
-                            'App\\Controller\\UserController::teamMembers'
+                            'App\\Controller\\UserController::send_as_admin'
+                        )) }}
+                    {% elseif is_granted('ROLE_SELLER') %}
+                        {{ render(controller(
+                            'App\\Controller\\UserController::send_as_seller'
                         )) }}
                     {% endif %}
                     <!--------------------

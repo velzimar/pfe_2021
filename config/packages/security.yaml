@@ -54,6 +54,7 @@ security:
          - { path: ^/serviceCategory/admin/, roles: ROLE_ADMIN }
          - { path: ^/serviceOptions/admin/, roles: ROLE_ADMIN }
          - { path: ^/serviceCalendar/admin/, roles: ROLE_ADMIN }
+         - { path: ^/notification/admin/, roles: ROLE_ADMIN }
             #For sellers
          - { path: ^/deal/myDeals/, roles: ROLE_SELLER }
          - { path: ^/dealCategory/myDealCategories/, roles: ROLE_SELLER }
@@ -65,3 +66,4 @@ security:
          - { path: ^/serviceCategory/myServiceCategories/, roles: ROLE_SELLER }
          - { path: ^/serviceOptions/myOptions/, roles: ROLE_SELLER }
          - { path: ^/serviceCalendar/user/, roles: ROLE_SELLER }
+         - { path: ^/notification/user/, roles: ROLE_SELLER }

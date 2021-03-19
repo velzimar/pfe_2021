@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}create mail{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+
+        <li class="breadcrumb-item">
+            <a href="#">mail</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block QuickLink1 %}
+
+
+{% endblock %}
+{% block body %}
+    {#
+    <div class="element-box">
+        <h5 class="form-header">
+            Powered by CKEditor
+        </h5>
+        <div class="form-desc">
+            Create captivating content with multiple features available in CKEditor thanks to its plugin-based architecture. <a href="http://ckeditor.com/" target="_blank">Learn More about CKEditor</a>
+        </div>
+        <textarea cols="80" id="ckeditor1" name="ckeditor1" rows="10"></textarea>
+    </div>
+    #}
+
+    <div class="element-box">
+        <h5 class="form-header">
+            Powered by CKEditor
+        </h5>
+        <div class="form-desc">
+            Create mail
+        </div>
+
+        {{ form_start(form) }}
+        <fieldset>
+            <legend>Titre</legend>
+
+            <div class="row">
+                <div class="col-sm-12">
+
+                    {{ form_row(form.title,{
+                        "name":"",
+                        "attr":{
+                            "class":"form-control"
+                        }
+                    }) }}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Message</legend>
+            <div class="row">
+                <div class="col-sm-12">
+
+                    {{ form_row(form.message,{
+                        'id':"ckeditor1",
+                        "name":"",
+                        "attr":{
+                            "class":"form-control"
+                        }
+
+                    }) }}
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-buttons-w">
+        <div class="row">
+
+            <div class="col-auto mr-auto">
+                <button class="btn btn-outline-primary" type="submit">Envoyer</button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-outline-danger" type="reset">Annuler</button>
+            </div>
+        </div>
+
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

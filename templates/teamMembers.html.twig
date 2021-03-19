@@ -24,9 +24,15 @@
                         {{ admin.getMainRole }}
                     </div>
                 </div>
-                <a class="user-action" href="users_profile_small.html">
-                    <div class="os-icon os-icon-email-forward"></div>
-                </a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="user-action" href="{{ path('send_mail_as_admin',{'id':admin.id}) }}">
+                        <div class="os-icon os-icon-email-forward"></div>
+                    </a>
+                {% elseif is_granted('ROLE_SELLER') %}
+                    <a class="user-action" href="{{ path('send_mail_as_seller',{'id':admin.id}) }}">
+                        <div class="os-icon os-icon-email-forward"></div>
+                    </a>
+                {% endif %}
                 </div>
                 {#
                 <div class="user-w with-status status-green">
