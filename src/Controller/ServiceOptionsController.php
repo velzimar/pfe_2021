@@ -31,10 +31,12 @@ class ServiceOptionsController extends AbstractController
 
     public function index(ServiceOptionsRepository $rep, Service $service): Response
     {
+        $options = $rep->findBy(['service' => $service]);
+
         return $this->render('service_options/index.html.twig', [
             'controller_name' => 'ServiceOptionsController',
-            'options' => $rep->findBy(['service' => $service]),
-            'service'=>$service
+            'options' => $options,
+            'product'=>$service
         ]);
     }
 
@@ -51,19 +53,19 @@ class ServiceOptionsController extends AbstractController
         return $this->render('service_options/admin/index.html.twig', [
             'controller_name' => 'ServiceOptionsController',
             'options' => $rep->findBy(['service' => $service]),
-            'service'=>$service,
+            'product'=>$service,
             'user'=>$user
         ]);
     }
 
     /**
      * @Route("/myOptions/{id}/new", name="new_option_service", methods={"GET","POST"})
-     * @param ServiceOptionsRepository $rep
      * @param Service $service
      * @return Response
      */
-    public function newOption( ServiceOptionsRepository $rep, Service $service): Response
+    public function newOption(Service $service): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['service' => $service]);
@@ -71,23 +73,24 @@ class ServiceOptionsController extends AbstractController
             $list[$i]=$option->getNom();
             $i++;
         }
-       // dump($list);die();
+        */
+        // dump($list);die();
         return $this->render('service_options/new.html.twig', [
             'id' => $service,
-            'optionNames' => $list,
+            // 'optionNames' => $list,
         ]);
     }
 
 
     /**
      * @Route("/admin/user_{user}/service_{id}/new", name="user_new_option_service", methods={"GET","POST"})
-     * @param ServiceOptionsRepository $rep
      * @param User $user
      * @param Service $service
      * @return Response
      */
-    public function userNewOption( ServiceOptionsRepository $rep, User $user ,Service $service): Response
+    public function userNewOption(User $user ,Service $service): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['service' => $service]);
@@ -95,10 +98,11 @@ class ServiceOptionsController extends AbstractController
             $list[$i]=$option->getNom();
             $i++;
         }
+        */
         // dump($list);die();
         return $this->render('service_options/admin/new.html.twig', [
             'id' => $service,
-            'optionNames' => $list,
+            // 'optionNames' => $list,
             'user' => $user
         ]);
     }
@@ -106,12 +110,12 @@ class ServiceOptionsController extends AbstractController
 
     /**
      * @Route("/admin/{id}/new", name="new_option_for_admin_service", methods={"GET","POST"})
-     * @param ServiceOptionsRepository $rep
      * @param Service $service
      * @return Response
      */
-    public function newOptionForAdmin( ServiceOptionsRepository $rep, Service $service): Response
+    public function newOptionForAdmin(Service $service): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['service' => $service]);
@@ -119,10 +123,11 @@ class ServiceOptionsController extends AbstractController
             $list[$i]=$option->getNom();
             $i++;
         }
+        */
         // dump($list);die();
         return $this->render('service_options/new.html.twig', [
             'id' => $service,
-            'optionNames' => $list,
+            //  'optionNames' => $list,
         ]);
     }
 
@@ -136,21 +141,24 @@ class ServiceOptionsController extends AbstractController
      */
     public function editOption( ServiceOptionsRepository $rep, Service $service, ServiceOptions $service_options): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['service' => $service]);
-
+*/
         $this_option = $rep->findOneBy(['id' => $service_options]);
+        /*
         foreach ($options as $option){
             if($option->getNom()!=$this_option->getNom()){
                 $list[$i]=$option->getNom();
                 $i++;
             }
         }
+        */
         return $this->render('service_options/edit.html.twig', [
             'id' => $service,
             'option' => $this_option,
-            'optionNames' => $list,
+            //'optionNames' => $list,
             'current_length'=> count($this_option->getChoices())
         ]);
     }
@@ -165,16 +173,20 @@ class ServiceOptionsController extends AbstractController
      */
     public function userEditOption( ServiceOptionsRepository $rep, User  $user,Service $service, ServiceOptions $service_options): Response
     {
+
+        $this_option = $rep->findOneBy(['id' => $service_options]);
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['service' => $service]);
-        $this_option = $rep->findOneBy(['id' => $service_options]);
+
         foreach ($options as $option){
             if($option->getNom()!=$this_option->getNom()){
                 $list[$i]=$option->getNom();
                 $i++;
             }
         }
+        */
         /*
         dump($service);
         dump($this_option);
@@ -186,7 +198,7 @@ class ServiceOptionsController extends AbstractController
         return $this->render('service_options/admin/edit.html.twig', [
             'id' => $service,
             'option' => $this_option,
-            'optionNames' => $list,
+            // 'optionNames' => $list,
             'current_length'=> count($this_option->getChoices()),
             'user' => $user
         ]);
@@ -205,9 +217,9 @@ class ServiceOptionsController extends AbstractController
         $service=null;
         $em = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
-            $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+            $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
             if($request->request->get('array')==[]){
-                $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+                $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
                 return new JsonResponse([
                     'success'  => true,
                     'redirect' => $this->generateUrl('thisServiceOptions',[
@@ -217,7 +229,7 @@ class ServiceOptionsController extends AbstractController
             }else{
                 for($i=0;$i<sizeof($request->request->get('array'));$i++){
                     $op = null;
-                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"]]);
+                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"],'service'=>$service->getId()]);
                     if($op!=null){
                         continue;
                     }
@@ -225,11 +237,11 @@ class ServiceOptionsController extends AbstractController
                     dump($request->request->get('array')[$i]["nom"]);
                     dump($request->request->get('array')[$i]["choices"]);
                     dump($request->request->get('array')[$i]["selectedNbChoices"]);
-                    dump($request->request->get('array')[$i]["service"]);
+                    dump($request->request->get('array')[$i]["product"]);
                     $p->setNom($request->request->get('array')[$i]["nom"]);
                     $p->setChoices($request->request->get('array')[$i]["choices"]);
                     $p->setNbMaxSelected(intval($request->request->get('array')[$i]["selectedNbChoices"]));
-                    $serviceId=intval($request->request->get('array')[$i]["service"]);
+                    $serviceId=intval($request->request->get('array')[$i]["product"]);
                     $service = $rep->findOneBy(['id'=>$serviceId]);
                     $p->setService($service);
                     $em->persist($p);
@@ -261,11 +273,11 @@ class ServiceOptionsController extends AbstractController
         $service=null;
         $em = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
-            $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+            $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
             $user = $userRep->findOneBy(['id'=>$request->request->get('user_id')]);
-          // dump($user);die();
+            // dump($user);die();
             if($request->request->get('array')==[]){
-                $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+                $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
                 return new JsonResponse([
                     'success'  => true,
                     'redirect' => $this->generateUrl('userServiceOptions',[
@@ -276,7 +288,7 @@ class ServiceOptionsController extends AbstractController
             }else{
                 for($i=0;$i<sizeof($request->request->get('array'));$i++){
                     $op = null;
-                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"]]);
+                    $op = $opRep->findOneBy(['nom'=>$request->request->get('array')[$i]["nom"],'service'=>$service->getId()]);
                     if($op!=null){
                         continue;
                     }
@@ -284,11 +296,11 @@ class ServiceOptionsController extends AbstractController
                     dump($request->request->get('array')[$i]["nom"]);
                     dump($request->request->get('array')[$i]["choices"]);
                     dump($request->request->get('array')[$i]["selectedNbChoices"]);
-                    dump($request->request->get('array')[$i]["service"]);
+                    dump($request->request->get('array')[$i]["product"]);
                     $p->setNom($request->request->get('array')[$i]["nom"]);
                     $p->setChoices($request->request->get('array')[$i]["choices"]);
                     $p->setNbMaxSelected(intval($request->request->get('array')[$i]["selectedNbChoices"]));
-                    $serviceId=intval($request->request->get('array')[$i]["service"]);
+                    $serviceId=intval($request->request->get('array')[$i]["product"]);
                     $service = $rep->findOneBy(['id'=>$serviceId]);
                     $p->setService($service);
                     $em->persist($p);
@@ -310,6 +322,35 @@ class ServiceOptionsController extends AbstractController
 
 
     /**
+     * @Route("/checkUnique/", name="admin_check_unique_service", methods={"GET","POST"})
+     * @param Request $request
+     * @param ServiceOptionsRepository $opRep
+     * @param ServiceRepository $rep
+     * @return JsonResponse
+     */
+    public function admin_check_unique(Request $request,ServiceOptionsRepository $opRep,ServiceRepository $rep): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            $thisOption = null;
+            if($request->request->has('option_id')){
+                $thisOption = $opRep->find(['id'=>$request->request->get('option_id')]);
+                //$thisOptionName = $thisOption->getNom();
+            }
+            $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
+            $option_name = $request->request->get('option_name');
+            // dump($user);die();
+            $res = $opRep->findOneBy(['nom'=>$option_name,'service'=>$service->getId()]);
+            return new JsonResponse([
+                'success'  => $res===null || $res===$thisOption,
+            ]);
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+
+
+    /**
      * @Route("/editOption", name="edit_service_options", methods={"GET","POST"})
      * @param Request $request
      * @param ServiceOptionsRepository $opRep
@@ -321,9 +362,9 @@ class ServiceOptionsController extends AbstractController
         $service=null;
         $em = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
-            $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+            $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
             if($request->request->get('array')==[]){
-                $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+                $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
                 return new JsonResponse([
                     'empty'  => true,
                     'redirect' => $this->generateUrl('thisServiceOptions',[
@@ -340,7 +381,7 @@ class ServiceOptionsController extends AbstractController
                     $p->setNom($request->request->get('array')[$i]["nom"]);
                     $p->setChoices($request->request->get('array')[$i]["choices"]);
                     $p->setNbMaxSelected(intval($request->request->get('array')[$i]["selectedNbChoices"]));
-                    $serviceId=intval($request->request->get('array')[$i]["service"]);
+                    $serviceId=intval($request->request->get('array')[$i]["product"]);
                     $service = $rep->findOneBy(['id'=>$serviceId]);
                     $p->setService($service);
                     $em->flush();
@@ -373,9 +414,9 @@ class ServiceOptionsController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
             $user = $userRep->findOneBy(['id'=>$request->request->get('user_id')]);
-            $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+            $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
             if($request->request->get('array')==[]){
-                $service = $rep->findOneBy(['id'=>$request->request->get('service_id')]);
+                $service = $rep->findOneBy(['id'=>$request->request->get('product_id')]);
                 return new JsonResponse([
                     'empty'  => true,
                     'redirect' => $this->generateUrl('userServiceOptions',[
@@ -393,7 +434,7 @@ class ServiceOptionsController extends AbstractController
                     $p->setNom($request->request->get('array')[$i]["nom"]);
                     $p->setChoices($request->request->get('array')[$i]["choices"]);
                     $p->setNbMaxSelected(intval($request->request->get('array')[$i]["selectedNbChoices"]));
-                    $serviceId=intval($request->request->get('array')[$i]["service"]);
+                    $serviceId=intval($request->request->get('array')[$i]["product"]);
                     $service = $rep->findOneBy(['id'=>$serviceId]);
                     $p->setService($service);
                     $em->flush();

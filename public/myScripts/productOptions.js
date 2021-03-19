@@ -101,7 +101,6 @@ function _save() {
 
     let responseStatus = false
     let data_to_check = {product_id: product_id, option_name: name_input_native.value.trim()}
-
     $.ajax({
         type: check_type,
         async: false,
@@ -117,6 +116,7 @@ function _save() {
             }
         },
     });
+
     if (!responseStatus) return;
 
     let selectedNbChoices = $(choice_number_jquery_id + " option:selected").val();
@@ -192,6 +192,7 @@ function _save() {
     choices_jquery.children().remove().end()
     choice_input_native.value = null;
     name_input_native.value = null;
+    price_native.value = null;
     setCurrent_length(0)
 }
 

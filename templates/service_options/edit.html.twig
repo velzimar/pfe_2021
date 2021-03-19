@@ -26,109 +26,30 @@
 
 {% block body %}
     <script>
-        //alert("aa")
-        let service_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
-        let current_length;
+
         function getJSonObject(value) {
             return $.parseJSON(value.replace(/&quot;/ig, '"'));
         }
-        //alert("aa")
-        var storeJSON = getJSonObject("{{optionNames|json_encode()}}");
-        var option_names = []
-        $.each(storeJSON, function(k,v){
-            //alert('Key = ' + k + '\n' + 'Value = ' + v);
-            option_names.push(v)
-        });
-        //alert(option_names)
-        var le = getJSonObject("{{current_length|json_encode()}}");
-       // alert(le)
-        current_length = le
-        option_id = '{{ option.id }}';
-       // alert(option_id)
+
+        let product_id = {% if id is defined %}'{{ id.id }}'{% else %} '' {% endif %};
+        let current_length = getJSonObject("{{current_length|json_encode()}}");
+        let option_id = '{{ option.id }}';
+        let price_id = "input_for_prices"
+        let choice_input_native_id = "input_for_choices"
+        let choices_native_id = "product_options_choices"
+        let choice_number_native_id = "nbChoix"
+        let name_id = "nom"
+        let ajax_post_url = "/serviceOptions/editOption"
+        let ajax_post_type = "POST"
+        let post_button_native_id = "post-btn"
+        let check_url = "/serviceOptions/checkUnique/"
+        let check_type = "POST"
+
     </script>
 
-    <div class="col-sm-12">
-        <div class="element-wrapper">
-            <h6 class="element-header">
-                {{ id.nom }} {{ current_length }}
-            </h6>
-            <div class="element-box">
-                <h5 class="form-header">
-                    Options
-                </h5>
-                <div class="form-desc">
-                    Ajouter des options pour votre service
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="nom">Nom de l'option</label>
-                            <input maxlength="30" id="nom" class='form-control' value="{{ option.nom }}"/>
-                        </div>
-
-                        <div class="col-sm-6">
-                            <label for="nbChoix">Nombre maximum de choix à selectionner</label>
-                            <select id="nbChoix" class="form-control">
-                                {% set i=0 %}
-                                {% for number in option.choices %}
-                                    {% set i=i+1 %}
-                                <option value="{{ i }}"
-                                        {% if i==option.NbMaxSelected %} selected {% endif %}
-                                >{{ i }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label for="input_for_choices">Le choix</label>
-                            <input maxlength="30" id="input_for_choices" class='form-control'/>
-                        </div>
-                        <div class="col-sm-6" id="test">
-                            <label for="test"></label>
-                            <div id="test" class="row">
-                                <div class="col-auto mr-auto">
-                                    <button style="line-height: 2;" class="btn btn-outline-primary " type="button"
-                                            onclick="_add()">Ajouter
-                                    </button>
-                                </div>
-                                <div class="col-auto">
-                                    <button style="line-height: 2;" class="btn btn-outline-danger " onclick="_delete()">
-                                        Supprimer
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <select id="service_options_choices" readonly="readonly" class="form-control"
-                            multiple="multiple">
-                        {% set i=0 %}
-                        {% for choix in option.choices %}
-                            {% set i=i+1 %}
-                            <option value="{{ choix }}">{{ choix }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-buttons-w">
-                    <div class="row">
-                        <div class="col-sm-3 float-right">
-                            <button hidden class="btn btn-danger" onclick=" _check_json_content()">check json</button>
-                            <a  id="post-btn" class="btn btn-secondary" href="{{ path('thisServiceOptions',{'id':id.id}) }}">Terminer</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group" id="newOptions_container">
-
-            </div>
-        </div>
-    </div>
+    {{ include('editOption.html.twig',{description:"Modifier une option", secondHeader: "Options", firstHeader: id.nom }) }}
 
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('/myScripts/service/editServiceOptions.js') }}"></script>
+    <script src="{{ asset('/myScripts/editProductOptions.js') }}"></script>
 {% endblock %}

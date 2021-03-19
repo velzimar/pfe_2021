@@ -66,6 +66,7 @@ class ProductOptionsController extends AbstractController
      */
     public function newOption( ProductOptionsRepository $rep, Product $product): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['product' => $product]);
@@ -73,10 +74,11 @@ class ProductOptionsController extends AbstractController
             $list[$i]=$option->getNom();
             $i++;
         }
+        */
        // dump($list);die();
         return $this->render('product_options/new.html.twig', [
             'id' => $product,
-            'optionNames' => $list,
+           // 'optionNames' => $list,
         ]);
     }
 
@@ -90,6 +92,7 @@ class ProductOptionsController extends AbstractController
      */
     public function userNewOption( ProductOptionsRepository $rep, User $user ,Product $product): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['product' => $product]);
@@ -97,10 +100,11 @@ class ProductOptionsController extends AbstractController
             $list[$i]=$option->getNom();
             $i++;
         }
+        */
         // dump($list);die();
         return $this->render('product_options/admin/new.html.twig', [
             'id' => $product,
-            'optionNames' => $list,
+           // 'optionNames' => $list,
             'user' => $user
         ]);
     }
@@ -114,6 +118,7 @@ class ProductOptionsController extends AbstractController
      */
     public function newOptionForAdmin( ProductOptionsRepository $rep, Product $product): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['product' => $product]);
@@ -121,10 +126,11 @@ class ProductOptionsController extends AbstractController
             $list[$i]=$option->getNom();
             $i++;
         }
+        */
         // dump($list);die();
         return $this->render('product_options/new.html.twig', [
             'id' => $product,
-            'optionNames' => $list,
+          //  'optionNames' => $list,
         ]);
     }
 
@@ -138,21 +144,24 @@ class ProductOptionsController extends AbstractController
      */
     public function editOption( ProductOptionsRepository $rep, Product $product, ProductOptions $product_options): Response
     {
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['product' => $product]);
-
+*/
         $this_option = $rep->findOneBy(['id' => $product_options]);
+        /*
         foreach ($options as $option){
             if($option->getNom()!=$this_option->getNom()){
                 $list[$i]=$option->getNom();
                 $i++;
             }
         }
+        */
         return $this->render('product_options/edit.html.twig', [
             'id' => $product,
             'option' => $this_option,
-            'optionNames' => $list,
+            //'optionNames' => $list,
             'current_length'=> count($this_option->getChoices())
         ]);
     }
@@ -167,16 +176,20 @@ class ProductOptionsController extends AbstractController
      */
     public function userEditOption( ProductOptionsRepository $rep, User  $user,Product $product, ProductOptions $product_options): Response
     {
+
+        $this_option = $rep->findOneBy(['id' => $product_options]);
+        /*
         $list = [];
         $i=0;
         $options = $rep->findBy(['product' => $product]);
-        $this_option = $rep->findOneBy(['id' => $product_options]);
+
         foreach ($options as $option){
             if($option->getNom()!=$this_option->getNom()){
                 $list[$i]=$option->getNom();
                 $i++;
             }
         }
+        */
         /*
         dump($product);
         dump($this_option);
@@ -188,7 +201,7 @@ class ProductOptionsController extends AbstractController
         return $this->render('product_options/admin/edit.html.twig', [
             'id' => $product,
             'option' => $this_option,
-            'optionNames' => $list,
+           // 'optionNames' => $list,
             'current_length'=> count($this_option->getChoices()),
             'user' => $user
         ]);
@@ -312,7 +325,7 @@ class ProductOptionsController extends AbstractController
 
 
     /**
-     * @Route("/checkUnique/", name="admin_check_unique", methods={"GET","POST"})
+     * @Route("/checkUnique/", name="admin_check_unique_product", methods={"GET","POST"})
      * @param Request $request
      * @param ProductOptionsRepository $opRep
      * @param ProductRepository $rep
