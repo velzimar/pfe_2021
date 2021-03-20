@@ -40,6 +40,8 @@ security:
           ROLE_ADMIN: [ ROLE_USER ]
           ROLE_SELLER: [ ROLE_USER ]
     access_control:
+           #For Anonymous
+        # - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
             #For Super
          - { path: ^/user/super/, roles: ROLE_SUPER }
             #For admins

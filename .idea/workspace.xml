@@ -2,24 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Entity/Contact.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Form/ContactType.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/contact/contact.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/contact/contactForm.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/pfe_2021.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pfe_2021.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/NotificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/NotificationController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/notification/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/notification/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/teamMembers.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/teamMembers.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/users_images/avatar7-604146d6010bf053789378.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RegistrationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegistrationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/template.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/template.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,7 +227,8 @@
       <workItem from="1615967333324" duration="20168000" />
       <workItem from="1616081577671" duration="18108000" />
       <workItem from="1616160820937" duration="6123000" />
-      <workItem from="1616170823060" duration="9866000" />
+      <workItem from="1616170823060" duration="10014000" />
+      <workItem from="1616248989695" duration="3609000" />
     </task>
     <servers />
   </component>
