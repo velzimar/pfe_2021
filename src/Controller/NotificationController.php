@@ -86,6 +86,7 @@ class NotificationController extends AbstractController
      * @param User $user
      * @return Response
      */
+    // le vendeur envoie des email aux administrateur seulement
     public function teamMembers(Swift_Mailer $mailer, Request $request, User $user): Response
     {
         // dump($user->getMainRole());die;
@@ -141,6 +142,7 @@ class NotificationController extends AbstractController
      * @param User $user
      * @return Response
      */
+    // l'admin envoie des emails a tous
     public function send_as_admin(Swift_Mailer $mailer, Request $request, User $user): Response
     {
 

@@ -75,6 +75,9 @@
                                 </th>
                                 <th>
                                 </th>
+
+                                <th>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -90,6 +93,7 @@
                                     <td>
                                         {{ user.getMainRole }}
                                     </td>
+
                                     <td class="row-actions">
                                         {% set role="user_toggle_active" %}
                                         {% if is_granted('ROLE_SUPER') %}
@@ -105,17 +109,31 @@
                                             </a>
                                         {% endif %}
                                     </td>
+
+
+
                                     <td class="row-actions">
 
                                         {% set role="user_edit" %}
                                         {% if is_granted('ROLE_SUPER') %}
                                             {% set role="super_edit" %}
                                         {% endif %}
-                                        <a href="{{ path(role, {'id': user.id}) }}" class="product-remove-btn">
-                                            <div class="os-icon os-icon-ui-49"></div>
+                                                <a href="{{ path(role, {'id': user.id}) }}" class="product-remove-btn">
+                                                    <div class="os-icon os-icon-ui-49"></div>
+                                                </a>
+
+                                    </td>
+                                    <td>
+                                        <a class="product-remove-btn" href="{{ path('send_mail_as_admin',{'id':user.id}) }}">
+                                            <div class="os-icon os-icon-email-forward"></div>
                                         </a>
                                     </td>
                                 </tr>
+                                {#
+                                <a href="{{ path("user_show", {'id': user.id}) }}" class="product-remove-btn">
+                                    <div class="os-icon os-icon-ui-49"></div>
+                                </a>
+                                #}
                             {% else %}
                                 <tr>
                                     <td colspan="5">no records found</td>

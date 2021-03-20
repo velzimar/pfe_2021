@@ -200,16 +200,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group"> <div class="form-group">
+                        <label for="edit_user_cin" class="required">Adresse Email</label>
+                        <input disabled type="text" id="edit_user_cin" class="form-control"  value="{{ app.user.email }}">
+
+                    </div>
+                </div>
                 {{ form_start(form) }}
 
                 {% do form.admin.setRendered %}
                 {% do form.vendeur.setRendered %}
-                <div class="form-group">
-                    {{ form_row(form.email,{
-                        'label':"Adresse Email",
-                        'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
-                    }) }}
-                </div>
+
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">

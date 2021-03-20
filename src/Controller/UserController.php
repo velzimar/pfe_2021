@@ -176,7 +176,7 @@ class UserController extends AbstractController
 
     public function editSuper(Request $request, User $user): Response
     {
-        $lastMail = $user->getEmail();
+        //$lastMail = $user->getEmail();
         $isAdmin = $user->hasRole("ROLE_ADMIN");
         $isSeller = $user->hasRole("ROLE_SELLER");
         $form = $this->createForm(EditUserType::class, $user);
@@ -205,14 +205,6 @@ class UserController extends AbstractController
             $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
             return $this->render('user/edit.html.twig', [
                 'form' => $form->createView(),
-                'user'=>$user
-            ]);
-        } else if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('user/edit.html.twig_error', 'Email doit être unique');
-            $lastForm = $this->createForm(EditUserType::class, $user);
-            $lastForm->get('email')->setData($lastMail);
-            return $this->render('user/edit.html.twig', [
-                'form' => $lastForm->createView(),
                 'user'=>$user
             ]);
         }
@@ -353,7 +345,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/admin/{id}", name="user_show", methods={"GET"})
+     * @Route("/{id}", name="user_show", methods={"GET"})
      * @param User $user
      * @return Response
      */
@@ -375,24 +367,15 @@ class UserController extends AbstractController
 
     public function edit(Request $request, User $user): Response
     {
-        $lastMail = $user->getEmail();
+        //$lastMail = $user->getEmail();
         $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $manager = $this->getDoctrine()->getManager();
             $manager->flush();
             $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
             return $this->render('user/edit.html.twig', [
                 'form' => $form->createView(),
-                'user'=>$user
-            ]);
-        } else if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('user/edit.html.twig_error', 'Email doit être unique');
-            $lastForm = $this->createForm(EditUserType::class, $user);
-            $lastForm->get('email')->setData($lastMail);
-            return $this->render('user/edit.html.twig', [
-                'form' => $lastForm->createView(),
                 'user'=>$user
             ]);
         }
@@ -512,21 +495,15 @@ class UserController extends AbstractController
     public function myProfileEdit(Request $request): Response
     {
         $user = $this->getUser();
-        $lastMail = $user->getEmail();
+        //$lastMail = $user->getEmail();
         $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->flush();
             $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
-        } else if ($form->isSubmitted() && !$form->isValid()) {
-            $this->addFlash('user/edit.html.twig_error', 'Votre email doit être unique');
-            $lastForm = $this->createForm(EditUserType::class, $user);
-            $lastForm->get('email')->setData($lastMail);
-            return $this->render('user/my_edit.html.twig', [
-                'form' => $lastForm->createView(),
-            ]);
         }
+
         return $this->render('user/my_edit.html.twig', [
             'form' => $form->createView(),
         ]);

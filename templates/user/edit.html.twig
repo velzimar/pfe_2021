@@ -43,6 +43,10 @@
             <i class="os-icon os-icon-delivery-box-2"></i>
             <span>Changer le mot de passe</span>
         </a>
+        <a class="btn btn-white btn-sm" href="{{ path('send_mail_as_admin',{'id':user.id}) }}">
+            <i class="os-icon os-icon-email-forward"></i>
+            <span>Envoyer un email</span>
+        </a>
         {% if is_granted('ROLE_SUPER') %}
             {{ include('user/_delete_form.html.twig') }}
         {% endif %}
@@ -214,13 +218,13 @@
                         </div>
                     </div>
                 </div>
-                {{ form_start(form) }}
                 <div class="form-group">
-                    {{ form_row(form.email,{
-                        'label':"Adresse Email",
-                        'attr': {'class': 'form-control' ,'placeholder':"Entrer l'addresse email" ,'required':"required", 'type':"email" }
-                    }) }}
+                    <label for="edit_user_cin" class="required">Adresse Email</label>
+                    <input disabled type="text" id="edit_user_cin" class="form-control"  value="{{ user.email }}">
+
                 </div>
+                {{ form_start(form) }}
+
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
