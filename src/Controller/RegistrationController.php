@@ -7,7 +7,10 @@ use App\Entity\ProductCategory;
 use App\Entity\ServiceCategory;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
+use App\Repository\UserRepository;
 use App\Security\UserAuthAuthenticator;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +28,7 @@ class RegistrationController extends AbstractController
      * @param UserAuthAuthenticator $authenticator
      * @return Response
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthAuthenticator $authenticator): Response
+    public function register(Swift_Mailer $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthAuthenticator $authenticator): Response
     {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_login');
@@ -52,6 +55,7 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $user->setRoles(["ROLE_SELLER"]);
             $user->setIsActive(0);
+            $user->setToken(rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '='));
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -79,12 +83,27 @@ class RegistrationController extends AbstractController
             $entityManager->persist($defaultCategory);
 
             $entityManager->flush();
+            $message = (new Swift_Message("Cliquer ici pour valider votre email"))
+                ->setFrom("superadmin@looper.com")
+                ->setTo($user->getEmail())
+                //->setReplyTo($contact->getEmail())
+                ->setBody(
+                    $this->render("/registration/emailMessage.html.twig",["token"=>$user->getToken(),"user"=> $user]), 'text/html'
+                );
+
+            $mailer->send($message);
+
+            $this->addFlash('login', 'Un email est envoyé à votre adresse');
+
+            return $this->redirectToRoute("app_login");
+            /*
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
                 $authenticator,
                 'main' // firewall name in security.yaml
             );
+            */
         }else if ($form->isSubmitted() && !$form->isValid()){
             if($form->get('longitude')->getData()=="")
                 $this->addFlash('register', 'Inserer votre localisation');
@@ -93,4 +112,57 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
+
+
+    /**
+     * @Route("/activate/{token}/{user}", name="app_verify")
+     * @param String $token
+     * @param User $user
+     * @param UserRepository $rep
+     * @return Response
+     */
+    public function activate(String $token, User $user, UserRepository $rep):Response
+    {
+        $found = $rep->find(["id"=>$user->getId()]);
+        /*
+        dump($user->getId());
+        dump($token);
+        dump($found);
+        die();
+        */
+        if($found!==null && $found->getToken()===$token){
+            $user->setIsActive(1);
+            $this->getDoctrine()->getManager()->flush();
+        }
+        return $this->redirectToRoute("app_login");
+    }
+
+
+    /**
+     * @Route("/resend/{user}", name="resend")
+     * @param String $token
+     * @param User $user
+     * @param UserRepository $rep
+     * @return Response
+     */
+    public function resend(Swift_Mailer $mailer, String $token, User $user, UserRepository $rep):Response
+    {
+
+        $message = (new Swift_Message("Cliquer ici pour valider votre email"))
+            ->setFrom("superadmin@looper.com")
+            ->setTo($user->getEmail())
+            //->setReplyTo($contact->getEmail())
+            ->setBody(
+                $this->render("/registration/emailMessage.html.twig",["token"=>$user->getToken(),"user"=> $user]), 'text/html'
+            );
+
+        $mailer->send($message);
+
+        $this->addFlash('login', 'Un email est envoyé à votre adresse');
+
+        return $this->redirectToRoute("app_login");
+
+    }
 }
+
+

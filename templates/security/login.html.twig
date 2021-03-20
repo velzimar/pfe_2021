@@ -17,7 +17,6 @@
                 </h4>
                 <form class="form" method="post" action="{{ path('app_login') }}">
 
-
                     {% for message in app.flashes('user/edit.html.twig_error') %}
                         <div class="alert alert-success">
                             {{ message }}
@@ -26,6 +25,13 @@
                     {% for flashError in app.flashes('user/edit.html.twig_success') %}
                         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
                     {% endfor %}
+
+                    {% for flashError in app.flashes('login') %}
+                        <div class="alert alert-success" role="alert">{{ flashError }}</div>
+                    {% endfor %}
+                    {% if user.id is defined %}
+                        <a href="{{ path("resend",{'user':user.id}) }}">Cliquer ici pour re-envoyé un email à votre adresse</a>
+                    {% endif %}
                     {% if error %}
                         <div class="alert alert-danger">
                             {% if error.messageKey=="Invalid credentials." %} Mot de passe incorrecte. {% else %} {{ error.messageKey }} {% endif %}

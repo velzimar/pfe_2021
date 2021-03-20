@@ -144,7 +144,10 @@ class User implements UserInterface, Serializable
     private $deals;
     //end for deals
 
-
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $token;
 
 
     /**
@@ -781,6 +784,22 @@ class User implements UserInterface, Serializable
         $this->delivery = $delivery;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
+    {
+        $this->token = $token;
     }
 
 
