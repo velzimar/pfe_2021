@@ -12,12 +12,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
- * @ORM\Table(
- *    name="service",
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(name="unique_servicecategory_service", columns={"nom", "category_id"})
- *    }
- * )
+
  * @ORM\Entity(repositoryClass=ServiceRepository::class)
  * @Vich\Uploadable()
  */
@@ -66,20 +61,6 @@ class Service
     private $prix;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ServiceCategory::class, inversedBy="services")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
-    private $category;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="services")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $business;
-
-
-
-    /**
      * @ORM\OneToMany(targetEntity=ServiceOptions::class, mappedBy="service")
      */
     private $serviceOptions;
@@ -88,6 +69,14 @@ class Service
      * @ORM\OneToOne(targetEntity=ServiceCalendar::class, mappedBy="service", cascade={"persist", "remove"})
      */
     private $serviceCalendar;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="service", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $business;
+
+
 
 
 
@@ -140,29 +129,6 @@ class Service
 
 
 
-    public function getCategory(): ?ServiceCategory
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?ServiceCategory $category): self
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-    public function getBusiness(): ?User
-    {
-        return $this->business;
-    }
-
-    public function setBusiness(?User $business): self
-    {
-        $this->business = $business;
-
-        return $this;
-    }
     public function __toString(): string
     {
         // to show the name of the Category in the select
@@ -274,6 +240,20 @@ class Service
 
         return $this;
     }
+
+    public function getBusiness(): ?User
+    {
+        return $this->business;
+    }
+
+    public function setBusiness(User $business): self
+    {
+        $this->business = $business;
+
+        return $this;
+    }
+
+
 
 
 }

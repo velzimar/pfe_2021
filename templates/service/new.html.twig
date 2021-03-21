@@ -7,13 +7,10 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('selectUser', {'action': 'new'}) }}">Selectionner un utilisateur</a>
+            <a href="{{ path('selectUserForService', {'action': 'new'}) }}">Selectionner un utilisateur</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('service_index_user', {'userId': userId }) }}">Services</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="#">Ajouter</a>
+            <a href="{{ path('service_new', {'userId': userId }) }}">Service</a>
         </li>
     </ul>
 {% endblock %}

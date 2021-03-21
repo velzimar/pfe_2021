@@ -119,16 +119,8 @@ class User implements UserInterface, Serializable
      * @ORM\OneToMany(targetEntity=Product::class, mappedBy="business")
      */
     private $products;
-    //for services
-    /**
-     * @ORM\OneToMany(targetEntity=ServiceCategory::class, mappedBy="businessId")
-     */
-    private $serviceCategories;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Service::class, mappedBy="business")
-     */
-    private $services;
+
 
     //end for services
 
@@ -179,6 +171,13 @@ class User implements UserInterface, Serializable
      * @ORM\OneToOne(targetEntity=Delivery::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $delivery;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Service::class, mappedBy="business", cascade={"persist", "remove"})
+     */
+    private $service;
+
+
 
     public function __construct()
     {
@@ -513,39 +512,7 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
-    // for services
-    /**
-     * @return Collection|ServiceCategory[]
-     */
-    public function getServiceCategories(): Collection
-    {
-        return $this->serviceCategories;
-    }
 
-    public function addServiceCategory(ServiceCategory $serviceCategory): self
-    {
-        if (!$this->serviceCategories->contains($serviceCategory)) {
-            $this->serviceCategories[] = $serviceCategory;
-            $serviceCategory->setBusinessId($this);
-        }
-
-        return $this;
-    }
-
-    public function removeServiceCategory(ServiceCategory $serviceCategory): self
-    {
-        if ($this->serviceCategories->removeElement($serviceCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($serviceCategory->getBusinessId() === $this) {
-                $serviceCategory->setBusinessId(null);
-            }
-        }
-
-        return $this;
-    }
-
-
-    //end for services
 
     // for deals
     /**
@@ -617,37 +584,7 @@ class User implements UserInterface, Serializable
     }
 
 
-    //for services
-    /**
-     * @return Collection|Service[]
-     */
-    public function getServices(): Collection
-    {
-        return $this->services;
-    }
 
-    public function addService(Service $service): self
-    {
-        if (!$this->services->contains($service)) {
-            $this->services[] = $service;
-            $service->setBusiness($this);
-        }
-
-        return $this;
-    }
-
-    public function removeService(Service $service): self
-    {
-        if ($this->services->removeElement($service)) {
-            // set the owning side to null (unless already changed)
-            if ($service->getBusiness() === $this) {
-                $service->setBusiness(null);
-            }
-        }
-
-        return $this;
-    }
-    //end for services
     // for deals
 
     /**
@@ -801,6 +738,25 @@ class User implements UserInterface, Serializable
     {
         $this->token = $token;
     }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(Service $service): self
+    {
+        // set the owning side of the relation if necessary
+        if ($service->getBusiness() !== $this) {
+            $service->setBusiness($this);
+        }
+
+        $this->service = $service;
+
+        return $this;
+    }
+
+
 
 
 }

@@ -11,3 +11,15 @@
         $('#my_form').submit();
     });
 </script>
+
+    <a class="btn btn-white"
+       href="{{ path('thisServiceOptions',{'id':service.id}) }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span id="my_span">Options</span>
+
+    </a>
+    <a class="btn btn-white"
+       href="{{ path('service_calendar',{'id':service.id}) }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span id="my_span">Réservation</span>
+    </a>

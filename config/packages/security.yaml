@@ -53,7 +53,6 @@ security:
          - { path: ^/dealCategory/admin/, roles: ROLE_ADMIN }
          - { path: ^/delivery/userDelivery/, roles: ROLE_ADMIN }
          - { path: ^/service/admin/, roles: ROLE_ADMIN }
-         - { path: ^/serviceCategory/admin/, roles: ROLE_ADMIN }
          - { path: ^/serviceOptions/admin/, roles: ROLE_ADMIN }
          - { path: ^/serviceCalendar/admin/, roles: ROLE_ADMIN }
          - { path: ^/notification/admin/, roles: ROLE_ADMIN }
@@ -65,7 +64,6 @@ security:
          - { path: ^/productOptions/myOptions/, roles: ROLE_SELLER }
          - { path: ^/delivery/myDelivery/, roles: ROLE_SELLER }
          - { path: ^/service/myServices/, roles: ROLE_SELLER }
-         - { path: ^/serviceCategory/myServiceCategories/, roles: ROLE_SELLER }
          - { path: ^/serviceOptions/myOptions/, roles: ROLE_SELLER }
          - { path: ^/serviceCalendar/user/, roles: ROLE_SELLER }
          - { path: ^/notification/user/, roles: ROLE_SELLER }

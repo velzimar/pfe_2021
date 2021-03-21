@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\DealCategory;
 use App\Entity\Notification;
 use App\Entity\ProductCategory;
-use App\Entity\ServiceCategory;
 use App\Entity\User;
 use App\Form\EditUserType;
 use App\Form\MyPassword_change;
@@ -92,14 +91,7 @@ class UserController extends AbstractController
                 $entityManager->persist($defaultCategory);
 
                 $entityManager->flush();
-                //init service category
-                $defaultCategory = new ServiceCategory();
-                $defaultCategory->setBusinessId($user);
-                $defaultCategory->setNom("Ma première catégorie");
-                $defaultCategory->setDescription("Catégorie par défaut.");
-                $entityManager->persist($defaultCategory);
 
-                $entityManager->flush();
             }
 
             //$entityManager->flush();
@@ -314,13 +306,7 @@ class UserController extends AbstractController
             $entityManager->persist($defaultCategory);
             $entityManager->flush();
 
-            //init service category
-            $defaultCategory = new ServiceCategory();
-            $defaultCategory->setBusinessId($user);
-            $defaultCategory->setNom("Ma première catégorie");
-            $defaultCategory->setDescription("Catégorie par défaut.");
-            $entityManager->persist($defaultCategory);
-            $entityManager->flush();
+
 
             if ($form->get('isActive')->getData()) {
                 $notification = new Notification();

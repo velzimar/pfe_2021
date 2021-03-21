@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Service;
-use App\Entity\ServiceCategory;
 use App\Entity\User;
 use App\Form\ServiceType;
 use App\Form\SelectUserType;
@@ -40,6 +39,7 @@ class ServiceController extends AbstractController
      */
     public function selectUser(Request $request, $action): Response
     {
+        $action = "new";
         $first = $this->createForm(SelectUserType::class);
         $first->handleRequest($request);
         if ($first->isSubmitted() && $first->get('id')->getData() != null) {
@@ -55,68 +55,24 @@ class ServiceController extends AbstractController
     }
 
 
-    /**
-     * @Route("/admin/{userId}/list", name="service_index_user", methods={"GET","POST"})
-     * @param ServiceRepository $serviceRepository
-     * @param User $userId
-     * @return Response
-     */
-    public function userServices(ServiceRepository $serviceRepository, User $userId): Response
-    {
-        return $this->render('service/userServices.html.twig', [
-            'services' => $serviceRepository->findByUser($userId),
-            'userId' => $userId
-        ]);
-    }
-    /**
-     * @Route("/myServices/list", name="myServices", methods={"GET","POST"})
-     * @param ServiceRepository $serviceRepository
-     * @return Response
-     */
-    public function myServices(ServiceRepository $serviceRepository): Response
-    {
-        return $this->render('service/index.html.twig', [
-            'services' => $serviceRepository->findByUser($this->getUser()),
-            'userId' => $this->getUser()
-        ]);
-    }
 
-    /**
-     * @Route("/admin/{userId}/{categoryId}/list", name="service_byCategory_index_user", methods={"GET","POST"})
-     * @param ServiceRepository $serviceRepository
-     * @param User $userId
-     * @return Response
-     */
-    public function userServicesByCategory(ServiceRepository $serviceRepository, User $userId, ServiceCategory $categoryId): Response
-    {
-        return $this->render('service/userServices.html.twig', [
-            'services' => $serviceRepository->findByUserByCategory($userId,$categoryId),
-            'userId' => $userId
-        ]);
-    }
-
-    /**
-     * @Route("/myServices/{categoryId}/list", name="myServices_byCategory", methods={"GET","POST"})
-     * @param ServiceRepository $serviceRepository
-     * @param ServiceCategory $categoryId
-     * @return Response
-     */
-    public function myServicesByCategory(ServiceRepository $serviceRepository, ServiceCategory $categoryId): Response
-    {
-        return $this->render('service/index.html.twig', [
-            'services' => $serviceRepository->findByUserByCategory($this->getUser(),$categoryId),
-            'userId' => $this->getUser()
-        ]);
-    }
 
     /**
      * @Route("/admin/{userId}/new", name="service_new", methods={"GET","POST"})
      * @param Request $request
      * @param User $userId
+     * @param ServiceRepository $srep
      * @return Response
      */
-    public function new(Request $request, User $userId): Response
+    public function new(Request $request, User $userId, ServiceRepository $srep): Response
     {
+        $userFound = $srep->findOneBy(["business"=>$userId->getId()]);
+        if($userFound!==null){
+            return $this->redirectToRoute('service_edit',[
+                'userId' => $userId,
+                'id' => $userFound
+            ],301);
+        }
         //echo $userId->getId();
         $service = new Service();
         //$form = $this->createForm(ServiceType::class, $service);
@@ -134,15 +90,7 @@ class ServiceController extends AbstractController
             //foreach($role as $rolee){
             //    $this->addFlash('success', "role user: $rolee");
             //}
-        $categories = $userId->getServiceCategories();
-        foreach($categories as $category){
-            if($category->getNom()=="defaultCategory"){
-                $this->addFlash('success', "this is: $category");
-                 $form->get('category')->setData($category);
-                //echo $service->getCategory();
-            }else
-                $this->addFlash('success', "categories de ce user: $category");
-        }
+
             $form->handleRequest($request);
             //$service->setBusiness($user);
             $service->setBusiness($userId);
@@ -161,8 +109,8 @@ class ServiceController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($service);
                 $entityManager->flush();
-                return $this->redirectToRoute('service_index_user',[
-                    'userId' => $userId
+                return $this->redirectToRoute('service_new',[
+                    'userId' => $userId,
                 ],301);
             }
         return $this->render('service/new.html.twig', [
@@ -176,10 +124,17 @@ class ServiceController extends AbstractController
     /**
      * @Route("/myServices/new", name="myServices_new", methods={"GET","POST"})
      * @param Request $request
+     * @param ServiceRepository $srep
      * @return Response
      */
-    public function myServices_new(Request $request): Response
+    public function myServices_new(Request $request, ServiceRepository $srep): Response
     {
+        $userFound = $srep->findOneBy(["business"=>$this->getUser()->getId()]);
+        if($userFound!==null){
+            return $this->redirectToRoute('myServices_edit',[
+                'id' => $userFound
+            ],301);
+        }
         $service = new Service();
         $user = $this->getUser();
         $this->addFlash('success', "Utilisateur $user");
@@ -187,22 +142,14 @@ class ServiceController extends AbstractController
             ['userId' => $user //or whatever the variable is called
                 ,'userRole'=>$user->hasRole('ROLE_ADMIN')]
         );
-        $categories = $user->getServiceCategories();
-        foreach($categories as $category){
-            if($category->getNom()=="defaultCategory"){
-                $this->addFlash('success', "this is: $category");
-                $form->get('category')->setData($category);
-                //echo $service->getCategory();
-            }else
-                $this->addFlash('success', "categories de ce user: $category");
-        }
+
         $form->handleRequest($request);
         $service->setBusiness($user);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($service);
             $entityManager->flush();
-            return $this->redirectToRoute('myServices');
+            return $this->redirectToRoute('myServices_new');
         }
         return $this->render('service/myServices_new.html.twig', [
             'service' => $service,
@@ -212,32 +159,8 @@ class ServiceController extends AbstractController
     }
 
 
-    /**
-     * @Route("/admin/{userId}/{id}/show", name="service_show", methods={"GET","POST"})
-     * @param Service $service
-     * @param User $userId
-     * @return Response
-     */
-    public function show(Service $service, User $userId): Response
-    {
-        return $this->render('service/show.html.twig', [
-            'service' => $service,
-            'userId' => $userId
-        ]);
-    }
 
-    /**
-     * @Route("/myServices/{id}/show", name="myServices_show", methods={"GET","POST"})
-     * @param Service $service
-     * @return Response
-     */
-    public function myServices_show(Service $service): Response
-    {
-        return $this->render('service/myServices_show.html.twig', [
-            'service' => $service,
-            'userId' => $this->getUser()
-        ]);
-    }
+
 
     /**
      * @Route("/admin/{userId}/{id}/edit", name="service_edit", methods={"GET","POST"})
@@ -275,8 +198,9 @@ class ServiceController extends AbstractController
             }
 */
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('service_index_user',[
-                'userId' => $userId
+            return $this->redirectToRoute('service_edit',[
+                'userId' => $userId,
+                'id'=>$service
             ],301);
         }
 
@@ -317,7 +241,7 @@ class ServiceController extends AbstractController
             }
             */
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('myServices');
+            return $this->redirectToRoute('myServices_new');
         }
 
         return $this->render('service/myServices_edit.html.twig', [

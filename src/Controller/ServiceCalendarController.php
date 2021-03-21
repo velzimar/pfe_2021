@@ -44,7 +44,7 @@ class ServiceCalendarController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 //$em->persist($serviceCalendar);
                 $em->flush();
-                return $this->redirectToRoute("myServices");
+                return $this->redirectToRoute("myServices_new");
             }
 
 
@@ -67,7 +67,7 @@ class ServiceCalendarController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($serviceCalendar);
                 $em->flush();
-                return $this->redirectToRoute("myServices");
+                return $this->redirectToRoute("myServices_new");
             }
 
 

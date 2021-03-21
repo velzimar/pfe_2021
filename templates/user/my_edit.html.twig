@@ -149,6 +149,7 @@
                                 </div>
                             </div>
                             <div class="row m-b">
+                                {#
                                 <div class="col-sm-6 b-r b-b">
                                     <div class="el-tablo centered padded-v">
                                         <a href="{{ path('service_index_user',{'userId': app.user }) }}">
@@ -161,18 +162,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 b-b">
-                                    <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('userServiceCategories_index',{'userId': app.user }) }}">
-                                            <div class="value">
-                                                {{ app.user.getServiceCategories|length }}
-                                            </div>
-                                            <div class="label">
-                                                Catégories de service
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
+                                #}
                             </div>
                         </div>
                     </div>

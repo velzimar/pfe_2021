@@ -3,11 +3,57 @@
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/NotificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/NotificationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RegistrationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RegistrationController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ServiceCalendarController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ServiceCalendarController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ServiceCategoryController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ServiceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ServiceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/EditUserType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/EditUserType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Service.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Service.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/ServiceCategory.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ServiceCategoryType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ServiceType.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/ServiceType.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/ServiceCategoryRepository.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/_delete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/_delete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/_myQuickLinks.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/_quickLinks.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/index.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/myDelete_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/myDelete_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/myServices_edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/myServices_edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/myServices_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/myServices_new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/myServices_show.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/show.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/userServices.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_calendar/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_calendar/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_calendar/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/user/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/SelectUserForCategory.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/_delete_form.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/_form.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/_myDelete_form.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/_myQuickLinks.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/_quickLinks.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/edit.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/index.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/myServiceCategories_edit.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/myServiceCategories_new.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/myServiceCategories_show.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/new.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/show.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_category/userServiceCategories.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_options/admin/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/admin/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_options/admin/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/admin/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_options/admin/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/admin/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_options/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_options/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_options/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_options/new.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user/my_edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/my_edit.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/user/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/show.html.twig" afterDir="false" />
     </list>
@@ -233,6 +279,7 @@
       <workItem from="1616160820937" duration="6123000" />
       <workItem from="1616170823060" duration="10014000" />
       <workItem from="1616248989695" duration="3609000" />
+      <workItem from="1616337883150" duration="9096000" />
     </task>
     <servers />
   </component>

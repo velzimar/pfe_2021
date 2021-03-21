@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\DealCategory;
 use App\Entity\ProductCategory;
-use App\Entity\ServiceCategory;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
@@ -75,14 +74,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($defaultCategory);
 
             $entityManager->flush();
-            //init service category
-            $defaultCategory = new ServiceCategory();
-            $defaultCategory->setBusinessId($user);
-            $defaultCategory->setNom("Ma première catégorie");
-            $defaultCategory->setDescription("Catégorie par défaut.");
-            $entityManager->persist($defaultCategory);
 
-            $entityManager->flush();
             $message = (new Swift_Message("Cliquer ici pour valider votre email"))
                 ->setFrom("superadmin@looper.com")
                 ->setTo($user->getEmail())

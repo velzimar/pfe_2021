@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Service{% endblock %}
+{% block title %}Mettre à jour{% endblock %}
 
 {% block  breadcrumb %}
     <ul class="breadcrumb">
@@ -8,16 +8,12 @@
             <a href="#">Home</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('myServices') }}">Mes services</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="#">Modifier</a>
+            <a href="{{ path('myServices_new') }}">Mon service</a>
         </li>
     </ul>
 {% endblock %}
 
 {% block QuickLink1 %}
-    {{ include('service/_myQuickLinks.html.twig') }}
     {{ include('service/myDelete_form.html.twig') }}
 {% endblock %}
 
