@@ -177,6 +177,11 @@ class User implements UserInterface, Serializable
      */
     private $service;
 
+    /**
+     * @ORM\OneToOne(targetEntity=WorkingHours::class, mappedBy="business", cascade={"persist", "remove"})
+     */
+    private $workingHours;
+
 
 
     public function __construct()
@@ -752,6 +757,23 @@ class User implements UserInterface, Serializable
         }
 
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getWorkingHours(): ?WorkingHours
+    {
+        return $this->workingHours;
+    }
+
+    public function setWorkingHours(WorkingHours $workingHours): self
+    {
+        // set the owning side of the relation if necessary
+        if ($workingHours->getBusiness() !== $this) {
+            $workingHours->setBusiness($this);
+        }
+
+        $this->workingHours = $workingHours;
 
         return $this;
     }
