@@ -63,7 +63,6 @@ class WorkingHoursController extends AbstractController
 */
 
 
-
     /*
      * @Route("/admin/{userId}/new", name="service_new", methods={"GET","POST"})
      * @param Request $request
@@ -118,11 +117,6 @@ class WorkingHoursController extends AbstractController
         ]);
     }
 */
-
-
-
-
-
 
 
     /*
@@ -194,107 +188,179 @@ class WorkingHoursController extends AbstractController
     /**
      * @Route("/myWorkingHours/new", name="myWorkingHours_new", methods={"GET","POST"})
      * @param Request $request
+     * @param WorkingHoursRepository $srep
      * @return Response
      */
     public function myWorkingHours_new(Request $request, WorkingHoursRepository $srep): Response
     {
-        $userFound = $srep->findOneBy(["business"=>$this->getUser()->getId()]);
-        if($userFound!==null){
-            return $this->redirectToRoute('myWorkingHours_edit',[
-                'id' => $userFound
-            ],301);
-        }
+        $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
+        $userFound = $srep->findOneBy(["business" => $this->getUser()->getId()]);
+
+        if ($userFound !== null) {
+            $form = $this->createForm(WorkingHoursType::class, $userFound);
+            $hours = $userFound->getHours();
+            dump($hours);
+
+            foreach($hours as $key=>$val){
+                if(array_key_exists(0, $hours[$key]))  $table[$key][0]=$hours[$key][0];
+                if(array_key_exists(1, $hours[$key]))   $table[$key][1]=$hours[$key][1];
+            }
+            dump($table);
+         //  die;
+
+            foreach($table as $key=>$val){
+               // working_hours[monday_S1_start][hours]
+                    $start1 = $key . '_S1_start';
+                    $end1 = $key . '_S1_end';
+
+                    $start2 =$key . '_S2_start';
+                    $end2 = $key . '_S2_end';
 
 
-/*
-        $ranges = [
-            'monday' => ['08:00-11:00', '10:00-12:00'],
-        ];
-        $mergedRanges = OpeningHours::mergeOverlappingRanges($ranges); // Monday becomes ['08:00-12:00']
 
-        OpeningHours::create($mergedRanges);
-// Or use the following shortcut to create from ranges that possibly overlap:
-        OpeningHours::createAndMergeOverlappingRanges($ranges);
-  */
-        $workingHours = new WorkingHours();
-        $user = $this->getUser();
-        $form = $this->createForm(WorkingHoursType::class, $workingHours);
+                if(array_key_exists(0, $hours[$key]))
+                {
 
-        $form->handleRequest($request);
-        $workingHours->setBusiness($user);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $table = ['monday'=>[null,null],'tuesday'=>[null,null],'wednesday'=>[null,null],'thursday'=>[null,null],'friday'=>[null,null],'saturday'=>[null,null],'sunday'=>[null,null]];
+                    $form->get($start1)["minutes"]->setData(intval(substr($table[$key][0],3,2)));
+                    $form->get($start1)["hours"]->setData(intval(substr($table[$key][0],0,2)));
 
-            //init
-            foreach($table as $key => $value ){
-
-                //dump($key.'_S1_end');
-                $start1 = $key.'_S1_start';
-                    $end1=$key.'_S1_end';
-                $start2 = $key.'_S2_start';
-                $end2=$key.'_S2_end';
-
-                if($form->get($start1)->getData()===null || $form->get($end1)->getData() === null) {
-                    $table[$key][0]=null;
-                }else{
-                    //dump("ok");
-                    dump($form->get($start1)->getData()->format('%H:%I')."-".$form->get($end1)->getData()->format('%H:%I'));
-
-                    $table[$key][0] =  $form->get($start1)->getData()->format('%H:%I')."-".$form->get($end1)->getData()->format('%H:%I');
-                }
-                if($form->get($start2)->getData()===null || $form->get($end2)->getData() === null) {
-                    $table[$key][1]=null;
-                }else{
-                    dump($form->get($start2)->getData()->format('%H:%I')."-".$form->get($end2)->getData()->format('%H:%I'));
-                    $table[$key][1] =  $form->get($start2)->getData()->format('%H:%I')."-".$form->get($end2)->getData()->format('%H:%I');
+                    $form->get($end1)["minutes"]->setData(intval(substr($table[$key][0],9,2)));
+                    $form->get($end1)["hours"]->setData(intval(substr($table[$key][0],6,2)));
                 }
 
+                if(array_key_exists(1, $hours[$key]))   {
+
+                    $form->get($start2)["minutes"]->setData(intval(substr($table[$key][1],3,2)));
+                    $form->get($start2)["hours"]->setData(intval(substr($table[$key][1],0,2)));
+
+                    $form->get($end2)["minutes"]->setData(intval(substr($table[$key][1],9,2)));
+                    $form->get($end2)["hours"]->setData(intval(substr($table[$key][1],6,2)));
+                }
+
+
             }
-            $ranges = ['monday'=>[],'tuesday'=>[],'wednesday'=>[],'thursday'=>[],'friday'=>[],'saturday'=>[],'sunday'=>[]];
 
-            foreach($table as $key=>$value){
-               /*
-                dump($table[$key][0]);
-                dump($table[$key][1]);
-                die;
-                */
-                if($table[$key][0]!==null)$ranges[$key][0]=$table[$key][0];
-                if($table[$key][1]!==null)$ranges[$key][1]=$table[$key][1];
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
+
+                //init
+                foreach ($table as $key => $value) {
+
+                    //dump($key.'_S1_end');
+                    $start1 = $key . '_S1_start';
+                    $end1 = $key . '_S1_end';
+                    $start2 = $key . '_S2_start';
+                    $end2 = $key . '_S2_end';
+
+                    if ($form->get($start1)->getData() === null || $form->get($end1)->getData() === null) {
+                        $table[$key][0] = null;
+                    } else {
+                        //dump("ok");
+                        dump($form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I'));
+
+                        $table[$key][0] = $form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I');
+                    }
+                    if ($form->get($start2)->getData() === null || $form->get($end2)->getData() === null) {
+                        $table[$key][1] = null;
+                    } else {
+                        dump($form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I'));
+                        $table[$key][1] = $form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I');
+                    }
+
+                }
+                $ranges = ['monday' => [], 'tuesday' => [], 'wednesday' => [], 'thursday' => [], 'friday' => [], 'saturday' => [], 'sunday' => []];
+
+                foreach ($table as $key => $value) {
+
+                    if ($table[$key][0] !== null) $ranges[$key][0] = $table[$key][0];
+                    if ($table[$key][1] !== null) $ranges[$key][1] = $table[$key][1];
+                }
+
+                dump($ranges);
+                $userFound->setHours($ranges);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
+                return $this->redirectToRoute('myWorkingHours_new');
             }
-           // die;
-/*
-            $ranges = [
-                'monday' => ['08:00-11:00', '10:00-12:00'],
-            ];
-            $mergedRanges = OpeningHours::mergeOverlappingRanges($ranges); // Monday becomes ['08:00-12:00']
 
-            OpeningHours::create($mergedRanges);
-  */
-// Or use the following shortcut to create from ranges that possibly overlap:
-            $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
-            dump($openingHours->isOpenOn('monday'));
-            dump($openingHours->isOpen());
+        } else
 
-die;
+            {
+            $workingHours = new WorkingHours();
+            $user = $this->getUser();
+            $form = $this->createForm(WorkingHoursType::class, $workingHours);
 
+            $form->handleRequest($request);
+            $workingHours->setBusiness($user);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
 
+                //init
+                foreach ($table as $key => $value) {
 
+                    //dump($key.'_S1_end');
+                    $start1 = $key . '_S1_start';
+                    $end1 = $key . '_S1_end';
+                    $start2 = $key . '_S2_start';
+                    $end2 = $key . '_S2_end';
 
+                    if ($form->get($start1)->getData() === null || $form->get($end1)->getData() === null) {
+                        $table[$key][0] = null;
+                    } else {
+                        //dump("ok");
+                        dump($form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I'));
 
+                        $table[$key][0] = $form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I');
+                    }
+                    if ($form->get($start2)->getData() === null || $form->get($end2)->getData() === null) {
+                        $table[$key][1] = null;
+                    } else {
+                        dump($form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I'));
+                        $table[$key][1] = $form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I');
+                    }
 
+                }
+                $ranges = ['monday' => [], 'tuesday' => [], 'wednesday' => [], 'thursday' => [], 'friday' => [], 'saturday' => [], 'sunday' => []];
 
+                foreach ($table as $key => $value) {
+                    /*
+                     dump($table[$key][0]);
+                     dump($table[$key][1]);
+                     die;
+                     */
+                    if ($table[$key][0] !== null) $ranges[$key][0] = $table[$key][0];
+                    if ($table[$key][1] !== null) $ranges[$key][1] = $table[$key][1];
+                }
+                /*
+                            $ranges = [
+                                'monday' => ['08:00-11:00', '10:00-12:00'],
+                            ];
+                            $mergedRanges = OpeningHours::mergeOverlappingRanges($ranges); // Monday becomes ['08:00-12:00']
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($workingHours);
-            $entityManager->flush();
-            return $this->redirectToRoute('myWorkingHours_new');
+                            OpeningHours::create($mergedRanges);
+                  */
+                /*
+                 $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
+                 dump($openingHours->isOpenOn('monday'));
+                 dump($openingHours->isOpen());
+     */
+                dump($ranges);
+                $workingHours->setHours($ranges);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($workingHours);
+                $entityManager->flush();
+                return $this->redirectToRoute('myWorkingHours_new');
+            }
         }
+
         return $this->render('workingHours/myWorkingHours_new.html.twig', [
-            'workingHours' => $workingHours,
             'form' => $form->createView(),
-            'userId'=>$this->getUser()
+            'userId' => $this->getUser()
         ]);
     }
+
     /**
      * @Route("/myWorkingHours/{id}/edit", name="myWorkingHours_edit", methods={"GET","POST"})
      * @param Request $request
@@ -308,7 +374,7 @@ die;
         $form = $this->createForm(ServiceType::class, $service,
             [
                 'userId' => $user //or whatever the variable is called
-                ,'userRole'=>$user->hasRole('ROLE_ADMIN')
+                , 'userRole' => $user->hasRole('ROLE_ADMIN')
             ]
         );
         $form->handleRequest($request);
@@ -328,13 +394,10 @@ die;
 
         return $this->render('service/myWorkingHours_edit.html.twig', [
             'service' => $service,
-            'userId'=> $user,
+            'userId' => $user,
             'form' => $form->createView(),
         ]);
     }
-
-
-
 
 
     /**
@@ -345,7 +408,7 @@ die;
      */
     public function MyServices_delete(Request $request, Service $service): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $service->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($service);
             $entityManager->flush();
