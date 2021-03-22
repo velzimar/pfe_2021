@@ -173,12 +173,12 @@ class User implements UserInterface, Serializable
     private $delivery;
 
     /**
-     * @ORM\OneToOne(targetEntity=Service::class, mappedBy="business", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Service::class, mappedBy="business")
      */
     private $service;
 
     /**
-     * @ORM\OneToOne(targetEntity=WorkingHours::class, mappedBy="business", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=WorkingHours::class, mappedBy="business")
      */
     private $workingHours;
 

@@ -212,16 +212,19 @@ class ServiceController extends AbstractController
     }
 
 
-
     /**
-     * @Route("/myServices/{id}/edit", name="myServices_edit", methods={"GET","POST"})
+     * @Route("/myServices/edit", name="myServices_edit", methods={"GET","POST"})
      * @param Request $request
-     * @param Service $service
+     * @param ServiceRepository $srep
      * @return Response
      */
-    public function myServices_edit(Request $request, Service $service): Response
+    public function myServices_edit(Request $request, ServiceRepository  $srep): Response
     {
         $user = $this->getUser();
+        $service = $srep->findOneBy(["business"=>$user]);
+        if($service===null){
+            return $this->redirectToRoute('myServices_new');
+        }
         $this->addFlash('success', "Utilisateur $user");
         $form = $this->createForm(ServiceType::class, $service,
             [
@@ -274,19 +277,21 @@ class ServiceController extends AbstractController
     }
 
     /**
-     * @Route("myServices/{id}/delete", name="myServices_delete", methods={"DELETE"})
+     * @Route("/myServices/delete", name="myServices_delete", methods={"DELETE"})
      * @param Request $request
-     * @param Service $service
+     * @param ServiceRepository $srep
      * @return Response
      */
-    public function MyServices_delete(Request $request, Service $service): Response
+    public function MyServices_delete(Request $request, ServiceRepository  $srep): Response
     {
+        $service = $srep->findOneBy(["business"=>$this->getUser()]);
+        //dump($service);die;
         if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($service);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('myServices');
+        return $this->redirectToRoute('myServices_new');
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ServiceCalendarRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass=ServiceCalendarRepository::class)
@@ -19,6 +20,7 @@ class ServiceCalendar
 
     /**
      * @ORM\OneToOne(targetEntity=Service::class, inversedBy="serviceCalendar", cascade={"persist", "remove"})
+     * @JoinColumn(name="service", referencedColumnName="id", onDelete="CASCADE")
      */
     private $service;
 

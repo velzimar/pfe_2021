@@ -71,8 +71,8 @@ class Service
     private $serviceCalendar;
 
     /**
-     * @ORM\OneToOne(targetEntity=User::class, inversedBy="service", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="service")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $business;
 
