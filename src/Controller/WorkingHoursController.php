@@ -11,8 +11,10 @@ use App\Form\WorkingHoursType;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use App\Repository\WorkingHoursRepository;
+use DateTime;
 use Spatie\OpeningHours\OpeningHours;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -191,8 +193,10 @@ class WorkingHoursController extends AbstractController
      * @param WorkingHoursRepository $srep
      * @return Response
      */
-    public function myWorkingHours_new(Request $request, WorkingHoursRepository $srep): Response
+    public function myWorkingHours_new(Request $request, WorkingHoursRepository $srep, ServiceRepository $serviceRepository): Response
     {
+        $hasService = $serviceRepository->findOneBy(["business"=>$this->getUser()->getId()]);
+
         $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
         $userFound = $srep->findOneBy(["business" => $this->getUser()->getId()]);
 
@@ -282,7 +286,7 @@ class WorkingHoursController extends AbstractController
                 $userFound->setHours($ranges);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->flush();
-                return $this->redirectToRoute('myWorkingHours_new');
+                return $this->redirectToRoute('myWorkingHours_new',['service'=>$hasService]);
             }
 
         } else
@@ -346,56 +350,21 @@ class WorkingHoursController extends AbstractController
                  dump($openingHours->isOpenOn('monday'));
                  dump($openingHours->isOpen());
      */
-                dump($ranges);
+
+
+
                 $workingHours->setHours($ranges);
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($workingHours);
                 $entityManager->flush();
-                return $this->redirectToRoute('myWorkingHours_new');
+                return $this->redirectToRoute('myWorkingHours_new',['service'=>$hasService]);
             }
         }
 
         return $this->render('workingHours/myWorkingHours_new.html.twig', [
+            'service'=>$hasService,
             'form' => $form->createView(),
             'userId' => $this->getUser()
-        ]);
-    }
-
-    /**
-     * @Route("/myWorkingHours/{id}/edit", name="myWorkingHours_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param Service $service
-     * @return Response
-     */
-    public function myWorkingHours_edit(Request $request, Service $service): Response
-    {
-        $user = $this->getUser();
-        $this->addFlash('success', "Utilisateur $user");
-        $form = $this->createForm(ServiceType::class, $service,
-            [
-                'userId' => $user //or whatever the variable is called
-                , 'userRole' => $user->hasRole('ROLE_ADMIN')
-            ]
-        );
-        $form->handleRequest($request);
-        $service->setBusiness($user);
-        if ($form->isSubmitted() && $form->isValid()) {
-            /*
-            if ($form->get('imageFile')->getData()==null){
-                $this->addFlash('success', "its null");
-                $service->setImageFile(null);
-                $service->setFileName(null);
-                $this->getDoctrine()->getManager()->persist($service);
-            }
-            */
-            $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('myWorkingHours_new');
-        }
-
-        return $this->render('service/myWorkingHours_edit.html.twig', [
-            'service' => $service,
-            'userId' => $user,
-            'form' => $form->createView(),
         ]);
     }
 
@@ -414,6 +383,54 @@ class WorkingHoursController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('myWorkingHours');
+    }
+
+
+    /**
+     * @Route("/test", name="testttt")
+     * @param Request $request
+     * @param WorkingHoursRepository $rep
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function test(Request $request, WorkingHoursRepository $rep): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('start')===null && $request->request->get('end')===null){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+                $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
+                $test = $workingHours->getHours();
+                //dump($test);
+                $mergedRanges = OpeningHours::mergeOverlappingRanges($test);
+                $openingHours= OpeningHours::create($mergedRanges);
+               // $day =$request->request->get('day');
+                $start = $request->request->get('start');
+                $end = $request->request->get('end');
+                dump($start);
+                dump($end);
+               // die;
+                $res = $openingHours->diffInOpenMinutes(new DateTime($start), new DateTime($end));
+
+
+                $checkTime = strtotime($start);
+                $loginTime = strtotime($end);
+                $diff =  ($loginTime - $checkTime)/60 ;
+                dump($diff);
+                dump($res);
+                dump($diff<=$res);
+                //dump($day);
+                return new JsonResponse([
+                    'success'  => true,
+                    'result' => $diff<=$res
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
     }
 
 }

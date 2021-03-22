@@ -11,18 +11,37 @@
     </ul>
 {% endblock %}
 
+{% block QuickLink1 %}
+
+
+    {% if service.id is defined %}
+        <a class="btn btn-white"
+           href="{{ path('service_calendar',{'id':service.id}) }}">
+            <i class="os-icon os-icon-delivery-box-2"></i>
+            <span id="my_span">Je fixe des RDV</span>
+        </a>
+    {% else %}
+        <a class="btn btn-white btn-sm" href="{{ path('myServices_new') }}">
+            <i class="os-icon os-icon-delivery-box-2"></i>
+            <span>Je fixe des RDV</span>
+        </a>
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <style>
-        th{
+        th {
             text-align: center;
         }
+
         .table td {
-            padding:0;
+            padding: 0;
             vertical-align: top;
             border-top: 1px solid rgba(83, 101, 140, 0.33);
         }
-        .form-control{
-            padding:0
+
+        .form-control {
+            padding: 0
         }
 
     </style>
@@ -46,7 +65,7 @@
                                 <th colspan="2" style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">
                                     Séance 1
                                 </th>
-                                <th colspan="2" >
+                                <th colspan="2">
                                     Séance 2
                                 </th>
                             </tr>
@@ -157,8 +176,6 @@
         $("[role='presentation']").children("thead").remove()
         //$('select').addClass("form-control")
         $("td div.form-inline div.col-auto:first-child").after(":")
-
-
 
 
         /*

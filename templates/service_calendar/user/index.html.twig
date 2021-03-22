@@ -32,7 +32,39 @@
             display: flex;
             flex-direction: column;
         }
+        #loading {
+            position:fixed;
+            width:100%;
+            left:0;right:0;top:0;bottom:0;
+            background-color: rgba(255,255,255,0.7);
+            z-index:9999;
+            display:none;
+        }
 
+        @-webkit-keyframes spin {
+            from {-webkit-transform:rotate(0deg);}
+            to {-webkit-transform:rotate(360deg);}
+        }
+
+        @keyframes spin {
+            from {transform:rotate(0deg);}
+            to {transform:rotate(360deg);}
+        }
+
+        #loading::after {
+            content:'';
+            display:block;
+            position:absolute;
+            left:48%;top:40%;
+            width:40px;height:40px;
+            border-style:solid;
+            border-color:black;
+            border-top-color:transparent;
+            border-width: 4px;
+            border-radius:50%;
+            -webkit-animation: spin .8s linear infinite;
+            animation: spin .8s linear infinite;
+        }
     </style>
 
 
@@ -74,6 +106,12 @@
                 </div>
             </div>
             {{ form_end(form) }}
+            <div id="loading"></div>
+            {#
+            <div id="loading" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            #}
         </div>
     </div>
 
@@ -82,6 +120,29 @@
 
 {% block javascripts %}
     <script>
+        $("#loading").css("display", "none");
+        $( document ).ajaxStop(function() {
+            $("#loading").css("display", "none");
+        });
+        $( document ).ajaxStart(function() {
+            $("#loading").css("display", "block");
+        });
+        let responseStatus = "#e65252";
+        function getData(start_,end_){
+            return $.ajax({
+                type: "POST",
+               // async: false,
+                url: "/workingHours/test",
+                data: {start:start_,end:end_},//jQ will sort this out for you
+                success: function (response) {
+
+                },
+            });
+        }
+        //$( "#loading" ).hide();
+
+
+
         generate_calendar()
         let json_to_send
 
@@ -164,33 +225,40 @@
                     });
                     if (!exist) {
 
-                        // import { toDuration } from '@fullcalendar/moment'
-                        var a = moment(arg.start.toString("YYYY-MM-DD HH:mm"));
-                        var b = moment(arg.end.toString("YYYY-MM-DD HH:mm"));
-                        var diffMinutes = b.diff(a, 'minutes')
-                       // alert(diffMinutes)
+                        let start_=moment(arg.start).format('YYYY-MM-DD HH:mm:SS')
+                        let end_=moment(arg.end).format('YYYY-MM-DD HH:mm:SS')
+                        $.when(getData(start_,end_)).done(function(response){
+                            //access response data here
+                            console.log('empty');
+                            if (response.success && response.result) {
+                                responseStatus = "#047bf8";
+                            }else{
+                                alert("noooo")
+                                responseStatus = "#e65252";
+                            }
 
-                        var date = moment(arg.start).format('YYYY-MM-DD');
-                      //  alert(date)
+                            // import { toDuration } from '@fullcalendar/moment'
+                            var a = moment(arg.start.toString("YYYY-MM-DD HH:mm"));
+                            var b = moment(arg.end.toString("YYYY-MM-DD HH:mm"));
+                            var diffMinutes = b.diff(a, 'minutes')
+                            var date = moment(arg.start).format('YYYY-MM-DD');
+                            const t = moment(date); // Thursday Feb 2015
+                            const dow = t.day();
+                            if (diffMinutes !== 15) {
+                                //  alert(duration_in_minutes)
+                                alert("Selectionner seulement un timeslot");
+                                return false;
+                            }
+                            calendar.addEvent({
+                                color:responseStatus,
+                                title: " ",
+                                start: arg.start,
+                                end: arg.end,
+                            })
+                            _save()
+                            calendar.unselect()
+                        });
 
-                        const t = moment(date); // Thursday Feb 2015
-                        const dow = t.day();
-                     //   alert(dow);
-
-                        if (diffMinutes !== 15) {
-                          //  alert(duration_in_minutes)
-                            alert("Selectionner seulement un timeslot");
-                            return false;
-                        }
-
-                        calendar.addEvent({
-                            title: " ",
-                            start: arg.start,
-                            end: arg.end,
-                        })
-                        _save()
-                        //}
-                        calendar.unselect()
                     }
                 },
                 eventClick: function (arg) {
@@ -222,7 +290,7 @@
                 var day = t.day();
                 //alert(day);
 
-                alert(v["start"])
+                //alert(v["start"])
                 var start = moment(v["start"]).format('HH:mm:ss');
                 var end = moment(v["end"]).format('HH:mm:ss');
                 /*
