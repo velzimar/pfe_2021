@@ -104,7 +104,7 @@ class ServiceCalendarController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 //$em->persist($serviceCalendar);
                 $em->flush();
-                return $this->redirectToRoute("service_index_user",[
+                return $this->redirectToRoute("service_new",[
                     "userId"=>$user
                 ]);
             }
@@ -130,7 +130,7 @@ class ServiceCalendarController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($serviceCalendar);
                 $em->flush();
-                return $this->redirectToRoute("service_index_user",[
+                return $this->redirectToRoute("service_new",[
                     "userId"=>$user
                 ]);
             }

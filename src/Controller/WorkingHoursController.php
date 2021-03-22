@@ -186,7 +186,7 @@ class WorkingHoursController extends AbstractController
     }
     */
 
-
+//as USER
     /**
      * @Route("/myWorkingHours/new", name="myWorkingHours_new", methods={"GET","POST"})
      * @param Request $request
@@ -412,6 +412,274 @@ class WorkingHoursController extends AbstractController
                 dump($start);
                 dump($end);
                // die;
+                $res = $openingHours->diffInOpenMinutes(new DateTime($start), new DateTime($end));
+
+
+                $checkTime = strtotime($start);
+                $loginTime = strtotime($end);
+                $diff =  ($loginTime - $checkTime)/60 ;
+                dump($diff);
+                dump($res);
+                dump($diff<=$res);
+                //dump($day);
+                return new JsonResponse([
+                    'success'  => true,
+                    'result' => $diff<=$res
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+    //as admin
+    /**
+     * @Route("/admin/selectUser", name="selectUser_for_workingHours", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
+     */
+    public function selectUser(Request $request): Response
+    {
+        $first = $this->createForm(SelectUserType::class);
+        $first->handleRequest($request);
+        if ($first->isSubmitted() && $first->get('id')->getData() != null) {
+            $userId = $first->get('id')->getData();
+            return $this->redirectToRoute("myWorkingHours_new_admin",[
+                'id' => $userId
+            ],301);
+        }
+        return $this->render('workingHours/selectUser.html.twig', [
+            'form' => $first->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/user_{id}/", name="myWorkingHours_new_admin", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @param WorkingHoursRepository $srep
+     * @param ServiceRepository $serviceRepository
+     * @return Response
+     */
+    public function admin_new(Request $request, User $user,WorkingHoursRepository $srep, ServiceRepository $serviceRepository): Response
+    {
+        $hasService = $serviceRepository->findOneBy(["business"=>$user]);
+
+        $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
+        $userFound = $srep->findOneBy(["business" => $user]);
+
+        if ($userFound !== null) {
+            $form = $this->createForm(WorkingHoursType::class, $userFound);
+            $hours = $userFound->getHours();
+            dump($hours);
+
+            foreach($hours as $key=>$val){
+                if(array_key_exists(0, $hours[$key]))  $table[$key][0]=$hours[$key][0];
+                if(array_key_exists(1, $hours[$key]))   $table[$key][1]=$hours[$key][1];
+            }
+            dump($table);
+            //  die;
+
+            foreach($table as $key=>$val){
+                // working_hours[monday_S1_start][hours]
+                $start1 = $key . '_S1_start';
+                $end1 = $key . '_S1_end';
+
+                $start2 =$key . '_S2_start';
+                $end2 = $key . '_S2_end';
+
+
+
+                if(array_key_exists(0, $hours[$key]))
+                {
+
+                    $form->get($start1)["minutes"]->setData(intval(substr($table[$key][0],3,2)));
+                    $form->get($start1)["hours"]->setData(intval(substr($table[$key][0],0,2)));
+
+                    $form->get($end1)["minutes"]->setData(intval(substr($table[$key][0],9,2)));
+                    $form->get($end1)["hours"]->setData(intval(substr($table[$key][0],6,2)));
+                }
+
+                if(array_key_exists(1, $hours[$key]))   {
+
+                    $form->get($start2)["minutes"]->setData(intval(substr($table[$key][1],3,2)));
+                    $form->get($start2)["hours"]->setData(intval(substr($table[$key][1],0,2)));
+
+                    $form->get($end2)["minutes"]->setData(intval(substr($table[$key][1],9,2)));
+                    $form->get($end2)["hours"]->setData(intval(substr($table[$key][1],6,2)));
+                }
+
+
+            }
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
+
+                //init
+                foreach ($table as $key => $value) {
+
+                    //dump($key.'_S1_end');
+                    $start1 = $key . '_S1_start';
+                    $end1 = $key . '_S1_end';
+                    $start2 = $key . '_S2_start';
+                    $end2 = $key . '_S2_end';
+
+                    if ($form->get($start1)->getData() === null || $form->get($end1)->getData() === null) {
+                        $table[$key][0] = null;
+                    } else {
+                        //dump("ok");
+                        dump($form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I'));
+
+                        $table[$key][0] = $form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I');
+                    }
+                    if ($form->get($start2)->getData() === null || $form->get($end2)->getData() === null) {
+                        $table[$key][1] = null;
+                    } else {
+                        dump($form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I'));
+                        $table[$key][1] = $form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I');
+                    }
+
+                }
+                $ranges = ['monday' => [], 'tuesday' => [], 'wednesday' => [], 'thursday' => [], 'friday' => [], 'saturday' => [], 'sunday' => []];
+
+                foreach ($table as $key => $value) {
+
+                    if ($table[$key][0] !== null) $ranges[$key][0] = $table[$key][0];
+                    if ($table[$key][1] !== null) $ranges[$key][1] = $table[$key][1];
+                }
+
+                dump($ranges);
+                $userFound->setHours($ranges);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->flush();
+                return $this->redirectToRoute('myWorkingHours_new_admin',['service'=>$hasService, 'id' => $user]);
+            }
+
+        } else
+
+        {
+            $workingHours = new WorkingHours();
+            $form = $this->createForm(WorkingHoursType::class, $workingHours);
+
+            $form->handleRequest($request);
+            $workingHours->setBusiness($user);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
+
+                //init
+                foreach ($table as $key => $value) {
+
+                    //dump($key.'_S1_end');
+                    $start1 = $key . '_S1_start';
+                    $end1 = $key . '_S1_end';
+                    $start2 = $key . '_S2_start';
+                    $end2 = $key . '_S2_end';
+
+                    if ($form->get($start1)->getData() === null || $form->get($end1)->getData() === null) {
+                        $table[$key][0] = null;
+                    } else {
+                        //dump("ok");
+                        dump($form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I'));
+
+                        $table[$key][0] = $form->get($start1)->getData()->format('%H:%I') . "-" . $form->get($end1)->getData()->format('%H:%I');
+                    }
+                    if ($form->get($start2)->getData() === null || $form->get($end2)->getData() === null) {
+                        $table[$key][1] = null;
+                    } else {
+                        dump($form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I'));
+                        $table[$key][1] = $form->get($start2)->getData()->format('%H:%I') . "-" . $form->get($end2)->getData()->format('%H:%I');
+                    }
+
+                }
+                $ranges = ['monday' => [], 'tuesday' => [], 'wednesday' => [], 'thursday' => [], 'friday' => [], 'saturday' => [], 'sunday' => []];
+
+                foreach ($table as $key => $value) {
+                    /*
+                     dump($table[$key][0]);
+                     dump($table[$key][1]);
+                     die;
+                     */
+                    if ($table[$key][0] !== null) $ranges[$key][0] = $table[$key][0];
+                    if ($table[$key][1] !== null) $ranges[$key][1] = $table[$key][1];
+                }
+                /*
+                            $ranges = [
+                                'monday' => ['08:00-11:00', '10:00-12:00'],
+                            ];
+                            $mergedRanges = OpeningHours::mergeOverlappingRanges($ranges); // Monday becomes ['08:00-12:00']
+
+                            OpeningHours::create($mergedRanges);
+                  */
+                /*
+                 $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
+                 dump($openingHours->isOpenOn('monday'));
+                 dump($openingHours->isOpen());
+     */
+
+
+
+                $workingHours->setHours($ranges);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($workingHours);
+                $entityManager->flush();
+                return $this->redirectToRoute('myWorkingHours_new_admin',['service'=>$hasService, 'id' => $user]);
+            }
+        }
+
+        return $this->render('workingHours/userWorkingHours_new.html.twig', [
+            'service'=>$hasService,
+            'form' => $form->createView(),
+            'userId' => $user
+        ]);
+    }
+
+
+    /**
+     * @Route("/admin/{id}/delete", name="myWorkingHours_delete_admin", methods={"DELETE"})
+     * @param Request $request
+     * @param Service $service
+     * @return Response
+     */
+    public function admin_delete(Request $request, Service $service): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $service->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($service);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('myWorkingHours');
+    }
+
+
+    /**
+     * @Route("/admin/user_{id}/test", name="testttte")
+     * @param User $user
+     * @param Request $request
+     * @param WorkingHoursRepository $rep
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function test_admin(User $user, Request $request, WorkingHoursRepository $rep): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('start')===null && $request->request->get('end')===null){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+                $workingHours = $rep->findOneBy(["business"=>$user]);
+                $test = $workingHours->getHours();
+                //dump($test);
+                $mergedRanges = OpeningHours::mergeOverlappingRanges($test);
+                $openingHours= OpeningHours::create($mergedRanges);
+                // $day =$request->request->get('day');
+                $start = $request->request->get('start');
+                $end = $request->request->get('end');
+                dump($start);
+                dump($end);
+                // die;
                 $res = $openingHours->diffInOpenMinutes(new DateTime($start), new DateTime($end));
 
 

@@ -1,0 +1,197 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Service{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        <li class="breadcrumb-item">
+            <a href="{{ path('selectUser_for_workingHours') }}">Selectionner un utilisateur</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myWorkingHours_new_admin',{'id':userId}) }}">Horaires</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+
+
+    {% if service.id is defined %}
+        <a class="btn btn-white"
+           href="{{ path('admin_service_calendar',{'user':userId,'id':service.id}) }}">
+            <i class="os-icon os-icon-delivery-box-2"></i>
+            <span id="my_span">Fixer des RDV</span>
+        </a>
+    {% else %}
+        <a class="btn btn-white btn-sm" href="{{ path('service_new',{'userId':userId}) }}">
+            <i class="os-icon os-icon-delivery-box-2"></i>
+            <span>Je fixe des RDV</span>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <style>
+        th {
+            text-align: center;
+        }
+
+        .table td {
+            padding: 0;
+            vertical-align: top;
+            border-top: 1px solid rgba(83, 101, 140, 0.33);
+        }
+
+        .form-control {
+            padding: 0
+        }
+
+    </style>
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box">
+                <h5 class="form-header">
+                </h5>
+                <div class="form-desc">
+                </div>
+                {% form_theme form 'bootstrap_4_horizontal_layout.html.twig' %}
+                {{ form_start(form) }}
+                <div class="order-items-table">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-responsive-lg">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Jours
+                                </th>
+                                <th colspan="2" style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">
+                                    Séance 1
+                                </th>
+                                <th colspan="2">
+                                    Séance 2
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Début
+                                </th>
+                                <th style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">
+                                    Fin
+                                </th>
+                                <th>
+                                    Début
+                                </th>
+                                <th>
+                                    Fin
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr>
+                                <td>Lundi</td>
+                                <td>{{ form_widget(form.monday_S1_start) }}</td>
+                                <td style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">{{ form_widget(form.monday_S1_end) }}</td>
+                                <td>{{ form_widget(form.monday_S2_start) }}</td>
+                                <td>{{ form_widget(form.monday_S2_end) }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Mardi</td>
+                                <td>{{ form_widget(form.tuesday_S1_start) }}</td>
+                                <td style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">{{ form_widget(form.tuesday_S1_end) }}</td>
+                                <td>{{ form_widget(form.tuesday_S2_start) }}</td>
+                                <td>{{ form_widget(form.tuesday_S2_end) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Mercredi</td>
+                                <td>{{ form_widget(form.wednesday_S1_start) }}</td>
+                                <td style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">{{ form_widget(form.wednesday_S1_end) }}</td>
+                                <td>{{ form_widget(form.wednesday_S2_start) }}</td>
+                                <td>{{ form_widget(form.wednesday_S2_end) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Jeudi</td>
+                                <td>{{ form_widget(form.thursday_S1_start) }}</td>
+                                <td style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">{{ form_widget(form.thursday_S1_end) }}</td>
+                                <td>{{ form_widget(form.thursday_S2_start) }}</td>
+                                <td>{{ form_widget(form.thursday_S2_end) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Vendredi</td>
+                                <td>{{ form_widget(form.friday_S1_start) }}</td>
+                                <td style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">{{ form_widget(form.friday_S1_end) }}</td>
+                                <td>{{ form_widget(form.friday_S2_start) }}</td>
+                                <td>{{ form_widget(form.friday_S2_end) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Samedi</td>
+                                <td>{{ form_widget(form.saturday_S1_start) }}</td>
+                                <td style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">{{ form_widget(form.saturday_S1_end) }}</td>
+                                <td>{{ form_widget(form.saturday_S2_start) }}</td>
+                                <td>{{ form_widget(form.saturday_S2_end) }}</td>
+                            </tr>
+                            <tr>
+                                <td>Dimanche</td>
+                                <td>{{ form_widget(form.sunday_S1_start) }}</td>
+                                <td style="border-right: 1px solid rgba(83, 101, 140, 0.33) ">{{ form_widget(form.sunday_S1_end) }}</td>
+                                <td>{{ form_widget(form.sunday_S2_start) }}</td>
+                                <td>{{ form_widget(form.sunday_S2_end) }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {#
+                <div class="row">
+                    <div class="col-sm-12">
+                            {{ form_widget(form.isActive) }}
+                    </div>
+                </div>
+                #}
+
+                <div class="form-buttons-w">
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <button class="btn btn-primary " type="submit">Enregistrer</button>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn" type="reset">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+
+    <script>
+        $("[role='presentation']").addClass("table table-borderless")
+        $("[role='presentation']").children("thead").remove()
+        //$('select').addClass("form-control")
+        $("td div.form-inline div.col-auto:first-child").after(":")
+
+
+        /*
+        $("#working_hours_monday_S1_start_minutes").change(function () {
+
+        })
+
+        $("#working_hours_monday_S1_end_hours").change(function () {
+
+        })
+        $("#working_hours_monday_S1_end_minutes").change(function () {
+
+        })
+*/
+    </script>
+{% endblock %}
