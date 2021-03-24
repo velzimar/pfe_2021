@@ -1,3 +1,8 @@
-test:
-    path: /test
-    controller: App\test\testController::index
+api_login_check:
+    path: /api/login_check
+
+#getproduct:
+ #   path: /api/product/byName/
+#test:
+ #   path: /test
+  #  controller: App\test\testController::index

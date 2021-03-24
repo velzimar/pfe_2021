@@ -11,10 +11,27 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
+      dev:
+        pattern: ^/(_(profiler|wdt)|css|images|js)/
+        security: false
+
+      login:
+        pattern: ^/api/login
+        stateless: true
+        anonymous: true
+        json_login:
+            check_path: /api/login_check
+            success_handler: lexik_jwt_authentication.handler.authentication_success
+            failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+      api:
+        pattern: ^/api
+        stateless: true
+        guard:
+          authenticators:
+            - lexik_jwt_authentication.jwt_token_authenticator
+
+      main:
             anonymous: true
             lazy: true
             provider: app_user_provider
@@ -41,7 +58,9 @@ security:
           ROLE_SELLER: [ ROLE_USER ]
     access_control:
            #For Anonymous
-        # - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+       #  - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/api/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/api, role: IS_AUTHENTICATED_FULLY }
             #For Super
          - { path: ^/user/super/, roles: ROLE_SUPER }
             #For admins

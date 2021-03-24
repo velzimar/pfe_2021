@@ -31,11 +31,10 @@ class ProductRepository extends ServiceEntityRepository
             //->orderBy('p.id', 'ASC')
             //->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
 
-    public function findByUserByCategory($user,$category)
+    public function findByUserByCategory($user, $category)
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.business = :user')
@@ -45,10 +44,40 @@ class ProductRepository extends ServiceEntityRepository
             //->orderBy('p.id', 'ASC')
             //->setMaxResults(10)
             ->getQuery()
-            ->getResult()
-            ;
+            ->getResult();
     }
 
+    public function find10Products()
+    {
+        return $this->createQueryBuilder('p')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function findByName($nom)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('p.nom', 'p.prix', 'p.id', 'r.id as business', 'c.id as category');
+        $query
+            ->select($fields)
+            ->from('App\Entity\Product', 'p')
+            ->join('p.business', 'r')
+            ->join('p.category', 'c')
+            ->andWhere('p.business = r.id')
+            ->andWhere('p.category = c.id');
+        if ($nom !== "") {
+            $query
+                ->andWhere('p.nom = :nom')
+                ->setParameter('nom', $nom);
+        }else{
+            $query->setMaxResults(10);
+        }
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
 
     /*
     public function findOneBySomeField($value): ?Product
