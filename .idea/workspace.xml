@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/workingHours/selectUser.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/workingHours/userWorkingHours_new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/pfe_2021.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pfe_2021.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ServiceCalendarController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ServiceCalendarController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/WorkingHoursController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WorkingHoursController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_calendar/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_calendar/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,6 +152,14 @@
       <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
       <path value="$PROJECT_DIR$/vendor/symfony/swiftmailer-bundle" />
       <path value="$PROJECT_DIR$/vendor/spatie/opening-hours" />
+      <path value="$PROJECT_DIR$/vendor/willdurand/negotiation" />
+      <path value="$PROJECT_DIR$/vendor/willdurand/jsonp-callback-validator" />
+      <path value="$PROJECT_DIR$/vendor/phpstan/phpdoc-parser" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/rest-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jms/serializer-bundle" />
+      <path value="$PROJECT_DIR$/vendor/jms/serializer" />
+      <path value="$PROJECT_DIR$/vendor/nelmio/api-doc-bundle" />
+      <path value="$PROJECT_DIR$/vendor/zircote/swagger-php" />
     </include_path>
   </component>
   <component name="ProblemsViewState">

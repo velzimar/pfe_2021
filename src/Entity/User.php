@@ -21,9 +21,19 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ORM\Table(name="`user`")
+ * @ORM\Table(
+ *    name="user",
+ *    uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="unique_businessName_category", columns={"categoryId", "business_name"})
+ *    }
+ * )
  * @UniqueEntity(fields={"email"}, message="Votre Email doit etre unique")
  * @Vich\Uploadable()
+ * @UniqueEntity(
+ *     fields={"CategoryId", "businessName"},
+ *     errorPath="businessName",
+ *     message="Le nom commercial existe déja dans cette catégorie."
+ * )
  */
 class User implements UserInterface, Serializable
 {
@@ -555,7 +565,7 @@ class User implements UserInterface, Serializable
         // to show the name of the Category in the select
         //return $this->nom;
         // to show the id of the Category in the select
-         return strval($this->id);
+        return strval($this->id);
     }
 
     /**
@@ -604,7 +614,7 @@ class User implements UserInterface, Serializable
     {
         if (!$this->deals->contains($deal)) {
             $this->deals[] = $deal;
-        $deal->setBusiness($this);
+            $deal->setBusiness($this);
         }
 
         return $this;
