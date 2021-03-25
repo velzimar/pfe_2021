@@ -131,7 +131,6 @@ class User implements UserInterface, Serializable
     private $products;
 
 
-
     //end for services
 
     //for deal
@@ -193,7 +192,6 @@ class User implements UserInterface, Serializable
     private $workingHours;
 
 
-
     public function __construct()
     {
         $this->productCategories = new ArrayCollection();
@@ -228,7 +226,7 @@ class User implements UserInterface, Serializable
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -242,6 +240,7 @@ class User implements UserInterface, Serializable
 
         return array_unique($roles);
     }
+
     /**
      * @see UserInterface
      */
@@ -249,11 +248,13 @@ class User implements UserInterface, Serializable
     {
         if (in_array("ROLE_SUPER", $this->roles)) {
             return "SuperAdmin";
-        }else if(in_array("ROLE_ADMIN", $this->roles)){
+        } else if (in_array("ROLE_ADMIN", $this->roles)) {
             return "Admin";
-        }else if(in_array("ROLE_SELLER", $this->roles)){
+        } else if (in_array("ROLE_SELLER", $this->roles)) {
             return "Vendeur";
-        }else{
+        } elseif (in_array("ROLE_CLIENT", $this->roles)) {
+            return "Client";
+        } else {
             return "Invité";
         }
     }
@@ -279,6 +280,7 @@ class User implements UserInterface, Serializable
 
         return false;
     }
+
     public function addRole($role)
     {
         if (!in_array($role, $this->roles)) {
@@ -287,6 +289,7 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+
     public function removeRoles($role): self
     {
         if ($this->hasRole($role)) {
@@ -298,16 +301,12 @@ class User implements UserInterface, Serializable
     }
 
 
-
-
-
-
     /**
      * @see UserInterface
      */
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return (string)$this->password;
     }
 
     public function setPassword(string $password): self
@@ -348,7 +347,7 @@ class User implements UserInterface, Serializable
     public function setImageFile(?File $imageFile): void
     {
         $this->imageFile = $imageFile;
-        if($this->imageFile instanceof UploadedFile){
+        if ($this->imageFile instanceof UploadedFile) {
             $this->updatedAt = new DateTime('now');
         }
     }
@@ -370,7 +369,6 @@ class User implements UserInterface, Serializable
     }
 
 
-
     /**
      * @return string|null
      */
@@ -386,6 +384,7 @@ class User implements UserInterface, Serializable
     {
         $this->filename = $filename;
     }
+
     public function serialize(): ?string
     {
         return
@@ -405,7 +404,7 @@ class User implements UserInterface, Serializable
             $this->id,
             $this->email,
             $this->password
-            )   = unserialize($serialized,['allowed_classes'=>false]);
+            ) = unserialize($serialized, ['allowed_classes' => false]);
     }
 
     public function getNom(): ?string
@@ -481,7 +480,6 @@ class User implements UserInterface, Serializable
     }
 
 
-
     /**
      * @return mixed
      */
@@ -530,6 +528,7 @@ class User implements UserInterface, Serializable
 
 
     // for deals
+
     /**
      * @return Collection|DealCategory[]
      */
@@ -559,6 +558,7 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+
     //end for deals
     public function __toString(): string
     {
@@ -680,13 +680,13 @@ class User implements UserInterface, Serializable
 
 
     /**
-     * @var $notification Notification
      * @return Collection|Notification[]
+     * @var $notification Notification
      */
     public function getNotSeenReceivedNotifications(): Collection
     {
         $this->NotSeenReceivedNotifications = new ArrayCollection();
-        foreach ($this->ReceivedNotifications as $notification){
+        foreach ($this->ReceivedNotifications as $notification) {
             if (!$notification->getSeen())
                 $this->NotSeenReceivedNotifications[] = $notification;
         }
@@ -787,8 +787,6 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
-
-
 
 
 }

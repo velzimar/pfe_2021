@@ -68,7 +68,10 @@ class UserAuthAuthenticator extends AbstractFormLoginAuthenticator implements Pa
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
-
+        if ($user->getMainRole()=="Client") {
+            // fail authentication with a custom error
+            throw new CustomUserMessageAuthenticationException("Votre compte est didié poue l'application mobile seulement");
+        }
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException("Vérifier l'adresse Email");
@@ -107,8 +110,9 @@ class UserAuthAuthenticator extends AbstractFormLoginAuthenticator implements Pa
             return new RedirectResponse($this->urlGenerator->generate('user_index'));
         else if ($role == "SuperAdmin")
             return new RedirectResponse($this->urlGenerator->generate('super_index'));
-        else
-            return new RedirectResponse($this->urlGenerator->generate('myProducts'));
+        else{
+            return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        }
        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
