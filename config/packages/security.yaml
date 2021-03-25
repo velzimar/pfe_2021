@@ -67,7 +67,7 @@ security:
     - { path: ^/api/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/token/refresh, role: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/api, role: IS_AUTHENTICATED_FULLY }
+    - { path: ^/api, role: IS_AUTHENTICATED_ANONYMOUSLY }
     #For Super
     - { path: ^/user/super/, roles: ROLE_SUPER }
     #For admins

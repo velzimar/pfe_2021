@@ -97,6 +97,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotBlank
      */
     private $prenom;
 

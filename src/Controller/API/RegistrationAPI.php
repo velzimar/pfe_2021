@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller\API;
 
 use App\Entity\User;
@@ -8,10 +7,8 @@ use App\Repository\UserRepository;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use FOS\RestBundle\Controller\Annotations\RequestParam;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Request\ParamFetcher;
-use FOS\RestBundle\View\View;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +21,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegistrationAPI extends AbstractFOSRestController
 {
 
-
     private $userRepository;
     private $mailer;
 
@@ -35,7 +31,6 @@ class RegistrationAPI extends AbstractFOSRestController
     }
 
     //anonymous
-
     /**
      * @Rest\Post ("/", name="api_register")
      * @param Request $request

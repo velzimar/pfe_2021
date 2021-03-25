@@ -485,6 +485,7 @@ class UserController extends AbstractController
         $form = $this->createForm(EditUserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            //dump($request);die;
             $manager = $this->getDoctrine()->getManager();
             $manager->flush();
             $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
