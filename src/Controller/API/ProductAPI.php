@@ -50,7 +50,29 @@ class ProductAPI extends AbstractFOSRestController
         ]);
         return $this->handleView($view);
     }
+/*
+    public function postListsAction(ParamFetcher $paramFetcher)
+    {
+        $title = $paramFetcher->get('title');
+        if ($title) {
+            $list = new TaskList();
 
+            $preferences = new Preference();
+
+            $preferences->setList($list);
+            $list->setPreferences($preferences);
+
+            $list->setTitle($title);
+
+            $this->entityManager->persist($list);
+            $this->entityManager->flush();
+
+            return $this->view($list, Response::HTTP_CREATED);
+        }
+
+        return $this->view(['title' => 'This cannot be null'], Response::HTTP_BAD_REQUEST);
+    }
+*/
 
 
 }

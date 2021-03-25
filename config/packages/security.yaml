@@ -23,10 +23,14 @@ security:
             check_path: /api/login_check
             success_handler: lexik_jwt_authentication.handler.authentication_success
             failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
+      refresh:
+        pattern: ^/api/token/refresh
+        stateless: true
+        anonymous: true
       api:
         pattern: ^/api
         stateless: true
+        anonymous: true
         guard:
           authenticators:
             - lexik_jwt_authentication.jwt_token_authenticator
@@ -60,6 +64,7 @@ security:
            #For Anonymous
        #  - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/api/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/api/token/refresh, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/api, role: IS_AUTHENTICATED_FULLY }
             #For Super
          - { path: ^/user/super/, roles: ROLE_SUPER }

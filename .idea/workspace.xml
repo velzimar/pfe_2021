@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/packages/gesdinet_jwt_refresh_token.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/pfe_2021.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pfe_2021.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -13,10 +11,60 @@
       <change beforePath="$PROJECT_DIR$/config/bundles.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/bundles.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/testController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/testController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210211134135.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210212164357.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210212215058.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210213154710.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210213155702.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210213175133.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210213200646.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210214153013.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210214155445.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210214185913.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210214205924.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210215184708.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210215185552.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210215185857.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210215202553.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210217175602.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210217183150.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210221163307.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210223105142.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210225144907.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210225210245.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210226144352.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210226144801.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210226144954.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210226152928.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210228173038.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210302164101.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210303075603.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210303075901.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210303085431.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210305200751.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210305202811.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210308175304.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210309131609.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210309131907.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210311134414.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210311172027.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210311173432.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210313180924.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210315132657.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210315174333.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210315213000.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210316135215.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210316143749.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210316153411.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210316175056.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210317091814.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210320175801.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210321170849.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210321171012.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210321183913.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210322170939.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,6 +222,7 @@
       <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
       <path value="$PROJECT_DIR$/vendor/lexik/jwt-authentication-bundle" />
       <path value="$PROJECT_DIR$/vendor/namshi/jose" />
+      <path value="$PROJECT_DIR$/vendor/gesdinet/jwt-refresh-token-bundle" />
     </include_path>
   </component>
   <component name="ProblemsViewState">
@@ -253,6 +302,7 @@
       <workItem from="1616248989695" duration="3609000" />
       <workItem from="1616337883150" duration="18692000" />
       <workItem from="1616423713058" duration="20795000" />
+      <workItem from="1616680642900" duration="3672000" />
     </task>
     <servers />
   </component>
