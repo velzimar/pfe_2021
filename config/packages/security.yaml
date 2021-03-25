@@ -1,93 +1,95 @@
 security:
-    encoders:
-        App\Entity\User:
-            algorithm: auto
+  encoders:
+    App\Entity\User:
+      algorithm: auto
 
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
-    providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
-    firewalls:
-      dev:
-        pattern: ^/(_(profiler|wdt)|css|images|js)/
-        security: false
+  # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+  providers:
+    # used to reload user from session & other features (e.g. switch_user)
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-      login:
-        pattern: ^/api/login
-        stateless: true
-        anonymous: true
-        json_login:
-            check_path: /api/login_check
-            success_handler: lexik_jwt_authentication.handler.authentication_success
-            failure_handler: lexik_jwt_authentication.handler.authentication_failure
-      refresh:
-        pattern: ^/api/token/refresh
-        stateless: true
-        anonymous: true
-      api:
-        pattern: ^/api
-        stateless: true
-        anonymous: true
-        guard:
-          authenticators:
-            - lexik_jwt_authentication.jwt_token_authenticator
+    login:
+      pattern: ^/api/login
+      stateless: true
+      anonymous: true
+      json_login:
+        check_path: /api/login_check
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+    refresh:
+      pattern: ^/api/token/refresh
+      stateless: true
+      anonymous: true
+    api:
+      pattern: ^/api
+      stateless: true
+      anonymous: true
+      guard:
+        authenticators:
+          - lexik_jwt_authentication.jwt_token_authenticator
 
-      main:
-            anonymous: true
-            lazy: true
-            provider: app_user_provider
-            guard:
-                authenticators:
-                    - App\Security\UserAuthAuthenticator
-            logout:
-                path: app_logout
-            user_checker: App\Security\UserChecker
-                # where to redirect after logout
-                # target: app_any_route
+    main:
+      anonymous: true
+      lazy: true
+      provider: app_user_provider
+      guard:
+        authenticators:
+          - App\Security\UserAuthAuthenticator
+      logout:
+        path: app_logout
+      user_checker: App\Security\UserChecker
+        # where to redirect after logout
+      # target: app_any_route
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
+      # activate different ways to authenticate
+      # https://symfony.com/doc/current/security.html#firewalls-authentication
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+      # https://symfony.com/doc/current/security/impersonating_user.html
+      # switch_user: true
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-    role_hierarchy:
-          ROLE_SUPER: [ ROLE_ADMIN, ROLE_SELLER]
-          ROLE_ADMIN: [ ROLE_USER ]
-          ROLE_SELLER: [ ROLE_USER ]
-    access_control:
-           #For Anonymous
-       #  - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/api/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/api/token/refresh, role: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/api, role: IS_AUTHENTICATED_FULLY }
-            #For Super
-         - { path: ^/user/super/, roles: ROLE_SUPER }
-            #For admins
-         - { path: ^/user/admin/, roles: ROLE_ADMIN }
-         - { path: ^/product/admin/, roles: ROLE_ADMIN }
-         - { path: ^/productCategory/admin/, roles: ROLE_ADMIN }
-         - { path: ^/productOptions/admin/, roles: ROLE_ADMIN }
-         - { path: ^/deal/admin/, roles: ROLE_ADMIN }
-         - { path: ^/dealCategory/admin/, roles: ROLE_ADMIN }
-         - { path: ^/delivery/userDelivery/, roles: ROLE_ADMIN }
-         - { path: ^/service/admin/, roles: ROLE_ADMIN }
-         - { path: ^/serviceOptions/admin/, roles: ROLE_ADMIN }
-         - { path: ^/serviceCalendar/admin/, roles: ROLE_ADMIN }
-         - { path: ^/notification/admin/, roles: ROLE_ADMIN }
-            #For sellers
-         - { path: ^/deal/myDeals/, roles: ROLE_SELLER }
-         - { path: ^/dealCategory/myDealCategories/, roles: ROLE_SELLER }
-         - { path: ^/product/myProducts/, roles: ROLE_SELLER }
-         - { path: ^/productCategory/myProductCategories/, roles: ROLE_SELLER }
-         - { path: ^/productOptions/myOptions/, roles: ROLE_SELLER }
-         - { path: ^/delivery/myDelivery/, roles: ROLE_SELLER }
-         - { path: ^/service/myServices/, roles: ROLE_SELLER }
-         - { path: ^/serviceOptions/myOptions/, roles: ROLE_SELLER }
-         - { path: ^/serviceCalendar/user/, roles: ROLE_SELLER }
-         - { path: ^/notification/user/, roles: ROLE_SELLER }
+  # Easy way to control access for large sections of your site
+  # Note: Only the *first* access control that matches will be used
+  role_hierarchy:
+    ROLE_SUPER: [ ROLE_ADMIN, ROLE_SELLER, ROLE_CLIENT ]
+    ROLE_ADMIN: [ ROLE_USER ]
+    ROLE_SELLER: [ ROLE_USER ]
+    ROLE_CLIENT: [ ROLE_USER ]
+  access_control:
+    #For Anonymous
+    #  - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api/token/refresh, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/api, role: IS_AUTHENTICATED_FULLY }
+    #For Super
+    - { path: ^/user/super/, roles: ROLE_SUPER }
+    #For admins
+    - { path: ^/user/admin/, roles: ROLE_ADMIN }
+    - { path: ^/product/admin/, roles: ROLE_ADMIN }
+    - { path: ^/productCategory/admin/, roles: ROLE_ADMIN }
+    - { path: ^/productOptions/admin/, roles: ROLE_ADMIN }
+    - { path: ^/deal/admin/, roles: ROLE_ADMIN }
+    - { path: ^/dealCategory/admin/, roles: ROLE_ADMIN }
+    - { path: ^/delivery/userDelivery/, roles: ROLE_ADMIN }
+    - { path: ^/service/admin/, roles: ROLE_ADMIN }
+    - { path: ^/serviceOptions/admin/, roles: ROLE_ADMIN }
+    - { path: ^/serviceCalendar/admin/, roles: ROLE_ADMIN }
+    - { path: ^/notification/admin/, roles: ROLE_ADMIN }
+    #For sellers
+    - { path: ^/deal/myDeals/, roles: ROLE_SELLER }
+    - { path: ^/dealCategory/myDealCategories/, roles: ROLE_SELLER }
+    - { path: ^/product/myProducts/, roles: ROLE_SELLER }
+    - { path: ^/productCategory/myProductCategories/, roles: ROLE_SELLER }
+    - { path: ^/productOptions/myOptions/, roles: ROLE_SELLER }
+    - { path: ^/delivery/myDelivery/, roles: ROLE_SELLER }
+    - { path: ^/service/myServices/, roles: ROLE_SELLER }
+    - { path: ^/serviceOptions/myOptions/, roles: ROLE_SELLER }
+    - { path: ^/serviceCalendar/user/, roles: ROLE_SELLER }
+    - { path: ^/notification/user/, roles: ROLE_SELLER }

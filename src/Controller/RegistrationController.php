@@ -21,13 +21,13 @@ class RegistrationController extends AbstractController
 {
     /**
      * @Route("/register", name="app_register")
+     * @param Swift_Mailer $mailer
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param GuardAuthenticatorHandler $guardHandler
-     * @param UserAuthAuthenticator $authenticator
      * @return Response
+     * @throws \Exception
      */
-    public function register(Swift_Mailer $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, UserAuthAuthenticator $authenticator): Response
+    public function register(Swift_Mailer $mailer, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('app_login');
@@ -35,7 +35,6 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             if($form->get('confirm')->getData()==$form->get('plainPassword')->getData())
@@ -57,14 +56,12 @@ class RegistrationController extends AbstractController
             $user->setToken(rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '='));
             $entityManager->persist($user);
             $entityManager->flush();
-
             //init product category
             $defaultCategory = new ProductCategory();
             $defaultCategory->setBusinessId($user);
             $defaultCategory->setNom("Ma première catégorie");
             $defaultCategory->setDescription("Catégorie par défaut.");
             $entityManager->persist($defaultCategory);
-
             $entityManager->flush();
             //init deal category
             $defaultCategory = new DealCategory();
@@ -72,9 +69,7 @@ class RegistrationController extends AbstractController
             $defaultCategory->setNom("Ma première catégorie");
             $defaultCategory->setDescription("Catégorie par défaut.");
             $entityManager->persist($defaultCategory);
-
             $entityManager->flush();
-
             $message = (new Swift_Message("Cliquer ici pour valider votre email"))
                 ->setFrom("superadmin@looper.com")
                 ->setTo($user->getEmail())
@@ -82,11 +77,8 @@ class RegistrationController extends AbstractController
                 ->setBody(
                     $this->render("/registration/emailMessage.html.twig",["token"=>$user->getToken(),"user"=> $user]), 'text/html'
                 );
-
             $mailer->send($message);
-
             $this->addFlash('login', 'Un email est envoyé à votre adresse');
-
             return $this->redirectToRoute("app_login");
             /*
             return $guardHandler->authenticateUserAndHandleSuccess(
@@ -104,7 +96,6 @@ class RegistrationController extends AbstractController
             'registrationForm' => $form->createView(),
         ]);
     }
-
 
     /**
      * @Route("/activate/{token}/{user}", name="app_verify")
@@ -129,17 +120,14 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute("app_login");
     }
 
-
     /**
      * @Route("/resend/{user}", name="resend")
-     * @param String $token
+     * @param Swift_Mailer $mailer
      * @param User $user
-     * @param UserRepository $rep
      * @return Response
      */
-    public function resend(Swift_Mailer $mailer, String $token, User $user, UserRepository $rep):Response
+    public function resend(Swift_Mailer $mailer, User $user):Response
     {
-
         $message = (new Swift_Message("Cliquer ici pour valider votre email"))
             ->setFrom("superadmin@looper.com")
             ->setTo($user->getEmail())
@@ -147,13 +135,9 @@ class RegistrationController extends AbstractController
             ->setBody(
                 $this->render("/registration/emailMessage.html.twig",["token"=>$user->getToken(),"user"=> $user]), 'text/html'
             );
-
         $mailer->send($message);
-
         $this->addFlash('login', 'Un email est envoyé à votre adresse');
-
         return $this->redirectToRoute("app_login");
-
     }
 }
 
