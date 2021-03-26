@@ -98,4 +98,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         ;
     }
     */
+    public function findOnePersonalInfoById($id)
+    {
+        $fields = array('p.nom', 'p.prenom', 'p.cin', 'p.phone');
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select($fields)
+            ->from($this->_entityName, 'p')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $id);
+        return $qb->getQuery()->getResult();
+    }
+    public function findOneGeolocationById($id)
+    {
+        $fields = array('p.longitude', 'p.latitude');
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select($fields)
+            ->from($this->_entityName, 'p')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $id);
+        return $qb->getQuery()->getResult();
+    }
+
 }

@@ -76,19 +76,19 @@ class RegistrationAPI extends AbstractFOSRestController
         $user->setBusinessName("");
 
         $user->setIsActive(0);
-        $user->setToken(rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '='));
+        $user->setToken("123456");
         $entityManager->persist($user);
         $entityManager->flush();
-        $message = (new Swift_Message("Cliquer ici pour valider votre email"))
+        $message = (new Swift_Message("Code de validation"))
             ->setFrom("superadmin@looper.com")
             ->setTo($user->getEmail())
             //->setReplyTo($contact->getEmail())
             ->setBody(
-                $this->render("/registration/emailMessageAPI.html.twig", ["token" => $user->getToken(), "user" => $user]), 'text/html'
+                $this->render("/registration/emailMessageAPI.html.twig", ["token" => $user->getToken()]), 'text/html'
             );
         $this->mailer->send($message);
         $view = $this->view([
-            "message" => "Un email est envoyé à votre addresse. Veuillez confirmer",
+            "message" => "Un code est envoyé à votre addresse. Veuillez confirmer",
             "token" => $user->getToken()
         ]);
 
@@ -127,10 +127,22 @@ class RegistrationAPI extends AbstractFOSRestController
             return $this->handleView($view);
         }
         $found = $this->userRepository->find(["id" => $user]);
-
+        if($found->getIsActive()){
+            $view =  $this->view([
+                "message" => "Compte déja activé"
+            ]);
+            return $this->handleView($view);
+        }
         if ($found !== null && $found->getToken() === $token) {
             $found->setIsActive(1);
             $this->getDoctrine()->getManager()->flush();
+        }else{
+
+            $view = $this->view([
+                "message" => "Code invalide"
+            ]);
+
+            return $this->handleView($view);
         }
 
         $view = $this->view([
@@ -160,23 +172,24 @@ class RegistrationAPI extends AbstractFOSRestController
             return $this->handleView($view);
         }
 
-        if($found->getIsActive()===1){
+        if($found->getIsActive()){
             $view =  $this->view([
                 "message" => "Compte déja activé"
             ]);
             return $this->handleView($view);
         }
 
-        $message = (new Swift_Message("Cliquer ici pour valider votre email"))
+        $found->setToken("123456");
+        $message = (new Swift_Message("Code de validation"))
             ->setFrom("superadmin@looper.com")
             ->setTo($found->getEmail())
             //->setReplyTo($contact->getEmail())
             ->setBody(
-                $this->render("/registration/emailMessageAPI.html.twig", ["token" => $found->getToken(), "user" => $found]), 'text/html'
+                $this->render("/registration/emailMessageAPI.html.twig", ["token" => $found->getToken()]), 'text/html'
             );
         $this->mailer->send($message);
         $view =  $this->view([
-            "message" => "Un email est envoyé à votre addresse. Veuillez confirmer"
+            "message" => "Un code est envoyé à votre addresse. Veuillez confirmer"
         ]);
 
         return $this->handleView($view);

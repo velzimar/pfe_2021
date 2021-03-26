@@ -33,7 +33,7 @@ class TokenUpdater extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->container->get('doctrine')->getManager();
-        $users = $this->rep->findAll();
+        $users = $this->rep->findByRoleNot("ROLE_CLIENT","ROLE_SUPER");
         foreach ($users as $user){
             $user->setToken(rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '='));
             $em->flush();
