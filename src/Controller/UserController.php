@@ -463,7 +463,7 @@ class UserController extends AbstractController
      */
     public function send_as_admin(UserRepository $rep): Response
     {
-        $admins = $rep->findByRoleNot("ROLE_SELLER","ROLE_SELLER");
+        $admins = $rep->findByRoleNot("ROLE_SELLER","ROLE_CLIENT");
 
         return $this->render(
             'teamMembers.html.twig',

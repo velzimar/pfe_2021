@@ -2,19 +2,20 @@
 
 namespace App\Controller\API;
 
-use App\Entity\User;
+use App\Form\API\UserImageAPIType;
 use App\Form\API\UserPersonalInfoAPIType;
 use App\Repository\UserRepository;
+use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Request\ParamFetcher;
+use InvalidArgumentException;
 use Swift_Mailer;
-use Swift_Message;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/api/account")
@@ -38,19 +39,24 @@ class AccountAPI extends AbstractFOSRestController
      * @param ParamFetcher $paramFetcher
      * @param Request $request
      * @return Response
-     * @throws \Exception
+     * @throws Exception
      * @QueryParam(name="user", default="", strict=true)
      */
     public function patchpersonalInfoAction(ParamFetcher $paramFetcher, Request $request): Response
     {
-        $json= $request->getContent();
+        $json = $request->getContent();
+        //getting json body
         if ($decodedJson = json_decode($json, true)) {
             $data = $decodedJson;
         } else {
             $data = $request->request->all();
         }
+        //key verification
         if (!isset($data["nom"]) || !isset($data["prenom"]) || !isset($data["cin"]) || !isset($data["phone"])) {
-            $view = $this->view(["success" => false]);
+            $view = $this->view([
+                "message" => "Check body keys",
+                "success" => false
+            ]);
             return $this->handleView($view);
         }
         $nom = $request->get('nom');
@@ -58,63 +64,40 @@ class AccountAPI extends AbstractFOSRestController
         $cin = $request->get('cin');
         $phone = $request->get('phone');
         $id = $paramFetcher->get('user');
-        $user = $this->userRepository->find(["id"=>$id]);
+        $user = $this->userRepository->find(["id" => $id]);
+
         $form = $this->createForm(UserPersonalInfoAPIType::class, $user);
-       // $form->handleRequest($request);
-/*
-        $view = $this->view(["success" => $request]);
-        return $this->handleView($view);
-*/
         if ($request->isMethod('PATCH')) {
-
-/*
-            $view = $this->view([
-                "message" => $request
-            ]);
-            return $this->handleView($view);
-*/
-            /*
-            $formData = [];
-            foreach ($form->all() as $name => $field) {
-                if (isset($data[$name])) {
-                    $formData[$name] = $data[$name];
-                }
+            try {
+                $form->submit($data);
+            } catch (InvalidArgumentException $e) {
+                $view = $this->view([
+                    "success" => false,
+                    "message" => "Valider les données"
+                ]);
+                return $this->handleView($view);
             }
-*/
-            $form->submit($data);
-
-/*
-            $view = $this->view([
-              //  "messaerrge" => $form->isValid(),
-                "message" => $form->get('prenom')->getData(),
-                "messagee" => $form->get('cin')->getData(),
-                "messagse" => $form->get('phone')->getData(),
-                "messagqse" => $form->get('nom')->getData(),
-            ]);
-            return $this->handleView($view);
-*/
+            //validate values
             if ($form->isSubmitted() && $form->isValid()) {
-                // perform some action...
-                $entityManager = $this->getDoctrine()->getManager();
                 $user->setCin($cin);
                 $user->setPhone($phone);
                 $user->setPrenom($prenom);
                 $user->setNom($nom);
+                $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->flush();
                 $view = $this->view([
+                    "success" => true,
                     "message" => "Info updated"
                 ]);
                 return $this->handleView($view);
             }
         }
-
         $view = $this->view([
-            "message" => "none"
+            "success" => false,
+            "message" => "Check request body"
         ]);
         return $this->handleView($view);
-
     }
-
 
 
 }
