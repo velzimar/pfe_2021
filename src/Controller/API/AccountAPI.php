@@ -234,7 +234,7 @@ class AccountAPI extends AbstractFOSRestController
             ]);
             return $this->handleView($view);
         }
-        $user = $this->geolocationRepository->findOneBy(["user"=>$id]);
+        $user = $this->geolocationRepository->findOneClientById($id);
         $view = $this->view([
             'success' => true,
             'user' => $user

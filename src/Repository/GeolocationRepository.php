@@ -47,4 +47,20 @@ class GeolocationRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findOneClientById($id)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('p.longitude', 'p.latitude', 'r.id as id','r.email as email');
+        $query
+            ->select($fields)
+            ->from('App\Entity\Geolocation', 'p')
+            ->join('p.user', 'r')
+            ->andWhere('p.user = r.id')
+            ->andWhere('p.user = :id')
+            ->setParameter("id",$id)
+        ;
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
 }
