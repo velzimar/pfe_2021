@@ -30,14 +30,7 @@
 
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="form-group">
-                        {{ form_row(form.qtt,{
-                            'label':"Quantité",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer la quantité" ,'required':"required", 'type':"text" }
-                        }) }}
-                    </div>
-                </div>
+
                 <div class="col-sm-6">
                     <div class="form-group">
                         {{ form_row(form.category,{
@@ -46,6 +39,64 @@
                         }) }}
                     </div>
                 </div>
+            </div>
+
+            <div class="form-buttons-w">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Votre produit</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button id="cmd" type="button">Sur commande</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="qtt" type="button">Par quantité</button>
+                    </div>
+                    <div class="col-sm-3" id="qtt_block">
+
+                        <div class="form-group">
+                            {{ form_widget(form.qtt,{
+                                'label':"Quantité",
+                                'attr': {'class': 'form-control' ,'placeholder':"Entrer la quantité" ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                    </div>
+                    <script>
+                        let qtt_btn = $("#qtt")
+                        let cmd_btn = $("#cmd")
+                        function toggle_input(val) {
+                            $("#product_qtt").attr("hidden", val === 1);
+                        }
+                        $("#product_qtt").keyup(function () {
+                            if (this.value <= 0) {
+                                this.value = null
+                            }
+                        })
+
+                        qtt_btn.click(() => {
+                            qtt_btn.removeClass().addClass("btn btn-primary")
+                            cmd_btn.removeClass().addClass("btn btn-outline-primary")
+                            toggle_input(0)
+                            $("#product_qtt").val(null)
+                        })
+                        cmd_btn.click(() => {
+                            cmd_btn.removeClass().addClass("btn btn-primary")
+                            qtt_btn.removeClass().addClass("btn btn-outline-primary")
+                            toggle_input(1)
+                            $("#product_qtt").val(-1)
+                        })
+                        if( $("#product_qtt").val()==="-1"){
+                            $("#cmd").trigger("click")
+                        }else{
+                            qtt_btn.addClass("btn btn-primary")
+                            cmd_btn.addClass("btn btn-outline-primary")
+                        }
+                    </script>
+                </div>
+            </div>
+
+            <div class="form-desc">
             </div>
             <div class="col-sm-6">
                 <div class="form-group">

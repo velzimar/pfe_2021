@@ -91,7 +91,7 @@
                                     </td>
                                     <td class="text-md-left">
                                         <div class="product-price">
-                                            {{ product.qtt }}
+                                            {% if product.qtt==-1 %}Sur commande{% else %}{{ product.qtt }} {% endif %}
                                         </div>
                                     </td>
                                     <td class="text-md-left">
