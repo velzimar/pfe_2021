@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\DealCategory;
+use App\Entity\Geolocation;
 use App\Entity\Notification;
 use App\Entity\ProductCategory;
 use App\Entity\User;
+use App\Form\EditClientType;
 use App\Form\EditUserType;
 use App\Form\MyPassword_change;
 use App\Form\UserType;
+use App\Repository\GeolocationRepository;
 use App\Repository\UserRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +24,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  * @Route("/user")
  * @method User|null getUser()
  */
-
 class UserController extends AbstractController
 {
     //SUPERADMIN
@@ -135,7 +138,7 @@ class UserController extends AbstractController
                         dump($checkPass);
                         die();
               */
-            if($new_pwd_conf===$new_pwd) {
+            if ($new_pwd_conf === $new_pwd) {
                 $user->setPassword(
                     $passwordEncoder->encodePassword(
                         $user,
@@ -147,7 +150,7 @@ class UserController extends AbstractController
                 $manager->flush();
                 $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
 
-            }else{
+            } else {
                 $this->addFlash('user/edit.html.twig_success', "Vérifier la confirmation du mot de passe");
             }
         }
@@ -163,49 +166,91 @@ class UserController extends AbstractController
      * @Route("/super/{id}/edit", name="super_edit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
+     * @param GeolocationRepository $geolocationRepository
      * @return Response
      */
 
-    public function editSuper(Request $request, User $user): Response
+    public function editSuper(Request $request, User $user, GeolocationRepository $geolocationRepository): Response
     {
-        //$lastMail = $user->getEmail();
-        $isAdmin = $user->hasRole("ROLE_ADMIN");
-        $isSeller = $user->hasRole("ROLE_SELLER");
-        $form = $this->createForm(EditUserType::class, $user);
-        $form->get('admin')->setData($isAdmin);
-        $form->get('vendeur')->setData($isSeller);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('admin')->getData() == true) {
-
-                $user->addRole('ROLE_ADMIN');
-            } else {
-
-                $user->removeRoles('ROLE_ADMIN');
+        if ($user->getMainRole() === "Client") {
+            $form = $this->createForm(EditClientType::class, $user);
+            $form->handleRequest($request);
+            $latitude = $form->get('latitude')->getData();
+            $longitude = $form->get('longitude')->getData();
+            $coordinates = $geolocationRepository->findOneBy(["user" => $user->getId()]);
+            if ($form->isSubmitted()) {
+                try {
+                    $manager = $this->getDoctrine()->getManager();
+                    if (!$coordinates) {
+                        $coordinates = new Geolocation();
+                        $coordinates->setUser($user);
+                        $coordinates->setLatitude(floatval($latitude));
+                        $coordinates->setLongitude(floatval($longitude));
+                        $manager->persist($coordinates);
+                    } else {
+                        $coordinates->setLatitude(floatval($latitude));
+                        $coordinates->setLongitude(floatval($longitude));
+                    }
+                    $user->setLatitude(floatval($latitude));
+                    $user->setLongitude(floatval($longitude));
+                    //If its a client then update their coordinates too
+                    $manager->flush();
+                    $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
+                    return $this->render('user/edit.html.twig', [
+                        'form' => $form->createView(),
+                        'user' => $user
+                    ]);
+                } catch (Exception $e) {
+                    $this->addFlash('user/edit.html.twig_success', 'Valider les données');
+                    return $this->render('user/edit.html.twig', [
+                        'form' => $form->createView(),
+                        'user' => $user
+                    ]);
+                }
             }
-
-            if ($form->get('vendeur')->getData() == true) {
-
-                $user->addRole('ROLE_SELLER');
-            } else {
-
-                $user->removeRoles('ROLE_SELLER');
-            }
-            $manager = $this->getDoctrine()->getManager();
-            $manager->flush();
-            $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
             return $this->render('user/edit.html.twig', [
                 'form' => $form->createView(),
-                'user'=>$user
+                'user' => $user
+            ]);
+        } else {
+            //$lastMail = $user->getEmail();
+            $isAdmin = $user->hasRole("ROLE_ADMIN");
+            $isSeller = $user->hasRole("ROLE_SELLER");
+            $form = $this->createForm(EditUserType::class, $user);
+            $form->get('admin')->setData($isAdmin);
+            $form->get('vendeur')->setData($isSeller);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                if ($form->get('admin')->getData() == true) {
+
+                    $user->addRole('ROLE_ADMIN');
+                } else {
+
+                    $user->removeRoles('ROLE_ADMIN');
+                }
+
+                if ($form->get('vendeur')->getData() == true) {
+
+                    $user->addRole('ROLE_SELLER');
+                } else {
+
+                    $user->removeRoles('ROLE_SELLER');
+                }
+                $manager = $this->getDoctrine()->getManager();
+                //If its a client then update their coordinates too
+                $manager->flush();
+                $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
+                return $this->render('user/edit.html.twig', [
+                    'form' => $form->createView(),
+                    'user' => $user
+                ]);
+            }
+            return $this->render('user/edit.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user
             ]);
         }
-        return $this->render('user/edit.html.twig', [
-            'form' => $form->createView(),
-            'user'=>$user
-        ]);
     }
-
 
 
     /**
@@ -291,12 +336,12 @@ class UserController extends AbstractController
             $entityManager->persist($user);
 
             //init product category
-                $defaultCategory = new ProductCategory();
-                $defaultCategory->setBusinessId($user);
-                $defaultCategory->setNom("Ma première catégorie");
-                $defaultCategory->setDescription("Catégorie par défaut.");
-                $entityManager->persist($defaultCategory);
-                $entityManager->flush();
+            $defaultCategory = new ProductCategory();
+            $defaultCategory->setBusinessId($user);
+            $defaultCategory->setNom("Ma première catégorie");
+            $defaultCategory->setDescription("Catégorie par défaut.");
+            $entityManager->persist($defaultCategory);
+            $entityManager->flush();
 
             //init deal category
             $defaultCategory = new DealCategory();
@@ -305,7 +350,6 @@ class UserController extends AbstractController
             $defaultCategory->setDescription("Catégorie par défaut.");
             $entityManager->persist($defaultCategory);
             $entityManager->flush();
-
 
 
             if ($form->get('isActive')->getData()) {
@@ -343,7 +387,6 @@ class UserController extends AbstractController
     }
 
 
-
     /**
      * @Route("/admin/{id}/edit", name="user_edit", methods={"GET","POST"})
      * @param Request $request
@@ -351,26 +394,67 @@ class UserController extends AbstractController
      * @return Response
      */
 
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, GeolocationRepository $geolocationRepository): Response
     {
-        //$lastMail = $user->getEmail();
-        $form = $this->createForm(EditUserType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->flush();
-            $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
+        if ($user->getMainRole() === "Client") {
+            $form = $this->createForm(EditClientType::class, $user);
+            $form->handleRequest($request);
+            $latitude = $form->get('latitude')->getData();
+            $longitude = $form->get('longitude')->getData();
+            $coordinates = $geolocationRepository->findOneBy(["user" => $user->getId()]);
+            if ($form->isSubmitted()) {
+                try {
+                    $manager = $this->getDoctrine()->getManager();
+                    if (!$coordinates) {
+                        $coordinates = new Geolocation();
+                        $coordinates->setUser($user);
+                        $coordinates->setLatitude(floatval($latitude));
+                        $coordinates->setLongitude(floatval($longitude));
+                        $manager->persist($coordinates);
+                    } else {
+                        $coordinates->setLatitude(floatval($latitude));
+                        $coordinates->setLongitude(floatval($longitude));
+                    }
+                    $user->setLatitude(floatval($latitude));
+                    $user->setLongitude(floatval($longitude));
+                    //If its a client then update their coordinates too
+                    $manager->flush();
+                    $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
+                    return $this->render('user/edit.html.twig', [
+                        'form' => $form->createView(),
+                        'user' => $user
+                    ]);
+                } catch (Exception $e) {
+                    $this->addFlash('user/edit.html.twig_success', 'Valider les données');
+                    return $this->render('user/edit.html.twig', [
+                        'form' => $form->createView(),
+                        'user' => $user
+                    ]);
+                }
+            }
             return $this->render('user/edit.html.twig', [
                 'form' => $form->createView(),
-                'user'=>$user
+                'user' => $user
+            ]);
+        } else {
+            //$lastMail = $user->getEmail();
+            $form = $this->createForm(EditUserType::class, $user);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $manager = $this->getDoctrine()->getManager();
+                $manager->flush();
+                $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
+                return $this->render('user/edit.html.twig', [
+                    'form' => $form->createView(),
+                    'user' => $user
+                ]);
+            }
+            return $this->render('user/edit.html.twig', [
+                'form' => $form->createView(),
+                'user' => $user
             ]);
         }
-        return $this->render('user/edit.html.twig', [
-            'form' => $form->createView(),
-            'user'=>$user
-        ]);
     }
-
 
 
     /**
@@ -392,7 +476,7 @@ class UserController extends AbstractController
                         dump($checkPass);
                         die();
               */
-            if($new_pwd_conf===$new_pwd) {
+            if ($new_pwd_conf === $new_pwd) {
                 $user->setPassword(
                     $passwordEncoder->encodePassword(
                         $user,
@@ -404,7 +488,7 @@ class UserController extends AbstractController
                 $manager->flush();
                 $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
 
-            }else{
+            } else {
                 $this->addFlash('user/edit.html.twig_success', "Vérifier la confirmation du mot de passe");
             }
         }
@@ -414,7 +498,6 @@ class UserController extends AbstractController
             'user' => $user
         ]);
     }
-
 
 
     /**
@@ -442,6 +525,7 @@ class UserController extends AbstractController
 
 
     // TEAM MEMBERS as SELLER
+
     /**
      * @param UserRepository $rep
      * @return Response
@@ -457,13 +541,14 @@ class UserController extends AbstractController
     }
 
     // TEAM MEMBERS as Admin
+
     /**
      * @param UserRepository $rep
      * @return Response
      */
     public function send_as_admin(UserRepository $rep): Response
     {
-        $admins = $rep->findByRoleNot("ROLE_SELLER","ROLE_CLIENT");
+        $admins = $rep->findByRoleNot("ROLE_SELLER", "ROLE_CLIENT");
 
         return $this->render(
             'teamMembers.html.twig',
@@ -473,6 +558,7 @@ class UserController extends AbstractController
 
 
     //Vendeur
+
     /**
      * @Route("/myProfile/edit", name="my_profile_edit", methods={"GET","POST"})
      * @param Request $request
@@ -517,7 +603,7 @@ class UserController extends AbstractController
                         dump($checkPass);
                         die();
               */
-            if($checkPass === true && $new_pwd_conf===$new_pwd) {
+            if ($checkPass === true && $new_pwd_conf === $new_pwd) {
                 $user->setPassword(
                     $passwordEncoder->encodePassword(
                         $user,
@@ -529,7 +615,7 @@ class UserController extends AbstractController
                 $manager->flush();
                 $this->addFlash('user/edit.html.twig_success', 'Modification avec succès');
 
-            } else if($checkPass === true){
+            } else if ($checkPass === true) {
                 /*
                                 $x = $new_pwd_conf===$new_pwd;
                                 $b = $checkPass === true;
@@ -540,7 +626,7 @@ class UserController extends AbstractController
                                 $this->addFlash('user/edit.html.twig_success', "conf $new_pwd_conf");
                                 */
                 $this->addFlash('user/edit.html.twig_success', "Vérifier la confirmation");
-            }else{
+            } else {
 
                 $this->addFlash('user/edit.html.twig_success', "Vérifier l'ancien mot de passe");
             }

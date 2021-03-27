@@ -2,8 +2,10 @@
 
 namespace App\Controller\API;
 
+use App\Entity\Geolocation;
 use App\Form\API\UserPasswordChangeAPIType;
 use App\Form\API\UserPersonalInfoAPIType;
+use App\Repository\GeolocationRepository;
 use App\Repository\UserRepository;
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -25,10 +27,12 @@ class AccountAPI extends AbstractFOSRestController
 {
 
     private $userRepository;
+    private $geolocationRepository;
     private $mailer;
 
-    public function __construct(Swift_Mailer $mailer, UserRepository $userRepository)
+    public function __construct(Swift_Mailer $mailer, UserRepository $userRepository, GeolocationRepository $geolocationRepository)
     {
+        $this->geolocationRepository = $geolocationRepository;
         $this->userRepository = $userRepository;
         $this->mailer = $mailer;
     }
@@ -230,7 +234,7 @@ class AccountAPI extends AbstractFOSRestController
             ]);
             return $this->handleView($view);
         }
-        $user = $this->userRepository->findOneGeolocationById($id);
+        $user = $this->geolocationRepository->findOneBy(["user"=>$id]);
         $view = $this->view([
             'success' => true,
             'user' => $user
@@ -267,14 +271,37 @@ class AccountAPI extends AbstractFOSRestController
         $longitude = $request->get('longitude');
         $id = $paramFetcher->get('user');
         $user = $this->userRepository->find(["id" => $id]);
-
+        $coordinates = $this->geolocationRepository->findOneBy(["user" => $id]);
         if ($request->isMethod('POST')) {
             //validate values
             try {
-                $user->setLatitude(floatval($latitude));
-                $user->setLongitude(floatval($longitude));
                 $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->flush();
+                if(!$coordinates) {
+                    $coordinates = new Geolocation();
+                    $coordinates->setUser($user);
+                    $coordinates->setLatitude(floatval($latitude));
+                    $coordinates->setLongitude(floatval($longitude));
+                    $user->setLatitude(floatval($latitude));
+                    $user->setLongitude(floatval($longitude));
+                    $entityManager->persist($coordinates);
+                    $entityManager->flush();
+                    $view = $this->view([
+                        "success" => true,
+                        "message" => "Coordinates added"
+                    ]);
+                    return $this->handleView($view);
+                }else{
+                    $coordinates->setLatitude(floatval($latitude));
+                    $coordinates->setLongitude(floatval($longitude));
+                    $user->setLatitude(floatval($latitude));
+                    $user->setLongitude(floatval($longitude));
+                    $entityManager->flush();
+                    $view = $this->view([
+                        "success" => true,
+                        "message" => "Coordinates updated"
+                    ]);
+                    return $this->handleView($view);
+                }
             } catch (Exception $e) {
                 $view = $this->view([
                     "success" => false,
@@ -282,13 +309,6 @@ class AccountAPI extends AbstractFOSRestController
                 ]);
                 return $this->handleView($view);
             }
-
-            $view = $this->view([
-                "success" => true,
-                "message" => "Info updated"
-            ]);
-            return $this->handleView($view);
-
         }
         $view = $this->view([
             "success" => false,

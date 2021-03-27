@@ -30,9 +30,13 @@ function initMap() {
         alert("Latitude: " + event.latLng.lat() + " " + ", longitude: " + event.latLng.lng());
         deleteMarkers();
         addMarker(event.latLng);
-
-        document.getElementById("edit_user_longitude").value = event.latLng.lng().toFixed(7);
-        document.getElementById("edit_user_latitude").value = event.latLng.lat().toFixed(8);
+        if(document.getElementById("edit_user_longitude") !==null){
+            document.getElementById("edit_user_longitude").value = event.latLng.lng().toFixed(7);
+            document.getElementById("edit_user_latitude").value = event.latLng.lat().toFixed(8);
+        }else{
+            document.getElementById("edit_client_longitude").value = event.latLng.lng().toFixed(7);
+            document.getElementById("edit_client_latitude").value = event.latLng.lat().toFixed(8);
+        }
         $("#lat").val(event.latLng.lat().toFixed(8));
         $("#lng").val(event.latLng.lng().toFixed(7));
         fetchLocationName(event.latLng.lat(), event.latLng.lng());

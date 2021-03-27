@@ -64,9 +64,12 @@
     {% for flashError in app.flashes('user/edit.html.twig_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
+
     <div class="col-sm-12">
         <div class="element-wrapper">
-            <div class="element-box">
+            {% if user.getMainRole != "Client" %}
+
+                <div class="element-box">
                 <div class="user-profile compact">
                     <div class="up-head-w" id="user_profile"
                          style="background-image:url({{ vich_uploader_asset(user, 'imageFile') }})">
@@ -95,96 +98,98 @@
                     </div>
                 </div>
             </div>
-            <div class="element-box">
-                <div class="element-info">
-                    <div class="element-info-with-icon">
-                        <div class="element-info-icon">
-                            <div class="os-icon os-icon-wallet-loaded"></div>
+
+                <div class="element-box">
+                    <div class="element-info">
+                        <div class="element-info-with-icon">
+                            <div class="element-info-icon">
+                                <div class="os-icon os-icon-wallet-loaded"></div>
+                            </div>
+                            <div class="element-info-text">
+                                <h5 class="element-inner-header">
+                                    Vitrine
+                                </h5>
+                                <div class="element-inner-desc">
+                                </div>
+                            </div>
                         </div>
-                        <div class="element-info-text">
-                            <h5 class="element-inner-header">
-                                Vitrine
-                            </h5>
-                            <div class="element-inner-desc">
+                    </div>
+                    <div class="user-profile compact">
+                        <div class="up-contents">
+                            <div class="m-b">
+                                <div class="row m-b">
+                                    <div class="col-sm-6 b-r b-b">
+                                        <div class="el-tablo centered padded-v">
+                                            <a href="{{ path('product_index_user',{'userId': user }) }}">
+                                                <div class="value">
+                                                    {{ user.getProducts|length }}
+                                                </div>
+                                                <div class="label">
+                                                    Produits
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 b-b">
+                                        <div class="el-tablo centered padded-v">
+                                            <a href="{{ path('userProductCategories_index',{'userId': user }) }}">
+                                                <div class="value">
+                                                    {{ user.getProductCategories|length }}
+                                                </div>
+                                                <div class="label">
+                                                    Catégories de produits
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m-b">
+                                    <div class="col-sm-6 b-r b-b">
+                                        <div class="el-tablo centered padded-v">
+                                            <a href="{{ path('deal_index_user',{'userId': user }) }}">
+                                                <div class="value">
+                                                    {{ user.getDeals|length }}
+                                                </div>
+                                                <div class="label">
+                                                    Deals
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 b-b">
+                                        <div class="el-tablo centered padded-v">
+                                            <a href="{{ path('userDealCategories_index',{'userId': user }) }}">
+                                                <div class="value">
+                                                    {{ user.getDealCategories|length }}
+                                                </div>
+                                                <div class="label">
+                                                    Catégories de deal
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row m-b">
+                                    {#
+                                    <div class="col-sm-6 b-r b-b">
+                                        <div class="el-tablo centered padded-v">
+                                            <a href="{{ path('service_index_user',{'userId': user }) }}">
+                                                <div class="value">
+                                                    {{ user.getServices|length }}
+                                                </div>
+                                                <div class="label">
+                                                    Services
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    #}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="user-profile compact">
-                    <div class="up-contents">
-                        <div class="m-b">
-                            <div class="row m-b">
-                                <div class="col-sm-6 b-r b-b">
-                                    <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('product_index_user',{'userId': user }) }}">
-                                            <div class="value">
-                                                {{ user.getProducts|length }}
-                                            </div>
-                                            <div class="label">
-                                                Produits
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 b-b">
-                                    <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('userProductCategories_index',{'userId': user }) }}">
-                                            <div class="value">
-                                                {{ user.getProductCategories|length }}
-                                            </div>
-                                            <div class="label">
-                                                Catégories de produits
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row m-b">
-                                <div class="col-sm-6 b-r b-b">
-                                    <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('deal_index_user',{'userId': user }) }}">
-                                            <div class="value">
-                                                {{ user.getDeals|length }}
-                                            </div>
-                                            <div class="label">
-                                                Deals
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 b-b">
-                                    <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('userDealCategories_index',{'userId': user }) }}">
-                                            <div class="value">
-                                                {{ user.getDealCategories|length }}
-                                            </div>
-                                            <div class="label">
-                                                Catégories de deal
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row m-b">
-                                {#
-                                <div class="col-sm-6 b-r b-b">
-                                    <div class="el-tablo centered padded-v">
-                                        <a href="{{ path('service_index_user',{'userId': user }) }}">
-                                            <div class="value">
-                                                {{ user.getServices|length }}
-                                            </div>
-                                            <div class="label">
-                                                Services
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                #}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endif %}
             <script>
                 $(document).ready(() => {
                     $("#user_profile").click(() => {
@@ -210,72 +215,71 @@
                 </div>
                 <div class="form-group">
                     <label for="edit_user_cin" class="required">Adresse Email</label>
-                    <input disabled type="text" id="edit_user_cin" class="form-control"  value="{{ user.email }}">
+                    <input disabled type="text" id="edit_user_cin" class="form-control" value="{{ user.email }}">
 
                 </div>
                 {{ form_start(form) }}
+                {% if user.getMainRole != "Client" %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.nom,{
+                                    'label':"Nom",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                                }) }}
 
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.nom,{
-                                'label':"Nom",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
-                            }) }}
-
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.prenom,{
+                                    'label':"Prenom",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                                }) }}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.prenom,{
-                                'label':"Prenom",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
-                            }) }}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.cin,{
+                                    'label':"Numéro du carte d'identité",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                                }) }}
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                {{ form_row(form.phone,{
+                                    'label':"Numéro de téléphone",
+                                    'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                                }) }}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
+                    <fieldset class="form-group">
+                        <legend><span>Affaire</span></legend>
                         <div class="form-group">
-                            {{ form_row(form.cin,{
-                                'label':"Numéro du carte d'identité",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
-                            }) }}
-
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            {{ form_row(form.phone,{
-                                'label':"Numéro de téléphone",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer le prenom" ,'required':"required", 'type':"text" }
+                            {{ form_row(form.businessName,{
+                                'label':"Nom commercial",
+                                'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
                             }) }}
                         </div>
-                    </div>
-                </div>
-
-                <fieldset class="form-group">
-                    <legend><span>Affaire</span></legend>
-                    <div class="form-group">
-                        {{ form_row(form.businessName,{
-                            'label':"Nom commercial",
-                            'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
-                        }) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_row(form.businessDescription,{
-                            'label':"Description",
-                            'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
-                        }) }}
-                    </div>
-                    <div class="form-group">
-                        {{ form_row(form.category_id,{
-                            'label':"Catégorie",
-                            'attr': {'class': 'form-control' }
-                        }) }}
-                    </div>
-                </fieldset>
-
+                        <div class="form-group">
+                            {{ form_row(form.businessDescription,{
+                                'label':"Description",
+                                'attr': {'class': 'form-control'  ,'required':"required", 'type':"text" }
+                            }) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_row(form.category_id,{
+                                'label':"Catégorie",
+                                'attr': {'class': 'form-control' }
+                            }) }}
+                        </div>
+                    </fieldset>
+                {% endif %}
                 <fieldset class="form-group">
                     <legend><span>Géolocalisation</span></legend>
                     <div class="modal fade" id="myModal" role="dialog">
@@ -360,14 +364,15 @@
                 </div>
 
 
-                <div class="form-group" id="image" hidden>
-                    {{ form_widget(form.imageFile,{
-                        'label':"Image",
-                        'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
-                    }) }}
-                </div>
-
-                {% if is_granted('ROLE_SUPER') %}
+                {% if user.getMainRole != "Client" %}
+                    <div class="form-group" id="image" hidden>
+                        {{ form_widget(form.imageFile,{
+                            'label':"Image",
+                            'attr': {'class': 'form-control' ,'placeholder':"Enter l'image", 'type':'file'  }
+                        }) }}
+                    </div>
+                {% endif %}
+                {% if is_granted('ROLE_SUPER') and user.getMainRole != "Client" %}
 
                     <fieldset class="form-group">
                         <legend><span>Droits d'accès</span></legend>
@@ -383,7 +388,7 @@
                             }) }}
                         </div>
                     </fieldset>
-                {% else %}
+                {% elseif user.getMainRole != "Client" %}
                     {% do form.admin.setRendered %}
                     {% do form.vendeur.setRendered %}
                 {% endif %}
@@ -407,7 +412,7 @@
 {% endblock %}
 
 {% block javascripts %}
-{#     <script>
+    {# <script>
         admin = $("#admin_checkbox")
         seller = $("#seller_checkbox")
         admin_div = admin.children('div')
@@ -494,7 +499,7 @@
                 });
         }
     </script>
-#}
+    #}
 
 
     <script src="{{ asset("/myScripts/user/editUser.js") }}"></script>

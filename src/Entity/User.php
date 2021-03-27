@@ -192,6 +192,11 @@ class User implements UserInterface, Serializable
      */
     private $workingHours;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Geolocation::class, mappedBy="user")
+     */
+    private $coordinates;
+
 
     public function __construct()
     {
@@ -785,6 +790,23 @@ class User implements UserInterface, Serializable
         }
 
         $this->workingHours = $workingHours;
+
+        return $this;
+    }
+
+    public function getCoordinates(): ?Geolocation
+    {
+        return $this->coordinates;
+    }
+
+    public function setCoordinates(Geolocation $coordinates): self
+    {
+        // set the owning side of the relation if necessary
+        if ($coordinates->getUser() !== $this) {
+            $coordinates->setUser($this);
+        }
+
+        $this->coordinates = $coordinates;
 
         return $this;
     }
