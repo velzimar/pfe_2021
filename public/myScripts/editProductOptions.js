@@ -17,7 +17,6 @@ let check_url = "/productOptions/checkUnique/"
 let check_type = "POST"
 */
 //from script
-
 let all_choices = [];
 
 let price_native = document.getElementById(price_id);
@@ -51,6 +50,15 @@ function setCurrent_length(y, selectedElement) {
             choice_number_jquery.append($("<option     />").val(i).text(i));
     }
     //alert(current_length)
+}
+$('#product_options_choices').change(function() {
+   // alert($(this).val())
+    let str = "<div class='col-sm-4'><div class='custom-file' data-choice='"+$(this).val()+"' onclick='_show(this)'><input type='file' class='custom-file-input' id='customFile'><label class='custom-file-label' for='customFile'>Choisir une image</label></div></div>"
+    $("#select_image_for_choice").html(str)
+});
+
+function _show(this_){
+    //alert($(this_).data("choice"))
 }
 
 function _add() {

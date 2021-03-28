@@ -1,4 +1,3 @@
-
 <div class="col-sm-12">
     <div class="element-wrapper">
         <h6 class="element-header">
@@ -59,6 +58,9 @@
                     </div>
                 </div>
             </div>
+            <div class="form-desc">
+                Sélectionner un choix pour ajouter/modifier son image
+            </div>
             <div class="form-group">
                 <select id="product_options_choices" readonly="readonly" class="form-control"
                         multiple="multiple">
@@ -67,20 +69,57 @@
                     {% for choix in option.choices %}
                         {% set i=0 %}
                         {% for c in choix %}
-                            {% if i==0 %}{% set nom=c %}{% else %}{%  set prix=c %}{% endif %}
+                            {% if i==0 %}{% set nom=c %}{% else %}{% set prix=c %}{% endif %}
                             {% set i=i+1 %}
                         {% endfor %}
-                        <option selected value="{{ nom }}" data-price="{{ prix }}" data-name="{{ nom }}" >{{ nom }} à {{ prix }} dt</option>
+                        <option selected value="{{ nom }}" data-price="{{ prix }}" data-name="{{ nom }}">{{ nom }}
+                            à {{ prix }} dt
+                        </option>
                     {% endfor %}
                 </select>
             </div>
             <div class="form-buttons-w">
+
+
+                <div class="row" id="select_image_for_choice">
+
+                    <form runat="server">
+                        <input type='file' id="imgInp"/>
+                        <img id="blah" src="#" alt="your image"/>
+                    </form>
+                    <script>
+                        function readURL(input) {
+                            if (input.files && input.files[0]) {
+                                var reader = new FileReader();
+
+                                reader.onload = function (e) {
+                                    $('#blah').attr('src', e.target.result);
+                                }
+
+                                reader.readAsDataURL(input.files[0]); // convert to base64 string
+                            }
+                        }
+
+                        $("#imgInp").change(function () {
+                            readURL(this);
+                        });
+                    </script>
+
+                </div>
+
+                <button type="button" id="Test">eee</button>
+            </div>
+
+            <div id="imageField">
+
+            </div>
+            <div class="form-buttons-w">
                 <div class="row">
                     <div class="col-auto mr-auto">
-                        <button  class="btn btn-danger" onclick=" _check_json_content()">check json</button>
+                        <button class="btn btn-danger" onclick=" _check_json_content()">check json</button>
                     </div>
                     <div class="col-auto">
-                        <button  id="post-btn" class="btn btn-secondary" >Terminer</button>
+                        <button id="post-btn" class="btn btn-secondary">Terminer</button>
                     </div>
                 </div>
             </div>
