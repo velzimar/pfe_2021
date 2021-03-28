@@ -47,6 +47,8 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+
     public function find10Products()
     {
         return $this->createQueryBuilder('p')
@@ -55,6 +57,45 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+
+    public function findMaxPriority($user, $category)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('MAX(p.priority) AS max_priority')
+            ->andWhere('p.business = :user')
+            ->andWhere('p.category = :category')
+            ->setParameter('user',$user)
+            ->setParameter('category',$category)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMinPriority($user, $category)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('MIN(p.priority) AS min_priority')
+            ->andWhere('p.business = :user')
+            ->andWhere('p.category = :category')
+            ->setParameter('user',$user)
+            ->setParameter('category',$category)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findProductsOfThisCategory($user, $category)
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p.id as id, p.nom as nom, p.prix as prix , p.priority as priority')
+            ->andWhere('p.business = :user')
+            ->andWhere('p.category = :category')
+            ->setParameter('user',$user)
+            ->setParameter('category',$category)
+            ->orderBy("priority","DESC")
+            ->getQuery()
+            ->getResult();
+    }
 
     public function findByName($nom)
     {

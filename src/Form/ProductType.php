@@ -21,6 +21,7 @@ class ProductType extends AbstractType
         $user = $options['userId'];
         //echo $user;
         $builder
+            ->add('priority')
             ->add('nom')
             ->add('description')
             ->add('prix')

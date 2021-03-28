@@ -87,6 +87,11 @@ class Product
      */
     private $productOptions;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $priority;
+
     public function __construct()
     {
         $this->productOptions = new ArrayCollection();
@@ -254,6 +259,18 @@ class Product
                 $productOption->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(?int $priority): self
+    {
+        $this->priority = $priority;
 
         return $this;
     }

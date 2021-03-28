@@ -96,6 +96,195 @@
                 </div>
             </div>
 
+            <div class="form-buttons-w">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label>Priorité</label>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button id="the_first" type="button">Le premier</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="first" type="button">Parmi les premiers</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="the_last" type="button">Le dernier</button>
+                    </div>
+                    <div class="col-sm-2">
+                        <button id="last" type="button">Parmi les derniers</button>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button id="after" type="button" data-toggle="modal" >Selon un produit</button>
+                    </div>
+                    <div class="modal fade" id="myModalafter" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Choisir le produit</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                                </div>
+                                <div class="modal-body" >
+                                    <table>
+                                        <thead>
+                                        <tr>
+                                            <th>Nom</th>
+                                            <th>Prix</th>
+                                            <th>Priority</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbody_for_after">
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2" id="qtt_block">
+
+                        <div class="form-group">
+                            {{ form_widget(form.priority,{
+                                'attr': {'class': 'form-control' ,'required':"required" }
+                            }) }}
+                        </div>
+                    </div>
+                    <script>
+                        const user_id = '{{ userId }}'
+                        let category_id = $("#product_category option:selected").val()
+                        alert(category_id)
+                        function update_category(id){
+                            category_id = id
+                        }
+                        $("#product_category").change(()=>{
+                            let val = $("#product_category option:selected").val()
+                            alert(val)
+                            update_category(val);
+                        })
+                        let product_priority = $("#product_priority");
+                        //alert(user_id)
+                        //alert(category_id)
+                        function _Avant(identifier){
+                            _val = $(identifier).data("prio")
+                            alert(_val)
+                            $("#product_priority").val(_val-1)
+                        }
+                        function _Apres(identifier){
+                            _val = $(identifier).data("prio")
+                            alert(_val)
+                            $("#product_priority").val(_val+1)
+                        }
+                        function _same(identifier){
+                            _val = $(identifier).data("prio")
+                            alert(_val)
+                            $("#product_priority").val(_val)
+                        }
+                        $("#after").click(()=>{
+                            $.when(getProductsOfThisCategory()).done(function(response){
+                                alert(JSON.stringify(response.minPriority))
+                                let str = ""
+                                $.each(response.minPriority, function(product){
+                                    _id = response.minPriority[product]["id"]
+                                    _nom = response.minPriority[product]["nom"]
+                                    _prix = response.minPriority[product]["prix"]
+                                    _prio = response.minPriority[product]["priority"]
+                                    prio_value = parseInt(response.minPriority[product]["priority"])
+                                    str += "<tr><td>"+_nom+"</td><td>"+_prix+"</td><td>"+_prio+"</td><td><button type='button' onclick='_Avant(this)' data-prio='"+prio_value+"' >Avant</button></td><td><button type='button' onclick='_same(this)' data-prio='"+prio_value+"' >Même</button></td><td><button type='button' data-prio='"+prio_value+"' onclick='_Apres(this)'>Après</button></td></tr>"
+
+                                });
+                               // alert(JSON.stringify(str))
+                                $("#tbody_for_after").html(
+                                    str
+                                )
+                                if(str===""){
+                                    alert("Aucun produit dans cette catégorie")
+                                    return;
+                                }
+                                $('#myModalafter').modal('show');
+                                // $("#product_priority").val(parseInt((response.maxPriority!==null)?response.maxPriority:0))
+                            })
+                        })
+                        $("#first").click(()=>{
+                            $.when(getMaxPriority()).done(function(response){
+                                $("#product_priority").val(parseInt((response.maxPriority!==null)?response.maxPriority:0))
+                            })
+                        })
+                        $("#last").click(()=>{
+                            $.when(getMinPriority()).done(function(response){
+                                $("#product_priority").val(parseInt((response.minPriority!==null)?response.maxPriority:0))
+                            })
+                        })
+                        $("#the_first").click(()=>{
+                            $.when(getMaxPriority()).done(function(response){
+                                $("#product_priority").val(parseInt((response.maxPriority!==null)?response.maxPriority:0)+1)
+                            })
+                        })
+                        $("#the_last").click(()=>{
+                            $.when(getMinPriority()).done(function(response){
+                                $("#product_priority").val(parseInt((response.minPriority!==null)?response.minPriority:0)-1)
+                            })
+                        })
+                        function getProductsOfThisCategory(){
+                            return $.ajax({
+                                type: "GET",
+                                url: "/product/get/getProductsOfThisCategory/"+user_id+"/"+category_id+"/",//post how you get this URL please...
+                                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
+                                success: function (response) {
+                                    if(response.success) {
+
+                                        //return(parseInt(response.maxPriority))
+                                    }
+                                },
+                                error: function () {
+                                    alert("err")
+                                    //return(0)
+                                }
+                            });
+                        }
+                        function getMaxPriority(){
+                            return $.ajax({
+                                type: "GET",
+                                url: "/product/get/getMaxPriority/"+user_id+"/"+category_id+"/",//post how you get this URL please...
+                                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
+                                success: function (response) {
+                                    if(response.success) {
+                                        alert(response.maxPriority)
+                                        //return(parseInt(response.maxPriority))
+                                    }
+                                },
+                                error: function () {
+                                    alert("err")
+                                    //return(0)
+                                }
+                            });
+                        }
+                        function getMinPriority(){
+                            return $.ajax({
+                                type: "GET",
+                                url: "/product/get/getMinPriority/"+user_id+"/"+category_id+"/",//post how you get this URL please...
+                                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
+                                success: function (response) {
+                                    if(response.success) {
+                                        alert(response.minPriority)
+                                        //return(parseInt(response.minPriority))
+                                    }
+                                },
+                                error: function () {
+                                    alert("err")
+                                    //return((0))
+                                }
+                            });
+                        }
+                    </script>
+                </div>
+            </div>
             <div class="form-desc">
             </div>
             <div class="col-sm-6">

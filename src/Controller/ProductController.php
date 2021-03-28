@@ -10,6 +10,7 @@ use App\Form\SelectUserType;
 use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -330,7 +331,7 @@ class ProductController extends AbstractController
 
 
     /**
-     * @Route("admin/{userId}/{id}/delete", name="product_delete", methods={"DELETE"})
+     * @Route("/admin/{userId}/{id}/delete", name="product_delete", methods={"DELETE"})
      * @param Request $request
      * @param Product $product
      * @param User $userId
@@ -350,7 +351,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("myProducts/{id}/delete", name="myProducts_delete", methods={"DELETE"})
+     * @Route("/myProducts/{id}/delete", name="myProducts_delete", methods={"DELETE"})
      * @param Request $request
      * @param Product $product
      * @return Response
@@ -363,6 +364,89 @@ class ProductController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('myProducts');
+    }
+
+    /**
+     * @Route("/get/getMaxPriority/{user}/{productCategory}", name="getMaxPriority", methods={"GET"})
+     * @param Request $request
+     * @param User $user
+     * @param ProductCategory $productCategory
+     * @param ProductRepository $productRepository
+     * @return JsonResponse
+     */
+    public function getMaxPriority(Request $request, User $user, ProductCategory $productCategory, ProductRepository $productRepository): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            $maxPriority = $productRepository->findMaxPriority(intval($user->getId()),intval($productCategory->getId()));
+            return new JsonResponse([
+                'success'  => true,
+                'maxPriority' => $maxPriority[0]["max_priority"],
+            ]);
+
+        }
+        $maxPriority = $productRepository->findMaxPriority(intval($user->getId()),intval($productCategory->getId()));
+        return new JsonResponse([
+            'success'  => true,
+            'maxPriority' => $maxPriority[0]["max_priority"],
+        ]);
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+
+    /**
+     * @Route("/get/getMinPriority/{user}/{productCategory}", name="getMinPriority", methods={"GET"})
+     * @param Request $request
+     * @param User $user
+     * @param ProductCategory $productCategory
+     * @param ProductRepository $productRepository
+     * @return JsonResponse
+     */
+    public function getMinPriority(Request $request, User $user, ProductCategory $productCategory, ProductRepository $productRepository): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            $minPriority = $productRepository->findMinPriority(intval($user->getId()),intval($productCategory->getId()));
+            return new JsonResponse([
+                'success'  => true,
+                'minPriority' => $minPriority[0]["min_priority"],
+            ]);
+
+        }
+        $minPriority = $productRepository->findMinPriority(intval($user->getId()),intval($productCategory->getId()));
+        return new JsonResponse([
+            'success'  => true,
+            'minPriority' => $minPriority[0]["min_priority"],
+        ]);
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+    /**
+     * @Route("/get/getProductsOfThisCategory/{user}/{productCategory}", name="getProductsOfThisCategory", methods={"GET"})
+     * @param Request $request
+     * @param User $user
+     * @param ProductCategory $productCategory
+     * @param ProductRepository $productRepository
+     * @return JsonResponse
+     */
+    public function getProductsOfThisCategory(Request $request, User $user, ProductCategory $productCategory, ProductRepository $productRepository): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            $minPriority = $productRepository->findProductsOfThisCategory(intval($user->getId()),intval($productCategory->getId()));
+            return new JsonResponse([
+                'success'  => true,
+                'minPriority' => $minPriority,
+            ]);
+
+        }
+        $minPriority = $productRepository->findProductsOfThisCategory(intval($user->getId()),intval($productCategory->getId()));
+        return new JsonResponse([
+            'success'  => true,
+            'minPriority' => $minPriority,
+        ]);
+        return new JsonResponse([
+            'success'  => false,
+        ]);
     }
 
 }
