@@ -30,6 +30,9 @@ class RegistrationAPI extends AbstractFOSRestController
         $this->mailer = $mailer;
     }
 
+    public function is_an_email(String $email){
+
+    }
     //anonymous
     /**
      * @Rest\Post ("/", name="api_register")
@@ -42,14 +45,28 @@ class RegistrationAPI extends AbstractFOSRestController
     {
         $data = json_decode($request->getContent(), true);
         if (!isset($data["email"])|| !isset($data["password"])) {
-            $view = $this->view(["success" => false]);
+            $view = $this->view([
+                "success" => false,
+                "code" => 200
+            ]);
             return $this->handleView($view);
         }
         $email = $request->get('email');
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $view = $this->view([
+                "success" => false,
+                "message" => "Valider l'adresse Email",
+                "code" => 201
+            ]);
+    
+            return $this->handleView($view);
+        }
         $user = $this->userRepository->findOneBy(["email" => $email]);
         if (!is_null($user)) {
             $view = $this->view([
-                "message" => "Compte existe déja"
+                "success" => false,
+                "message" => "Compte existe déja",
+                "code" => 202
             ]);
             return $this->handleView($view);
         }
@@ -88,8 +105,11 @@ class RegistrationAPI extends AbstractFOSRestController
             );
         $this->mailer->send($message);
         $view = $this->view([
+            "success" => true,
             "message" => "Un code est envoyé à votre addresse. Veuillez confirmer",
-            "token" => $user->getToken()
+            "token" => $user->getToken(),
+            "code" => 300,
+            "user" => $user->getId()
         ]);
 
         return $this->handleView($view);
@@ -121,6 +141,8 @@ class RegistrationAPI extends AbstractFOSRestController
         $user = $paramFetcher->get('user');
         if (is_null($user) || is_null($token)) {
             $view = $this->view([
+                "success" => false,
+                "code" => 200,
                 "message" => "Vérifier les paramètres"
             ]);
 
@@ -129,6 +151,8 @@ class RegistrationAPI extends AbstractFOSRestController
         $found = $this->userRepository->find(["id" => $user]);
         if($found->getIsActive()){
             $view =  $this->view([
+                "success" => false,
+                "code" => 201,
                 "message" => "Compte déja activé"
             ]);
             return $this->handleView($view);
@@ -139,6 +163,8 @@ class RegistrationAPI extends AbstractFOSRestController
         }else{
 
             $view = $this->view([
+                "success" => false,
+                "code" => 202,
                 "message" => "Code invalide"
             ]);
 
@@ -146,6 +172,8 @@ class RegistrationAPI extends AbstractFOSRestController
         }
 
         $view = $this->view([
+            "success" => true,
+            "code" => 300,
             "message" => "Votre compte est activé maintenant"
         ]);
 
@@ -166,6 +194,8 @@ class RegistrationAPI extends AbstractFOSRestController
         $found = $this->userRepository->find(["id" => $user]);
         if (is_null($user)|| is_null($found)) {
             $view =  $this->view([
+                "success" => false,
+                "code" => 200,
                 "message" => "Vérifier les paramètres"
             ]);
 
@@ -174,6 +204,8 @@ class RegistrationAPI extends AbstractFOSRestController
 
         if($found->getIsActive()){
             $view =  $this->view([
+                "success" => false,
+                "code" => 201,
                 "message" => "Compte déja activé"
             ]);
             return $this->handleView($view);
@@ -189,6 +221,8 @@ class RegistrationAPI extends AbstractFOSRestController
             );
         $this->mailer->send($message);
         $view =  $this->view([
+            "success" => true,
+            "code" => 300,
             "message" => "Un code est envoyé à votre addresse. Veuillez confirmer"
         ]);
 

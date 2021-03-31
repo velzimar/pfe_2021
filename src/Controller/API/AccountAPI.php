@@ -18,6 +18,7 @@ use InvalidArgumentException;
 use Swift_Mailer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
@@ -243,6 +244,56 @@ class AccountAPI extends AbstractFOSRestController
     }
 
     /**
+     * @Rest\Get(name="get_activation", "/checkActive/")
+     * @param ParamFetcher $paramFetcher
+     * @return Response
+     * @QueryParam(name="email", strict=true, nullable=false)
+     * @QueryParam(name="password", strict=true, nullable=false)
+     */
+    public function getActivationAction(ParamFetcher $paramFetcher, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        try {
+            $id = $paramFetcher->get('email');
+            $password = $paramFetcher->get('password');
+        } catch (InvalidParameterException $e) {
+            $view = $this->view([
+                'code' => 201,
+                "success" => false,
+                "message" => "Check email param"
+            ]);
+            return $this->handleView($view);
+        }
+        $email = $this->userRepository->findOneBy(["email" => $id]);
+        if ($email == null) {
+
+            $view = $this->view([
+                "code" => 202,
+                'success' => false,
+                "message" => "Vérifier votre email"
+            ]);
+            return $this->handleView($view);
+        }else{
+            if($passwordEncoder->isPasswordValid($email, $password)){
+                $view = $this->view([
+                    'code' => ($email->getIsActive() === 1) ? 300 : 301,
+                    'success' => true,
+                    'message' => ($email->getIsActive() === 1) ? "Activé" : "Désactivé",
+                    'id' => $email->getId()
+                ]);
+                return $this->handleView($view);
+            }else{
+                $view = $this->view([
+                    "code" => 203,
+                    'success' => false,
+                    "message" => "Vérifier votre mot de passe"
+                ]);
+                return $this->handleView($view);
+            }
+        }
+        
+    }
+
+    /**
      * @Rest\Post(name="api_post_geolocation", "/geolocation/")
      * @param Request $request
      * @param ParamFetcher $paramFetcher
@@ -276,7 +327,7 @@ class AccountAPI extends AbstractFOSRestController
             //validate values
             try {
                 $entityManager = $this->getDoctrine()->getManager();
-                if(!$coordinates) {
+                if (!$coordinates) {
                     $coordinates = new Geolocation();
                     $coordinates->setUser($user);
                     $coordinates->setLatitude(floatval($latitude));
@@ -290,7 +341,7 @@ class AccountAPI extends AbstractFOSRestController
                         "message" => "Coordinates added"
                     ]);
                     return $this->handleView($view);
-                }else{
+                } else {
                     $coordinates->setLatitude(floatval($latitude));
                     $coordinates->setLongitude(floatval($longitude));
                     $user->setLatitude(floatval($latitude));
@@ -316,5 +367,4 @@ class AccountAPI extends AbstractFOSRestController
         ]);
         return $this->handleView($view);
     }
-
 }
