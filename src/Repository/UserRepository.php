@@ -134,4 +134,64 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('id', $id);
         return $qb->getQuery()->getResult();
     }
+
+
+    //all businesses of a category ( only businesses that have products)
+    public function findBusinessesOfACategory($id)
+    {
+    $fields = array('p.id', 'p.businessName','p.longitude','p.latitude');
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select($fields)
+            ->from($this->_entityName, 'p')
+            ->from('App\Entity\Product', 's')
+            ->andWhere('p.CategoryId = :id')  
+            ->addSelect('COUNT(s.business) AS nbProducts')
+            ->andWhere('p.id = s.business')
+            ->groupBy('p.id')
+            ->orderBy('nbProducts','DESC')
+            ->setParameter('id', $id);
+        return $qb->getQuery()->getResult();
+    }
+     //all businesses of a category by name of business ( only businesses that have products)
+     public function findBusinessesOfACategoryByName($id,$name)
+     {
+     $fields = array('p.id', 'p.businessName','p.longitude','p.latitude');
+         $qb = $this->_em->createQueryBuilder();
+         $qb->select($fields)
+             ->from($this->_entityName, 'p')
+             ->from('App\Entity\Product', 's')
+             ->andWhere('p.CategoryId = :id')  
+             ->addSelect('COUNT(s.business) AS nbProducts')
+             ->andWhere('p.id = s.business')
+             ->andWhere('p.businessName LIKE :name')
+             ->groupBy('p.id')
+             ->orderBy('nbProducts','DESC')
+             ->setParameter('id', $id)
+             ->setParameter('name', "$name%");
+         return $qb->getQuery()->getResult();
+     }
+     //all businesses of a category by name of business ( only businesses that have products)
+     public function findBusinessesOfACategoryByNameWithDelivery($id,$name)
+     {
+     $fields = array('p.id', 'p.businessName','p.longitude','p.latitude');
+         $qb = $this->_em->createQueryBuilder();
+         $qb->select($fields)
+             ->from($this->_entityName, 'p')
+             ->from('App\Entity\Product', 's')
+             ->from('App\Entity\Delivery', 'd')
+             ->andWhere('p.CategoryId = :id')  
+             ->addSelect('COUNT(s.business) AS nbProducts')
+             ->andWhere('p.id = s.business')
+             ->andWhere('d.user = p.id')
+             ->andWhere('d.isActive = 1')
+             ->andWhere('p.businessName LIKE :name')
+             ->groupBy('p.id')
+             ->orderBy('nbProducts','DESC')
+             ->setParameter('id', $id)
+             ->setParameter('name', "$name%");
+         return $qb->getQuery()->getResult();
+     }
+
+
+
 }
