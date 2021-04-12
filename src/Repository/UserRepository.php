@@ -118,20 +118,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('id', $id);
         return $qb->getQuery()->getResult();
     }
-    public function findTop4ForEachCategory($id)
+    public function findTop4ForEachCategory($id,$name)
     {
     $fields = array('p.id', 'p.businessName');
         $qb = $this->_em->createQueryBuilder();
         $qb->select($fields)
             ->from($this->_entityName, 'p')
             ->from('App\Entity\ProductCategory', 's')
-            ->andWhere('p.CategoryId = :id')  
+            ->andWhere('p.CategoryId = :id')
+            ->andWhere('p.businessName LIKE :name')
             ->addSelect('COUNT(s.businessId) AS nbCategories')
             ->andWhere('p.id = s.businessId')
             ->groupBy('p.id')
             ->orderBy('nbCategories','DESC')
             ->setMaxResults(4)
-            ->setParameter('id', $id);
+            ->setParameter('id', $id)
+            ->setParameter('name', "$name%");
         return $qb->getQuery()->getResult();
     }
 

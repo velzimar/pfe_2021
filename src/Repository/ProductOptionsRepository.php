@@ -22,19 +22,20 @@ class ProductOptionsRepository extends ServiceEntityRepository
     // /**
     //  * @return ProductOptions[] Returns an array of ProductOptions objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByProductId($productId)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
+        return $this->createQueryBuilder('o')
+            ->select('o.nom as name,o.choices, CAST(o.NbMaxSelected AS CHAR) as maxSelect')
+            ->andWhere('o.product = :val')
+            ->setParameter('val', $productId)
+            ->orderBy('o.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?ProductOptions

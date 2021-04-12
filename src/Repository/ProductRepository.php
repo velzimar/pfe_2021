@@ -101,21 +101,37 @@ class ProductRepository extends ServiceEntityRepository
     {
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $fields = array('p.nom', 'p.prix', 'p.id', 'r.id as business', 'c.id as category');
+        $fields = array('p.nom as name', 'p.prix as price','p.description', 'p.id', 'r.id as business', 'c.id as category');
         $query
             ->select($fields)
             ->from('App\Entity\Product', 'p')
             ->join('p.business', 'r')
             ->join('p.category', 'c')
             ->andWhere('p.business = r.id')
-            ->andWhere('p.category = c.id');
-        if ($nom !== "") {
-            $query
-                ->andWhere('p.nom = :nom')
-                ->setParameter('nom', $nom);
-        }else{
-            $query->setMaxResults(10);
-        }
+            ->andWhere('p.category = c.id')
+            ->andWhere('p.nom LIKE :nom')
+            ->setParameter('nom', "$nom%");
+
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
+    public function findByBusinessIdByName($id,$nom)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('p.nom as name', 'p.prix as price','p.description', 'p.id', 'r.id as business', 'c.id as category');
+        $query
+            ->select($fields)
+            ->from('App\Entity\Product', 'p')
+            ->join('p.business', 'r')
+            ->join('p.category', 'c')
+            ->andWhere('p.business = r.id')
+            ->andWhere('p.category = c.id')
+            ->andWhere('p.business = :id')
+            ->andWhere('p.nom LIKE :nom')
+            ->setParameter('nom', "$nom%")
+            ->setParameter('id', $id);
+
         $results = $query->getQuery()->getResult();
         return $results;
     }

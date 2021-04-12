@@ -60,6 +60,7 @@ class BusinessesAPI extends AbstractFOSRestController
     /**
      * @Rest\POST(name="Top4businessesByCategory", "/getTop4/")
      * @QueryParam(name="id", strict=true, nullable=false)
+     * @QueryParam(name="name", strict=true, nullable=false)
      * @param ParamFetcher $paramFetcher
      * @return Response
      */
@@ -67,10 +68,12 @@ class BusinessesAPI extends AbstractFOSRestController
     {       
         
         $id = $paramFetcher->get('id');
-        $businesses = $this->userRepository->findTop4ForEachCategory($id);
+        $name = $paramFetcher->get('name');
+        $businesses = $this->userRepository->findTop4ForEachCategory($id,$name);
         $view = $this->view([
             'success' => true,
             'id' => $id,
+            'searchParam' => $name,
             'count'=>sizeof($businesses),
             'businesses' => $businesses
         ]);
