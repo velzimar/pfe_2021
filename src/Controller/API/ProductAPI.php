@@ -3,6 +3,7 @@
 namespace App\Controller\API;
 
 use App\Entity\User;
+use App\Repository\DeliveryRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\ProductRepository;
 use ArrayObject;
@@ -99,11 +100,12 @@ class ProductAPI extends AbstractFOSRestController
      * @Rest\Post(name="ProductAPI_byBusinessId_byName_withOptions", "/byBusinessIdbyNameWithOptions/")
      * @param ParamFetcher $paramFetcher
      * @param ProductOptionsRepository $optionsRepository
+     * @param DeliveryRepository $deliveryRepository
      * @return Response
      * @QueryParam(name="name", nullable=false)
      * @QueryParam(name="id", nullable=false)
      */
-    public function postbyNameWithOptionsAction_byBusinessId(ParamFetcher $paramFetcher, ProductOptionsRepository $optionsRepository): Response
+    public function postbyNameWithOptionsAction_byBusinessId(ParamFetcher $paramFetcher, ProductOptionsRepository $optionsRepository, DeliveryRepository $deliveryRepository): Response
     {
         /*
         $data = json_decode($request->getContent(), true);
@@ -123,21 +125,24 @@ class ProductAPI extends AbstractFOSRestController
             return $this->handleView($view);
         }
         $products = $this->productRepository->findByBusinessIdByName($id,$nom);
+        //added for delivery service
+        $delivery = $deliveryRepository->findByBusinessId($id);
+        //end delivery service
+
 
         //$ops = new ArrayObject();
         $productsWithOptions = [];
         foreach($products as $product){
             $thisProductOptions = $optionsRepository->findByProductId($product["id"]);
             array_push($productsWithOptions,$product+=["options"=>$thisProductOptions]);
-
-
         }
         $view = $this->view([
             'code' => 200,
             'business' => $id,
             'success' => true,
             'products' => $products,
-            'productsWithOptions' => $productsWithOptions
+            'productsWithOptions' => $productsWithOptions,
+            'delivery' => $delivery
         ]);
         return $this->handleView($view);
     }

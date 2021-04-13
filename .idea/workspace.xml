@@ -2,18 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/pfe_2021.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/pfe_2021.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/API/BusinessesAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/BusinessesAPI.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ProductOptionsRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ProductOptionsRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/UserRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/DeliveryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DeliveryRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -274,7 +265,8 @@
       <workItem from="1617985735542" duration="5168000" />
       <workItem from="1618058546674" duration="6677000" />
       <workItem from="1618172396742" duration="3945000" />
-      <workItem from="1618232296895" duration="11411000" />
+      <workItem from="1618232296895" duration="11781000" />
+      <workItem from="1618322936192" duration="1765000" />
     </task>
     <servers />
   </component>

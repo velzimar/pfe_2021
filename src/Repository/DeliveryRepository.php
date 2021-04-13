@@ -47,4 +47,15 @@ class DeliveryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByBusinessId($id)
+    {
+        return $this->createQueryBuilder('d')
+            ->select('d.seuil, d.cost, d.isActive, d.locations')
+            ->andWhere('d.user = :id')
+            ->setParameter('id',$id)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
