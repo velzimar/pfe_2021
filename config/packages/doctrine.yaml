@@ -19,3 +19,5 @@ doctrine:
         dql:
             string_functions:
                 cast: DoctrineExtensions\Query\Mysql\Cast
+                COALESCE: DoctrineExtensions\Query\Mysql\COALESCE
+                ifnull: DoctrineExtensions\Query\Mysql\IfNull

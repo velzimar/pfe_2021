@@ -2,8 +2,10 @@
 
 namespace App\Controller\API;
 
+use App\Entity\ProductCategory;
 use App\Entity\User;
 use App\Repository\DeliveryRepository;
+use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\ProductRepository;
 use ArrayObject;
@@ -101,11 +103,17 @@ class ProductAPI extends AbstractFOSRestController
      * @param ParamFetcher $paramFetcher
      * @param ProductOptionsRepository $optionsRepository
      * @param DeliveryRepository $deliveryRepository
+     * @param ProductCategoryRepository $productCategoryRepository
      * @return Response
      * @QueryParam(name="name", nullable=false)
      * @QueryParam(name="id", nullable=false)
      */
-    public function postbyNameWithOptionsAction_byBusinessId(ParamFetcher $paramFetcher, ProductOptionsRepository $optionsRepository, DeliveryRepository $deliveryRepository): Response
+    public function postbyNameWithOptionsAction_byBusinessId(
+        ParamFetcher $paramFetcher,
+        ProductOptionsRepository $optionsRepository,
+        DeliveryRepository $deliveryRepository,
+        ProductCategoryRepository $productCategoryRepository
+    ): Response
     {
         /*
         $data = json_decode($request->getContent(), true);
@@ -124,11 +132,11 @@ class ProductAPI extends AbstractFOSRestController
             ]);
             return $this->handleView($view);
         }
-        $products = $this->productRepository->findByBusinessIdByName($id,$nom);
+        $path="http://192.168.1.101:8000/product_images/";
+        $products = $this->productRepository->findByBusinessIdByName($id,$nom,$path);
         //added for delivery service
         $delivery = $deliveryRepository->findByBusinessId($id);
         //end delivery service
-
 
         //$ops = new ArrayObject();
         $productsWithOptions = [];
@@ -139,13 +147,111 @@ class ProductAPI extends AbstractFOSRestController
         $view = $this->view([
             'code' => 200,
             'business' => $id,
-            'success' => true,
+            'success' => $productsWithOptions==[]?false:true,
             'products' => $products,
             'productsWithOptions' => $productsWithOptions,
-            'delivery' => $delivery
+            'delivery' => $delivery,
+            'imagesPath' => $path
         ]);
         return $this->handleView($view);
     }
+
+    /**
+     * @Rest\Post(name="ProductAPI_byBusinessId_byProductCategory_byName_withOptions", "/byBusinessIdbyProductCategorybyNameWithOptions/")
+     * @param ParamFetcher $paramFetcher
+     * @param ProductOptionsRepository $optionsRepository
+     * @param DeliveryRepository $deliveryRepository
+     * @param ProductCategoryRepository $productCategoryRepository
+     * @return Response
+     * @QueryParam(name="name", nullable=false)
+     * @QueryParam(name="id", nullable=false)
+     * @QueryParam(name="categoryId", nullable=false)
+     */
+    public function postbyNameWithOptionsAction_byBusinessId_byProductCategoryAction(
+        ParamFetcher $paramFetcher,
+        ProductOptionsRepository $optionsRepository,
+        DeliveryRepository $deliveryRepository,
+        ProductCategoryRepository $productCategoryRepository
+    ): Response
+    {
+        $nom = $paramFetcher->get('name');
+        $id = $paramFetcher->get('id');
+        $categoryId = $paramFetcher->get('categoryId');
+        if($id==null || $id ==""){
+            $view = $this->view([
+                'code' => 400,
+                'success' => false,
+            ]);
+            return $this->handleView($view);
+        }
+
+        $path="http://192.168.1.101:8000/product_images/";
+        if($categoryId==null || $categoryId ==""){
+            $products = $this->productRepository->findByBusinessIdByName($id,$nom,$path);
+            $code = 200;
+        }else{
+            $products = $this->productRepository->findByBusinessIdByCategoryIdByName($id,$nom,$path,$categoryId);
+            $code = 201;
+        }
+        //added for delivery service
+        $delivery = $deliveryRepository->findByBusinessId($id);
+        //end delivery service
+
+        //$ops = new ArrayObject();
+        $productsWithOptions = [];
+        foreach($products as $product){
+            $thisProductOptions = $optionsRepository->findByProductId($product["id"]);
+            array_push($productsWithOptions,$product+=["options"=>$thisProductOptions]);
+        }
+        $view = $this->view([
+            'code' => $code,
+            'business' => $id,
+            'success' => $productsWithOptions==[]?false:true,
+            'products' => $products,
+            'productsWithOptions' => $productsWithOptions,
+            'delivery' => $delivery,
+            'imagesPath' => $path
+        ]);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Rest\Post(name="ProductAPI_CategoriesByBusinessId_notEmpty", "/CategoriesByBusinessId_notEmpty/")
+     * @param ParamFetcher $paramFetcher
+     * @param ProductCategoryRepository $productCategoryRepository
+     * @return Response
+     * @QueryParam(name="id", nullable=false)
+     */
+    public function postCategoriesByBusinessId_notEmptyAction(
+        ParamFetcher $paramFetcher,
+        ProductCategoryRepository $productCategoryRepository
+    ): Response
+    {
+        $businessId = $paramFetcher->get('id');
+
+        if($businessId == null){
+            $view = $this->view([
+                'code' => 200
+            ]);
+            return $this->handleView($view);
+        }
+        $categories = $productCategoryRepository->findNotEmptyCategoriesByBusiness($businessId);
+        if($categories == []){
+            $view = $this->view([
+                'code' => 300,
+            ]);
+            return $this->handleView($view);
+        }
+        $view = $this->view([
+            'code' => 400,
+            'categories' =>$categories
+        ]);
+        return $this->handleView($view);
+    }
+
+
+
+
 /*
     public function postListsAction(ParamFetcher $paramFetcher)
     {

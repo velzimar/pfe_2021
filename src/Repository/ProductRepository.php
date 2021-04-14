@@ -6,6 +6,7 @@ use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
  * @method Product|null findOneBy(array $criteria, array $orderBy = null)
@@ -115,11 +116,11 @@ class ProductRepository extends ServiceEntityRepository
         $results = $query->getQuery()->getResult();
         return $results;
     }
-    public function findByBusinessIdByName($id,$nom)
+    public function findByBusinessIdByName($id,$nom,$path)
     {
 
         $query = $this->getEntityManager()->createQueryBuilder();
-        $fields = array('p.nom as name', 'p.prix as price','p.description', 'p.id', 'r.id as business', 'c.id as category');
+        $fields = array('p.nom as name', 'p.prix as price','p.description', 'p.id','p.priority', 'r.id as business', 'c.id as category',"COALESCE(CONCAT('{$path}',p.filename),'{$path}default.jpg') as path");
         $query
             ->select($fields)
             ->from('App\Entity\Product', 'p')
@@ -129,12 +130,37 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('p.category = c.id')
             ->andWhere('p.business = :id')
             ->andWhere('p.nom LIKE :nom')
+            ->orderBy('p.priority',"DESC")
             ->setParameter('nom', "$nom%")
             ->setParameter('id', $id);
 
         $results = $query->getQuery()->getResult();
         return $results;
     }
+    public function findByBusinessIdByCategoryIdByName($id,$nom,$path,$categoryId)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('p.nom as name', 'p.prix as price','p.description', 'p.id','p.priority', 'r.id as business', 'c.id as category',"COALESCE(CONCAT('{$path}',p.filename),'{$path}default.jpg') as path");
+        $query
+            ->select($fields)
+            ->from('App\Entity\Product', 'p')
+            ->join('p.business', 'r')
+            ->join('p.category', 'c')
+            ->andWhere('p.business = r.id')
+            ->andWhere('p.category = c.id')
+            ->andWhere('p.business = :id')
+            ->andWhere('p.nom LIKE :nom')
+            ->andWhere('p.category = :categoryId')
+            ->orderBy('p.priority',"DESC")
+            ->setParameter('nom', "$nom%")
+            ->setParameter('categoryId', $categoryId)
+            ->setParameter('id', $id);
+
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Product
