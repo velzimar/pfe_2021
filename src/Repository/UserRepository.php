@@ -118,6 +118,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('id', $id);
         return $qb->getQuery()->getResult();
     }
+
     public function findTop4ForEachCategory($id,$name)
     {
     $fields = array('p.id', 'p.businessName');
@@ -136,7 +137,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->setParameter('name', "$name%");
         return $qb->getQuery()->getResult();
     }
-
+    public function findTop4ForEachCategoryNotEmptyDeals($id,$name)
+    {
+        $fields = array('p.id', 'p.businessName');
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select($fields)
+            ->from($this->_entityName, 'p')
+           // ->from('App\Entity\DealCategory', 's')
+            ->from('App\Entity\Deal', 'd')
+            ->addSelect('COUNT(d.business) AS nbProducts')
+            ->andWhere('p.id = d.business')
+            ->andWhere('p.CategoryId = :id')
+            ->andWhere('p.businessName LIKE :name')
+         //   ->addSelect('COUNT(s.businessId) AS nbCategories')
+          //  ->andWhere('p.id = s.businessId')
+            ->groupBy('p.id')
+            ->andHaving('nbProducts > 0')
+            ->orderBy('nbProducts','DESC')
+            ->setMaxResults(4)
+            ->setParameter('id', $id)
+            ->setParameter('name', "$name%");
+        return $qb->getQuery()->getResult();
+    }
 
     //all businesses of a category ( only businesses that have products)
     public function findBusinessesOfACategory($id)
@@ -194,6 +216,27 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
          return $qb->getQuery()->getResult();
      }
 
+
+
+     //for deals
+    //all businesses of a category by name of business ( only businesses that have deals)
+    public function findBusinessesOfACategoryByNameNotEmptyDeals($id,$name)
+    {
+        $fields = array('p.id', 'p.businessName','p.longitude','p.latitude');
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select($fields)
+            ->from($this->_entityName, 'p')
+            ->from('App\Entity\Deal', 's')
+            ->andWhere('p.CategoryId = :id')
+            ->addSelect('COUNT(s.business) AS nbProducts')
+            ->andWhere('p.id = s.business')
+            ->andWhere('p.businessName LIKE :name')
+            ->groupBy('p.id')
+            ->orderBy('nbProducts','DESC')
+            ->setParameter('id', $id)
+            ->setParameter('name', "$name%");
+        return $qb->getQuery()->getResult();
+    }
 
 
 }

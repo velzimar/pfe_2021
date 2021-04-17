@@ -79,7 +79,28 @@ class BusinessesAPI extends AbstractFOSRestController
         ]);
         return $this->handleView($view);
     }
+    /**
+     * @Rest\POST(name="Top4businessesByCategoryNotEmptyDeals", "/getTop4NotEmptyDeals/")
+     * @QueryParam(name="id", strict=true, nullable=false)
+     * @QueryParam(name="name", strict=true, nullable=false)
+     * @param ParamFetcher $paramFetcher
+     * @return Response
+     */
+    public function postTop4businessesByCategory_notEmptyDeals_listAction(ParamFetcher $paramFetcher): Response
+    {
 
+        $id = $paramFetcher->get('id');
+        $name = $paramFetcher->get('name');
+        $businesses = $this->userRepository->findTop4ForEachCategoryNotEmptyDeals($id,$name);
+        $view = $this->view([
+            'success' => true,
+            'id' => $id,
+            'searchParam' => $name,
+            'count'=>sizeof($businesses),
+            'businesses' => $businesses
+        ]);
+        return $this->handleView($view);
+    }
 
     // show open and closed shops
 
@@ -146,7 +167,7 @@ class BusinessesAPI extends AbstractFOSRestController
                 $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
                 array_push($newBusinesses,$business+=['isOpen'=>$openingHours->isOpen(),'nextOpen'=>'Ouvre le '.$openingHours->nextOpen(new DateTime('now'))->format('d/m H:i')]);
             }else{
-                array_push($newBusinesses,$business+=['isOpen'=>false,'nextOpen'=>'Ouvre le '.$openingHours->nextOpen(new DateTime('now'))->format('d/m H:i')]);
+                array_push($newBusinesses,$business+=['isOpen'=>false,'nextOpen'=>'Non spécifier']);
             }
         }
 
@@ -357,6 +378,131 @@ class BusinessesAPI extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+
+    // for deals
+
+
+    /**
+     * @Rest\GET(name="businessesOfACategory_ByNameForDeals", "/ofCategoryForDeals/ByName/")
+     * @QueryParam(name="id", strict=true, nullable=false)
+     * @QueryParam(name="name", strict=true, nullable=false)
+     * @param ParamFetcher $paramFetcher
+     * @param WorkingHoursRepository $workingHoursRepository
+     * @return Response
+     * @throws \Spatie\OpeningHours\Exceptions\MaximumLimitExceeded
+     */
+    public function getbusinessesOfACategoryByNameForDeals_listAction(ParamFetcher $paramFetcher,WorkingHoursRepository $workingHoursRepository): Response
+    {
+        //category id
+        $id = $paramFetcher->get('id');
+        //nom de business
+        $name = $paramFetcher->get('name');
+        $businesses = $this->userRepository->findBusinessesOfACategoryByNameNotEmptyDeals($id,$name);
+
+        $newBusinesses = [];
+        foreach($businesses as $business){
+            $businessId = $business["id"];
+            $haveOpeningHours = $workingHoursRepository->findOneBy(["business"=> $businessId]);
+            if($haveOpeningHours!=null){
+                $ranges = $haveOpeningHours->getHours();
+                $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
+                array_push($newBusinesses,$business+=['isOpen'=>$openingHours->isOpen(),'nextOpen'=>'Ouvre le '.$openingHours->nextOpen(new DateTime('now'))->format('d/m H:i')]);
+            }else{
+                array_push($newBusinesses,$business+=['isOpen'=>false,'nextOpen'=>'Non spécifier']);
+            }
+        }
+
+
+        $view = $this->view([
+            'success' => true,
+            'id' => $id,
+            'count'=>sizeof($businesses),
+            'businesses' => $businesses,
+            'newBusinesses' => $newBusinesses
+        ]);
+        return $this->handleView($view);
+    }
+
+    // show open shops only
+
+    /**
+     * @Rest\GET(name="businessesOfACategoryOpenForDeals", "/ofCategoryForDeals/Open/")
+     * @QueryParam(name="id", strict=true, nullable=false)
+     * @param ParamFetcher $paramFetcher
+     * @param WorkingHoursRepository $workingHoursRepository
+     * @return Response
+     */
+
+    public function getbusinessesOfACategoryOpenForDeals_listAction(ParamFetcher $paramFetcher,WorkingHoursRepository $workingHoursRepository): Response
+    {
+        //category id
+        $id = $paramFetcher->get('id');
+        $businesses = $this->userRepository->findBusinessesOfACategory($id);
+
+        //adding status of that shop
+        $newBusinesses = [];
+        foreach($businesses as $business){
+            $businessId = $business["id"];
+            $haveOpeningHours = $workingHoursRepository->findOneBy(["business"=> $businessId]);
+            if($haveOpeningHours!=null){
+                $ranges = $haveOpeningHours->getHours();
+                $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
+                if($openingHours->isOpen())
+                    array_push($newBusinesses,$business+=['isOpen'=>$openingHours->isOpen()]);
+            }
+        }
+
+        $view = $this->view([
+            'success' => true,
+            'id' => $id,
+            'count'=>sizeof($businesses),
+            'businesses' => $businesses,
+            'newBusinesses' => $newBusinesses,
+            //'test' => $test,
+
+        ]);
+        return $this->handleView($view);
+    }
+
+    /**
+     * @Rest\GET(name="businessesOfACategory_openOnly_ByNameForDeals", "/ofCategoryForDeals/ByName/Open/")
+     * @QueryParam(name="id", strict=true, nullable=false)
+     * @QueryParam(name="name", strict=true, nullable=false)
+     * @param ParamFetcher $paramFetcher
+     * @return Response
+     */
+
+    public function getbusinessesOfACategoryByName_openOnlyForDeals_listAction(ParamFetcher $paramFetcher,WorkingHoursRepository $workingHoursRepository): Response
+    {
+        //category id
+        $id = $paramFetcher->get('id');
+        //nom de business
+        $name = $paramFetcher->get('name');
+        $businesses = $this->userRepository->findBusinessesOfACategoryByName($id,$name);
+
+        $newBusinesses = [];
+        foreach($businesses as $business){
+            $businessId = $business["id"];
+            $haveOpeningHours = $workingHoursRepository->findOneBy(["business"=> $businessId]);
+            if($haveOpeningHours!=null){
+                $ranges = $haveOpeningHours->getHours();
+                $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
+
+                if($openingHours->isOpen())
+                    array_push($newBusinesses,$business+=['isOpen'=>$openingHours->isOpen()]);
+            }
+        }
+
+
+        $view = $this->view([
+            'success' => true,
+            'id' => $id,
+            'count'=>sizeof($businesses),
+            'businesses' => $businesses,
+            'newBusinesses' => $newBusinesses
+        ]);
+        return $this->handleView($view);
+    }
 
 
 

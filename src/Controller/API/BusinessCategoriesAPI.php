@@ -62,6 +62,20 @@ class BusinessCategoriesAPI extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+    /**
+     * @Rest\Get(name="businessCategories_notEmptyDeals_list", "/notEmptyDeals")
+     * @return Response
+     */
+    public function getbusinessCategories_notEmptyDeals_listAction(): Response
+    {
+
+        $products = $this->categoryRepository->findAllAPINotEmptyDeals();
+        $view = $this->view([
+            'success' => true,
+            'businessCategories' => $products
+        ]);
+        return $this->handleView($view);
+    }
     
     /**
      * @Rest\Get(name="businessCategories_notEmpty_byName_list", "/notEmptyByName/")
