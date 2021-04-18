@@ -478,7 +478,7 @@ class BusinessesAPI extends AbstractFOSRestController
         $id = $paramFetcher->get('id');
         //nom de business
         $name = $paramFetcher->get('name');
-        $businesses = $this->userRepository->findBusinessesOfACategoryByName($id,$name);
+        $businesses = $this->userRepository->findBusinessesOfACategoryByNameNotEmptyDeals($id,$name);
 
         $newBusinesses = [];
         foreach($businesses as $business){
@@ -504,6 +504,84 @@ class BusinessesAPI extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+    /**
+     * @Rest\GET(name="businessesOfACategoryWithDelivery_openOnly_nearby_ByNameForDeals", "/ofCategoryForDeals/ByName/Open/Nearby/")
+     * @QueryParam(name="id", strict=true, nullable=false)
+     * @QueryParam(name="name", strict=true, nullable=false)
+     * @param ParamFetcher $paramFetcher
+     * @return Response
+     */
+
+    public function getbusinessesOfACategoryByNameWithDelivery_openOnly_nearby_ForDeals_listAction(ParamFetcher $paramFetcher,WorkingHoursRepository $workingHoursRepository): Response
+    {
+        //category id
+        $id = $paramFetcher->get('id');
+        //nom de business
+        $name = $paramFetcher->get('name');
+        $businesses = $this->userRepository->findBusinessesOfACategoryByNameWithDeliveryNotEmptyDeals($id,$name);
+        $newBusinesses = [];
+        foreach($businesses as $business){
+            $businessId = $business["id"];
+            $haveOpeningHours = $workingHoursRepository->findOneBy(["business"=> $businessId]);
+            if($haveOpeningHours!=null){
+                $ranges = $haveOpeningHours->getHours();
+                $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
+                $myLat = 10.284;
+                $myLng = 36.68428977;
+                if($openingHours->isOpen() && $this->isNear(floatval($business["longitude"]),floatval($business["latitude"]),$myLat,$myLng))
+                    array_push($newBusinesses,$business+=['isOpen'=>$openingHours->isOpen(),'distanceInKm'=>$this->getDist(floatval($business["longitude"]),floatval($business["latitude"]),$myLat,$myLng)]);
+
+            }
+        }
+        $view = $this->view([
+            'success' => true,
+            'id' => $id,
+            'count'=>sizeof($businesses),
+            'businesses' => $businesses,
+
+            'newBusinesses' => $newBusinesses,
+        ]);
+        return $this->handleView($view);
+    }
+    /**
+     * @Rest\GET(name="businessesOfACategoryWithDelivery_nearby_ByNameForDeals", "/ofCategoryForDeals/ByName/Nearby/")
+     * @QueryParam(name="id", strict=true, nullable=false)
+     * @QueryParam(name="name", strict=true, nullable=false)
+     * @param ParamFetcher $paramFetcher
+     * @return Response
+     */
+
+    public function getbusinessesOfACategoryByNameWithDelivery_nearby_ForDeals_listAction(ParamFetcher $paramFetcher,WorkingHoursRepository $workingHoursRepository): Response
+    {
+        //category id
+        $id = $paramFetcher->get('id');
+        //nom de business
+        $name = $paramFetcher->get('name');
+        $businesses = $this->userRepository->findBusinessesOfACategoryByNameWithDeliveryNotEmptyDeals($id,$name);
+        $newBusinesses = [];
+        foreach($businesses as $business){
+            $businessId = $business["id"];
+            $haveOpeningHours = $workingHoursRepository->findOneBy(["business"=> $businessId]);
+            if($haveOpeningHours!=null){
+                $ranges = $haveOpeningHours->getHours();
+                $openingHours=OpeningHours::createAndMergeOverlappingRanges($ranges, '+01:00');
+                $myLat = 10.284;
+                $myLng = 36.68428977;
+                if($openingHours->isOpen() && $this->isNear(floatval($business["longitude"]),floatval($business["latitude"]),$myLat,$myLng))
+                    array_push($newBusinesses,$business+=['isOpen'=>$openingHours->isOpen(),'distanceInKm'=>$this->getDist(floatval($business["longitude"]),floatval($business["latitude"]),$myLat,$myLng)]);
+                else
+                    array_push($newBusinesses,$business+=['isOpen'=>false,'nextOpen'=>'Non spécifier']);
+            }
+        }
+        $view = $this->view([
+            'success' => true,
+            'id' => $id,
+            'count'=>sizeof($businesses),
+            'businesses' => $businesses,
+            'newBusinesses' => $newBusinesses,
+        ]);
+        return $this->handleView($view);
+    }
 
 
 }
