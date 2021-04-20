@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/deal_images/default.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/API/BusinessesAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/BusinessesAPI.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/UserRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/DealCategoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DealCategoryRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/DealRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DealRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +191,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/users_images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/deal_images" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -202,11 +204,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\deal_images" />
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller\API" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\users_images" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\product_images" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Listeners" />
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Form" />
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Form\API" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Form\API" />
@@ -271,6 +273,9 @@
       <workItem from="1618415126741" duration="7054000" />
       <workItem from="1618606442889" duration="7099000" />
       <workItem from="1618698272353" duration="4795000" />
+      <workItem from="1618755089978" duration="636000" />
+      <workItem from="1618765367543" duration="6997000" />
+      <workItem from="1618851038198" duration="5313000" />
     </task>
     <servers />
   </component>

@@ -30,4 +30,21 @@ class DealCategoryRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    public function findNotEmptyCategoriesByBusiness($id)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('pc.nom as name', 'pc.description', 'pc.id');
+        $query
+            ->select($fields)
+            ->from('App\Entity\DealCategory', 'pc')
+            ->from('App\Entity\Deal', 'p')
+            ->andWhere('pc.businessId = :id')
+            ->andWhere('pc.id = p.category')
+            ->distinct()
+            ->setParameter('id',$id);
+
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
 }

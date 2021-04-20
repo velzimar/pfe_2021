@@ -46,4 +46,52 @@ class DealRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByBusinessIdByName($id,$nom,$path)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('p.nom as name', 'p.real_price as prixReel', 'p.prix as price','(1-(p.prix/p.real_price))*100 as ratio','p.description', 'p.id', 'r.id as business', 'c.id as category',"COALESCE(CONCAT('{$path}',p.filename),'{$path}default.jpg') as path", 'p.end_date as fin', 'p.date_add as debut');
+        $query
+            ->select($fields)
+            ->from('App\Entity\Deal', 'p')
+            ->join('p.business', 'r')
+            ->join('p.category', 'c')
+            ->andWhere('p.business = r.id')
+            ->andWhere('p.category = c.id')
+            ->andWhere('p.business = :id')
+
+            ->andWhere('p.end_date > p.date_add')
+            ->andWhere('CURRENT_TIMESTAMP() < p.end_date')
+            ->andWhere('p.nom LIKE :nom')
+            ->setParameter('nom', "$nom%")
+            ->setParameter('id', $id);
+
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
+    public function findByBusinessIdByCategoryIdByName($id,$nom,$path,$categoryId)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('p.nom as name', 'p.real_price as prixReel', 'p.prix as price','(1-(p.prix/p.real_price))*100 as ratio','p.description', 'p.id', 'r.id as business', 'c.id as category',"COALESCE(CONCAT('{$path}',p.filename),'{$path}default.jpg') as path", 'p.end_date as fin', 'p.date_add as debut');
+        $query
+            ->select($fields)
+            ->from('App\Entity\Deal', 'p')
+            ->join('p.business', 'r')
+            ->join('p.category', 'c')
+            ->andWhere('p.business = r.id')
+            ->andWhere('p.category = c.id')
+            ->andWhere('p.business = :id')
+            ->andWhere('p.nom LIKE :nom')
+            ->andWhere('p.category = :categoryId')
+            ->andWhere('p.end_date > p.date_add')
+            ->andWhere('CURRENT_TIMESTAMP() < p.end_date')
+            ->setParameter('nom', "$nom%")
+            ->setParameter('categoryId', $categoryId)
+            ->setParameter('id', $id);
+
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
+
 }
