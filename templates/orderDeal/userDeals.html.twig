@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes deals{% endblock %}
+
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+
+        <li class="breadcrumb-item">
+            <a href="{{ path('selectUserDeal_forOrderDeals', {'action': 'orderdeal_index_admin'}) }}">Selectionner un utilisateur</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Liste des commandes</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Les commandes des deals
+        </h6>
+        <div class="element-box">
+            <div class="order-box">
+                <div class="order-items-table">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-lightborder">
+                            <thead id="head">
+                            <tr>
+                                <th>
+                                    Client
+                                </th>
+                                <th>
+                                    Deal
+                                </th>
+                                <th>
+                                    Code
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for deal in deals %}
+                                <tr>
+                                    <td>
+                                        <div class="product-name">
+                                            {{ deal.user.email }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="product-name">
+                                            <a class="product-remove-btn"
+                                               href="{{ path('myDeals_show', {'id': deal.deal.id}) }}">
+                                                <div class="product-name">
+                                                    {{ deal.deal.id }}
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="product-name">
+                                            {{ deal.code }}
+                                        </div>
+                                    </td>
+
+
+                                    <td>
+                                        <div class="product-name">
+                                            {% if deal.isUsed %}
+
+                                                <div class="product-name">
+                                                    Utiliser
+                                                </div>
+                                            {% else %}
+                                                <a class="btn btn-dark" href="{{ path('setIsUsed_orderDeal_admin', {'id': deal.id, 'user':user.id }) }}">Confirmer</a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {#
+            <div class="table-responsive">
+                <table id="dataTable" style="width: 100%;" class="table table-striped table-lightfont">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Qtt</th>
+                        <th>Catégorie</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ product.id }}</td>
+                            <td>{{ product.nom }}</td>
+                            <td>{{ product.prix }}</td>
+                            <td>{{ product.qtt }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>
+
+                                <a href="{{ path('product_show', {'id': product.id, 'userId':userId}) }}">
+                                    <i class="os-icon os-icon-grid-10"></i>
+                                </a>
+                                <a href="{{ path('product_edit', {'id': product.id, 'userId':userId}) }}">
+                                    <i class="os-icon os-icon-ui-49"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            #}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $(document).ready(function () {
+            // Setup - add a text input to each footer cell
+            $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
+            $('#dataTable thead tr:eq(1) th').each(function (i) {
+
+                var title = $(this).text();
+                if(title.search("Deal")!==-1 ||title.search("Code")!==-1 ||title.search("Client")!==-1){
+                    $(this).html('<input class="form-control" type="text" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }else{
+                    $(this).html('<input type="text" hidden/>');
+
+                }
+
+            });
+
+            var table = $('#dataTable').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
+                "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
+
+        }); /*
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
+        });*/
+    </script>
+{% endblock %}

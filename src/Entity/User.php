@@ -197,6 +197,11 @@ class User implements UserInterface, Serializable
      */
     private $coordinates;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderDeal::class, mappedBy="user")
+     */
+    private $orderDeals;
+
 
     public function __construct()
     {
@@ -206,6 +211,7 @@ class User implements UserInterface, Serializable
         $this->deals = new ArrayCollection();
         $this->ReceivedNotifications = new ArrayCollection();
         $this->NotSeenReceivedNotifications = new ArrayCollection();
+        $this->orderDeals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -807,6 +813,36 @@ class User implements UserInterface, Serializable
         }
 
         $this->coordinates = $coordinates;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderDeal[]
+     */
+    public function getOrderDeals(): Collection
+    {
+        return $this->orderDeals;
+    }
+
+    public function addOrderDeal(OrderDeal $orderDeal): self
+    {
+        if (!$this->orderDeals->contains($orderDeal)) {
+            $this->orderDeals[] = $orderDeal;
+            $orderDeal->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDeal(OrderDeal $orderDeal): self
+    {
+        if ($this->orderDeals->removeElement($orderDeal)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDeal->getUser() === $this) {
+                $orderDeal->setUser(null);
+            }
+        }
 
         return $this;
     }

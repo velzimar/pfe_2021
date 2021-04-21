@@ -77,6 +77,7 @@ security:
     - { path: ^/productOptions/admin/, roles: ROLE_ADMIN }
     - { path: ^/deal/admin/, roles: ROLE_ADMIN }
     - { path: ^/dealCategory/admin/, roles: ROLE_ADMIN }
+    - { path: ^/orderDeal/admin/, roles: ROLE_ADMIN }
     - { path: ^/delivery/userDelivery/, roles: ROLE_ADMIN }
     - { path: ^/service/admin/, roles: ROLE_ADMIN }
     - { path: ^/serviceOptions/admin/, roles: ROLE_ADMIN }

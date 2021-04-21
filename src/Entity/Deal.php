@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\DealRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
@@ -114,6 +116,16 @@ class Deal
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $end_date;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderDeal::class, mappedBy="deal")
+     */
+    private $orderDeals;
+
+    public function __construct()
+    {
+        $this->orderDeals = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -306,6 +318,36 @@ class Deal
     public function setEndDate(?\DateTimeInterface $date): self
     {
         $this->end_date = $date;
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderDeal[]
+     */
+    public function getOrderDeals(): Collection
+    {
+        return $this->orderDeals;
+    }
+
+    public function addOrderDeal(OrderDeal $orderDeal): self
+    {
+        if (!$this->orderDeals->contains($orderDeal)) {
+            $this->orderDeals[] = $orderDeal;
+            $orderDeal->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDeal(OrderDeal $orderDeal): self
+    {
+        if ($this->orderDeals->removeElement($orderDeal)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDeal->getDeal() === $this) {
+                $orderDeal->setDeal(null);
+            }
+        }
+
         return $this;
     }
 }
