@@ -93,5 +93,21 @@ class DealRepository extends ServiceEntityRepository
         $results = $query->getQuery()->getResult();
         return $results;
     }
+    public function findBusinessInfosByDealId($id)
+    {
+
+        $query = $this->getEntityManager()->createQueryBuilder();
+        $fields = array('r.id as businessId', 'r.businessName ', 'r.phone as businessPhone', 'r.email as businessEmail');
+        $query
+            ->select($fields)
+            ->from('App\Entity\Deal', 'p')
+            ->join('p.business', 'r')
+            ->andWhere('p.business = r.id')
+            ->andWhere('p.id = :id')
+            ->setParameter('id', $id);
+
+        $results = $query->getQuery()->getResult();
+        return $results;
+    }
 
 }

@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/deal_images/default.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/deal/dealCodeMessageToClient/dealCodeMessageToClient.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/DealCategoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DealCategoryRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/API/AccountAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/AccountAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/DealRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/DealRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -276,6 +276,7 @@
       <workItem from="1618755089978" duration="636000" />
       <workItem from="1618765367543" duration="6997000" />
       <workItem from="1618851038198" duration="5313000" />
+      <workItem from="1618937629461" duration="7311000" />
     </task>
     <servers />
   </component>

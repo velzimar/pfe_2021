@@ -275,9 +275,9 @@ class AccountAPI extends AbstractFOSRestController
         }else{
             if($passwordEncoder->isPasswordValid($email, $password)){
                 $view = $this->view([
-                    'code' => ($email->getIsActive() === 1) ? 300 : 301,
+                    'code' => ($email->getIsActive()) ? 300 : 301,
                     'success' => true,
-                    'message' => ($email->getIsActive() === 1) ? "Activé" : "Désactivé",
+                    'message' => ($email->getIsActive()) ? "Activé" : "Désactivé",
                     'id' => $email->getId()
                 ]);
                 return $this->handleView($view);

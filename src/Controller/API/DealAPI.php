@@ -9,11 +9,14 @@ use App\Repository\DeliveryRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\DealRepository;
+use App\Repository\UserRepository;
 use ArrayObject;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcher;
+use Swift_Mailer;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -196,6 +199,77 @@ class DealAPI extends AbstractFOSRestController
             'categories' =>$categories
         ]);
         return $this->handleView($view);
+    }
+
+    /**
+     * @Rest\Post(name="DealAPI_postSendEmailContaintDealCodeAction", "/postSendEmailContaintDealCodeAction/")
+     * @param Swift_Mailer $mailer
+     * @param ParamFetcher $paramFetcher
+     * @param DealRepository $dealRepository
+     * @param UserRepository $userRepository
+     * @return Response
+     * @QueryParam(name="id", nullable=false)
+     * @QueryParam(name="dealId", nullable=false)
+     */
+    public function postSendEmailContaintDealCodeAction(
+        Swift_Mailer $mailer,
+        ParamFetcher $paramFetcher,
+        DealRepository $dealRepository,
+        UserRepository $userRepository
+    ): Response
+    {
+        $userId = $paramFetcher->get('id');
+        $dealId = $paramFetcher->get('dealId');
+
+        if($dealId == null ||  $userId == null){
+            $view = $this->view([
+                'code' => 200
+            ]);
+            return $this->handleView($view);
+        }
+        //checking if there is more promo codes
+
+        //getting the user infos
+        $user = $userRepository->find(["id"=>$userId]);
+
+        //verify if the user have used already this deal
+        $used = false;
+        //user already used the code
+        if($used == true){
+            $view = $this->view([
+                'code' => 201
+            ]);
+            return $this->handleView($view);
+        }else{
+
+            //saving data
+
+            //end saving data
+            //sending email containing the code
+                //getting infos about the business
+                    $infos = $dealRepository->findBusinessInfosByDealId($dealId);
+                    $phone = $infos[0]['businessPhone'];
+                    $email = $infos[0]['businessEmail'];
+                    $name = $infos[0]['businessName'];
+                //end infos
+            $message = (new Swift_Message("Voici le code promo"))
+                ->setFrom("superadmin@looper.com")
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->render("/deal/dealCodeMessageToClient/dealCodeMessageToClient.html.twig",["code"=>55555, "phone"=>$phone, "email"=>$email, "name"=>$name]), 'text/html'
+                );
+            $mailer->send($message);
+            //end mail sending
+
+
+            $view = $this->view([
+                'code' => 400,
+                'infos' => $infos
+            ]);
+            return $this->handleView($view);
+        }
+
+
     }
 
 
