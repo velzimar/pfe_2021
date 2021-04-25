@@ -3,9 +3,11 @@
 namespace App\Controller\API;
 
 use App\Entity\DealCategory;
+use App\Entity\OrderDeal;
 use App\Entity\User;
 use App\Repository\DealCategoryRepository;
 use App\Repository\DeliveryRepository;
+use App\Repository\OrderDealRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\DealRepository;
@@ -215,7 +217,8 @@ class DealAPI extends AbstractFOSRestController
         Swift_Mailer $mailer,
         ParamFetcher $paramFetcher,
         DealRepository $dealRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        OrderDealRepository $orderDealRepository
     ): Response
     {
         $userId = $paramFetcher->get('id');
@@ -223,27 +226,46 @@ class DealAPI extends AbstractFOSRestController
 
         if($dealId == null ||  $userId == null){
             $view = $this->view([
-                'code' => 200
+                'code' => 200 //check params
             ]);
             return $this->handleView($view);
         }
         //checking if there is more promo codes
-
+        $deal = $dealRepository->find(["id"=>$dealId]);
+        if($deal->getQtt()<=0){
+            $view = $this->view([
+                'code' => 202 //no more codes
+            ]);
+            return $this->handleView($view);
+        }
         //getting the user infos
         $user = $userRepository->find(["id"=>$userId]);
 
         //verify if the user have used already this deal
-        $used = false;
+
+        $used = $orderDealRepository->findOneBy(["user"=>$user,"deal"=>$deal]) !== null;
         //user already used the code
         if($used == true){
             $view = $this->view([
-                'code' => 201
+                'code' => 201 //already used code
             ]);
             return $this->handleView($view);
         }else{
 
             //saving data
-
+            $order = new OrderDeal();
+            $order->setBusiness($deal->getBusiness());
+            $order->setDeal($deal);
+            $order->setUser($user);
+            //generate code
+                $code = "123456";
+            //end generate
+            $order->setCode($code);
+            $order->setIsUsed(false);
+            $deal->setQtt($deal->getQtt()-1);
+            $m = $this->getDoctrine()->getManager();
+            $m->persist($order);
+            $m->flush();
             //end saving data
             //sending email containing the code
                 //getting infos about the business
@@ -256,7 +278,7 @@ class DealAPI extends AbstractFOSRestController
                 ->setFrom("superadmin@looper.com")
                 ->setTo($user->getEmail())
                 ->setBody(
-                    $this->render("/deal/dealCodeMessageToClient/dealCodeMessageToClient.html.twig",["code"=>55555, "phone"=>$phone, "email"=>$email, "name"=>$name]), 'text/html'
+                    $this->render("/deal/dealCodeMessageToClient/dealCodeMessageToClient.html.twig",["code"=>$code, "phone"=>$phone, "email"=>$email, "name"=>$name]), 'text/html'
                 );
             $mailer->send($message);
             //end mail sending

@@ -60,6 +60,7 @@ class DealRepository extends ServiceEntityRepository
             ->andWhere('p.category = c.id')
             ->andWhere('p.business = :id')
 
+            ->andWhere('0 < p.qtt')
             ->andWhere('p.end_date > p.date_add')
             ->andWhere('CURRENT_TIMESTAMP() < p.end_date')
             ->andWhere('p.nom LIKE :nom')
@@ -85,6 +86,7 @@ class DealRepository extends ServiceEntityRepository
             ->andWhere('p.nom LIKE :nom')
             ->andWhere('p.category = :categoryId')
             ->andWhere('p.end_date > p.date_add')
+            ->andWhere('0 < p.qtt')
             ->andWhere('CURRENT_TIMESTAMP() < p.end_date')
             ->setParameter('nom', "$nom%")
             ->setParameter('categoryId', $categoryId)
