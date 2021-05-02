@@ -68,25 +68,11 @@ class OrderProductController extends AbstractController
 
 
     /**
-     * @Route("/setIsUsed/{id}", name="setIsUsed_orderProduct", methods={"GET","POST"})
-     * @param OrderProduct $orderProduct
-     * @return Response
-     */
-    public function toggleActive(OrderProduct $orderProduct): Response
-    {
-      //  $orderProduct->setIsUsed(1);
-        $manager = $this->getDoctrine()->getManager();
-        $manager->flush();
-        return $this->redirectToRoute('myReceivedOrderProducts');
-    }
-
-    /**
      * @Route("/changeStatus/", name="orderProduct_changeStatus", methods={"PUT"})
      * @param Request $request
      * @param OrderProductRepository $orderProductRepository
      * @return JsonResponse
      */
-
     public function changeStatus(Request $request, OrderProductRepository $orderProductRepository): JsonResponse
     {
 
@@ -112,10 +98,6 @@ class OrderProductController extends AbstractController
             'success'  => false,
         ]);
     }
-
-
-
-
 
 
 

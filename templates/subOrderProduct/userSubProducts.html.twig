@@ -5,12 +5,11 @@
 {% block  breadcrumb %}
 
     <ul class="breadcrumb">
-
         <li class="breadcrumb-item">
-            <a href="{{ path('selectUserProduct_forOrderProducts', {'action': 'orderproduct_index_admin'}) }}">Selectionner un utilisateur</a>
+            <a href="{{ path('orderproduct_index_admin_specified',{'status':'Tous', 'id':user}) }}">Liste des commandes</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Liste des commandes</a>
+            <a href="#">Liste des produits commandés</a>
         </li>
     </ul>
 {% endblock %}
@@ -18,19 +17,17 @@
 {% block QuickLink1 %}
     {# { include('product/_myQuickLinks.html.twig') }} #}
 {% endblock %}
-
 {% block body %}
     <div class="element-wrapper">
         <h6 class="element-header">
-            Les commandes des produits de l'utilisateur {{ user.nom }}
+            Les produits de la commande  <a href="">#{{ orderId.id }}</a> du boutique {{ orderId.business.businessName }}
         </h6>
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <div class="widget">
-            <a id="btn-all" class="ui-button ui-corner-all ui-widget"  href="{{ path('orderproduct_index_admin_specified',{'status':'Tous', 'id':user}) }}">Tous</a>
-            <a id="btn-En attente" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Attente', 'id':user}) }}">En attente</a>
-            <a id="btn-Livrer" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Livrer', 'id':user}) }}">Livrer</a>
-            <a id="btn-Annuler" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Annuler', 'id':user}) }}">Annuler</a>
-            <a id="btn-Prêt" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Pret', 'id':user}) }}">Prêt</a>
+            <a id="btn-all" class="ui-button ui-corner-all ui-widget"  href="{{ path('subOrderproduct_index_admin_specified',{'status':'Tous','orderId':orderId.id, 'id':orderId.business.id}) }}">Tous</a>
+            <a id="btn-En attente" class="ui-button ui-corner-all ui-widget" href="{{ path('subOrderproduct_index_admin_specified',{'status':'Attente','orderId':orderId.id, 'id':orderId.business.id}) }}">En attente</a>
+            <a id="btn-Annuler" class="ui-button ui-corner-all ui-widget" href="{{ path('subOrderproduct_index_admin_specified',{'status':'Annuler','orderId':orderId.id, 'id':orderId.business.id}) }}">Annuler</a>
+            <a id="btn-Prêt" class="ui-button ui-corner-all ui-widget" href="{{ path('subOrderproduct_index_admin_specified',{'status':'Pret','orderId':orderId.id, 'id':orderId.business.id}) }}">Prêt</a>
         </div>
         <h6 class="element-header">
         </h6>
@@ -42,58 +39,54 @@
                             <thead id="head">
                             <tr>
                                 <th>
-                                    Identifiant
+                                    Id produit
                                 </th>
                                 <th>
-                                    Client
+                                    Quantité commandée
                                 </th>
                                 <th>
-                                    Téléphone
+                                    Options commandée
                                 </th>
                                 <th>
-                                    Livraison
+                                    Prix des options
                                 </th>
                                 <th>
-                                    Date
+                                    Prix de produit
                                 </th>
                                 <th>
-                                    Total(dt)
+                                    Total
                                 </th>
-
+                                <th>
+                                    Date de modification
+                                </th>
                                 <th>
                                     Status
                                 </th>
-
-                                <th>
-                                    Produits
-                                </th>
-
                             </tr>
                             </thead>
                             <tbody>
                             {% for product in products %}
                                 <tr>
-                                    <td  class="product-name">
-                                        {{ product.id }}
+                                    <td class="product-name" id="productRedirect" onclick="tdclick('{{ path('myProducts_show', {'id': product.product.id, 'userId':product.orderProduct.business.id}) }}')">
+                                        {{ product.product.id }}
                                     </td>
                                     <td  class="product-name">
-                                        {{ product.client.email }}
+                                        {{ product.qtt }}
                                     </td>
                                     <td  class="product-name">
-                                        {{ product.phone }}
+                                        {#  {{ product.options }}#}
                                     </td>
                                     <td  class="product-name">
-                                        {%  if product.delivery == "" %}
-                                            Non
-                                        {%  else %}
-                                            {{ product.delivery }}
-                                        {% endif %}
+                                        {{ product.optionsPrice }}
                                     </td>
                                     <td  class="product-name">
-                                        {{ product.orderDate |format_datetime('short', 'short', locale='fr') }}
+                                        {{ product.price }}
                                     </td>
                                     <td  class="product-name">
-                                        {{ product.total }}
+                                        {{  (product.price + product.optionsPrice) * product.qtt }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{ product.modifyDate |format_datetime('short', 'short', locale='fr') }}
                                     </td>
                                     <td>
                                         <div class="product-name">
@@ -105,31 +98,32 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{ path('subOrderproduct_index_admin_specified',{'status':'Tous','orderId':product.id, 'id':product.business.id}) }}">Produits</a>
-                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                             <tfoot>
                             <tr>
                                 <th>
-                                    Identifiant
+                                    Id produit
                                 </th>
                                 <th>
-                                    Client
+                                    Quantité commandée
                                 </th>
                                 <th>
-                                    Téléphone
+                                    Options commandée
                                 </th>
                                 <th>
-                                    Livraison
+                                    Prix des options
                                 </th>
                                 <th>
-                                    Date
+                                    Prix total
+                                </th>
+
+                                <th>
+                                    Date de modification
                                 </th>
                                 <th>
-                                    Total(dt)
+                                    Status
                                 </th>
                             </tr>
                             </tfoot>
@@ -144,19 +138,45 @@
 
 {% block javascripts %}
     <script>
+        var boundary = document.getElementById('productRedirect');
+        var mouseOverFunction = function () {
+            console.log("aa")
+            this.style.color = '#0000FF'; // your colour change
+        };
+        var mouseLeaveFunction = function () {
+            console.log("aa")
+            this.style.color = '#000'; // your colour change
+        };
+        boundary.onmouseleave= mouseLeaveFunction;
+        boundary.onmouseover = mouseOverFunction;
+
+        function trclick(){
+            console.log('tr clicked')
+        }
+        function tdclick(p){
+            console.log(p);
+            window.location.href = p
+            /*
+            if (!e) var e = window.event;                // Get the window event
+            e.cancelBubble = true;                       // IE Stop propagation
+            if (e.stopPropagation) e.stopPropagation();  // Other Broswers
+            console.log('td clicked');
+            */
+        }
         let status;
         let id;
-        let user_id = '{{ user }}';
         $("select[class^='select-status']").change(function (e) {
+            //alert("am clicked")
             e.preventDefault();
             status = $(this).children("option").filter(":selected").text();
+            //status = $( ".select-status option:selected" ).text();
             console.log(status)
             id = $(this).attr("name");
             console.log(id);
             $.ajax({
                 type: 'PUT',
-                url: "/orderProduct/admin/changeStatus/",
-                data: {id: id, status: status, user_id: user_id},
+                url: "/subOrderProduct/admin/changeStatus/",
+                data: {id: id, status: status},
                 success: function () {
                     window.location.href = window.location.href
                     console.log('success');
@@ -165,9 +185,12 @@
         });
 
         $(document).ready(function() {
+
+
+
             $("select").prop("disabled", false);
             $("#all").click()
-            $('#dataTable').DataTable( {
+            let table = $('#dataTable').DataTable( {
                 orderCellsTop: true,
                 fixedHeader: true,
                 "dom": '<"top"l>rt<"bottom"ip><"clear">',
@@ -175,27 +198,51 @@
                     url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
                 },
                 initComplete: function () {
+
+
+
+
                     this.api().columns().every( function () {
                         var column = this;
+                        console.log(this);
                         var select = $('<select><option value=""></option></select>')
                             .appendTo( $(column.footer()).empty() )
                             .on( 'change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
                                 );
-
                                 column
                                     .search( val ? '^'+val+'$' : '', true, false )
                                     .draw();
                             } );
-
                         column.data().unique().sort().each( function ( d, j ) {
                             select.append( '<option value="'+d+'">'+d+'</option>' )
                         } );
                     } );
                 }
             } );
+            $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
+            $('#dataTable thead tr:eq(1) th').each(function (i) {
+
+                var title = $(this).text();
+                if(title.search("I")!==-1){
+                    $(this).html('<input class="form-control" type="text" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }else{
+                    $(this).html('<input type="text" hidden/>');
+
+                }
+
+            });
+
         } );
     </script>
 {% endblock %}
-

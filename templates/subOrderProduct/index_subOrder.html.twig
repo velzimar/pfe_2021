@@ -6,7 +6,11 @@
 
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Liste des commandes</a>
+            <a href="{{ path('myReceivedOrderProducts') }}">Liste des commandes</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Liste des produits commandés</a>
+        </li>
     </ul>
 {% endblock %}
 
@@ -16,35 +20,15 @@
 {% block body %}
     <div class="element-wrapper">
         <h6 class="element-header">
-            Les commandes des produits
+            Les produits de la commande  <a href="">#{{ orderId.id }}</a>
         </h6>
-
-
-        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">{#
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-        <script>
-            $( function() {
-                $( ".widget input[type=submit], .widget a, .widget button" ).button();
-                $( "button, input, a" ).click( function( event ) {
-                    event.preventDefault();
-                } );
-            } );
-        </script>#}
-
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <div class="widget">
-            <a id="btn-all" class="ui-button ui-corner-all ui-widget"  href="{{ path('myReceivedOrderProducts_status',{'status':'Tous'}) }}">Tous</a>
-            <a id="btn-En attente" class="ui-button ui-corner-all ui-widget" href="{{ path('myReceivedOrderProducts_status',{'status':'Attente'}) }}">En attente</a>
-            <a id="btn-Livrer" class="ui-button ui-corner-all ui-widget" href="{{ path('myReceivedOrderProducts_status',{'status':'Livrer'}) }}">Livrer</a>
-            <a id="btn-Annuler" class="ui-button ui-corner-all ui-widget" href="{{ path('myReceivedOrderProducts_status',{'status':'Annuler'}) }}">Annuler</a>
-            <a id="btn-Prêt" class="ui-button ui-corner-all ui-widget" href="{{ path('myReceivedOrderProducts_status',{'status':'Pret'}) }}">Prêt</a>
-{#
-            <input type="submit" value="A submit button" class="ui-button ui-corner-all ui-widget" role="button">
-
-            <a href="#" class="ui-button ui-corner-all ui-widget" role="button">An anchor</a>
-#}
+            <a id="btn-all" class="ui-button ui-corner-all ui-widget"  href="{{ path('myReceivedSubOrderProducts_status',{'status':'Tous','orderId':orderId.id}) }}">Tous</a>
+            <a id="btn-En attente" class="ui-button ui-corner-all ui-widget" href="{{ path('myReceivedSubOrderProducts_status',{'status':'Attente','orderId':orderId.id}) }}">En attente</a>
+             <a id="btn-Annuler" class="ui-button ui-corner-all ui-widget" href="{{ path('myReceivedSubOrderProducts_status',{'status':'Annuler','orderId':orderId.id}) }}">Annuler</a>
+            <a id="btn-Prêt" class="ui-button ui-corner-all ui-widget" href="{{ path('myReceivedSubOrderProducts_status',{'status':'Pret','orderId':orderId.id}) }}">Prêt</a>
         </div>
-
         <h6 class="element-header">
         </h6>
         <div class="element-box">
@@ -55,64 +39,68 @@
                             <thead id="head">
                             <tr>
                                 <th>
-                                    Identifiant
+                                    Id produit
                                 </th>
                                 <th>
-                                    Client
+                                    Quantité commandée
                                 </th>
                                 <th>
-                                    Téléphone
+                                    Options commandée
                                 </th>
                                 <th>
-                                    Livraison
+                                    Prix des options
                                 </th>
                                 <th>
-                                    Date
+                                    Prix de produit
                                 </th>
                                 <th>
-                                    Total(dt)
+                                    Total
                                 </th>
-
+                                <th>
+                                    Date de modification
+                                </th>
                                 <th>
                                     Status
                                 </th>
-
-                                <th>
-                                    Produits
-                                </th>
-
                             </tr>
                             </thead>
                             <tbody>
                             {% for product in products %}
                                 <tr>
-                                    <td  class="product-name">
-                                            {{ product.id }}
-                                    </td>
-
-                                    <td  class="product-name">
-                                            {{ product.client.email }}
-                                    </td>
-
-                                    <td  class="product-name">
-                                            {{ product.phone }}
-                                    </td>
-                                    <td  class="product-name">
-                                            {%  if product.delivery == "" %}
-                                                Non
-                                            {%  else %}
-                                                {{ product.delivery }}
-                                            {% endif %}
+                                    <td class="product-name" id="productRedirect" onclick="tdclick('{{ path('myProducts_show', {'id': product.product.id}) }}')">
+                                        {#
+                                            admin
+                                        <a class="product-remove-btn"
+                                           href="{{ path('product_show', {'id': product.product.id, 'userId':product.orderProduct.business.id}) }}">
+                                            {{ product.product.id }}
+                                        </a>
+                                        #}
+                                        {{ product.product.id }}
+                                        {#
+                                        <a class="product-remove-btn"
+                                           href="{{ path('myProducts_show', {'id': product.product.id}) }}">
+                                            {{ product.product.id }}
+                                        </a>
+                                        #}
                                     </td>
                                     <td  class="product-name">
-                                            {{ product.orderDate |format_datetime('short', 'short', locale='fr') }}
-
+                                            {{ product.qtt }}
                                     </td>
-
                                     <td  class="product-name">
-                                            {{ product.total }}
+                                           {#  {{ product.options }}#}
                                     </td>
-
+                                    <td  class="product-name">
+                                        {{ product.optionsPrice }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{ product.price }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{  (product.price + product.optionsPrice) * product.qtt }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{ product.modifyDate |format_datetime('short', 'short', locale='fr') }}
+                                    </td>
                                     <td>
                                         <div class="product-name">
                                             <select class="select-status-{{ product.id }}" name="{{ product.id }}" disabled>
@@ -123,57 +111,32 @@
                                             </select>
                                         </div>
                                     </td>
-                                    <td>
-                                        <a href="{{ path('myReceivedSubOrderProducts_status',{'status':'Tous','orderId':product.id}) }}">Produits</a>
-                                    </td>
-                                    {#
-                                    <td>
-                                        <div class="product-name">
-                                            <a class="product-remove-btn"
-                                               href="{{ path('myProducts_show', {'id': product.product.id}) }}">
-                                                <div class="product-name">
-                                                    {{ product.product.id }}
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </td>
-
-
-
-                                    <td>
-                                        <div class="product-name">
-                                            {% if product.isUsed %}
-                                            <div class="product-name">
-                                                Utiliser
-                                            </div>
-                                            {% else %}
-                                                <a class="btn btn-dark" href="{{ path('setIsUsed_orderProduct', {'id': product.id}) }}">Confirmer</a>
-                                                {% endif %}
-                                        </div>
-                                    </td>
-                                    #}
                                 </tr>
                             {% endfor %}
                             </tbody>
                             <tfoot>
                             <tr>
                                 <th>
-                                    Identifiant
+                                    Id produit
                                 </th>
                                 <th>
-                                    Client
+                                    Quantité commandée
                                 </th>
                                 <th>
-                                    Téléphone
+                                    Options commandée
                                 </th>
                                 <th>
-                                    Livraison
+                                    Prix des options
                                 </th>
                                 <th>
-                                    Date
+                                    Prix total
+                                </th>
+
+                                <th>
+                                    Date de modification
                                 </th>
                                 <th>
-                                    Total(dt)
+                                    Status
                                 </th>
                             </tr>
                             </tfoot>
@@ -188,12 +151,36 @@
 
 {% block javascripts %}
     <script>
+        var boundary = document.getElementById('productRedirect');
+        var mouseOverFunction = function () {
+            console.log("aa")
+             this.style.color = '#0000FF'; // your colour change
+        };
+        var mouseLeaveFunction = function () {
+            console.log("aa")
+            this.style.color = '#000'; // your colour change
+        };
+        boundary.onmouseleave= mouseLeaveFunction;
+        boundary.onmouseover = mouseOverFunction;
+
+        function trclick(){
+            console.log('tr clicked')
+        }
+        function tdclick(p){
+            console.log(p);
+            window.location.href = p
+            /*
+            if (!e) var e = window.event;                // Get the window event
+            e.cancelBubble = true;                       // IE Stop propagation
+            if (e.stopPropagation) e.stopPropagation();  // Other Broswers
+            console.log('td clicked');
+            */
+        }
         let status;
         let id;
         $("select[class^='select-status']").change(function (e) {
             //alert("am clicked")
             e.preventDefault();
-
             status = $(this).children("option").filter(":selected").text();
             //status = $( ".select-status option:selected" ).text();
             console.log(status)
@@ -201,7 +188,7 @@
             console.log(id);
             $.ajax({
                 type: 'PUT',
-                url: "/orderProduct/changeStatus/",
+                url: "/subOrderProduct/changeStatus/",
                 data: {id: id, status: status},
                 success: function () {
                     window.location.href = window.location.href
@@ -210,11 +197,13 @@
             });
         });
 
-
             $(document).ready(function() {
+
+
+
                     $("select").prop("disabled", false);
                 $("#all").click()
-                $('#dataTable').DataTable( {
+                let table = $('#dataTable').DataTable( {
                     orderCellsTop: true,
                     fixedHeader: true,
                     "dom": '<"top"l>rt<"bottom"ip><"clear">',
@@ -222,79 +211,51 @@
                         url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
                     },
                     initComplete: function () {
+
+
+
+
                         this.api().columns().every( function () {
                             var column = this;
+                            console.log(this);
                             var select = $('<select><option value=""></option></select>')
                                 .appendTo( $(column.footer()).empty() )
                                 .on( 'change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
                                     );
-
                                     column
                                         .search( val ? '^'+val+'$' : '', true, false )
                                         .draw();
                                 } );
-
                             column.data().unique().sort().each( function ( d, j ) {
                                 select.append( '<option value="'+d+'">'+d+'</option>' )
                             } );
                         } );
                     }
                 } );
+                $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
+                $('#dataTable thead tr:eq(1) th').each(function (i) {
+
+                    var title = $(this).text();
+                    if(title.search("I")!==-1){
+                        $(this).html('<input class="form-control" type="text" />');
+
+                        $('input', this).on('keyup change', function () {
+                            if (table.column(i).search() !== this.value) {
+                                table
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    }else{
+                        $(this).html('<input type="text" hidden/>');
+
+                    }
+
+                });
+
             } );
-
-
-
-
-
-
-
-
-
-
-            // Setup - add a text input to each footer cell
-            /*
-            $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
-            $('#dataTable thead tr:eq(1) th').each(function (i) {
-
-                var title = $(this).text();
-                if(title.search("Product")!==-1 ||title.search("Code")!==-1 ||title.search("Client")!==-1){
-                    $(this).html('<input class="form-control" type="text" />');
-
-                    $('input', this).on('keyup change', function () {
-                        if (table.column(i).search() !== this.value) {
-                            table
-                                .column(i)
-                                .search(this.value)
-                                .draw();
-                        }
-                    });
-                }else{
-                    $(this).html('<input type="text" hidden/>');
-
-                }
-
-            });
-
-            var table = $('#dataTable').DataTable({
-                orderCellsTop: true,
-                fixedHeader: true,
-                "dom": '<"top"l>rt<"bottom"ip><"clear">',
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
-                }
-            });
-*/
-
-
-        /*
-        $(document).ready(function () {
-            $('#dataTable').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
-                }
-            });
-        });*/
     </script>
 {% endblock %}
