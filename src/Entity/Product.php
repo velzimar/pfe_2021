@@ -92,9 +92,15 @@ class Product
      */
     private $priority;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SubOrderProduct::class, mappedBy="product")
+     */
+    private $subOrderProducts;
+
     public function __construct()
     {
         $this->productOptions = new ArrayCollection();
+        $this->subOrderProducts = new ArrayCollection();
     }
 
 
@@ -271,6 +277,36 @@ class Product
     public function setPriority(?int $priority): self
     {
         $this->priority = $priority;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|SubOrderProduct[]
+     */
+    public function getSubOrderProducts(): Collection
+    {
+        return $this->subOrderProducts;
+    }
+
+    public function addSubOrderProduct(SubOrderProduct $subOrderProduct): self
+    {
+        if (!$this->subOrderProducts->contains($subOrderProduct)) {
+            $this->subOrderProducts[] = $subOrderProduct;
+            $subOrderProduct->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubOrderProduct(SubOrderProduct $subOrderProduct): self
+    {
+        if ($this->subOrderProducts->removeElement($subOrderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($subOrderProduct->getProduct() === $this) {
+                $subOrderProduct->setProduct(null);
+            }
+        }
 
         return $this;
     }

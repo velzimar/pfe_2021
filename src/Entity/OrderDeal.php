@@ -30,7 +30,7 @@ class OrderDeal
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="orderDeals")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="IncomingOrderDeals")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $business;

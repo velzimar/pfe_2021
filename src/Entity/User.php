@@ -202,6 +202,21 @@ class User implements UserInterface, Serializable
      */
     private $orderDeals;
 
+    /**
+     * @ORM\OneToMany(targetEntity=OrderDeal::class, mappedBy="business")
+     */
+    private $IncomingOrderDeals;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="client")
+     */
+    private $orderProducts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrderProduct::class, mappedBy="business")
+     */
+    private $IncomingOrderProducts;
+
 
     public function __construct()
     {
@@ -212,6 +227,9 @@ class User implements UserInterface, Serializable
         $this->ReceivedNotifications = new ArrayCollection();
         $this->NotSeenReceivedNotifications = new ArrayCollection();
         $this->orderDeals = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
+        $this->IncomingOrderProducts = new ArrayCollection();
+        $this->IncomingOrderDeals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -847,5 +865,94 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return Collection|OrderProduct[]
+     */
+    public function getOrderProducts(): Collection
+    {
+        return $this->orderProducts;
+    }
+
+    public function addOrderProduct(OrderProduct $orderProduct): self
+    {
+        if (!$this->orderProducts->contains($orderProduct)) {
+            $this->orderProducts[] = $orderProduct;
+            $orderProduct->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderProduct(OrderProduct $orderProduct): self
+    {
+        if ($this->orderProducts->removeElement($orderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($orderProduct->getClient() === $this) {
+                $orderProduct->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderProduct[]
+     */
+    public function getIncomingOrderProducts(): Collection
+    {
+        return $this->IncomingOrderProducts;
+    }
+
+    public function addIncomingOrderProduct(OrderProduct $incomingOrderProduct): self
+    {
+        if (!$this->IncomingOrderProducts->contains($incomingOrderProduct)) {
+            $this->IncomingOrderProducts[] = $incomingOrderProduct;
+            $incomingOrderProduct->setBusiness($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIncomingOrderProduct(OrderProduct $incomingOrderProduct): self
+    {
+        if ($this->IncomingOrderProducts->removeElement($incomingOrderProduct)) {
+            // set the owning side to null (unless already changed)
+            if ($incomingOrderProduct->getBusiness() === $this) {
+                $incomingOrderProduct->setBusiness(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrderDeal[]
+     */
+    public function getIncomingOrderDeals(): Collection
+    {
+        return $this->IncomingOrderDeals;
+    }
+
+    public function addIncomingOrderDeal(OrderDeal $incomingOrderDeal): self
+    {
+        if (!$this->IncomingOrderDeals->contains($incomingOrderDeal)) {
+            $this->IncomingOrderDeals[] = $incomingOrderDeal;
+            $incomingOrderDeal->setBusiness($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIncomingOrderDeal(OrderDeal $incomingOrderDeal): self
+    {
+        if ($this->IncomingOrderDeals->removeElement($incomingOrderDeal)) {
+            // set the owning side to null (unless already changed)
+            if ($incomingOrderDeal->getBusiness() === $this) {
+                $incomingOrderDeal->setBusiness(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

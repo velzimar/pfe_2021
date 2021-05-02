@@ -26,7 +26,7 @@ class ProductOptionsRepository extends ServiceEntityRepository
     public function findByProductId($productId)
     {
         return $this->createQueryBuilder('o')
-            ->select('o.nom as name,o.choices, CAST(o.NbMaxSelected AS CHAR) as maxSelect')
+            ->select('o.id,o.nom as name,o.choices, CAST(o.NbMaxSelected AS CHAR) as maxSelect')
             ->andWhere('o.product = :val')
             ->setParameter('val', $productId)
             ->orderBy('o.id', 'ASC')

@@ -4,9 +4,11 @@ namespace App\Controller\API;
 
 use App\Entity\User;
 use App\Repository\CategoryRepository;
+use App\Repository\DeliveryRepository;
 use App\Repository\UserRepository;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Exception\InvalidParameterException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -583,5 +585,62 @@ class BusinessesAPI extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+
+
+    //delivery only
+
+    /**
+     * @Rest\GET(name="getBusinessDeliveryService", "/getBusinessDeliveryService/")
+     * @QueryParam(name="id", strict=true, nullable=false)
+     * @param ParamFetcher $paramFetcher
+     * @param DeliveryRepository $deliveryRepository
+     * @return Response
+     */
+    public function getBusinessDeliveryService_Action(ParamFetcher $paramFetcher, DeliveryRepository $deliveryRepository): Response
+    {
+        //category id
+
+        try{
+
+            $id = $paramFetcher->get('id');
+
+            if($id === null || $id === "" ){
+                $view = $this->view([
+                    'success' => false,
+                    'code' => 400,
+                    'id' => $id,
+                ]);
+                return $this->handleView($view);
+            }
+
+            $deliveryService = $deliveryRepository->findByBusinessId($id);
+            if($deliveryService === null ){
+                $view = $this->view([
+                    'success' => false,
+                    'code' => 401,
+                    'id' => $id,
+                ]);
+                return $this->handleView($view);
+            }
+
+            $view = $this->view([
+                'success' => true,
+                'code' => 200,
+                'id' => $id,
+                'deliveryService'=>$deliveryService,
+            ]);
+            return $this->handleView($view);
+
+        }catch( InvalidParameterException $e){
+
+            $view = $this->view([
+                'success' => false,
+                'code' => 600
+            ]);
+            return $this->handleView($view);
+        }
+
+
+    }
 
 }

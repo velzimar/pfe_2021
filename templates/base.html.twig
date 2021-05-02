@@ -123,6 +123,9 @@
                                 <li>
                                     <a href="{{ path('selectUser', {'action': 'index_user'}) }}">Produits</a>
                                 </li>
+                                <li>
+                                    <a href="{{ path('selectUserProduct_forOrderProducts', {'action': 'orderproduct_index_admin'}) }}">Commandes</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="has-sub-menu">
@@ -154,7 +157,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="{{ path('selectUserDeal_forOrderDeals', {'action': 'orderdeal_index_admin'}) }}">Deals</a>
+                                    <a href="{{ path('selectUserDeal_forOrderDeals', {'action': 'orderdeal_index_admin'}) }}">Commandes</a>
                                 </li>
 
                             </ul>
@@ -173,6 +176,10 @@
                             </li>
                             <li>
                                 <a href="{{ path('myProducts') }}">Produits</a>
+                            </li>
+
+                            <li>
+                                <a href="{{ path('myReceivedOrderProducts') }}">Commandes</a>
                             </li>
                         </ul>
                     </li>
@@ -546,6 +553,14 @@
                         </div>
                     </li>
 
+                    <li class="has-sub-menu">
+                        <a href="{{ path('selectUserProduct_forOrderProducts', {'action': 'orderproduct_index_admin'}) }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-package"></div>
+                            </div>
+                            <span>Commandes</span>
+                        </a>
+                    </li>
 
 
 
@@ -708,7 +723,14 @@
                             </div>
                         </div>
                     </li>
-
+                    <li class="has-sub-menu">
+                        <a href="{{ path('myReceivedOrderProducts') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-package"></div>
+                            </div>
+                            <span>Commandes</span>
+                        </a>
+                    </li>
 
 
 

@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes products{% endblock %}
+
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+
+        <li class="breadcrumb-item">
+            <a href="{{ path('selectUserProduct_forOrderProducts', {'action': 'orderproduct_index_admin'}) }}">Selectionner un utilisateur</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Liste des commandes</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {# { include('product/_myQuickLinks.html.twig') }} #}
+{% endblock %}
+
+{% block body %}
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Les commandes des produits de l'utilisateur {{ user.nom }}
+        </h6>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <div class="widget">
+            <a id="btn-all" class="ui-button ui-corner-all ui-widget"  href="{{ path('orderproduct_index_admin_specified',{'status':'Tous', 'id':user}) }}">Tous</a>
+            <a id="btn-En attente" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Attente', 'id':user}) }}">En attente</a>
+            <a id="btn-Livrer" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Livrer', 'id':user}) }}">Livrer</a>
+            <a id="btn-Annuler" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Annuler', 'id':user}) }}">Annuler</a>
+            <a id="btn-Prêt" class="ui-button ui-corner-all ui-widget" href="{{ path('orderproduct_index_admin_specified',{'status':'Pret', 'id':user}) }}">Prêt</a>
+        </div>
+        <h6 class="element-header">
+        </h6>
+        <div class="element-box">
+            <div class="order-box">
+                <div class="order-items-table">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-lightborder">
+                            <thead id="head">
+                            <tr>
+                                <th>
+                                    Identifiant
+                                </th>
+                                <th>
+                                    Client
+                                </th>
+                                <th>
+                                    Téléphone
+                                </th>
+                                <th>
+                                    Livraison
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Total(dt)
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Produits
+                                </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for product in products %}
+                                <tr>
+                                    <td  class="product-name">
+                                        {{ product.id }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{ product.client.email }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{ product.phone }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {%  if product.delivery == "" %}
+                                            Non
+                                        {%  else %}
+                                            {{ product.delivery }}
+                                        {% endif %}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{ product.orderDate |format_datetime('short', 'short', locale='fr') }}
+                                    </td>
+                                    <td  class="product-name">
+                                        {{ product.total }}
+                                    </td>
+                                    <td>
+                                        <div class="product-name">
+                                            <select class="select-status-{{ product.id }}" name="{{ product.id }}" disabled>
+                                                <option value="{{ product.id }}-En attente" {% if product.status == 'En attente' %} selected {% endif %}>En attente</option>
+                                                <option value="{{ product.id }}-Annuler" {% if product.status == 'Annuler' %} selected {% endif %}>Annuler</option>
+                                                <option value="{{ product.id }}-Prêt" {% if product.status == 'Prêt' %} selected {% endif %}>Prêt</option>
+                                                <option value="{{ product.id }}-Livrer" {% if product.status == 'Livrer' %} selected {% endif %}>Livrer</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>
+                                    Identifiant
+                                </th>
+                                <th>
+                                    Client
+                                </th>
+                                <th>
+                                    Téléphone
+                                </th>
+                                <th>
+                                    Livraison
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Total(dt)
+                                </th>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let status;
+        let id;
+        let user_id = '{{ user }}';
+        $("select[class^='select-status']").change(function (e) {
+            e.preventDefault();
+            status = $(this).children("option").filter(":selected").text();
+            console.log(status)
+            id = $(this).attr("name");
+            console.log(id);
+            $.ajax({
+                type: 'PUT',
+                url: "/orderProduct/admin/changeStatus/",
+                data: {id: id, status: status, user_id: user_id},
+                success: function () {
+                    window.location.href = window.location.href
+                    console.log('success');
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $("select").prop("disabled", false);
+            $("#all").click()
+            $('#dataTable').DataTable( {
+                orderCellsTop: true,
+                fixedHeader: true,
+                "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                },
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    } );
+                }
+            } );
+        } );
+    </script>
+{% endblock %}
+

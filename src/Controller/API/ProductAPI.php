@@ -2,18 +2,23 @@
 
 namespace App\Controller\API;
 
+use App\Entity\OrderProduct;
 use App\Entity\ProductCategory;
+use App\Entity\SubOrderProduct;
 use App\Entity\User;
 use App\Repository\DeliveryRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use ArrayObject;
+use DateTime;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -249,6 +254,89 @@ class ProductAPI extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+
+    /**
+     * @Rest\Post(name="ProductAPI_makeOrder", "/makeOrder/")
+     * @param Request $request
+     * @return Response
+     */
+    public function postOrderAction(Request $request, UserRepository $userRepository, ProductRepository $productRepository): Response
+    {
+        $json = $request->getContent();
+        //getting json body
+        if ($decodedJson = json_decode($json, true)) {
+            $data = $decodedJson;
+        } else {
+            $data = $request->request->all();
+        }
+
+        if ($request->isMethod('POST')) {
+            //validate values
+            try {
+                $entityManager = $this->getDoctrine()->getManager();
+                $order = new OrderProduct();
+                $order->setBusiness($userRepository->find($data["business"]));
+                $order->setClient($userRepository->find($data["client"]));
+                $order->setDelivery($data["delivery"]);
+                $order->setOrderDate(new DateTime('now'));
+                $order->setModifyDate(new dateTime("now"));
+                $order->setTotal($data["total"]);
+                $order->setPhone($data["phone"]);
+                $order->setStatus("En attente");
+                $entityManager->persist($order);
+                $entityManager->flush();
+                $productsList = $data["cart"];
+                $cart = [];
+                foreach ($productsList as $p){
+                    $productId = $p["id"];
+                    $qtt = $p["orderedQuantity"];
+                    $price = $p["price"];
+                    $optionsPrice = $p["optionsPrice"];
+                    $name = $p["name"];
+                    $options = $p["forSeller"];
+                    $status = "En attente";
+                    $subOrder = new SubOrderProduct();
+                    $subOrder->setStatus($status);
+                    $subOrder->setQtt($qtt);
+                    $subOrder->setOptions($options);
+                    $subOrder->setName($name);
+                    $subOrder->setOptionsPrice($optionsPrice);
+                    $subOrder->setOrderProduct($order);
+
+                    $subOrder->setOrderDate(new DateTime('now'));
+                    $subOrder->setModifyDate(new dateTime("now"));
+                    $subOrder->setPrice($price);
+                    $subOrder->setProduct($productRepository->find($productId));
+
+                    $entityManager->persist($subOrder);
+                    $entityManager->flush();
+                    array_push($cart,$p);
+                }
+               // $entityManager->persist($order);
+             //   $entityManager->flush();
+
+                $view = $this->view([
+                    "success" => true,
+                    "code" => 200,
+                    "orderId" => $order->getId(),
+                    "cart" => $cart
+                ]);
+                return $this->handleView($view);
+            } catch (Exception $e) {
+                $view = $this->view([
+                    "success" => false,
+                    "code" => 401,
+                ]);
+                return $this->handleView($view);
+            }
+        }
+        $view = $this->view([
+            "success" => false,
+            "code" => 400,
+            "message" => "Check request body"
+        ]);
+        return $this->handleView($view);
+    }
 
 
 
