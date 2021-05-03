@@ -10,6 +10,7 @@ use App\Form\ProductType;
 use App\Form\SelectUserType;
 use App\Repository\ProductRepository;
 use App\Repository\OrderProductRepository;
+use App\Repository\UserRepository;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -201,5 +202,40 @@ class OrderProductController extends AbstractController
         return new JsonResponse([
             'success'  => false,
         ]);
+    }
+
+    // getLast4Orders
+
+    /**
+     * @param OrderProductRepository $rep
+     * @return Response
+     */
+    public function getLast4Orders(OrderProductRepository $rep): Response
+    {
+        $user = $this->getUser();
+        $orders = $rep->findLast4($user);
+        //dump( $orders);die();
+        return $this->render(
+            'last4Orders.html.twig',
+            array('orders' => $orders)
+        );
+    }
+
+
+    // getLast4Clients
+
+    /**
+     * @param OrderProductRepository $rep
+     * @return Response
+     */
+    public function getLast4Clients(OrderProductRepository $rep): Response
+    {
+        $user = $this->getUser();
+        $clients = $rep->findLast4Clients($user);
+       //dump( $clients);die();
+        return $this->render(
+            'last4Clients.html.twig',
+            array('clients' => $clients)
+        );
     }
 }

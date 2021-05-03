@@ -29175,7 +29175,7 @@ Contents:
 }
 
 /* #7.  Screen size <= 1150px */
-@media (max-width: 1150px) {
+@media (max-width: 1920px) {
   .ae-content {
     padding: 0px;
   }

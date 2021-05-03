@@ -1,0 +1,67 @@
+
+<style>
+    .zoom {
+        padding: 2px;
+        transition: transform .2s; /* Animation */
+        margin: 0 auto;
+    }
+
+    .zoom:hover {
+        transform: scale(1.2); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    }
+    .zoom { cursor: pointer; }
+</style>
+<div class="element-wrapper">
+    <h6 class="element-header">
+        Dérnier commandes
+    </h6>
+    <div class="element-box-tp">
+        <div class="activity-boxes-w">
+
+            {% for order in orders %}
+                <div class="zoom" onclick="tdclick('{{ path('myReceivedSubOrderProducts_status', {'status':'Tous','orderId':order[0].id}) }}')">
+                <div class="activity-box-w" >
+                    <div class="activity-time">
+                        {{ order.diff }}
+
+                    </div>
+                    <div class="activity-box">
+
+                        <div class="activity-avatar">
+                             {{ order[0].total }}dt
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-role">
+                                    {{ order[0].client.email }}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="user-action" target="_blank" href="{{ path('send_mail_as_admin_to_client',{'id':order[0].client.id}) }}">
+                                        <div class="os-icon os-icon-email-forward"> Envoyer un email</div>
+                                    </a>
+                                {% elseif is_granted('ROLE_SELLER') %}
+                                    <a class="user-action" target="_blank" href="{{ path('send_mail_as_seller_to_client',{'id':order[0].client.id}) }}">
+                                        <div class="os-icon os-icon-email-forward"> Envoyer un email</div>
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <strong class="activity-title">
+                                    {{ order[0].phone }}
+
+                            </strong>
+                        </div>
+
+                    </div>
+                </div>
+</div>
+
+            {% endfor %}
+
+
+        </div>
+    </div>
+</div>
+<script>
+    function tdclick(p){
+        console.log(p);
+        window.location.href = p
+    }
+</script>

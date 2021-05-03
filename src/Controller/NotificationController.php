@@ -186,4 +186,111 @@ class NotificationController extends AbstractController
         );
     }
 
+
+
+    /**
+     * @Route("/SellerToClient/to_{id}/", name="send_mail_as_seller_to_client", methods={"GET","POST"})
+     * @param Swift_Mailer $mailer
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    // le vendeur envoie des email aux clients
+    public function send_mail_as_seller_to_client(Swift_Mailer $mailer, Request $request, User $user): Response
+    {
+        // dump($user->getMainRole());die;
+        if ($user->getMainRole() !== "Client" ) {
+            return $this->render(
+                'contact/contact.html.twig'
+            );
+        }
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+        $thisUser = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $contact->setSender($thisUser);
+            $contact->setReceiver($user);
+            $message = (new Swift_Message($contact->getTitle()))
+                ->setFrom($contact->getSender()->getEmail())
+                ->setTo($contact->getReceiver()->getEmail())
+                //->setReplyTo($contact->getEmail())
+                ->setBody('<html lang="fr">' .
+                    ' <body>' .
+                    '  <p>De : <strong>' . $contact->getSender()->getEmail() . "</strong></p><br>" .
+                    '  <p>Sujet : <strong>' . $contact->getTitle() . "</strong></p><br>" .
+                    '  Message : <br>' . $contact->getMessage() .
+                    ' </body>' .
+                    '</html>', 'text/html'
+                );
+
+            $mailer->send($message);
+            $notification = new Notification();
+            $notification->setSeen(false);
+            $notification->setSender($thisUser);
+            $notification->setReceiver($user);
+            $notification->setTitle("A envoyé un email");
+            $notification->setDetails("Sujet: " . $contact->getTitle());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($notification);
+            $em->flush();
+            return $this->redirectToRoute('send_mail_as_seller_to_client', ["id" => $user]);
+        }
+
+        return $this->render(
+            'contact/contactForm.html.twig',
+            array("form" => $form->createView())
+        );
+    }
+    /**
+     * @Route("/AdminToClient/to_{id}", name="send_mail_as_admin_to_client", methods={"GET","POST"})
+     * @param Swift_Mailer $mailer
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    // l'admin envoie des emails a tous
+    public function send_as_admin_to_client(Swift_Mailer $mailer, Request $request, User $user): Response
+    {
+
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+        $thisUser = $this->getUser();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $contact->setSender($thisUser);
+            $contact->setReceiver($user);
+            $message = (new Swift_Message($contact->getTitle()))
+                ->setFrom($contact->getSender()->getEmail())
+                ->setTo($contact->getReceiver()->getEmail())
+                //->setReplyTo($contact->getEmail())
+                ->setBody('<html lang="fr">' .
+                    ' <body>' .
+                    '  <p>De : <strong>' . $contact->getSender()->getEmail() . "</strong></p><br>" .
+                    '  <p>Sujet : <strong>' . $contact->getTitle() . "</strong></p><br>" .
+                    '  Message : <br>' . $contact->getMessage() .
+                    ' </body>' .
+                    '</html>', 'text/html'
+                );
+
+            $mailer->send($message);
+            $notification = new Notification();
+            $notification->setSeen(false);
+            $notification->setSender($thisUser);
+            $notification->setReceiver($user);
+            $notification->setTitle("A envoyé un email");
+            $notification->setDetails("Sujet: " . $contact->getTitle());
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($notification);
+            $em->flush();
+            return $this->redirectToRoute('send_mail_as_admin_to_client', ["id" => $user]);
+        }
+
+        return $this->render(
+            'contact/contactForm.html.twig',
+            array("form" => $form->createView())
+        );
+    }
 }

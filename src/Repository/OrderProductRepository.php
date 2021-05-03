@@ -22,19 +22,48 @@ class OrderProductRepository extends ServiceEntityRepository
     // /**
     //  * @return OrderProduct[] Returns an array of OrderProduct objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    /*'TIMESTAMPDIFF(MINUTE, CURRENT_DATE(), o.orderDate) as diff',*/
+    public function findLast4($value)
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
+            ->addSelect("
+            CASE 
+                WHEN(TIMESTAMPDIFF(MINUTE, o.orderDate, :now) >= 1440) THEN CONCAT(TIMESTAMPDIFF(DAY, o.orderDate, :now),'jours')
+                WHEN(TIMESTAMPDIFF(MINUTE, o.orderDate, :now) >= 60) THEN CONCAT(TIMESTAMPDIFF(HOUR, o.orderDate, :now),' heures')
+                ELSE CONCAT(TIMESTAMPDIFF(MINUTE, o.orderDate, :now),' minutes')
+            END as diff")
+            ->andWhere('o.business = :val')
             ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
+            ->setParameter('now', new \DateTime('now'))
+            ->orderBy('o.orderDate', 'DESC')
+            ->setMaxResults(4)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    public function findLast4Clients($value)
+    {
+         $a = $this->getEntityManager()->createQueryBuilder();
+         $a->select(array(
+             "Distinct c.id",
+             " c.email as email ",
+             " o.phone as phone",
+             " Max(o.id) as orderId",
+             " Count(o.id) as count",
+
+         ))
+            ->from('App\Entity\OrderProduct','o')
+             ->from('App\Entity\User','c')
+             ->andWhere('c.id = o.client')
+            ->andWhere('o.business = :val')
+            ->setParameter('val', $value)
+            ->groupBy('c.id')
+            ->orderBy('o.orderDate', 'ASC')
+            ->setMaxResults(4)
+            ;
+        return  $a->getQuery()->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?OrderProduct

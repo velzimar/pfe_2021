@@ -2,13 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Controller/SubOrderProductController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/subOrderProduct/index_subOrder.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/subOrderProduct/userSubProducts.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/last4Clients.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/last4Orders.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/doctrine.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/doctrine.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/NotificationController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/NotificationController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/OrderProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/OrderProductController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/orderProduct/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/orderProduct/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/orderProduct/userProducts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/orderProduct/userProducts.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/OrderProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/OrderProductRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/subOrderProduct/index_subOrder.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/subOrderProduct/index_subOrder.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/subOrderProduct/userSubProducts.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/subOrderProduct/userSubProducts.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +198,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Controller" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -207,8 +211,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates" />
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\orderDeal" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\deal_images" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller\API" />
@@ -289,7 +293,8 @@
       <workItem from="1619640150632" duration="4757000" />
       <workItem from="1619798972003" duration="19384000" />
       <workItem from="1619910052571" duration="3817000" />
-      <workItem from="1619914579361" duration="9429000" />
+      <workItem from="1619914579361" duration="9718000" />
+      <workItem from="1619980577943" duration="18584000" />
     </task>
     <servers />
   </component>

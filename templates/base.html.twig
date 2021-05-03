@@ -976,151 +976,18 @@
                             </div>
                         </div>
                     </div>
-                    <!--------------------
-                    START - Support Agents
-                    -------------------->
-                    <div class="element-wrapper">
-                        <h6 class="element-header">
-                            Dérnier clients
-                        </h6>
-                        <div class="element-box-tp">
-                            <div class="profile-tile">
-                                <a class="profile-tile-box" href="users_profile_small.html">
-                                    <div class="pt-avatar-w">
-                                        <img alt="" src="img/avatar1.jpg">
-                                    </div>
-                                    <div class="pt-user-name">
-                                        John Mayers
-                                    </div>
-                                </a>
-                                <div class="profile-tile-meta">
-                                    <ul>
-                                        <li>
-                                            Last Login:<strong>Online Now</strong>
-                                        </li>
-                                        <li>
-                                            Tickets:<strong><a href="apps_support_index.html">12</a></strong>
-                                        </li>
-                                        <li>
-                                            Response Time:<strong>2 hours</strong>
-                                        </li>
-                                    </ul>
-                                    <div class="pt-btn">
-                                        <a class="btn btn-success btn-sm" href="apps_full_chat.html">Send Message</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="profile-tile">
-                                <a class="profile-tile-box" href="users_profile_small.html">
-                                    <div class="pt-avatar-w">
-                                        <img alt="" src="img/avatar3.jpg">
-                                    </div>
-                                    <div class="pt-user-name">
-                                        Ben Gossman
-                                    </div>
-                                </a>
-                                <div class="profile-tile-meta">
-                                    <ul>
-                                        <li>
-                                            Last Login:<strong>Offline</strong>
-                                        </li>
-                                        <li>
-                                            Tickets:<strong><a href="apps_support_index.html">9</a></strong>
-                                        </li>
-                                        <li>
-                                            Response Time:<strong>3 hours</strong>
-                                        </li>
-                                    </ul>
-                                    <div class="pt-btn">
-                                        <a class="btn btn-secondary btn-sm" href="apps_full_chat.html">Send Message</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--------------------
-                    END - Support Agents
-                    --------------------><!--------------------
-              START - Recent Activity
-              -------------------->
-                    <div class="element-wrapper">
-                        <h6 class="element-header">
-                            Dérnier commandes
-                        </h6>
-                        <div class="element-box-tp">
-                            <div class="activity-boxes-w">
-                                <div class="activity-box-w">
-                                    <div class="activity-time">
-                                        10 Min
-                                    </div>
-                                    <div class="activity-box">
-                                        <div class="activity-avatar">
-                                            <img alt="" src="img/avatar1.jpg">
-                                        </div>
-                                        <div class="activity-info">
-                                            <div class="activity-role">
-                                                John Mayers
-                                            </div>
-                                            <strong class="activity-title">Opened New Account</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="activity-box-w">
-                                    <div class="activity-time">
-                                        2 Hours
-                                    </div>
-                                    <div class="activity-box">
-                                        <div class="activity-avatar">
-                                            <img alt="" src="img/avatar2.jpg">
-                                        </div>
-                                        <div class="activity-info">
-                                            <div class="activity-role">
-                                                Ben Gossman
-                                            </div>
-                                            <strong class="activity-title">Posted Comment</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="activity-box-w">
-                                    <div class="activity-time">
-                                        5 Hours
-                                    </div>
-                                    <div class="activity-box">
-                                        <div class="activity-avatar">
-                                            <img alt="" src="img/avatar3.jpg">
-                                        </div>
-                                        <div class="activity-info">
-                                            <div class="activity-role">
-                                                Phil Nokorin
-                                            </div>
-                                            <strong class="activity-title">Opened New Account</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="activity-box-w">
-                                    <div class="activity-time">
-                                        2 Days
-                                    </div>
-                                    <div class="activity-box">
-                                        <div class="activity-avatar">
-                                            <img alt="" src="img/avatar4.jpg">
-                                        </div>
-                                        <div class="activity-info">
-                                            <div class="activity-role">
-                                                Jenny Miksa
-                                            </div>
-                                            <strong class="activity-title">Uploaded Image</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--------------------
-                    END - Recent Activity
-                    --------------------><!--------------------
-              START - Team Members
-              -------------------->
+{#
+                    {% include 'last4Clients.html.twig' %}
+                    {% include 'last4Orders.html.twig' %}
+#}
+
+                    {{ render(controller(
+                        'App\\Controller\\OrderProductController::getLast4Orders'
+                    )) }}
+
+                    {{ render(controller(
+                        'App\\Controller\\OrderProductController::getLast4Clients'
+                    )) }}
 
                     {% if is_granted('ROLE_ADMIN') %}
                         {{ render(controller(
@@ -1131,9 +998,7 @@
                             'App\\Controller\\UserController::send_as_seller'
                         )) }}
                     {% endif %}
-                    <!--------------------
-                    END - Team Members
-                    -------------------->
+
                 </div>
                 <!--------------------
                 END - Sidebar

@@ -31,7 +31,66 @@
         </div>
         <h6 class="element-header">
         </h6>
+
         <div class="element-box">
+
+            <div class="form-desc">
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Email du client</strong></th>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <td>
+                                <a  target="_blank" href="{{ path('send_mail_as_admin_to_client', {'id':orderId.client.id}) }}">
+                                    {{ orderId.client.email }} <div class="os-icon os-icon-email-forward"> Envoyer un email</div>
+                                </a>
+                            </td>
+
+                        {% elseif is_granted('ROLE_SELLER') %}
+                            <td>
+                                <a target="_blank"  href="{{ path('send_mail_as_seller_to_client', {'id':orderId.client.id}) }}">
+                                    {{ orderId.client.email }} <div class="os-icon os-icon-email-forward"> Envoyer un email</div>
+                                </a></td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Numéro du téléphone du client</strong></th>
+                        <td>{{ orderId.phone }}</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Livraison</strong></th>
+                        <td> {%  if orderId.delivery == "" %}
+                                Non
+                            {%  else %}
+                                {{ orderId.delivery }}
+                            {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Date du commande</strong></th>
+                        <td>
+                            {{ orderId.orderDate |format_datetime('short', 'short', locale='fr') }}</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Prix total</strong></th>
+                        <td>
+                            {{ orderId.total }}</td>
+                    </tr>
+                    <tr>
+                        <th class="pl-0 w-25" scope="row"><strong>Status</strong></th>
+                        <td>
+
+                            <select class="ForOrder-select-status-{{ orderId.id }}" name="{{ orderId.id }}" disabled>
+                                <option value="{{ orderId.id }}-En attente" {% if orderId.status == 'En attente' %} selected {% endif %}>En attente</option>
+                                <option value="{{ orderId.id }}-Annuler" {% if orderId.status == 'Annuler' %} selected {% endif %}>Annuler</option>
+                                <option value="{{ orderId.id }}-Prêt" {% if orderId.status == 'Prêt' %} selected {% endif %}>Prêt</option>
+                                <option value="{{ orderId.id }}-Livrer" {% if orderId.status == 'Livrer' %} selected {% endif %}>Livrer</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
             <div class="order-box">
                 <div class="order-items-table">
                     <div class="table-responsive">
@@ -43,9 +102,6 @@
                                 </th>
                                 <th>
                                     Quantité commandée
-                                </th>
-                                <th>
-                                    Options commandée
                                 </th>
                                 <th>
                                     Prix des options
@@ -62,6 +118,10 @@
                                 <th>
                                     Status
                                 </th>
+
+                                <th>
+                                    Options commandée
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -72,9 +132,6 @@
                                     </td>
                                     <td  class="product-name">
                                         {{ product.qtt }}
-                                    </td>
-                                    <td  class="product-name">
-                                        {#  {{ product.options }}#}
                                     </td>
                                     <td  class="product-name">
                                         {{ product.optionsPrice }}
@@ -98,6 +155,50 @@
                                             </select>
                                         </div>
                                     </td>
+                                    </td>
+                                    <td class="row-actions">
+                                        <button class="mr-2 mb-2 btn btn-primary"
+                                                data-target="#onboardingTextModal-{{ product.id }}"
+                                                data-toggle="modal" type="button">Détails
+                                        </button>
+                                        <div aria-hidden="true" class="onboarding-modal modal fade animated"
+                                             id="onboardingTextModal-{{ product.id }}" role="dialog" tabindex="-1">
+                                            <div class="modal-dialog modal-centered" role="document">
+                                                <div class="modal-content text-center">
+                                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                                        <span class="close-label">Fermer</span><span
+                                                                class="os-icon os-icon-close"></span></button>
+                                                    <div class="onboarding-media">
+                                                        <img alt="" src="{{ asset('img/bigicon2.png') }}" width="200px">
+                                                    </div>
+                                                    <div class="onboarding-content with-gradient">
+                                                        <h4 class="onboarding-title">
+                                                            Liste des options commandées
+                                                        </h4>
+                                                        <div class="onboarding-content">
+                                                            <div class="list-group" id="myList" role="tablist">
+                                                                {% for key, item in product.options %}
+                                                                    <a class="list-group-item list-group-item-action" id="{{ key }}{{ product.id }}" data-toggle="list" href="#t-{{ key }}{{ product.id }}" role="tab"> <span class="badge badge-primary badge-pill">{{ key }}</span></a>
+                                                                    <div class="tab-content">
+                                                                        <div class="tab-pane " id="t-{{ key }}{{ product.id }}" role="tabpanel">
+                                                                            {% for choice in item %}
+                                                                                {{ choice }} ,
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="onboarding-text">
+                                                            Cliquer sur l'option pour voir les choix
+                                                        </div>
+                                                        <div class="onboarding-">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -110,20 +211,13 @@
                                     Quantité commandée
                                 </th>
                                 <th>
-                                    Options commandée
-                                </th>
-                                <th>
                                     Prix des options
                                 </th>
                                 <th>
                                     Prix total
                                 </th>
-
                                 <th>
                                     Date de modification
-                                </th>
-                                <th>
-                                    Status
                                 </th>
                             </tr>
                             </tfoot>
@@ -138,6 +232,19 @@
 
 {% block javascripts %}
     <script>
+
+        $('#myList a').on('click', function (e) {
+            e.preventDefault()
+
+            console.log(this.id);
+            console.log("t-"+this.id);
+            // $(this).tab('show')
+            $( "div[id^='t-']" ).removeClass('active')
+            $("#t-"+this.id).addClass('active')
+            //$('#myList a').removeClass('active')
+            // $('#myList a:last-child').children("tab-pane").removeClass('active')
+        })
+
         var boundary = document.getElementById('productRedirect');
         var mouseOverFunction = function () {
             console.log("aa")
@@ -178,7 +285,28 @@
                 url: "/subOrderProduct/admin/changeStatus/",
                 data: {id: id, status: status},
                 success: function () {
-                    window.location.href = window.location.href
+                    console.log('success');
+                }
+            });
+        });
+
+        //ForOrder
+        let statusForOrder;
+        let idForOrder;
+        $("select[class^='ForOrder-select-status']").change(function (e) {
+            //alert("am clicked")
+            e.preventDefault();
+            statusForOrder = $(this).children("option").filter(":selected").text();
+            //status = $( ".select-status option:selected" ).text();
+            console.log(statusForOrder)
+            idForOrder = $(this).attr("name");
+            console.log(idForOrder);
+            $.ajax({
+                type: 'PUT',
+                url: "/orderProduct/admin/changeStatus/",
+                data: {id: idForOrder, status: statusForOrder},
+                success: function () {
+                    //window.location.href = window.location.href
                     console.log('success');
                 }
             });
