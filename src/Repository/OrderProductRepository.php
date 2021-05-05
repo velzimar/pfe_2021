@@ -65,6 +65,27 @@ class OrderProductRepository extends ServiceEntityRepository
         return  $a->getQuery()->getResult();
     }
 
+    public function findByUser($clientId)
+    {
+        $a = $this->getEntityManager()->createQueryBuilder();
+        $a->select(array(
+            "o.id as orderId",
+            "o.total  ",
+            "o.orderDate  ",
+            "o.modifyDate  ",
+            "o.status  ",
+            "Identity(o.business) as business",
+        ))
+            ->from('App\Entity\OrderProduct','o')
+            ->andWhere('o.client = :clientId')
+            ->orderBy('o.orderDate', 'DESC')
+            ->setParameter('clientId', $clientId)
+        ;
+        return  $a->getQuery()->getResult();
+    }
+
+
+
     /*
     public function findOneBySomeField($value): ?OrderProduct
     {

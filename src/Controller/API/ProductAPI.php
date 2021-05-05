@@ -3,23 +3,22 @@
 namespace App\Controller\API;
 
 use App\Entity\OrderProduct;
-use App\Entity\ProductCategory;
 use App\Entity\SubOrderProduct;
 use App\Entity\User;
 use App\Repository\DeliveryRepository;
+use App\Repository\OrderProductRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\ProductRepository;
+use App\Repository\SubOrderProductRepository;
 use App\Repository\UserRepository;
-use ArrayObject;
 use DateTime;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Request\ParamFetcher;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\Util\OrderedHashMap;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -258,6 +257,8 @@ class ProductAPI extends AbstractFOSRestController
     /**
      * @Rest\Post(name="ProductAPI_makeOrder", "/makeOrder/")
      * @param Request $request
+     * @param UserRepository $userRepository
+     * @param ProductRepository $productRepository
      * @return Response
      */
     public function postOrderAction(Request $request, UserRepository $userRepository, ProductRepository $productRepository): Response
@@ -298,7 +299,8 @@ class ProductAPI extends AbstractFOSRestController
                     $subOrder = new SubOrderProduct();
                     $subOrder->setStatus($status);
                     $subOrder->setQtt($qtt);
-                    $subOrder->setOptions($options);
+                    if(sizeof($options)>0)
+                        $subOrder->setOptions($options);
                     $subOrder->setName($name);
                     $subOrder->setOptionsPrice($optionsPrice);
                     $subOrder->setOrderProduct($order);
@@ -338,7 +340,66 @@ class ProductAPI extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+    /**
+     * @Rest\Post(name="ProductAPI_getOrdersList", "/ordersList/")
+     * @param ParamFetcher $paramFetcher
+     * @param OrderProductRepository $orderProductRepository
+     * @param SubOrderProductRepository $subOrderProductRepository
+     * @return Response
+     * @QueryParam(name="ClientId", nullable=false)
+     */
+    public function postOrdersListOfClientAction(
+        ParamFetcher $paramFetcher
+        ,OrderProductRepository $orderProductRepository
+        ,SubOrderProductRepository $subOrderProductRepository
+    ): Response
+    {
+        $clientId = $paramFetcher->get('ClientId');
 
+        if($clientId == null){
+            $view = $this->view([
+                'code' => 200
+            ]);
+            return $this->handleView($view);
+        }
+        $orders = $orderProductRepository->findByUser($clientId);
+        $suborders = [];
+        foreach($orders as $order){
+            //array_push($suborders,$order["orderId"]);
+            $orderId = $order["orderId"];
+            $total = $order["total"];
+            $create = $order["orderDate"];
+            $modify = $order["modifyDate"];
+            $status = $order["status"];
+            $business = $order["business"];
+            $count = $subOrderProductRepository->findByUser_withSubOrder($orderId);
+            array_push($suborders,[
+                "orderId"=>$orderId,
+                "total" =>$total,
+                "create" =>$create,
+                "modify" =>$modify,
+                "status" =>$status,
+                "business" =>$business,
+                "count" =>sizeof($count),
+                "suborders"=>$count
+            ]);
+
+        }
+
+
+
+        if($orders == []){
+            $view = $this->view([
+                'code' => 300,
+            ]);
+            return $this->handleView($view);
+        }
+        $view = $this->view([
+            'code' => 400,
+            'orders' =>$suborders
+        ]);
+        return $this->handleView($view);
+    }
 
 /*
     public function postListsAction(ParamFetcher $paramFetcher)

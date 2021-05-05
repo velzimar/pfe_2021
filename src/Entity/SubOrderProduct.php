@@ -23,9 +23,9 @@ class SubOrderProduct
     private $qtt;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="json", nullable=true)
      */
-    private $options = [];
+    private $options;
 
     /**
      * @ORM\ManyToOne(targetEntity=Product::class, inversedBy="subOrderProducts")
@@ -54,7 +54,7 @@ class SubOrderProduct
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity=orderProduct::class, inversedBy="subOrderProducts")
+     * @ORM\ManyToOne(targetEntity=OrderProduct::class, inversedBy="subOrderProducts")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $orderProduct;

@@ -47,4 +47,24 @@ class SubOrderProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByUser_withSubOrder($orderId)
+    {
+        return $this->createQueryBuilder('so')
+        ->select(array(
+            "so.id as subOrderId",
+            "so.options",
+            "so.optionsPrice as prixOp",
+            "so.modifyDate as sub_mdate",
+            "so.qtt",
+            "Identity(so.product) as productId",
+            "so.name",
+            "so.price",
+            "so.status",
+        ))
+            ->andWhere(':order = so.orderProduct')
+            ->setParameter('order',$orderId)
+           ->getQuery()->getResult();
+
+    }
 }
