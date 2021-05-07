@@ -84,6 +84,7 @@ class SubOrderProductController extends AbstractController
             $subOrder = $subOrderProductRepository->find($id);
             $subOrder->setStatus($status);
             $subOrder->setModifyDate(new dateTime("now"));
+            $subOrder->getOrderProduct()->setSeen(false);
             $em->persist($subOrder);
             $em->flush();
             return new JsonResponse([
@@ -148,6 +149,7 @@ class SubOrderProductController extends AbstractController
             $status= $request->request->get("status");
             $order = $subOrderProductRepository->find($id);
             $order->setStatus($status);
+            $order->getOrderProduct()->setSeen(false);
             $order->setModifyDate(new dateTime("now"));
             $em->persist($order);
             $em->flush();

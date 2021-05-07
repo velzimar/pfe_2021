@@ -65,7 +65,7 @@ class OrderProductRepository extends ServiceEntityRepository
         return  $a->getQuery()->getResult();
     }
 
-    public function findByUser($clientId)
+    public function findByUserByStatus($clientId,$status)
     {
         $a = $this->getEntityManager()->createQueryBuilder();
         $a->select(array(
@@ -74,12 +74,19 @@ class OrderProductRepository extends ServiceEntityRepository
             "o.orderDate  ",
             "o.modifyDate  ",
             "o.status  ",
+            "o.seen  ",
             "Identity(o.business) as business",
+            "b.businessName as businessName",
+            "o.delivery as delivery",
         ))
+            ->from('App\Entity\User','b')
             ->from('App\Entity\OrderProduct','o')
+            ->andWhere('b.id = o.business')
             ->andWhere('o.client = :clientId')
+            ->andWhere('o.status = :status')
             ->orderBy('o.orderDate', 'DESC')
             ->setParameter('clientId', $clientId)
+            ->setParameter('status', $status)
         ;
         return  $a->getQuery()->getResult();
     }

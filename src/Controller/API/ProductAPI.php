@@ -347,22 +347,39 @@ class ProductAPI extends AbstractFOSRestController
      * @param SubOrderProductRepository $subOrderProductRepository
      * @return Response
      * @QueryParam(name="ClientId", nullable=false)
+     * @QueryParam(name="Status", nullable=false)
      */
-    public function postOrdersListOfClientAction(
+    public function postOrdersListOfClientByStatusAction(
         ParamFetcher $paramFetcher
         ,OrderProductRepository $orderProductRepository
         ,SubOrderProductRepository $subOrderProductRepository
     ): Response
     {
         $clientId = $paramFetcher->get('ClientId');
-
-        if($clientId == null){
+        $status = $paramFetcher->get('Status');
+        $statusList = ["delivered","ready","inProgress","cancelled"];
+        if($clientId == null || $status == null || !in_array($status,$statusList) ){
             $view = $this->view([
                 'code' => 200
             ]);
             return $this->handleView($view);
         }
-        $orders = $orderProductRepository->findByUser($clientId);
+        switch ($status){
+            case $statusList[0]:
+                $status="Livrer";
+                break;
+            case $statusList[1]:
+                $status="Pret";
+                break;
+            case $statusList[2]:
+                $status="En attente";
+                break;
+            case $statusList[3]:
+                $status="Annuler";
+                break;
+        }
+        //dump($status);die;
+        $orders = $orderProductRepository->findByUserByStatus($clientId,$status);
         $suborders = [];
         foreach($orders as $order){
             //array_push($suborders,$order["orderId"]);
@@ -372,6 +389,9 @@ class ProductAPI extends AbstractFOSRestController
             $modify = $order["modifyDate"];
             $status = $order["status"];
             $business = $order["business"];
+            $delivery = $order["delivery"];
+            $seen = $order["seen"];
+            $businessName = $order["businessName"];
             $count = $subOrderProductRepository->findByUser_withSubOrder($orderId);
             array_push($suborders,[
                 "orderId"=>$orderId,
@@ -379,7 +399,10 @@ class ProductAPI extends AbstractFOSRestController
                 "create" =>$create,
                 "modify" =>$modify,
                 "status" =>$status,
+                "seen"=>$seen,
                 "business" =>$business,
+                "delivery" =>$delivery,
+                "businessName" =>$businessName,
                 "count" =>sizeof($count),
                 "suborders"=>$count
             ]);
@@ -400,7 +423,65 @@ class ProductAPI extends AbstractFOSRestController
         ]);
         return $this->handleView($view);
     }
-
+    /**
+     * @Rest\Post(name="ProductAPI_makeItSeen", "/makeItSeen/")
+     * @param ParamFetcher $paramFetcher
+     * @param OrderProductRepository $orderProductRepository
+     * @param SubOrderProductRepository $subOrderProductRepository
+     * @return Response
+     * @QueryParam(name="OrderId", nullable=false)
+     */
+    public function postMakeOrderSeenAction(
+        ParamFetcher $paramFetcher
+        ,OrderProductRepository $orderProductRepository
+    ): Response
+    {
+        $OrderId = $paramFetcher->get('OrderId');
+        if($OrderId == null ){
+            $view = $this->view([
+                'code' => 200
+            ]);
+            return $this->handleView($view);
+        }
+        //dump($status);die;
+        $order = $orderProductRepository->find($OrderId);
+        $order->setSeen(true);
+        $m = $this->getDoctrine()->getManager();
+        $m->persist($order);
+        $m->flush();
+        $view = $this->view([
+            'code' => 400,
+            'order' =>$order->getId()
+        ]);
+        return $this->handleView($view);
+    }
+    /**
+     * @Rest\Post(name="ProductAPI_NotSeenNumber", "/NotSeenNumber/")
+     * @param ParamFetcher $paramFetcher
+     * @param OrderProductRepository $orderProductRepository
+     * @return Response
+     * @QueryParam(name="ClientId", nullable=false)
+     */
+    public function postNotSeenNumberAction(
+        ParamFetcher $paramFetcher
+        ,OrderProductRepository $orderProductRepository
+    ): Response
+    {
+        $clientId = $paramFetcher->get('ClientId');
+        if($clientId == null ){
+            $view = $this->view([
+                'code' => 200
+            ]);
+            return $this->handleView($view);
+        }
+        //dump($status);die;
+        $order = $orderProductRepository->findBy(["seen"=>false,"client"=>$clientId]);
+        $view = $this->view([
+            'code' => 400,
+            'count' =>sizeof($order)
+        ]);
+        return $this->handleView($view);
+    }
 /*
     public function postListsAction(ParamFetcher $paramFetcher)
     {

@@ -66,6 +66,11 @@ class OrderProduct
      */
     private $modifyDate;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $seen;
+
     public function __construct()
     {
         $this->subOrderProducts = new ArrayCollection();
@@ -198,6 +203,18 @@ class OrderProduct
     public function setModifyDate(\DateTimeInterface $modifyDate): self
     {
         $this->modifyDate = $modifyDate;
+
+        return $this;
+    }
+
+    public function getSeen(): ?bool
+    {
+        return $this->seen;
+    }
+
+    public function setSeen(?bool $seen): self
+    {
+        $this->seen = $seen;
 
         return $this;
     }

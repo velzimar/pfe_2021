@@ -84,6 +84,7 @@ class OrderProductController extends AbstractController
             $status= $request->request->get("status");
             $order = $orderProductRepository->find($id);
             $order->setStatus($status);
+            $order->setSeen(false);
             $order->setModifyDate(new dateTime("now"));
             $em->persist($order);
             $em->flush();
@@ -188,6 +189,7 @@ class OrderProductController extends AbstractController
             $status= $request->request->get("status");
             $order = $orderProductRepository->find($id);
             $order->setStatus($status);
+            $order->setSeen(false);
             $order->setModifyDate(new dateTime("now"));
             $em->persist($order);
             $em->flush();

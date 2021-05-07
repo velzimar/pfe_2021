@@ -4,9 +4,10 @@
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/SubOrderProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/SubOrderProduct.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/OrderProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/OrderProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/SubOrderProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/SubOrderProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/OrderProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/OrderProduct.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/OrderProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/OrderProductRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/SubOrderProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/SubOrderProductRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -290,6 +291,8 @@
       <workItem from="1619914579361" duration="9718000" />
       <workItem from="1619980577943" duration="18797000" />
       <workItem from="1620168472851" duration="14759000" />
+      <workItem from="1620267481980" duration="1215000" />
+      <workItem from="1620341671013" duration="7828000" />
     </task>
     <servers />
   </component>
