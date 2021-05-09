@@ -12,6 +12,7 @@ use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use App\Repository\WorkingHoursRepository;
 use DateTime;
+use phpDocumentor\Reflection\Types\Boolean;
 use Spatie\OpeningHours\OpeningHours;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -370,7 +371,7 @@ class WorkingHoursController extends AbstractController
 
 
     /**
-     * @Route("myWorkingHours/{id}/delete", name="myWorkingHours_delete", methods={"DELETE"})
+     * @Route("/myWorkingHours/{id}/delete", name="myWorkingHours_delete", methods={"DELETE"})
      * @param Request $request
      * @param Service $service
      * @return Response
@@ -386,6 +387,40 @@ class WorkingHoursController extends AbstractController
     }
 
 
+    public function addException(array $old, array $newExceptions, bool $convert, bool $repeat){
+
+        $oldException = $old["exceptions"];
+        unset($old["exceptions"]);
+        if($repeat==true){
+            $date = array_key_first($newExceptions);
+            $dateData = $newExceptions[$date];
+            $date = substr($date,5-strlen($date));
+            $newExceptions = [$date=>$dateData];
+        }
+        $newExceptionArray = ["exceptions"=>array_merge($oldException,$newExceptions)];
+        $newArray = array_merge($old,$newExceptionArray);
+        if($convert==true){
+            $newArray = OpeningHours::CreateAndMergeOverlappingRanges($newArray);
+        }
+        return $newArray;
+    }
+
+
+    /**
+     * @Route("/myWorkingHours/addException", name="myWorkingHours_add_exception", methods={"GET"})
+     * @param ServiceRepository $rep
+     * @return Response
+     */
+    public function myWorkingHours_add_exception(ServiceRepository $rep): Response
+    {
+        $user = $this->getUser();
+        $res = $rep->findOneBy(["business"=>$user]);
+        return $this->render('workingHours/addExceptionScreen.html.twig',[
+            "service"=>$res
+        ]);
+    }
+
+
     /**
      * @Route("/test", name="testttt")
      * @param Request $request
@@ -395,36 +430,125 @@ class WorkingHoursController extends AbstractController
      */
     public function test(Request $request, WorkingHoursRepository $rep): JsonResponse
     {
+/*
+        $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
+        $old = $workingHours->getHours();
+
+
+                        $newException = ["2021-09-26"=>["20:00-22:00"]];
+                        $convert = false;
+                        $repeat = true;
+                        $new = $this->addException($old,$newException,$convert,$repeat);
+                        dump($new);
+                        if($convert == false) {
+                            $new = OpeningHours::CreateAndMergeOverlappingRanges($new);
+                            dump($new);
+                        }
+                        $tst = $new->isOpenAt(new DateTime('2022-09-26 21:00'));
+                        dump($tst);
+                        die;
+*/
+
+        $convert = false;
+
         if ($request->isXmlHttpRequest()) {
-            if($request->request->get('start')===null && $request->request->get('end')===null){
+            if($request->request->get('type')===null || $request->request->get('data')===null || $request->request->get('repeat')===null ){
                 return new JsonResponse([
                     'success'  => false,
                 ]);
             }else{
+                $type = $request->request->get('type');
+                $data = $request->request->get('data');
+                $repeat = $request->request->get('repeat');
+                dump($data);
+                dump($type);
+                dump($repeat);
+                die;
                 $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
-                $test = $workingHours->getHours();
-                //dump($test);
-                $mergedRanges = OpeningHours::mergeOverlappingRanges($test);
-                $openingHours= OpeningHours::create($mergedRanges);
-               // $day =$request->request->get('day');
-                $start = $request->request->get('start');
-                $end = $request->request->get('end');
-                dump($start);
-                dump($end);
-               // die;
-                $res = $openingHours->diffInOpenMinutes(new DateTime($start), new DateTime($end));
+                $old = $workingHours->getHours();
+                $repeat = true;
+                $type="temps";
+
+                if($type=="interval"){
+                    /* Format
+                    {
+                        "data":[
+                        "2020-09-01",
+                        "2020-09-02",
+                        "2020-09-03"
+                        ]
+                    }
+                    */
+
+                    /* Test
+                        $dataTest = ["2020-09-01","2020-09-02","2020-09-03"];
+                    */
+                    foreach($data as $date){
+                        $newException = [$date=>[]];
+                        $old = $this->addException($old,$newException,$convert,$repeat);
+                    }
+                    dump($old);
+                }else if($type=="jour"){
+                    /* Format
+                    {
+                        "data": ["2020-09-01"]
+                    }
+                    */
+                    /* Test
+                        $dataTest = ["2020-09-01"];
+                    */
+                    $newException = [$data[0]=>[]];
+                    $old = $this->addException($old,$newException,$convert,$repeat);
+                    dump($old);
+                }else if($type=="temps"){
+                    /* Format
+                     {
+                         "data":[
+                            ["2020-09-01":["22:00-23:00"]]
+                         ]
+                     }
+                     */
+                    /* Test
+                        $dataTest = "2020-09-01";
+                        $timeTest = "22:00-23:00";
+                    */
+                    $newException = [$data];
+                    $old = $this->addException($old,$newException,$convert,$repeat);
+                    dump($old);
+
+                }else{
+                    return new JsonResponse([
+                        'success'  => false,
+                    ]);
+                }
 
 
-                $checkTime = strtotime($start);
-                $loginTime = strtotime($end);
-                $diff =  ($loginTime - $checkTime)/60 ;
-                dump($diff);
-                dump($res);
-                dump($diff<=$res);
-                //dump($day);
+                $m = $this->getDoctrine()->getManager();
+                $workingHours->setHours($old);
+                $m->persist($old);
+                $m->flush();
+
+
+
+                //dump($workingHours->getHours());
+                //dump($workingHours->getHours()["exceptions"]);
+                /*
+                $newException = ["2021-09-26"=>["20:00-22:00"]];
+                $convert = false;
+                $repeat = false;
+                $new = $this->addException($old,$newException,$convert,$repeat);
+                dump($new);
+                if($convert == false) {
+                    $new = OpeningHours::CreateAndMergeOverlappingRanges($new);
+                    dump($new);
+                }
+                $tst = $new->isOpenAt(new DateTime('2021-09-26 21:00'));
+                dump($tst);
+                die;
+                */
                 return new JsonResponse([
                     'success'  => true,
-                    'result' => $diff<=$res
+                    'result' => $old
                 ]);
             }
         }
@@ -432,6 +556,9 @@ class WorkingHoursController extends AbstractController
             'success'  => false,
         ]);
     }
+
+
+
     //as admin
     /**
      * @Route("/admin/selectUser", name="selectUser_for_workingHours", methods={"GET","POST"})

@@ -1,0 +1,372 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Service{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myWorkingHours_new') }}">Mes horaires</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Liste des exceptions</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Ajouter une exception</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+{% endblock %}
+
+{% block body %}
+    <style>
+
+    </style>
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-box">
+                <h5 class="form-header">
+                </h5>
+                <div class="form-desc">
+                </div>
+
+                <fieldset class="form-group">
+                    <legend><span>Choisir le type d'exception</span></legend>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radiosOf">
+                        <label class="btn btn-warning active">
+                            <input  type="radio" id="once" name="typeOf" autocomplete="off"  value="once" checked>Une fois
+                        </label>
+                        <label class="btn btn-warning">
+                            <input type="radio" name="typeOf" id="periodic" autocomplete="off" value="periodic" > Périodique
+                        </label>
+
+                    </div>
+                </fieldset>
+                <fieldset class="form-group">
+                <legend><span>Choisir le type d'exception</span></legend>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radios">
+                    <label class="btn btn-warning active">
+                        <input type="radio" name="options" id="option1" autocomplete="off"  value="multiple"> Intervalle des jours
+                    </label>
+                    <label class="btn btn-warning">
+                        <input type="radio" name="options" id="option2" autocomplete="off" value="single" checked> Un jour
+                    </label>
+
+                    <label class="btn btn-warning">
+                        <input type="radio" name="options" id="option3" autocomplete="off" value="time"> Intervalle de temps
+                    </label>
+                </div>
+                </fieldset>
+
+            <fieldset class="form-group">
+                <legend><span>Séléctionner les dates</span></legend>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label for="daterange" class="form-label" id="labdaterange" style="display: none;"> Date</label><input type="text" id="daterange" value="" style="width:25ch;display: none;" class="form-control"/>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-2">
+                        <label for="singledate" class="form-label" id="labsingle" style="display: none;"> Date</label><input type="text" id="singledate" value="" style="width:20ch;display: none;" class="form-control"/>
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="timerange1" class="form-label" id="label1" style="display: none;"> De</label><input type="time" id="timerange1" name="timerange1" required="required" class="form-control" style="display: none;">
+                    </div>
+                    <div class="col-sm-2">
+                        <label for="timerange2" class="form-label" id="label2" style="display: none;"> A</label><input type="time" id="timerange2" name="timerange2" required="required" class="form-control" style="display: none;">
+                    </div>
+                </div>
+            </fieldset>
+
+                <button id="getBetween">Get Between Dates</button>
+                <div id="results"></div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        let _error = true;
+        let dateArray = []
+        let local = {
+            "format": "MM/DD/YYYY",
+                "separator": " - ",
+                "applyLabel": "Appliquez",
+                "cancelLabel": "Annuler",
+                "fromLabel": "De",
+                "toLabel": "A",
+                "customRangeLabel": "Personalisé",
+                "daysOfWeek": [
+                "Dim",
+                "Lun",
+                "Mar",
+                "Mer",
+                "Jeu",
+                "Ven",
+                "Sam"
+            ],
+                "monthNames": [
+                "Janvier",
+                "Fevrier",
+                "Mars",
+                "Avril",
+                "May",
+                "Juin",
+                "juillet",
+                "Aout",
+                "Septembre",
+                "October",
+                "November",
+                "December"
+            ],
+                "firstDay": 1
+        };
+        let singleDate = false;
+        let repeat = false;
+        let json = {}
+        $('#singledate').show();
+        $('#labsingle').show();
+
+        $(function() {
+            $("input[name='typeOf']").on("change",function () {
+                repeat = $('input[name="typeOf"]:checked').val() !== "once";
+
+            })
+
+            $("#timerange1").on("change",function () {
+                _error = true;
+                console.log(this.value)
+                console.log( $("#timerange2").val()==="")
+                if($("#timerange2").val()===""){
+                    return true;
+                }
+                var start_time = $("#timerange1").val();
+                var end_time =  $("#timerange2").val()
+
+                var stt = new Date("November 13, 2013 " + start_time);
+                stt = stt.getTime();
+
+                var endt = new Date("November 13, 2013 " + end_time);
+                endt = endt.getTime();
+
+//by this you can see time stamp value in console via firebug
+                console.log("Time1: "+ stt + " Time2: " + endt);
+
+                if(stt >= endt) {
+                    $("#timerange1").next('span').remove();
+                    $("#timerange2").next('span').remove();
+                    $("#timerange1").after('<span class="error"><br>Le temps de fin doit être supérieur au temps de début.</span>');
+                    $("#timerange2").after('<span class="error"><br>Le temps de début doit être supérieur au temps de fin.</span>');
+                    _error = true;
+                    return false;
+                }else{
+                    $("#timerange1").next('span').remove();
+                    $("#timerange2").next('span').remove();
+                    _error = false;
+                    return true;
+                }
+            })
+
+            $("#timerange2").on("change",function () {
+                _error = true;
+                console.log(this.value)
+                console.log( $("#timerange1").val()==="")
+                if($("#timerange1").val()===""){
+                    return;
+                }
+                var start_time = $("#timerange1").val();
+                var end_time =  $("#timerange2").val()
+
+                var stt = new Date("November 13, 2013 " + start_time);
+                stt = stt.getTime();
+
+                var endt = new Date("November 13, 2013 " + end_time);
+                endt = endt.getTime();
+
+//by this you can see time stamp value in console via firebug
+                console.log("Time1: "+ stt + " Time2: " + endt);
+
+                if(stt >= endt) {
+                    $("#timerange1").next('span').remove();
+                    $("#timerange2").next('span').remove();
+                    $("#timerange1").after('<span class="error"><br>Le temps de fin doit être supérieur au temps de début.</span>');
+                    $("#timerange2").after('<span class="error"><br>Le temps de début doit être supérieur au temps de fin.</span>');
+                    _error = true;
+                    return false;
+                }else{
+                    $("#timerange1").next('span').remove();
+                    $("#timerange2").next('span').remove();
+                    _error = false;
+                    return true;
+                }
+
+            })
+
+            $("input[name='options']").on("change",function () {
+
+                dateArray = [];
+                _error = true;
+                json = {};
+
+                $("#singledate").val("");
+                $("#daterange").val("");
+                if($('input[name="options"]:checked').val() === "single"){
+                    $('#timerange1').hide();
+                    $('#timerange2').hide();
+                    $('#daterange').hide();
+                    $('#singledate').show();
+                    $('#label1').hide();
+                    $('#label2').hide();
+                    $('#labdaterange').hide();
+                    $('#labsingle').show();
+
+                }else if($('input[name="options"]:checked').val() === "multiple"){
+                    $('#timerange1').hide();
+                    $('#timerange2').hide();
+                    $('#daterange').show();
+
+                    $('#singledate').hide();
+
+                    $('#label1').hide();
+                    $('#label2').hide();
+                    $('#labdaterange').show();
+                    $('#labsingle').hide();
+                }else{
+                    $('#timerange1').show();
+                    $('#timerange2').show();
+                    $('#daterange').hide();
+                    $('#singledate').show();
+                    $('#label1').show();
+                    $('#label2').show();
+                    $('#labdaterange').hide();
+                    $('#labsingle').show();
+
+                }
+            })
+
+
+
+            $('#daterange').daterangepicker({
+                singleDatePicker: false,
+                "locale": local
+            }, onSelect);
+
+            $('#singledate').daterangepicker({
+                singleDatePicker: true,
+                "locale": local
+            }, onSelect);
+
+            $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            });
+
+
+
+
+            $(window).scroll(function() {
+                if ($('#daterange').length) {
+                    $('#daterange').daterangepicker("close");
+                }
+            });
+
+            $(window).scroll(function() {
+                if ($('input[id="singledate"]').length) {
+                    $('input[id="singledate"]').daterangepicker("close");
+                }
+            });
+            $('#getBetween').on('click',function () {
+                if($('input[name="options"]:checked').val() === "single" || $('input[name="options"]:checked').val() === "multiple" ){
+                    if(dateArray.length === 0){
+
+                        $("#getBetween").next('span').remove();
+                        $("#getBetween").after('<span class="error"><br>Sélèctionner la date.</span>');
+                        return false;
+                    }else{
+                        $("#getBetween").next('span').remove();
+                        json = {data:dateArray}
+                        alert(JSON.stringify(json));
+                        return true;
+                    }
+                }else{
+                    if(_error || dateArray.length === 0){
+                        console.log(_error)
+                        console.log(dateArray)
+                        $("#getBetween").next('span').remove();
+                        $("#getBetween").after('<span class="error"><br>Sélèctionner la date.</span>');
+                        return false;
+                    }else{
+
+                        $("#getBetween").next('span').remove();
+                        var start_time = $("#timerange1").val()
+                        var end_time =  $("#timerange2").val()
+                        let _val = start_time+"-"+end_time
+                        json = {
+                            data:dateArray,
+                            time:_val
+                        }
+                        alert(JSON.stringify(json));
+                        return true;
+                    }
+                }
+            })
+
+            $("#singledate").val("");
+            $("#daterange").val("");
+        });
+
+        Date.prototype.addDays = function(days) {
+            var dat = new Date(this.valueOf())
+            dat.setDate(dat.getDate() + days);
+            return dat;
+        }
+
+
+        Date.prototype.addHours = function(days) {
+            var dat = new Date(this.valueOf())
+            dat.setHours(dat.getHours() + days);
+            return dat;
+        }
+        function getDates(startDate, stopDate) {
+            dateArray = [];
+            var currentDate = startDate;
+            while (currentDate <= stopDate) {
+                dateArray.push(currentDate.toISOString().substr(0,10))
+                currentDate = currentDate.addDays(1);
+            }
+            return dateArray;
+        }
+
+        function onSelect(start, end, label) {
+            $first = new Date(start.format('YYYY-MM-DD 00:00:00'));
+            $now = new Date();
+            console.log($now/*.addHours(1)*/)
+            console.log($first/*.addHours(1)*/)
+            if($first<= $now){
+
+                $("#dateErr").remove();
+                $("#getBetween").before("<span class='error' id='dateErr'><br>La date doit être supérieur au date d'aujourd'hui.<br></span>");
+                dateArray = []
+                return false
+            }
+            $("#dateErr").remove();
+            console.log(this)
+            console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+
+            dateArray = getDates(new Date(start.format('YYYY-MM-DD')), new Date(end.format('YYYY-MM-DD')));
+            for (i = 0; i < dateArray.length; i ++ ) {
+                console.log(dateArray[i])//.toISOString().substr(0,10));
+            }
+            /*
+            json = {"data":dateArray};
+            console.log(json)
+            */
+        }
+
+    </script>
+{% endblock %}

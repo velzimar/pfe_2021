@@ -56,4 +56,5 @@ class WorkingHours
 
         return $this;
     }
+
 }
