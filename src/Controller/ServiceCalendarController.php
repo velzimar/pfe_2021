@@ -37,16 +37,17 @@ class ServiceCalendarController extends AbstractController
             $serviceCalendar = $res;
             $form = $this->createForm(ServiceCalendarType::class, $serviceCalendar);
             $form->handleRequest($request);
+            //dump($res);die;
             if ($form->isSubmitted() && $form->isValid()) {
                 $serviceCalendar->setService($service);
                 $serviceCalendar->setSlots(json_decode($form->get('slots')->getData()));
-                //  dump($serviceCalendar);die();
+                //dump($serviceCalendar);die();
                 $em = $this->getDoctrine()->getManager();
                 //$em->persist($serviceCalendar);
                 $em->flush();
                 return $this->redirectToRoute("myServices_new");
             }
-
+            //dump($serviceCalendar);die();
 
             return $this->render('service_calendar/user/edit.html.twig', [
                 'controller_name' => 'ServiceCalendarController',
@@ -63,7 +64,7 @@ class ServiceCalendarController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $serviceCalendar->setService($service);
                 $serviceCalendar->setSlots(json_decode($form->get('slots')->getData()));
-                //  dump($serviceCalendar);die();
+                //dump($serviceCalendar);die();
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($serviceCalendar);
                 $em->flush();

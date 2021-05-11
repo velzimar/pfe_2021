@@ -2,47 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/.travis.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/MIT-LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/bower.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/build/jquery.datetimepicker.full.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/build/jquery.datetimepicker.full.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/build/jquery.datetimepicker.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/build/jquery.datetimepicker.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/datetimepicker.jquery.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/doc.tpl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/jquery.datetimepicker.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/jquery.datetimepicker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/jquery.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/karma.conf.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/pull_request_template.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/screen/1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/screen/2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/screen/3.1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/screen/3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/screen/4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/screen/5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/screen/6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/app.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/input_in_container_fixed_to_bottom_of_viewport.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/input_in_container_fixed_to_top_of_viewport.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/tests/bootstrap.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/tests/destroy.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/tests/events.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/tests/init.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/tests/methods.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/datetimepicker-master/tests/tests/options.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ServiceCalendarController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ServiceCalendarController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/WorkingHoursController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WorkingHoursController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/WorkingHours.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/WorkingHours.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Service.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Service.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,9 +180,6 @@
       <path value="$PROJECT_DIR$/vendor/twig/intl-extra" />
     </include_path>
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
-  </component>
   <component name="ProjectId" id="1oTf5Ez4bnoiXMla34WtArE0eCy" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -328,7 +292,9 @@
       <workItem from="1620168472851" duration="14759000" />
       <workItem from="1620267481980" duration="1215000" />
       <workItem from="1620341671013" duration="7829000" />
-      <workItem from="1620568245647" duration="33233000" />
+      <workItem from="1620568245647" duration="33304000" />
+      <workItem from="1620684088695" duration="8416000" />
+      <workItem from="1620703222439" duration="11430000" />
     </task>
     <servers />
   </component>

@@ -8,6 +8,7 @@ use App\Entity\WorkingHours;
 use App\Form\ServiceType;
 use App\Form\SelectUserType;
 use App\Form\WorkingHoursType;
+use App\Repository\ServiceCalendarRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use App\Repository\WorkingHoursRepository;
@@ -391,7 +392,8 @@ class WorkingHoursController extends AbstractController
 
         $oldException = $old["exceptions"];
         unset($old["exceptions"]);
-        if($repeat==true){
+        if($repeat){
+            dump("enter");
             $date = array_key_first($newExceptions);
             $dateData = $newExceptions[$date];
             $date = substr($date,5-strlen($date));
@@ -399,7 +401,7 @@ class WorkingHoursController extends AbstractController
         }
         $newExceptionArray = ["exceptions"=>array_merge($oldException,$newExceptions)];
         $newArray = array_merge($old,$newExceptionArray);
-        if($convert==true){
+        if($convert){
             $newArray = OpeningHours::CreateAndMergeOverlappingRanges($newArray);
         }
         return $newArray;
@@ -422,6 +424,49 @@ class WorkingHoursController extends AbstractController
 
 
     /**
+     * @Route("/saveChanges", name="workingHours_saveChanges", methods={"POST"})
+     * @param Request $request
+     * @param WorkingHoursRepository $rep
+     * @param ServiceCalendarRepository $screp
+     * @param ServiceRepository $srep
+     * @return JsonResponse
+     */
+    public function saveChanges(Request $request, WorkingHoursRepository $rep, ServiceCalendarRepository $screp,  ServiceRepository $srep): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('slots')===null || $request->request->get('service')===null){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+                $service = $request->request->get('service');
+                $slots = $request->request->get('slots');
+
+
+                $service = $srep->findOneBy(["id"=>$service]);
+                $serviceCalendar = $screp->findOneBy(["service"=>$service]);
+                $serviceCalendar->setService($service);
+                $serviceCalendar->setSlots(json_decode($slots));
+                //dump($serviceCalendar);die();
+                $em = $this->getDoctrine()->getManager();
+                //$em->persist($serviceCalendar);
+                $em->flush();
+
+
+                return new JsonResponse([
+                    'success'  => true,
+                    'service' => $service,
+                    'slots' => $slots,
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+
+
+    /**
      * @Route("/test", name="testttt")
      * @param Request $request
      * @param WorkingHoursRepository $rep
@@ -429,6 +474,57 @@ class WorkingHoursController extends AbstractController
      * @throws \Exception
      */
     public function test(Request $request, WorkingHoursRepository $rep): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('start')===null || $request->request->get('end')===null){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+                $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
+                $test = $workingHours->getHours();
+                unset($test["exceptions"]);
+                dump($test);
+                $mergedRanges = OpeningHours::mergeOverlappingRanges($test);
+                $openingHours= OpeningHours::create($mergedRanges);
+                // $day =$request->request->get('day');
+                $start = $request->request->get('start');
+                $end = $request->request->get('end');
+                dump($start);
+                dump($end);
+                // die;
+                $res = $openingHours->diffInOpenMinutes(new DateTime($start), new DateTime($end));
+
+
+                $checkTime = strtotime($start);
+                $loginTime = strtotime($end);
+                $diff =  ($loginTime - $checkTime)/60 ;
+                dump($diff);
+                dump($res);
+                dump($diff<=$res);
+                //dump($day);
+                return new JsonResponse([
+                    'success'  => true,
+                    'result' => $diff<=$res
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+
+
+
+
+    /**
+     * @Route("/myWorkingHours/sendData", name="sendDataExceptions", methods={"POST"})
+     * @param Request $request
+     * @param WorkingHoursRepository $rep
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function sendDataExceptions(Request $request, WorkingHoursRepository $rep): JsonResponse
     {
 /*
         $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
@@ -455,21 +551,20 @@ class WorkingHoursController extends AbstractController
             if($request->request->get('type')===null || $request->request->get('data')===null || $request->request->get('repeat')===null ){
                 return new JsonResponse([
                     'success'  => false,
+                    'code'  => 200,
                 ]);
             }else{
                 $type = $request->request->get('type');
                 $data = $request->request->get('data');
-                $repeat = $request->request->get('repeat');
+                $repeat = $request->request->get('repeat')=="true";
                 dump($data);
                 dump($type);
                 dump($repeat);
-                die;
+                //die;
                 $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
                 $old = $workingHours->getHours();
-                $repeat = true;
-                $type="temps";
 
-                if($type=="interval"){
+                if($type==="multiple"){
                     /* Format
                     {
                         "data":[
@@ -483,12 +578,19 @@ class WorkingHoursController extends AbstractController
                     /* Test
                         $dataTest = ["2020-09-01","2020-09-02","2020-09-03"];
                     */
+                    /*
+                    return new JsonResponse([
+                        'success'  => true,
+                        'res'  => $data,
+                    ]);
+                    */
+
                     foreach($data as $date){
                         $newException = [$date=>[]];
                         $old = $this->addException($old,$newException,$convert,$repeat);
                     }
-                    dump($old);
-                }else if($type=="jour"){
+                   // dump($old);
+                }else if($type==="single"){
                     /* Format
                     {
                         "data": ["2020-09-01"]
@@ -497,11 +599,22 @@ class WorkingHoursController extends AbstractController
                     /* Test
                         $dataTest = ["2020-09-01"];
                     */
+/*
+                    return new JsonResponse([
+                        'success'  => true,
+                        'res'  => $data,
+                    ]);
+                    */
                     $newException = [$data[0]=>[]];
                     $old = $this->addException($old,$newException,$convert,$repeat);
-                    dump($old);
-                }else if($type=="temps"){
+                   // dump($old);
+                }else if($type==="time"){
                     /* Format
+
+                     {
+                        "data":["2021-05-14"],
+                        "time":"14:28-15:29"
+                    }
                      {
                          "data":[
                             ["2020-09-01":["22:00-23:00"]]
@@ -512,20 +625,27 @@ class WorkingHoursController extends AbstractController
                         $dataTest = "2020-09-01";
                         $timeTest = "22:00-23:00";
                     */
-                    $newException = [$data];
+/*
+                    return new JsonResponse([
+                        'success'  => true,
+                        'res'  => $data,
+                    ]);
+                    */
+                    $newException = $data;
                     $old = $this->addException($old,$newException,$convert,$repeat);
-                    dump($old);
+                    //dump($old);
 
                 }else{
                     return new JsonResponse([
                         'success'  => false,
+                        'code'  => 201,
                     ]);
                 }
 
 
                 $m = $this->getDoctrine()->getManager();
                 $workingHours->setHours($old);
-                $m->persist($old);
+                $m->persist($workingHours);
                 $m->flush();
 
 
@@ -548,12 +668,13 @@ class WorkingHoursController extends AbstractController
                 */
                 return new JsonResponse([
                     'success'  => true,
-                    'result' => $old
+                    'res' => $old
                 ]);
             }
         }
         return new JsonResponse([
             'success'  => false,
+            'code'  => 202,
         ]);
     }
 

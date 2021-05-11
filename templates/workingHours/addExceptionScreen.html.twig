@@ -22,7 +22,10 @@
 
 {% block body %}
     <style>
-
+        .btn-outline-warning {
+            color: #000000;
+            border-color: #fbe4a0;
+        }
     </style>
     <div class="col-sm-12">
         <div class="element-wrapper">
@@ -35,10 +38,10 @@
                 <fieldset class="form-group">
                     <legend><span>Choisir le type d'exception</span></legend>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radiosOf">
-                        <label class="btn btn-warning active">
+                        <label class="btn btn-outline-warning" id="lab01">
                             <input  type="radio" id="once" name="typeOf" autocomplete="off"  value="once" checked>Une fois
                         </label>
-                        <label class="btn btn-warning">
+                        <label class="btn btn-outline-warning" id="lab02">
                             <input type="radio" name="typeOf" id="periodic" autocomplete="off" value="periodic" > Périodique
                         </label>
 
@@ -47,14 +50,14 @@
                 <fieldset class="form-group">
                 <legend><span>Choisir le type d'exception</span></legend>
                 <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radios">
-                    <label class="btn btn-warning active">
+                    <label class="btn btn-outline-warning">
                         <input type="radio" name="options" id="option1" autocomplete="off"  value="multiple"> Intervalle des jours
                     </label>
-                    <label class="btn btn-warning">
+                    <label class="btn btn-outline-warning">
                         <input type="radio" name="options" id="option2" autocomplete="off" value="single" checked> Un jour
                     </label>
 
-                    <label class="btn btn-warning">
+                    <label class="btn btn-outline-warning">
                         <input type="radio" name="options" id="option3" autocomplete="off" value="time"> Intervalle de temps
                     </label>
                 </div>
@@ -92,6 +95,11 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+
+        let dt = new Date();
+        let newd = new Date(dt.toISOString().substr(0,10)+' 23:59:59');
+        newd.setHours(24)
+
         let _error = true;
         let dateArray = []
         let local = {
@@ -254,11 +262,13 @@
 
             $('#daterange').daterangepicker({
                 singleDatePicker: false,
+                "minDate": newd,
                 "locale": local
             }, onSelect);
 
             $('#singledate').daterangepicker({
                 singleDatePicker: true,
+                "minDate": newd,
                 "locale": local
             }, onSelect);
 
@@ -268,7 +278,7 @@
 
 
 
-
+/*
             $(window).scroll(function() {
                 if ($('#daterange').length) {
                     $('#daterange').daterangepicker("close");
@@ -280,6 +290,39 @@
                     $('input[id="singledate"]').daterangepicker("close");
                 }
             });
+        */
+            function sendData() {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/workingHours/myWorkingHours/sendData",//post how you get this URL please...
+                    data: {
+                        data: json,
+                        type:$('input[name="options"]:checked').val().toString(),
+                        repeat:repeat
+                    },
+                    success: function (response) {
+                        console.log($('input[name="options"]:checked').val().toString());
+                        console.log(json);
+                        console.log(repeat);
+                        if (response.success) {
+                            console.log("response");
+                            console.log(response);
+                           // window.location.href = response.redirect; // <-- HERE
+                        }else{
+
+                            console.log("response2");
+                            console.log(response);
+                        }
+                    },
+                    error: function (response) {
+                        console.log('an error occured');
+                        if (!response.success) {
+                            console.log(response.success);
+                        }
+                    }
+                });
+            }
             $('#getBetween').on('click',function () {
                 if($('input[name="options"]:checked').val() === "single" || $('input[name="options"]:checked').val() === "multiple" ){
                     if(dateArray.length === 0){
@@ -289,7 +332,8 @@
                         return false;
                     }else{
                         $("#getBetween").next('span').remove();
-                        json = {data:dateArray}
+                        json = dateArray
+                        sendData()
                         alert(JSON.stringify(json));
                         return true;
                     }
@@ -306,11 +350,11 @@
                         var start_time = $("#timerange1").val()
                         var end_time =  $("#timerange2").val()
                         let _val = start_time+"-"+end_time
-                        json = {
-                            data:dateArray,
-                            time:_val
-                        }
-                        alert(JSON.stringify(json));
+                        json = {"time":[_val]}
+
+                        json[dateArray[0].toString()] = json['time'];
+                        delete json['time'];
+                        sendData()
                         return true;
                     }
                 }
@@ -341,8 +385,17 @@
             }
             return dateArray;
         }
-
+        function rename(old,_new) { // function to rename on button click
+            json = json.map(function(obj,old,_new) {
+                obj[_new] = obj[old]; // Assign new key
+                delete obj[old]; // Delete old key
+                return obj;
+            });
+            console.log(capitals);
+        }
         function onSelect(start, end, label) {
+
+
             $first = new Date(start.format('YYYY-MM-DD 00:00:00'));
             $now = new Date();
             console.log($now/*.addHours(1)*/)

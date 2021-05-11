@@ -217,6 +217,11 @@ class User implements UserInterface, Serializable
      */
     private $IncomingOrderProducts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="client")
+     */
+    private $reservations;
+
 
     public function __construct()
     {
@@ -230,6 +235,7 @@ class User implements UserInterface, Serializable
         $this->orderProducts = new ArrayCollection();
         $this->IncomingOrderProducts = new ArrayCollection();
         $this->IncomingOrderDeals = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -949,6 +955,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($incomingOrderDeal->getBusiness() === $this) {
                 $incomingOrderDeal->setBusiness(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getClient() === $this) {
+                $reservation->setClient(null);
             }
         }
 

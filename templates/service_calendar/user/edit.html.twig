@@ -101,6 +101,7 @@
                         'label':"Activer la réservation",
                     }) }}
                 </div>
+                {#
                 <div class="form-buttons-w">
                     <div class="row">
                         <div class="col-auto mr-auto">
@@ -111,6 +112,7 @@
                         </div>
                     </div>
                 </div>
+                #}
             </div>
             {{ form_end(form) }}
             <div id="loading"></div>
@@ -144,6 +146,20 @@
             });
         }
 
+        function saveChanges(){
+            let serviceId = '{{ service.id }}';
+            console.log(json_to_send)
+            console.log(serviceId)
+            return $.ajax({
+                type: "POST",
+                // async: false,
+                url: "/workingHours/saveChanges",
+                data: {slots: JSON.stringify(json_to_send), service:serviceId},//jQ will sort this out for you
+                success: function (response) {
+                    console.log(response);
+                },
+            });
+        }
         function getJSonObject(value) {
             return $.parseJSON(value.replace(/&quot;/ig, '"'));
         }
@@ -283,6 +299,7 @@
                             }else{
                                 alert("noooo")
                                 responseStatus = "#e65252";
+                                return false;
                             }
 
                             // import { toDuration } from '@fullcalendar/moment'
@@ -304,11 +321,13 @@
                                 end: arg.end,
                             })
                             _save()
+                            saveChanges()
                             calendar.unselect()
                         });
                     }
                 },
                 eventClick: function (arg) {
+                    //test if there is reservation on this date
                     if (confirm('Are you sure you want to delete this event?')) {
                         arg.event.remove()
                         _save()
@@ -319,7 +338,8 @@
                 events: [],
                 initialView: 'timeGridWeek',
             });
-            $.each(json_to_send, function (k, v) {
+            let promises = []
+             $.each(json_to_send, function (k, v) {
                 //alert("aa")
                 $.each(json_to_send[k], function (a, c) {
 
@@ -338,16 +358,64 @@
 
                     //alert("2020-09-"+s)
                     //alert("2020-09-"+e)
+                    let startDate = "2020-09-"+s;
+                    let endDate = "2020-09-"+e;
+                    console.log(startDate)
+                    console.log(endDate)
+                    request = $.when(getData(startDate,endDate)).done(function(response){
+                        //access response data here
+                        console.log('empty2');
+                        if (response.success && response.result) {
+                            console.log('true');
+                           // responseStatus = "#047bf8";
+                        }else{
+                            console.log('false');
+                            //alert("noooo")
+                            //responseStatus = "#e65252";
+                            return false;
+                        }
+
+                        // import { toDuration } from '@fullcalendar/moment'
+                        var a = moment(startDate/*.toString("YYYY-MM-DD HH:mm")*/);
+                        var b = moment(endDate/*.toString("YYYY-MM-DD HH:mm")*/);
+                        var diffMinutes = b.diff(a, 'minutes')
+                        var date = moment(startDate).format('YYYY-MM-DD');
+                        const t = moment(date); // Thursday Feb 2015
+                        const dow = t.day();
+                        if (diffMinutes !== 15) {
+                            //  alert(duration_in_minutes)
+                            alert("Selectionner seulement un timeslot");
+                            return false;
+                        }
+                        calendar.addEvent({
+                            color:"#24b314",
+                            title: " ",
+                            start: startDate,
+                            end: endDate,
+                        })
+                        _save()
+                        calendar.unselect()
+                    })
+                    promises.push(request)
+
+                    /*
                     calendar.addEvent({
                         color:"#24b314",
                         title: " ",
                         start: "2020-09-"+s,
                         end: "2020-09-"+e,
                     })
-                });
+                    */
+                })
+
+
                 //alert(v["start"]+"   "+v["end"])
             });
 
+
+            $.when.apply(null, promises).done(function(){
+                saveChanges()
+            })
             calendar.render();
 
             // });
