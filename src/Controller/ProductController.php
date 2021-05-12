@@ -406,6 +406,7 @@ class ProductController extends AbstractController
     {
         if ($request->isXmlHttpRequest()) {
             $minPriority = $productRepository->findMinPriority(intval($user->getId()),intval($productCategory->getId()));
+            dump($minPriority);dump($minPriority[0]["min_priority"]);
             return new JsonResponse([
                 'success'  => true,
                 'minPriority' => $minPriority[0]["min_priority"],
@@ -433,6 +434,7 @@ class ProductController extends AbstractController
     {
         if ($request->isXmlHttpRequest()) {
             $minPriority = $productRepository->findProductsOfThisCategory(intval($user->getId()),intval($productCategory->getId()));
+            dump($minPriority);
             return new JsonResponse([
                 'success'  => true,
                 'minPriority' => $minPriority,

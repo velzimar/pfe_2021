@@ -22,4 +22,6 @@ doctrine:
                 COALESCE: DoctrineExtensions\Query\Mysql\COALESCE
                 ifnull: DoctrineExtensions\Query\Mysql\IfNull
             datetime_functions:
+                dateadd: DoctrineExtensions\Query\Mysql\DateAdd
                 TimestampDiff: DoctrineExtensions\Query\Mysql\TimestampDiff
+                DayOfWeek: DoctrineExtensions\Query\Mysql\DayOfWeek

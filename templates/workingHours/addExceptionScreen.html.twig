@@ -291,6 +291,22 @@
                 }
             });
         */
+            function reservationsAtThisDate(){
+                return $.ajax({
+                    type: "POST",
+                    // async: false,
+                    url: "/workingHours/reservationsAtThisDate",
+                    data: {
+                        data: json,
+                        type:$('input[name="options"]:checked').val().toString(),
+                        repeat:repeat
+                    },//jQ will sort this out for you
+                    success: function (response) {
+                        console.log(response);
+                    },
+                });
+            }
+
             function sendData() {
 
                 $.ajax({
@@ -333,7 +349,8 @@
                     }else{
                         $("#getBetween").next('span').remove();
                         json = dateArray
-                        sendData()
+                        reservationsAtThisDate()
+                        //sendData()
                         alert(JSON.stringify(json));
                         return true;
                     }
@@ -351,10 +368,11 @@
                         var end_time =  $("#timerange2").val()
                         let _val = start_time+"-"+end_time
                         json = {"time":[_val]}
-
+                        console.log(json)
                         json[dateArray[0].toString()] = json['time'];
                         delete json['time'];
-                        sendData()
+                        reservationsAtThisDate()
+                       // sendData()
                         return true;
                     }
                 }

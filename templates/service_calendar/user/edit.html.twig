@@ -116,6 +116,48 @@
             </div>
             {{ form_end(form) }}
             <div id="loading"></div>
+            <div class="modal fade" id="myModalafter" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal_title"></h5>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <div class="form-desc">
+                            </div>
+                        </div>
+                        <div class="modal-header">
+                            <h6 class="modal-title" style="color: #047bf8">Liste des clients qui ont réservé à ce moment</h6>
+                        </div>
+                        <div class="modal-body">
+                            <table id="dataTable">
+                                <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Reservation</th>
+                                    <th>Status</th>
+                                    <th>Téléphone</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tbody_for_after">
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <button type="button" class="btn btn-warning" >Envoyer des emails d'annulation et appliquer les changements</button>
+                            </div>
+                            <div class="row">
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-outline-dark" >Télécharger cette liste</button></div>
+                                <div class="col-auto mr-auto">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Ne pas Supprimer ce créneau</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -124,7 +166,12 @@
 
 {% block javascripts %}
     <script>
-
+        let table;
+        $('#myModalafter').on('hidden.bs.modal', function (e) {
+            // do something...
+            console.log("hide")
+            table.destroy();
+        })
         $("#loading").css("display", "none");
         $( document ).ajaxStop(function() {
             $("#loading").css("display", "none");
@@ -160,6 +207,25 @@
                 },
             });
         }
+
+        function reservationsAtThisTime(start,day){
+            let serviceId = '{{ service.id }}';
+            console.log(start)
+            console.log(day)
+            console.log(serviceId)
+            return $.ajax({
+                type: "POST",
+                // async: false,
+                url: "/workingHours/reservationsAtThisTime",
+                data: {start: start, service:serviceId, day:day+1},//jQ will sort this out for you
+                success: function (response) {
+                    console.log(response);
+
+                },
+            });
+        }
+
+
         function getJSonObject(value) {
             return $.parseJSON(value.replace(/&quot;/ig, '"'));
         }
@@ -176,7 +242,7 @@
         });
         //$("#slots").val("["+option_names+"]")
         let json_to_send = option_names
-        alert(JSON.stringify(json_to_send))
+      //  alert(JSON.stringify(json_to_send))
 
         generate_calendar()
         $("#active_checkbox").change(function () {
@@ -328,10 +394,121 @@
                 },
                 eventClick: function (arg) {
                     //test if there is reservation on this date
+                    //console.log(arg.event.start)
+                    let start_=moment(arg.event.start).format('YYYY-MM-DD HH:mm:00')
+                    let dayNumber = arg.event.start.getDay()
+                    console.log(arg.event.start.getDay())
+                    //console.log(start_)
+                    $.when(reservationsAtThisTime(start_.toLocaleString().substr(11,8),dayNumber)).done(function(response){
+                        if(response.result.length === 0){
+                            //no reservations
+                            arg.event.remove()
+                            _save()
+                            saveChanges()
+                        }else if(response.result.length !== 0){
+
+
+                            //alert(JSON.stringify(response.result))
+                            let str = ""
+                            Object.keys(response.result).forEach((reservation)=>{
+                                console.log(reservation["client"]);
+                                console.log(reservation);
+                                    let client = response.result[reservation]["client"]
+                                    let id = response.result[reservation]["id"]
+                                    let status = response.result[reservation]["status"]
+                                    let phone = response.result[reservation]["phone"]
+                                    str += "<tr><td>" + client + "</td><td>" + id + "</td><td>" + status + "</td><td>" + phone + "</td></tr>"
+
+                                }
+                            )
+                            /*
+                            $.each(response.result, function (reservation) {
+                                let client = reservation["client"]
+                                let id = reservation["id"]
+                                let status = reservation["status"]
+                                let phone = reservation["phone"]
+                                str += "<tr><td>" + client + "</td><td>" + id + "</td><td>" + status + "</td><td>" + phone + "</td></tr>"
+
+                            });*/
+                            $("#tbody_for_after").html(
+                                str
+                            )
+                            var weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+
+                            $("#modal_title").html(
+                                "Créneau horaire à supprimer: "+weekday[arg.event.start.getDay()]+" à " + start_.substr(11,8)
+                            )
+                            if (str === "") {
+                                console.log("Aucun produit dans cette catégorie")
+                                return;
+                            }
+                           // $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
+                            /*
+                            $('#dataTable thead tr:eq(1) th').each(function (i) {
+
+                                var title = $(this).text();
+                                if (title.search("Nom") !== -1 || title.search("Pri") !== -1) {
+                                    $(this).html('<input class="form-control" type="text" />');
+
+                                    $('input', this).on('keyup change', function () {
+                                        if (table.column(i).search() !== this.value) {
+                                            table
+                                                .column(i)
+                                                .search(this.value)
+                                                .draw();
+                                        }
+                                    });
+                                } else {
+                                    $(this).html('<input type="text" hidden/>');
+
+                                }
+
+                            });*/
+
+                            table = $('#dataTable').DataTable({
+                                orderCellsTop: true,
+                                fixedHeader: true,
+                                "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                                language: {
+                                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                                }
+                            });
+
+                            $('#myModalafter').modal('show')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            //there is reservations
+                        }else{
+                            //error
+                        }
+                    });
+                    /*
                     if (confirm('Are you sure you want to delete this event?')) {
+
                         arg.event.remove()
                         _save()
-                    }
+                    }*/
                 },
                 editable: false,
                 dayMaxEvents: true, // allow "more" link when too many events

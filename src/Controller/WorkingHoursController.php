@@ -8,6 +8,7 @@ use App\Entity\WorkingHours;
 use App\Form\ServiceType;
 use App\Form\SelectUserType;
 use App\Form\WorkingHoursType;
+use App\Repository\ReservationRepository;
 use App\Repository\ServiceCalendarRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
@@ -465,6 +466,223 @@ class WorkingHoursController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/reservationsAtThisDate", name="reservationsAtThisDate", methods={"POST"})
+     * @param Request $request
+     * @param WorkingHoursRepository $rep
+     * @param ReservationRepository $reservationRepository
+     * @param ServiceRepository $srep
+     * @return JsonResponse
+     */
+    public function reservationsAtThisDate(Request $request, WorkingHoursRepository $rep, ReservationRepository $reservationRepository,  ServiceRepository $srep): JsonResponse
+    {
+        $convert = false;
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('type')===null || $request->request->get('data')===null || $request->request->get('repeat')===null ){
+                return new JsonResponse([
+                    'success'  => false,
+                    'code'  => 200,
+                ]);
+            }else{
+                $type = $request->request->get('type');
+                $data = $request->request->get('data');
+                $repeat = $request->request->get('repeat')=="true";
+                dump($data);
+                dump($type);
+                dump($repeat);
+                //die;
+                $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
+                $old = $workingHours->getHours();
+
+                if($type==="multiple"){
+                    /* Format
+                    {
+                        "data":[
+                        "2020-09-01",
+                        "2020-09-02",
+                        "2020-09-03"
+                        ]
+                    }
+                    */
+
+                    /* Test
+                        $dataTest = ["2020-09-01","2020-09-02","2020-09-03"];
+                    */
+                    /*
+                    return new JsonResponse([
+                        'success'  => true,
+                        'res'  => $data,
+                    ]);
+                    */
+
+                    $reservationsList = [];
+                    foreach($data as $date){
+                        $reservations = $reservationRepository->findReservationAtThisDay($date,$workingHours->getBusiness()->getService(),$repeat,"");
+                        dump($workingHours->getBusiness()->getService());
+                        dump($date);
+                        dump($reservations);
+                        $reservationsList = array_merge($reservationsList,$reservations);
+                        //$newException = [$date=>[]];
+                        //$old = $this->addException($old,$newException,$convert,$repeat);
+                    }
+                    // dump($old);
+                }else if($type==="single"){
+                    /* Format
+                    {
+                        "data": ["2020-09-01"]
+                    }
+                    */
+                    /* Test
+                        $dataTest = ["2020-09-01"];
+                    */
+                    /*
+                                        return new JsonResponse([
+                                            'success'  => true,
+                                            'res'  => $data,
+                                        ]);
+                                        */
+                    $reservationsList = $reservationRepository->findReservationAtThisDay($data[0],$workingHours->getBusiness()->getService(),$repeat,"");
+                    // dump($old);
+                }else if($type==="time"){
+                    /* Format
+
+                     {
+                        "data":["2021-05-14"],
+                        "time":"14:28-15:29"
+                    }
+                     {
+                         "data":[
+                            ["2020-09-01":["22:00-23:00"]]
+                         ]
+                     }
+                     */
+                    /* Test
+                        $dataTest = "2020-09-01";
+                        $timeTest = "22:00-23:00";
+                    */
+                    /*
+                                        return new JsonResponse([
+                                            'success'  => true,
+                                            'res'  => $data,
+                                        ]);
+                                        */
+                    dump($data);
+                    $reservationsList = $data;
+
+                    $date = array_key_first ( $data );
+                    $time = $data[$date][0];
+                    $reservationsList = $reservationRepository->findReservationAtThisDay($date,$workingHours->getBusiness()->getService(),$repeat,$time);
+
+
+                }else{
+                    return new JsonResponse([
+                        'success'  => false,
+                        'code'  => 201,
+                    ]);
+                }
+
+/*
+                $m = $this->getDoctrine()->getManager();
+                $workingHours->setHours($old);
+                $m->persist($workingHours);
+                $m->flush();
+*/
+
+
+                //dump($workingHours->getHours());
+                //dump($workingHours->getHours()["exceptions"]);
+                /*
+                $newException = ["2021-09-26"=>["20:00-22:00"]];
+                $convert = false;
+                $repeat = false;
+                $new = $this->addException($old,$newException,$convert,$repeat);
+                dump($new);
+                if($convert == false) {
+                    $new = OpeningHours::CreateAndMergeOverlappingRanges($new);
+                    dump($new);
+                }
+                $tst = $new->isOpenAt(new DateTime('2021-09-26 21:00'));
+                dump($tst);
+                die;
+                */
+                return new JsonResponse([
+                    'success'  => true,
+                    'res' => $reservationsList
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+            'code'  => 202,
+        ]);
+
+/*
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('start')===null || $request->request->get('service')===null || $request->request->get('day')===null){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+
+                $service = $request->request->get('service');
+                $start = $request->request->get('start');
+                $dayNumber = $request->request->get('day');
+
+
+                $service = $srep->findOneBy(["id"=>$service]);
+                $reservations = $reservationRepository->findReservationAtThisTime($start,$service,$dayNumber);
+
+                dump($reservations);
+                return new JsonResponse([
+                    'success'  => true,
+                    'result' => $reservations
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+        */
+    }
+
+    /**
+     * @Route("/reservationsAtThisTime", name="reservationsAtThisTime", methods={"POST"})
+     * @param Request $request
+     * @param WorkingHoursRepository $rep
+     * @param ReservationRepository $reservationRepository
+     * @param ServiceRepository $srep
+     * @return JsonResponse
+     */
+    public function reservationsAtThisTime(Request $request, WorkingHoursRepository $rep, ReservationRepository $reservationRepository,  ServiceRepository $srep): JsonResponse
+    {
+
+
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('start')===null || $request->request->get('service')===null || $request->request->get('day')===null){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+
+                $service = $request->request->get('service');
+                $start = $request->request->get('start');
+                $dayNumber = $request->request->get('day');
+
+
+                $service = $srep->findOneBy(["id"=>$service]);
+                $reservations = $reservationRepository->findReservationAtThisTime($start,$service,$dayNumber);
+
+                dump($reservations);
+                return new JsonResponse([
+                    'success'  => true,
+                    'result' => $reservations
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
 
     /**
      * @Route("/test", name="testttt")
