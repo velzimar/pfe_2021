@@ -5,14 +5,16 @@ namespace App\Entity;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\Mapping as ORM;
 //in orm\table we use sql column names
+/*
+   @ORM\Table(
+     name="reservation",
+     uniqueConstraints={
+         @ORM\UniqueConstraint(name="unique_selectedDate_service", columns={ "selected_date", "service_id"})
+     }
+  )
+ */
 /**
  * @ORM\Entity(repositoryClass=ReservationRepository::class)
- * @ORM\Table(
- *    name="reservation",
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(name="unique_status_selectedDate_service", columns={"status", "selected_date", "service_id"})
- *    }
- * )
  */
 class Reservation
 {
@@ -24,7 +26,7 @@ class Reservation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=service::class, inversedBy="reservations")
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="reservations")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $service;

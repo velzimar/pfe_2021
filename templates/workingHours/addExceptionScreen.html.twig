@@ -87,7 +87,49 @@
 
                 <button id="getBetween">Get Between Dates</button>
                 <div id="results"></div>
+                <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal_title"></h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="form-desc">
+                                </div>
+                            </div>
+                            <div class="modal-header">
+                                <h6 class="modal-title" style="color: #047bf8">Liste des réservations qui seront affècter par ce changement</h6>
+                            </div>
+                            <div class="modal-body">
+                                <table id="dataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>Client</th>
+                                        <th>Reservation</th>
+                                        <th>Status</th>
+                                        <th>Téléphone</th>
+                                        <th>Date</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="tbody_for_after">
+                                    </tbody>
+                                </table>
 
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <button class="btn btn-warning " type="submit" id="#formField" onclick="sendData()">Envoyer des emails d'annulation et appliquer les changements</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <button type="button" class="btn btn-outline-dark" >Télécharger cette liste</button></div>
+                                    <div class="col-auto mr-auto">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -95,7 +137,6 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-
         let dt = new Date();
         let newd = new Date(dt.toISOString().substr(0,10)+' 23:59:59');
         newd.setHours(24)
@@ -140,8 +181,40 @@
         let json = {}
         $('#singledate').show();
         $('#labsingle').show();
+        function sendData() {
 
+            $.ajax({
+                type: "POST",
+                url: "/workingHours/myWorkingHours/sendData",//post how you get this URL please...
+                data: {
+                    data: json,
+                    type:$('input[name="options"]:checked').val().toString(),
+                    repeat:repeat
+                },
+                success: function (response) {
+                    console.log($('input[name="options"]:checked').val().toString());
+                    console.log(json);
+                    console.log(repeat);
+                    if (response.success) {
+                        console.log("response");
+                        console.log(response);
+                        location.reload(true)
+                    }else{
+
+                        console.log("response2");
+                        console.log(response);
+                    }
+                },
+                error: function (response) {
+                    console.log('an error occured');
+                    if (!response.success) {
+                        console.log(response.success);
+                    }
+                }
+            });
+        }
         $(function() {
+
             $("input[name='typeOf']").on("change",function () {
                 repeat = $('input[name="typeOf"]:checked').val() !== "once";
 
@@ -307,49 +380,68 @@
                 });
             }
 
-            function sendData() {
 
-                $.ajax({
-                    type: "POST",
-                    url: "/workingHours/myWorkingHours/sendData",//post how you get this URL please...
-                    data: {
-                        data: json,
-                        type:$('input[name="options"]:checked').val().toString(),
-                        repeat:repeat
-                    },
-                    success: function (response) {
-                        console.log($('input[name="options"]:checked').val().toString());
-                        console.log(json);
-                        console.log(repeat);
-                        if (response.success) {
-                            console.log("response");
-                            console.log(response);
-                           // window.location.href = response.redirect; // <-- HERE
-                        }else{
 
-                            console.log("response2");
-                            console.log(response);
-                        }
-                    },
-                    error: function (response) {
-                        console.log('an error occured');
-                        if (!response.success) {
-                            console.log(response.success);
-                        }
-                    }
-                });
-            }
+
             $('#getBetween').on('click',function () {
                 if($('input[name="options"]:checked').val() === "single" || $('input[name="options"]:checked').val() === "multiple" ){
                     if(dateArray.length === 0){
 
                         $("#getBetween").next('span').remove();
                         $("#getBetween").after('<span class="error"><br>Sélèctionner la date.</span>');
+                        sendData()
                         return false;
                     }else{
                         $("#getBetween").next('span').remove();
                         json = dateArray
-                        reservationsAtThisDate()
+
+                        $.when( reservationsAtThisDate()).done(function(response){
+                            if(response.result.length === 0){
+                                console.log("aaaaa")
+                                sendData()
+                            }else if(response.result.length !== 0){
+                                let str = ""
+                                Object.keys(response.result).forEach((reservation)=>{
+                                        console.log(reservation["client"]);
+                                        console.log(reservation);
+                                        let client = response.result[reservation]["client"]
+                                        let id = response.result[reservation]["id"]
+                                        let status = response.result[reservation]["status"]
+                                        let phone = response.result[reservation]["phone"]
+                                        let date = response.result[reservation]["date"].date.substr(0,16)
+                                        str += "<tr><td>" + client + "</td><td>" + id + "</td><td>" + status + "</td><td>" + phone + "</td><td>" + date + "</td></tr>"
+
+                                    }
+                                )
+                                $("#tbody_for_after").html(
+                                    str
+                                )
+                                var weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+                                /*
+                                                    $("#modal_title").html(
+                                                        "Créneau horaire à supprimer: "+weekday[arg.event.start.getDay()]+" à " + start_.substr(11,8)
+                                                    )
+                                                    */
+
+                                if (str === "") {
+                                    console.log("Aucun produit dans cette catégorie")
+                                    return;
+                                }
+                                table = $('#dataTable').DataTable({
+                                    orderCellsTop: true,
+                                    fixedHeader: true,
+                                    "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                                    language: {
+                                        url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                                    }
+                                });
+
+                                $('#confirm-submit').modal('show')
+
+                            }else{
+                                //error
+                            }
+                        });
                         //sendData()
                         alert(JSON.stringify(json));
                         return true;
@@ -358,6 +450,7 @@
                     if(_error || dateArray.length === 0){
                         console.log(_error)
                         console.log(dateArray)
+                        sendData()
                         $("#getBetween").next('span').remove();
                         $("#getBetween").after('<span class="error"><br>Sélèctionner la date.</span>');
                         return false;
@@ -371,8 +464,54 @@
                         console.log(json)
                         json[dateArray[0].toString()] = json['time'];
                         delete json['time'];
-                        reservationsAtThisDate()
-                       // sendData()
+                        $.when( reservationsAtThisDate()).done(function(response){
+                            if(response.result.length === 0){
+                                console.log("aaaaa")
+
+                                sendData()
+                            }else if(response.result.length !== 0){
+                                let str = ""
+                                Object.keys(response.result).forEach((reservation)=>{
+                                        console.log(reservation["client"]);
+                                        console.log(reservation);
+                                        let client = response.result[reservation]["client"]
+                                        let id = response.result[reservation]["id"]
+                                        let status = response.result[reservation]["status"]
+                                        let phone = response.result[reservation]["phone"]
+                                        let date = response.result[reservation]["date"].date.substr(0,16)
+                                        str += "<tr><td>" + client + "</td><td>" + id + "</td><td>" + status + "</td><td>" + phone + "</td><td>" + date + "</td></tr>"
+
+                                    }
+                                )
+                                $("#tbody_for_after").html(
+                                    str
+                                )
+                                var weekday = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+                                /*
+                                                    $("#modal_title").html(
+                                                        "Créneau horaire à supprimer: "+weekday[arg.event.start.getDay()]+" à " + start_.substr(11,8)
+                                                    )
+                                                    */
+
+                                if (str === "") {
+                                    console.log("Aucun produit dans cette catégorie")
+                                    return;
+                                }
+                                table = $('#dataTable').DataTable({
+                                    orderCellsTop: true,
+                                    fixedHeader: true,
+                                    "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                                    language: {
+                                        url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                                    }
+                                });
+
+                                $('#confirm-submit').modal('show')
+
+                            }else{
+                                //error
+                            }
+                        });
                         return true;
                     }
                 }
@@ -438,6 +577,11 @@
             console.log(json)
             */
         }
+
+        $("#formField").on('click',function () {
+            console.log("aaza")
+            sendData();
+        })
 
     </script>
 {% endblock %}

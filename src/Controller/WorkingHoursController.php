@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Reservation;
 use App\Entity\Service;
 use App\Entity\User;
 use App\Entity\WorkingHours;
 use App\Form\ServiceType;
 use App\Form\SelectUserType;
 use App\Form\WorkingHoursType;
+use App\Repository\OrderProductRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\ServiceCalendarRepository;
 use App\Repository\ServiceRepository;
@@ -196,7 +198,7 @@ class WorkingHoursController extends AbstractController
      * @param WorkingHoursRepository $srep
      * @return Response
      */
-    public function myWorkingHours_new(Request $request, WorkingHoursRepository $srep, ServiceRepository $serviceRepository): Response
+    public function myWorkingHours_new(Request $request, WorkingHoursRepository $srep, ServiceRepository $serviceRepository, ReservationRepository $reservationRepository): Response
     {
         $hasService = $serviceRepository->findOneBy(["business"=>$this->getUser()->getId()]);
 
@@ -287,9 +289,39 @@ class WorkingHoursController extends AbstractController
 
                 dump($ranges);
                 $userFound->setHours($ranges);
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->flush();
+                //added to test reservation list
+                $workingHours = OpeningHours::createAndMergeOverlappingRanges($ranges);
+                $manager = $this->getDoctrine()->getManager();
+                $reservationsList = $reservationRepository->findReservationsByServiceByStatus($hasService,"Annuler");
+                $listToDelete =  [];
+                dump($reservationsList);
+                foreach($reservationsList as $reservation){
+                    $res = $reservation;
+                    dump($reservation);
+                    $isOpen = $workingHours->isOpenAt($reservation["date"]);
+                    if(!$isOpen){
+                        array_push($listToDelete,$reservation);
+                        $reservationToCancel = $reservationRepository->find($reservation["id"]);
+                        $reservationToCancel->setStatus("Annuler");
+                        $reservationToCancel->setSeen(0);
+                        $manager->flush();
+                    }
+                }
+                dump($listToDelete);
+
+                //end added
+
+
+                /*
+                return new JsonResponse([
+                    'success'  => false,
+                    'result' => $listToDelete,
+                    'code'  => 200,
+                ]);
+                */
+
                 return $this->redirectToRoute('myWorkingHours_new',['service'=>$hasService]);
+
             }
 
         } else
@@ -360,6 +392,12 @@ class WorkingHoursController extends AbstractController
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($workingHours);
                 $entityManager->flush();
+/*
+                return new JsonResponse([
+                    'success'  => true,
+                    'result' => $listToDelete,
+                    'code'  => 201,
+                ]);*/
                 return $this->redirectToRoute('myWorkingHours_new',['service'=>$hasService]);
             }
         }
@@ -371,6 +409,128 @@ class WorkingHoursController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/myWorkingHours/getMyListOfReservations/{status}", name="getMyListOfReservations", methods={"GET"},requirements={"status"="Tous|Confirmer||Attente|Annuler"})
+     * @param ReservationRepository $reservationRepository
+     * @param string $status
+     * @return Response
+     */
+    public function getMyListOfReservations( ReservationRepository $reservationRepository, string $status): Response
+    {
+        $user = $this->getUser();
+        $service = $user->getService();
+        dump($service);
+      //  die;
+        if($status == "Tous"){
+            return $this->render('workingHours/myReservationList.html.twig', [
+                'user' => $user,
+                'service' => $service,
+                'products' => $reservationRepository->findBy(["service"=>$service],["selectedDate"=>"ASC"]),
+            ]);
+        }
+        switch($status){
+            case "Attente";
+                $status = "En attente";
+                break;
+        }
+
+        return $this->render('workingHours/myReservationList.html.twig', [
+            'user' => $user,
+            'service' => $service,
+            'products' => $reservationRepository->findBy(["service"=>$service, "status"=>$status]),
+        ]);
+    }
+
+    /**
+     * @Route("/myWorkingHours/getMyListOfReservations/changeStatus", name="getMyListOfReservations_changeStatus", methods={"PUT"})
+     * @param Request $request
+     * @param ReservationRepository $reservationRepository
+     * @return JsonResponse
+     */
+    public function getMyListOfReservations_changeStatus(Request $request, ReservationRepository $reservationRepository): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        if ($request->isXmlHttpRequest()) {
+            $id = $request->request->get("id");
+            $status= $request->request->get("status");
+            $reservation = $reservationRepository->find($id);
+
+            if($status !== "Annuler"){
+                //check if another reservation with the same date have status confirmer or attente
+                $findSameDate1 =  $reservationRepository->findWithSameDateNotCancelled($reservation->getService(),$reservation->getSelectedDate(),$reservation->getId());
+                if($findSameDate1 !== [] ){
+                    dump($findSameDate1);
+                    return new JsonResponse([
+                        'success'  => false,
+                        'orderProduct' => $id,
+                        'status' => "there is one with same date",
+                    ]);
+                }
+                //endcheck
+            }
+
+            $reservation->setStatus($status);
+            $reservation->setSeen(false);
+            $reservation->setDateModif(new dateTime("now"));
+            $em->persist($reservation);
+            $em->flush();
+            return new JsonResponse([
+                'success'  => true,
+                'orderProduct' => $id,
+                'status' => $reservation,
+            ]);
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+
+    /**
+     * @Route("/myWorkingHours/listToBeCancelled", name="listToBeCancelled", methods={"GET","POST"})
+     * @param Request $request
+     * @param WorkingHoursRepository $srep
+     * @return JsonResponse
+     */
+    public function listToBeCancelled(Request $request, WorkingHoursRepository $srep, ServiceRepository $serviceRepository, ReservationRepository $reservationRepository): Response
+    {
+        $hasService = $serviceRepository->findOneBy(["business"=>$this->getUser()->getId()]);
+        $userFound = $srep->findOneBy(["business" => $this->getUser()->getId()]);
+
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('data')===null){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+                $ranges = $request->request->get('data');
+                dump($ranges);
+                $userFound->setHours($ranges);
+                //added to test reservation list
+
+                $workingHours = OpeningHours::createAndMergeOverlappingRanges($ranges);
+
+                $reservationsList = $reservationRepository->findReservationsByServiceByStatus($hasService,"Annuler");
+                $listToDelete =  [];
+                dump($reservationsList);
+                foreach($reservationsList as $reservation){
+                    $res = $reservation;
+                    dump($reservation);
+                    $isOpen = $workingHours->isOpenAt($reservation["date"]);
+                    if(!$isOpen) array_push($listToDelete,$reservation);
+                }
+                dump($listToDelete);
+
+
+                return new JsonResponse([
+                    'success'  => true,
+                    'result'  => $listToDelete
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
 
     /**
      * @Route("/myWorkingHours/{id}/delete", name="myWorkingHours_delete", methods={"DELETE"})
@@ -390,9 +550,13 @@ class WorkingHoursController extends AbstractController
 
 
     public function addException(array $old, array $newExceptions, bool $convert, bool $repeat){
+        if(isset($old["exceptions"])){
 
-        $oldException = $old["exceptions"];
-        unset($old["exceptions"]);
+            $oldException = $old["exceptions"];
+            unset($old["exceptions"]);
+        }else{
+            $oldException = [];
+        }
         if($repeat){
             dump("enter");
             $date = array_key_first($newExceptions);
@@ -477,6 +641,7 @@ class WorkingHoursController extends AbstractController
     public function reservationsAtThisDate(Request $request, WorkingHoursRepository $rep, ReservationRepository $reservationRepository,  ServiceRepository $srep): JsonResponse
     {
         $convert = false;
+        $manager = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
             if($request->request->get('type')===null || $request->request->get('data')===null || $request->request->get('repeat')===null ){
                 return new JsonResponse([
@@ -522,6 +687,15 @@ class WorkingHoursController extends AbstractController
                         dump($date);
                         dump($reservations);
                         $reservationsList = array_merge($reservationsList,$reservations);
+
+/*
+                        foreach($reservations as $reservation){
+                        $reservationToCancel = $reservationRepository->find($reservation["id"]);
+                        $reservationToCancel->setStatus("Annuler");
+                        $reservationToCancel->setSeen(0);
+                        $manager->flush();
+                        }
+  */
                         //$newException = [$date=>[]];
                         //$old = $this->addException($old,$newException,$convert,$repeat);
                     }
@@ -542,6 +716,16 @@ class WorkingHoursController extends AbstractController
                                         ]);
                                         */
                     $reservationsList = $reservationRepository->findReservationAtThisDay($data[0],$workingHours->getBusiness()->getService(),$repeat,"");
+
+                  /*
+                    foreach($reservationsList as $reservation){
+                        $reservationToCancel = $reservationRepository->find($reservation["id"]);
+                        $reservationToCancel->setStatus("Annuler");
+                        $reservationToCancel->setSeen(0);
+                        $manager->flush();
+                    }
+                    */
+
                     // dump($old);
                 }else if($type==="time"){
                     /* Format
@@ -572,6 +756,15 @@ class WorkingHoursController extends AbstractController
                     $date = array_key_first ( $data );
                     $time = $data[$date][0];
                     $reservationsList = $reservationRepository->findReservationAtThisDay($date,$workingHours->getBusiness()->getService(),$repeat,$time);
+
+                    /*
+                    foreach($reservationsList as $reservation){
+                        $reservationToCancel = $reservationRepository->find($reservation["id"]);
+                        $reservationToCancel->setStatus("Annuler");
+                        $reservationToCancel->setSeen(0);
+                        $manager->flush();
+                    }
+                    */
 
 
                 }else{
@@ -607,7 +800,7 @@ class WorkingHoursController extends AbstractController
                 */
                 return new JsonResponse([
                     'success'  => true,
-                    'res' => $reservationsList
+                    'result' => $reservationsList
                 ]);
             }
         }
@@ -742,7 +935,7 @@ class WorkingHoursController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function sendDataExceptions(Request $request, WorkingHoursRepository $rep): JsonResponse
+    public function sendDataExceptions(Request $request, WorkingHoursRepository $rep, ReservationRepository  $reservationRepository): JsonResponse
     {
 /*
         $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
@@ -764,7 +957,7 @@ class WorkingHoursController extends AbstractController
 */
 
         $convert = false;
-
+        $manager= $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
             if($request->request->get('type')===null || $request->request->get('data')===null || $request->request->get('repeat')===null ){
                 return new JsonResponse([
@@ -807,6 +1000,27 @@ class WorkingHoursController extends AbstractController
                         $newException = [$date=>[]];
                         $old = $this->addException($old,$newException,$convert,$repeat);
                     }
+
+                    $reservationsList = [];
+                    foreach($data as $date){
+                        $reservations = $reservationRepository->findReservationAtThisDay($date,$workingHours->getBusiness()->getService(),$repeat,"");
+                        dump($workingHours->getBusiness()->getService());
+                        dump($date);
+                        dump($reservations);
+                        $reservationsList = array_merge($reservationsList,$reservations);
+
+
+                                                foreach($reservations as $reservation){
+                                                $reservationToCancel = $reservationRepository->find($reservation["id"]);
+                                                $reservationToCancel->setStatus("Annuler");
+                                                $reservationToCancel->setSeen(0);
+                                                $manager->flush();
+                                                }
+
+                        //$newException = [$date=>[]];
+                        //$old = $this->addException($old,$newException,$convert,$repeat);
+                    }
+
                    // dump($old);
                 }else if($type==="single"){
                     /* Format
@@ -825,20 +1039,29 @@ class WorkingHoursController extends AbstractController
                     */
                     $newException = [$data[0]=>[]];
                     $old = $this->addException($old,$newException,$convert,$repeat);
-                   // dump($old);
-                }else if($type==="time"){
-                    /* Format
+                    $reservationsList = $reservationRepository->findReservationAtThisDay($data[0],$workingHours->getBusiness()->getService(),$repeat,"");
 
-                     {
-                        "data":["2021-05-14"],
-                        "time":"14:28-15:29"
-                    }
-                     {
-                         "data":[
-                            ["2020-09-01":["22:00-23:00"]]
-                         ]
-                     }
-                     */
+
+                      foreach($reservationsList as $reservation){
+                          $reservationToCancel = $reservationRepository->find($reservation["id"]);
+                          $reservationToCancel->setStatus("Annuler");
+                          $reservationToCancel->setSeen(0);
+                          $manager->flush();
+                      }
+                     // dump($old);
+                  }else if($type==="time"){
+                      /* Format
+
+                       {
+                          "data":["2021-05-14"],
+                          "time":"14:28-15:29"
+                      }
+                       {
+                           "data":[
+                              ["2020-09-01":["22:00-23:00"]]
+                           ]
+                       }
+                       */
                     /* Test
                         $dataTest = "2020-09-01";
                         $timeTest = "22:00-23:00";
@@ -851,6 +1074,19 @@ class WorkingHoursController extends AbstractController
                     */
                     $newException = $data;
                     $old = $this->addException($old,$newException,$convert,$repeat);
+
+                    $date = array_key_first ( $data );
+                    $time = $data[$date][0];
+                    $reservationsList = $reservationRepository->findReservationAtThisDay($date,$workingHours->getBusiness()->getService(),$repeat,$time);
+
+
+                    foreach($reservationsList as $reservation){
+                        $reservationToCancel = $reservationRepository->find($reservation["id"]);
+                        $reservationToCancel->setStatus("Annuler");
+                        $reservationToCancel->setSeen(0);
+                        $manager->flush();
+                    }
+
                     //dump($old);
 
                 }else{

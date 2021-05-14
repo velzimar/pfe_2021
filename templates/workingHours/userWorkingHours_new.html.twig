@@ -193,5 +193,12 @@
 
         })
 */
+        var regex = /^((?!(^0$|^15$|^30$|^45$|\x00)).)*$/;
+        // Narrow down elements by using attribute starts with and ends with selector
+        $("select[id$='_minutes'] option").filter(function() {
+            // filter the elements that passes the regex pattern
+            b = regex.test($(this).attr('value'));
+            if($(this).attr('value') !== "" && b) $(this).remove()
+        })
     </script>
 {% endblock %}

@@ -1,0 +1,246 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes reservations{% endblock %}
+
+{% block  breadcrumb %}
+
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myServices_new') }}">Mon service</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('service_calendar',{'id':service.id}) }}">Fixer mes créneaux</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Liste des réservations</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block QuickLink1 %}
+    {# { include('product/_myQuickLinks.html.twig') }} #}
+{% endblock %}
+{% block body %}
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            La liste des résèrvations
+        </h6>
+
+
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">{#
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <script>
+            $( function() {
+                $( ".widget input[type=submit], .widget a, .widget button" ).button();
+                $( "button, input, a" ).click( function( event ) {
+                    event.preventDefault();
+                } );
+            } );
+        </script>#}
+
+        <div class="widget">
+            <a id="btn-all" class="ui-button ui-corner-all ui-widget"  href="{{ path('getMyListOfReservations',{'status':'Tous'}) }}">Tous</a>
+            <a id="btn-En attente" class="ui-button ui-corner-all ui-widget" href="{{ path('getMyListOfReservations',{'status':'Attente'}) }}">En attente</a>
+            <a id="btn-Confirmer" class="ui-button ui-corner-all ui-widget" href="{{ path('getMyListOfReservations',{'status':'Confirmer'}) }}">Confirmer</a>
+            <a id="btn-Annuler" class="ui-button ui-corner-all ui-widget" href="{{ path('getMyListOfReservations',{'status':'Annuler'}) }}">Annuler</a>
+{#
+            <input type="submit" value="A submit button" class="ui-button ui-corner-all ui-widget" role="button">
+
+            <a href="#" class="ui-button ui-corner-all ui-widget" role="button">An anchor</a>
+#}
+        </div>
+
+        <h6 class="element-header">
+        </h6>
+        <div class="element-box">
+            <div class="order-box">
+                <div class="order-items-table">
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-lightborder">
+                            <thead id="head">
+                            <tr>
+                                <th>
+                                    Identifiant
+                                </th>
+                                <th>
+                                    Client
+                                </th>
+                                <th>
+                                    Téléphone
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Coût
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for product in products %}
+                                <tr>
+                                    <td  class="product-name">
+                                            {{ product.id }}
+                                    </td>
+
+                                    <td  class="product-name">
+                                            {{ product.client.email }}
+                                    </td>
+
+                                    <td  class="product-name">
+                                            {{ product.phone }}
+                                    </td>
+                                    <td  class="product-name">
+                                            {{ product.selectedDate |format_datetime('short', 'short', locale='fr') }}
+                                    </td>
+                                    <td  class="product-name">
+                                            {{ product.cost }}
+                                    </td>
+
+                                    <td>
+                                        <div class="product-name">
+                                            <select class="select-status-{{ product.id }}" name="{{ product.id }}" disabled>
+                                                <option value="{{ product.id }}-En attente" {% if product.status == 'En attente' %} selected {% endif %}>En attente</option>
+                                                <option value="{{ product.id }}-Annuler" {% if product.status == 'Annuler' %} selected {% endif %}>Annuler</option>
+                                                <option value="{{ product.id }}-Confirmer" {% if product.status == 'Confirmer' %} selected {% endif %}>Confirmer</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>
+                                    Identifiant
+                                </th>
+                                <th>
+                                    Client
+                                </th>
+                                <th>
+                                    Téléphone
+                                </th>
+                                <th>
+                                    Date
+                                </th>
+                                <th>
+                                    Coût
+                                </th>
+
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        let status;
+        let id;
+        $("select[class^='select-status']").change(function (e) {
+            //alert("am clicked")
+            e.preventDefault();
+            status = $(this).children("option").filter(":selected").text();
+            //status = $( ".select-status option:selected" ).text();
+            console.log(status)
+            id = $(this).attr("name");
+            console.log(id);
+            $.ajax({
+                type: 'PUT',
+                url: "/workingHours/myWorkingHours/getMyListOfReservations/changeStatus",
+                data: {id: id, status: status},
+                success: function () {
+                    window.location.href = window.location.href
+                    console.log('success');
+                }
+            });
+        });
+
+
+            $(document).ready(function() {
+                    $("select").prop("disabled", false);
+                $("#all").click()
+                $('#dataTable').DataTable( {
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                    },
+                    initComplete: function () {
+                        this.api().columns().every( function () {
+                            var column = this;
+                            var select = $('<select><option value=""></option></select>')
+                                .appendTo( $(column.footer()).empty() )
+                                .on( 'change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                    );
+                                    column
+                                        .search( val ? '^'+val+'$' : '', true, false )
+                                        .draw();
+                                } );
+                            column.data().unique().sort().each( function ( d, j ) {
+                                select.append( '<option value="'+d+'">'+d+'</option>' )
+                            } );
+                        } );
+                    }
+                } );
+            } );
+
+            // Setup - add a text input to each footer cell
+            /*
+            $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
+            $('#dataTable thead tr:eq(1) th').each(function (i) {
+
+                var title = $(this).text();
+                if(title.search("Product")!==-1 ||title.search("Code")!==-1 ||title.search("Client")!==-1){
+                    $(this).html('<input class="form-control" type="text" />');
+
+                    $('input', this).on('keyup change', function () {
+                        if (table.column(i).search() !== this.value) {
+                            table
+                                .column(i)
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                }else{
+                    $(this).html('<input type="text" hidden/>');
+
+                }
+
+            });
+
+            var table = $('#dataTable').DataTable({
+                orderCellsTop: true,
+                fixedHeader: true,
+                "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
+*/
+
+
+        /*
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                }
+            });
+        });*/
+    </script>
+{% endblock %}

@@ -40,12 +40,43 @@ class ReservationRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+    public function findReservationsByServiceByStatus($service,$status)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.id, r.status, Identity(r.client) as client , r.phone, r.selectedDate as date')
+            ->andWhere('r.service = :service')
+            ->andWhere('r.status != :status')
+            ->andWhere('r.selectedDate > CURRENT_TIMESTAMP()')
+            ->setParameter('status', $status)
+            ->setParameter('service', $service)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function findWithSameDateNotCancelled($service,$date,$id)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.service = :service')
+            ->andWhere('r.status != :status')
+            ->andWhere('r.id != :id')
+            ->andWhere('r.selectedDate = :date')
+            ->setParameter('date', $date)
+            ->setParameter('id', $id)
+            ->setParameter('service', $service)
+            ->setParameter('status', "Annuler")
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function findReservationAtThisDay($date,$service,$repeat,$timeRange)
     {
         $likeOp = $repeat?"_____".substr($date,-5).'%': $date.'%';
         if($timeRange==""){
         return $this->createQueryBuilder('r')
-            ->select('r.id, r.status, Identity(r.client) as client , r.phone')
+            ->select('r.id, r.status, Identity(r.client) as client , r.phone, r.selectedDate as date')
             ->andWhere('r.service = :service')
             ->andWhere('r.selectedDate LIKE :time')
             ->andWhere('r.status != :status')

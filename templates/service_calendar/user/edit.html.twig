@@ -10,11 +10,18 @@
             <a href="{{ path('myServices_new') }}">Mon service</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Réservation</a>
+            <a href="#">Fixer mes créneaux</a>
         </li>
     </ul>
 {% endblock %}
+{% block QuickLink1 %}
 
+        <a class="btn btn-white"
+           href="{{ path('getMyListOfReservations',{'status':"Tous"}) }}">
+            <i class="os-icon os-icon-delivery-box-2"></i>
+            <span id="my_span">Liste des réservations</span>
+        </a>
+{% endblock %}
 {% block body %}
 
 
@@ -78,12 +85,12 @@
                     {{ service.nom }}
                 </h5>
                 <div class="form-desc">
-                    Gestion de réservation edit
+                    Gestion de réservation
                 </div>
                 {{ form_start(form) }}
 
                 <h6 class="form-header">
-                    Selectionner les horaires disponibles
+                    Selectionner vos créneaux disponible
                 </h6>
                 <div id='calendar'></div>
 
