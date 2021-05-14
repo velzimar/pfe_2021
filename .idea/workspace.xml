@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/workingHours/myReservationList.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/workingHours/ExceptionsListScreen.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/WorkingHoursController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/WorkingHoursController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Reservation.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Reservation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/ReservationRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ReservationRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/workingHours/userWorkingHours_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/userWorkingHours_new.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -297,7 +292,7 @@
       <workItem from="1620684088695" duration="8416000" />
       <workItem from="1620703222439" duration="30940000" />
       <workItem from="1620834800814" duration="17644000" />
-      <workItem from="1620947844869" duration="3675000" />
+      <workItem from="1620947844869" duration="7654000" />
     </task>
     <servers />
   </component>

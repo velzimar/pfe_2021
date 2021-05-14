@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
+use App\Entity\ProductOptions;
 use App\Entity\Reservation;
 use App\Entity\Service;
 use App\Entity\User;
@@ -10,6 +12,7 @@ use App\Form\ServiceType;
 use App\Form\SelectUserType;
 use App\Form\WorkingHoursType;
 use App\Repository\OrderProductRepository;
+use App\Repository\ProductOptionsRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\ServiceCalendarRepository;
 use App\Repository\ServiceRepository;
@@ -439,6 +442,50 @@ class WorkingHoursController extends AbstractController
             'service' => $service,
             'products' => $reservationRepository->findBy(["service"=>$service, "status"=>$status]),
         ]);
+    }
+
+    /**
+     * @Route("/myWorkingHours/getMyListOfExceptions", name="getMyListOfExceptions", methods={"GET"})
+     * @param WorkingHoursRepository $workingHoursRepository
+     * @return Response
+     */
+    public function getMyListOfExceptions( WorkingHoursRepository $workingHoursRepository): Response
+    {
+        $user = $this->getUser();
+        //  die;
+        $workingHours = $workingHoursRepository->findOneBy(["business"=>$user]);
+        $hours  = $workingHours->getHours();
+        dump($hours);
+        $exceptions = $hours["exceptions"];
+        dump($exceptions);
+        //die;
+        return $this->render('workingHours/ExceptionsListScreen.html.twig', [
+            'user' => $user,
+            'options' => $exceptions
+        ]);
+    }
+    /**
+     * @Route("/myWorkingHours/exception/{i}/delete", name="exception_delete", methods={"DELETE"})
+     * @param Request $request
+     * @return Response
+     */
+    public function exception_delete(Request $request, string $i, WorkingHoursRepository $workingHoursRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$i, $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $workingHours = $workingHoursRepository->findOneBy(["business"=>$this->getUser()]);
+            $hours = $workingHours->getHours();
+            dump($hours);
+            dump($i);
+            dump($hours["exceptions"]);
+            unset($hours["exceptions"][$i]);
+            dump($hours);
+            $workingHours->setHours($hours);
+            //die;
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('getMyListOfExceptions');
     }
 
     /**

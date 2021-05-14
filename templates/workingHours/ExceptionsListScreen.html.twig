@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductOptionsController!{% endblock %}
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Home</a>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myWorkingHours_new') }}">Mes horaires</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="#">Liste des exceptions</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block QuickLink1 %}
+    <a class="btn btn-white"
+       href="{{ path('myWorkingHours_add_exception') }}">
+        <i class="os-icon os-icon-delivery-box-2"></i>
+        <span id="my_span">Ajouter une exception</span>
+    </a>
+{% endblock %}
+{% block body %}
+
+<div class="col-sm-12">
+    <div class="element-wrapper">
+        <h6 class="element-header">
+            Liste des exceptions
+        </h6>
+
+        <div class="row">
+        {% set i = -1 %}
+        {% for key, value in options %}
+        <div class="col-sm-2">
+            {% set i=i+1 %}
+            {% set toSend = key |format_datetime(pattern="YYYY-MM-dd")%}
+            <div class="form-group" id="newOptions_container">
+                        <div class="element-box" id="row_for_{{  i  }}">
+                            <div class="card" >
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ key |format_datetime('short', 'none', locale='fr') }}</h5>
+                                    {% if value != [] %}
+                                        {% for  v in value %}
+                                            <p class="card-text">{{ v }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+
+                                    <a class="btn btn-danger" style="color: white" >
+                                        <form id="my_form_{{ i }}" method="post" action="{{ path('exception_delete', { 'i': toSend}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ toSend) }}">
+
+                                            <span id="my_span_{{ i }}">Supprimer</span>
+                                        </form>
+                                        <script>
+                                            $('#my_span_{{ i }}').on('click', function() {
+                                                $('#my_form_{{ i }}').submit();
+                                            });
+                                        </script>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        {#
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th>Date</th>
+
+                                <td>{{ key |format_datetime('short', 'none', locale='fr') }}</td>
+                            </tr>
+                            {% if value != [] %}
+                                {% for  v in value %}
+                                    <tr>
+                                        <th>Temps</th>
+                                        <td>{{ v }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+
+                        #}
+{#
+                            <tr>
+                                <th>Temps</th>
+                                <td>{{ option.de }}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Temps</th>
+                                <td>{{ option.a }}</td>
+                            </tr>
+                            #}
+                            {#
+                            <tr>
+                                <th>Actions</th>
+                                <td>
+                                    <div>
+
+                                        <a class="btn btn-primary" href="{{ path('edit_this_option',{'product':product.id, 'id':option.id}) }}">
+
+                                            <span>Modifier</span>
+                                        </a>
+                                        <a class="btn btn-danger" style="color: white" >
+                                            <form id="my_form_{{ option.id }}" method="post" action="{{ path('option_delete', {'option': option.id, 'product':option.product.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ option.id) }}">
+
+                                                <span id="my_span_{{ option.id }}">Supprimer</span>
+                                            </form>
+                                            <script>
+                                                $('#my_span_{{ option.id }}').on('click', function() {
+                                                    $('#my_form_{{ option.id }}').submit();
+                                                });
+                                            </script>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            #}
+                        {#
+                            </tbody>
+                        </table> #}
+                    </div>
+
+            </div>
+        {% endfor %} </div>
+    </div>
+</div>
+{% endblock %}
