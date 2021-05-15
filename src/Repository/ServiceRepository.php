@@ -14,10 +14,18 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ServiceRepository extends ServiceEntityRepository
 {
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Service::class);
+        $p = "http://192.168.1.101:8000/service_images/";
+        $this->path="COALESCE(CONCAT('{$p}',p.filename),'{$p}default.jpg') as path";
     }
+
+    public $path;
+
+    //,"COALESCE(CONCAT('{$path}',p.filename),'{$path}default.jpg') as path"
 
     public function findByUser($value)
     {
@@ -48,6 +56,7 @@ class ServiceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select("p.id,p.nom, p.prix, u.businessName")
+            ->addSelect($this->path)
             ->from('App\Entity\User','u')
             ->from('App\Entity\ServiceCalendar','sc')
             ->from('App\Entity\WorkingHours','wh')
@@ -67,6 +76,7 @@ class ServiceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select("p.id,p.nom, p.prix, u.businessName")
+            ->addSelect($this->path)
             ->from('App\Entity\User','u')
             ->from('App\Entity\ServiceCalendar','sc')
             ->from('App\Entity\WorkingHours','wh')
@@ -85,6 +95,7 @@ class ServiceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select("p.id,p.nom, p.prix, u.businessName")
+            ->addSelect($this->path)
             ->from('App\Entity\User','u')
             ->from('App\Entity\ServiceCalendar','sc')
             ->from('App\Entity\WorkingHours','wh')
@@ -105,6 +116,7 @@ class ServiceRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->select("p.id,p.nom, p.prix, u.businessName, u.longitude, u.latitude")
+            ->addSelect($this->path)
             ->from('App\Entity\User','u')
             ->from('App\Entity\ServiceCalendar','sc')
             ->from('App\Entity\WorkingHours','wh')
