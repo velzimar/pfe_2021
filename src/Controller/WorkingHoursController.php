@@ -207,7 +207,7 @@ class WorkingHoursController extends AbstractController
 
         $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
         $userFound = $srep->findOneBy(["business" => $this->getUser()->getId()]);
-
+        $exceptions = $userFound->getHours()["exceptions"];
         if ($userFound !== null) {
             $form = $this->createForm(WorkingHoursType::class, $userFound);
             $hours = $userFound->getHours();
@@ -282,7 +282,7 @@ class WorkingHoursController extends AbstractController
                     }
 
                 }
-                $ranges = ['monday' => [], 'tuesday' => [], 'wednesday' => [], 'thursday' => [], 'friday' => [], 'saturday' => [], 'sunday' => []];
+                $ranges = ['monday' => [], 'tuesday' => [], 'wednesday' => [], 'thursday' => [], 'friday' => [], 'saturday' => [], 'sunday' => [], "exceptions"=>$exceptions];
 
                 foreach ($table as $key => $value) {
 
@@ -314,6 +314,7 @@ class WorkingHoursController extends AbstractController
 
                 //end added
 
+                $manager->flush();
 
                 /*
                 return new JsonResponse([
@@ -337,7 +338,7 @@ class WorkingHoursController extends AbstractController
             $form->handleRequest($request);
             $workingHours->setBusiness($user);
             if ($form->isSubmitted() && $form->isValid()) {
-                $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null]];
+                $table = ['monday' => [null, null], 'tuesday' => [null, null], 'wednesday' => [null, null], 'thursday' => [null, null], 'friday' => [null, null], 'saturday' => [null, null], 'sunday' => [null, null],"exceptions"=>[]];
 
                 //init
                 foreach ($table as $key => $value) {
@@ -456,8 +457,10 @@ class WorkingHoursController extends AbstractController
         $workingHours = $workingHoursRepository->findOneBy(["business"=>$user]);
         $hours  = $workingHours->getHours();
         dump($hours);
+        $exceptions = [];
+        if(isset( $hours["exceptions"])){
         $exceptions = $hours["exceptions"];
-        dump($exceptions);
+        dump($exceptions);}
         //die;
         return $this->render('workingHours/ExceptionsListScreen.html.twig', [
             'user' => $user,
@@ -964,6 +967,68 @@ class WorkingHoursController extends AbstractController
                 return new JsonResponse([
                     'success'  => true,
                     'result' => $diff<=$res
+                ]);
+            }
+        }
+        return new JsonResponse([
+            'success'  => false,
+        ]);
+    }
+    /**
+     * @Route("/initialTest", name="initialTest")
+     * @param Request $request
+     * @param WorkingHoursRepository $rep
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function initialTest(Request $request, WorkingHoursRepository $rep): JsonResponse
+    {
+        if ($request->isXmlHttpRequest()) {
+            if($request->request->get('data')===null || sizeof($request->request->get('data')) == 0){
+                return new JsonResponse([
+                    'success'  => false,
+                ]);
+            }else{
+                $workingHours = $rep->findOneBy(["business"=>$this->getUser()]);
+                $test = $workingHours->getHours();
+                unset($test["exceptions"]);
+                //dump($test);
+               // $mergedRanges = OpeningHours::mergeOverlappingRanges($test);
+                $openingHours= OpeningHours::createAndMergeOverlappingRanges($test);
+
+
+
+                $data = $request->request->get('data');
+                //dump($data);
+                $i = -1;
+                foreach($data as $range){
+                    $i++;
+                $start = $range["start"];
+                    $end = $range["end"];
+                //dump($start);
+                //dump($end);
+                // die;
+                $res = $openingHours->diffInOpenMinutes(new DateTime($start), new DateTime($end));
+
+
+                $checkTime = strtotime($start);
+                $loginTime = strtotime($end);
+                $diff =  ($loginTime - $checkTime)/60 ;
+                //dump($diff);
+                //dump($res);
+                //dump($diff<=$res);
+                //dump($day);
+                    $data[$i] = array_merge($data[$i],["res"=>$diff<=$res]);
+                }
+
+
+
+
+
+
+                return new JsonResponse([
+                    'success'  => true,
+                    'result' => $data
                 ]);
             }
         }

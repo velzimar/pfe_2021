@@ -222,6 +222,31 @@
                     </div>
                 </div>
 
+                <div class="modal fade" id="confirm-submit-empty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal_title"></h5>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <div class="form-desc">
+                                </div>
+                            </div>
+                            <div class="modal-header">
+                                <h6 class="modal-title" style="color: #047bf8">Êtes-vous sûr de vouloir enregistrer ces données?</h6>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="row">
+                                    <button class="btn btn-warning " type="submit" id="#formField">Appliquer les changements</button>
+                                </div>
+                                <div class="row">
+                                    <div class="col-auto mr-auto">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Annuler</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {#
                 <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -262,7 +287,16 @@
 {% endblock %}
 {% block javascripts %}
 
-    <script>
+    <script>/*
+        $('#submitBtn').on('click', function () {
+            console.log("az")
+            console.log($('#submitBtn').attr("type"))
+            if($('#submitBtn').attr("type")==="submit"){
+
+                $(this).closest("form").submit();
+                $('#submitBtn').submit()
+            }
+        });*/
         $("[role='presentation']").addClass("table table-borderless")
         $("[role='presentation']").children("thead").remove()
         //$('select').addClass("form-control")
@@ -415,10 +449,12 @@
             console.log(JSON.stringify(table))
 
 
+            console.log("entered")
             $.when( listToBeCancelled(table)).done(function(response){
+
                 if(response.result.length === 0){
-                    console.log("aaaaa")
-                    location.reload(true);
+                    $('#confirm-submit-empty').modal('show')
+                    //location.reload(true);
                 }else if(response.result.length !== 0){
                     let str = ""
                     Object.keys(response.result).forEach((reservation)=>{
@@ -476,7 +512,7 @@
                     data: table,
                 },//jQ will sort this out for you
                 success: function (response) {
-                    console.log(response);
+                    //alert(JSON.stringify(response));
                 },
             });
         }

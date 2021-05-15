@@ -173,6 +173,7 @@
 
 {% block javascripts %}
     <script>
+        let firstJsonToSend = []
         let table;
         $('#myModalafter').on('hidden.bs.modal', function (e) {
             // do something...
@@ -199,7 +200,17 @@
                 },
             });
         }
+        function sendFirstJson(firstJsonToSend){
+            return $.ajax({
+                type: "POST",
+                // async: false,
+                url: "/workingHours/initialTest",
+                data: {data:firstJsonToSend},//jQ will sort this out for you
+                success: function (response) {
 
+                },
+            });
+        }
         function saveChanges(){
             let serviceId = '{{ service.id }}';
             console.log(json_to_send)
@@ -239,6 +250,7 @@
 
         var storeJSON = getJSonObject("{{ slots|json_encode() }}");
         var option_names = []
+        console.log(storeJSON)
         $.each(storeJSON, function (k, v) {
             //alert('Key = ' + k + '\n' + 'Value = ' + v);
             option_names.push(v)
@@ -364,6 +376,7 @@
                     if(!exist){
                         let start_=moment(arg.start).format('YYYY-MM-DD HH:mm:SS')
                         let end_=moment(arg.end).format('YYYY-MM-DD HH:mm:SS')
+                        console.log(start_,end_)
                         $.when(getData(start_,end_)).done(function(response){
                             //access response data here
                             console.log('empty');
@@ -480,30 +493,7 @@
                                     url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
                                 }
                             });
-
                             $('#myModalafter').modal('show')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                             //there is reservations
                         }else{
@@ -523,10 +513,32 @@
                 initialView: 'timeGridWeek',
             });
             let promises = []
-             $.each(json_to_send, function (k, v) {
-                //alert("aa")
-                $.each(json_to_send[k], function (a, c) {
 
+
+
+            var option_names = []
+            console.log(storeJSON)
+            $.each(storeJSON, function (k, v) {
+                //alert('Key = ' + k + '\n' + 'Value = ' + v);
+                option_names.push(v)
+                $.each(storeJSON[k], function (k, v) {
+
+                    //alert(v["start"]+"   "+v["end"])
+                });
+            });
+            //$("#slots").val("["+option_names+"]")
+            let json_to_send_ = option_names
+
+
+
+            console.log(JSON.stringify(json_to_send_))
+             $.each(json_to_send_, function (k, v) {
+                 //console.log("day "+k+" size= "+json_to_send[k].length)
+                 console.log(JSON.stringify(json_to_send_[k]))
+                $.each(json_to_send_[k], function (a, c) {
+
+                    console.log("k= "+k)
+                   // console.log("size= "+json_to_send[k].length)
                    // alert(c["start"]+"   "+c["end"])
 
 
@@ -544,8 +556,28 @@
                     //alert("2020-09-"+e)
                     let startDate = "2020-09-"+s;
                     let endDate = "2020-09-"+e;
+                    console.log("---")
                     console.log(startDate)
                     console.log(endDate)
+
+                    console.log("---")
+
+                    firstJsonToSend.push({start: startDate, end: endDate})
+
+                    /*
+                    calendar.addEvent({
+                        color:"#24b314",
+                        title: " ",
+                        start: startDate,
+                        end: endDate,
+                    })
+                    _save()
+                    calendar.unselect()
+                    */
+
+
+
+/*
                     request = $.when(getData(startDate,endDate)).done(function(response){
                         //access response data here
                         console.log('empty2');
@@ -558,19 +590,6 @@
                             //responseStatus = "#e65252";
                             return false;
                         }
-
-                        // import { toDuration } from '@fullcalendar/moment'
-                        var a = moment(startDate/*.toString("YYYY-MM-DD HH:mm")*/);
-                        var b = moment(endDate/*.toString("YYYY-MM-DD HH:mm")*/);
-                        var diffMinutes = b.diff(a, 'minutes')
-                        var date = moment(startDate).format('YYYY-MM-DD');
-                        const t = moment(date); // Thursday Feb 2015
-                        const dow = t.day();
-                        if (diffMinutes !== 15) {
-                            //  alert(duration_in_minutes)
-                            alert("Selectionner seulement un timeslot");
-                            return false;
-                        }
                         calendar.addEvent({
                             color:"#24b314",
                             title: " ",
@@ -581,6 +600,7 @@
                         calendar.unselect()
                     })
                     promises.push(request)
+*/
 
                     /*
                     calendar.addEvent({
@@ -596,10 +616,34 @@
                 //alert(v["start"]+"   "+v["end"])
             });
 
+            $.when(sendFirstJson(firstJsonToSend)).done(function(response){
+                if(response.success){
+                    console.log(response)
+                    let initCalendarEvents = response.result
 
+                    for(let  j=0 ;j<initCalendarEvents.length;j++){
+                        console.log(initCalendarEvents[j])
+                        if(initCalendarEvents[j].res){
+                            calendar.addEvent({
+                                color:"#24b314",
+                                title: " ",
+                                start: initCalendarEvents[j].start,
+                                end: initCalendarEvents[j].end,
+                            })
+                            _save()
+                            calendar.unselect()
+                        }
+                    }
+                    saveChanges()
+                }
+            })
+
+
+/*
             $.when.apply(null, promises).done(function(){
                 saveChanges()
             })
+*/
             calendar.render();
 
             // });
