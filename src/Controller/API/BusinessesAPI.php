@@ -346,6 +346,7 @@ class BusinessesAPI extends AbstractFOSRestController
      * @QueryParam(name="id", strict=true, nullable=false)
      * @QueryParam(name="name", strict=true, nullable=false)
      * @param ParamFetcher $paramFetcher
+     * @param WorkingHoursRepository $workingHoursRepository
      * @return Response
      */
 

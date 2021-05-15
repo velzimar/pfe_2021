@@ -145,6 +145,21 @@ class ReservationRepository extends ServiceEntityRepository
         }
     }
 
+
+
+    public function findReservationsByClient($client)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r.id, r.status , r.phone, r.selectedDate as date, Identity(r.service) as service ')
+            ->andWhere('r.client = :client')
+            ->setParameter('client', $client)
+            ->orderBy('r.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
     /*
     public function findOneBySomeField($value): ?Reservation
     {
