@@ -154,15 +154,18 @@ class ReservationAPI extends AbstractFOSRestController
         try{
             $categories = $businessCategoryRepository->findAll();
             $availableServices = [];
+            $availableCategories = [];
             foreach($categories as $category){
                 $servicesList = $this->sr->find4AvailableByCategory($category->getId());
                 if(sizeof($servicesList)>0){
+                    array_push($availableCategories,["id"=>$category->getId(),"name"=>$category->getNom()]);
                     array_push($availableServices,["id"=>$category->getId(),"name"=>$category->getNom(),"list"=>$servicesList]);
                 }
             }
             $view = $this->view([
                 'success' => sizeof($availableServices)!==0,
-                'res' => $availableServices
+                'res' => $availableServices,
+                'categories' => $availableCategories
             ]);
             return $this->handleView($view);
         }catch (Exception $e) {
@@ -205,7 +208,7 @@ class ReservationAPI extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post(name="ReservationAPI_getAvailableServicesByCategoryByName", "/getAvailableServicesByCategoryByName/")
+     * @Rest\Post(name="ReservationAPI_getAvailableServicesByCategoryByName", "/getAvailableServicesByCategory/ByName/")
      * @param ParamFetcher $paramFetcher
      * @param CategoryRepository $businessCategoryRepository
      * @return Response
@@ -237,7 +240,7 @@ class ReservationAPI extends AbstractFOSRestController
     }
 
     /**
-     * @Rest\Post(name="ReservationAPI_getAvailableServicesByCategoryByNameNearby", "/getAvailableServicesByCategoryByNameNearby/")
+     * @Rest\Post(name="ReservationAPI_getAvailableServicesByCategoryByNameNearby", "/getAvailableServicesByCategory/ByName/Nearby/")
      * @param ParamFetcher $paramFetcher
      * @param CategoryRepository $businessCategoryRepository
      * @return Response
@@ -254,7 +257,6 @@ class ReservationAPI extends AbstractFOSRestController
             $category = $businessCategoryRepository->find($categoryId);
             $myLat = floatval($paramFetcher->get("lat"));
             $myLng = floatval($paramFetcher->get("lng"));
-
             if($myLat == null || $myLng == null ||$categoryId == null) {
                 $view = $this->view([
                     'success' => false,
@@ -265,8 +267,8 @@ class ReservationAPI extends AbstractFOSRestController
             $servicesList = $this->sr->findAvailableByCategoryByNameNearby($category,$name);
             $nearbyServices = [];
             foreach($servicesList as $service){
-                $isNear = $this->isNear(floatval($service["longitude"]),floatval($service["latitude"]),$myLat,$myLng);
-                $dist = $this->getDist(floatval($service["longitude"]),floatval($service["latitude"]),$myLat,$myLng);
+                $isNear = $this->isNear(floatval($service["longitude"]),floatval($service["latitude"]),$myLng,$myLat);
+                $dist = $this->getDist(floatval($service["longitude"]),floatval($service["latitude"]),$myLng,$myLat);
                 if($isNear){
                     $s = array_merge($service,["distance"=>$dist]);
                     array_push($nearbyServices,$s);
@@ -278,7 +280,10 @@ class ReservationAPI extends AbstractFOSRestController
             $view = $this->view([
                 'success' => sizeof($nearbyServices)!==0,
                 'res' => $nearbyServices,
-                "code"=>400
+                "code"=>400,
+                //"test"=>$servicesList,
+                "lat"=>$myLat,
+                "lng"=>$myLng,
             ]);
             return $this->handleView($view);
         }catch (Exception $e) {

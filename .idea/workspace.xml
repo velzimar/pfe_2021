@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/service_images/default.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/API/ReservationAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ReservationAPI.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/ServiceRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ServiceRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -293,7 +293,10 @@
       <workItem from="1620834800814" duration="17644000" />
       <workItem from="1620947844869" duration="8011000" />
       <workItem from="1621037254961" duration="16842000" />
-      <workItem from="1621094441366" duration="9823000" />
+      <workItem from="1621094441366" duration="9867000" />
+      <workItem from="1621171939485" duration="1199000" />
+      <workItem from="1621190339782" duration="1575000" />
+      <workItem from="1621217224600" duration="6809000" />
     </task>
     <servers />
   </component>

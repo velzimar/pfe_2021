@@ -94,7 +94,7 @@ class ServiceRepository extends ServiceEntityRepository
     public function findAvailableByCategoryByName($category,$name)
     {
         return $this->createQueryBuilder('p')
-            ->select("p.id,p.nom, p.prix, u.businessName")
+            ->select("p.id,p.nom, p.prix, u.businessName, u.longitude, u.latitude")
             ->addSelect($this->path)
             ->from('App\Entity\User','u')
             ->from('App\Entity\ServiceCalendar','sc')
