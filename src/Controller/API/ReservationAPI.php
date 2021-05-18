@@ -5,6 +5,9 @@ namespace App\Controller\API;
 use App\Entity\Category;
 use App\Entity\DealCategory;
 use App\Entity\OrderDeal;
+use App\Entity\OrderProduct;
+use App\Entity\Reservation;
+use App\Entity\SubOrderProduct;
 use App\Entity\User;
 use App\Repository\CategoryRepository;
 use App\Repository\DealCategoryRepository;
@@ -13,6 +16,7 @@ use App\Repository\OrderDealRepository;
 use App\Repository\ProductCategoryRepository;
 use App\Repository\ProductOptionsRepository;
 use App\Repository\DealRepository;
+use App\Repository\ProductRepository;
 use App\Repository\ReservationRepository;
 use App\Repository\ServiceCalendarRepository;
 use App\Repository\ServiceRepository;
@@ -39,7 +43,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
-use const Doctrine\DBAL\DBALException;
 
 /**
  * @Route("/api/reservation")
@@ -449,6 +452,62 @@ class ReservationAPI extends AbstractFOSRestController
     }
     function isNear(float $latitude1,float  $longitude1,float  $latitude2,float  $longitude2) {
         return($this->getDist($latitude1, $longitude1, $latitude2, $longitude2)<=1);
+    }
+
+
+    /**
+     * @Rest\Post(name="ReservationAPI_makeOrder", "/makeOrder/")
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param ServiceRepository $serviceRepository
+     * @return Response
+     */
+    public function postOrderAction(Request $request, UserRepository $userRepository,ServiceRepository $serviceRepository): Response
+    {
+        $json = $request->getContent();
+        //getting json body
+        if ($decodedJson = json_decode($json, true)) {
+            $data = $decodedJson;
+        } else {
+            $data = $request->request->all();
+        }
+
+        if ($request->isMethod('POST')) {
+            //validate values
+            try {
+                $entityManager = $this->getDoctrine()->getManager();
+                $order = new Reservation();
+                $order->setService($serviceRepository->find($data["service"]));
+                $order->setClient($userRepository->find($data["client"]));
+                $order->setDateCreate(new DateTime('now'));
+                $order->setDateModif(new dateTime("now"));
+                $order->setSelectedDate(new dateTime($data["selectedDate"]));
+                $order->setSeen(false);
+                $order->setCost($data["total"]);
+                $order->setPhone($data["phone"]);
+                $order->setStatus("En attente");
+                $entityManager->persist($order);
+                $entityManager->flush();
+                $view = $this->view([
+                    "success" => true,
+                    "code" => 200,
+                    "orderId" => $order->getId(),
+                ]);
+                return $this->handleView($view);
+            } catch (\Symfony\Component\Config\Definition\Exception\Exception $e) {
+                $view = $this->view([
+                    "success" => false,
+                    "code" => 401,
+                ]);
+                return $this->handleView($view);
+            }
+        }
+        $view = $this->view([
+            "success" => false,
+            "code" => 400,
+            "message" => "Check request body"
+        ]);
+        return $this->handleView($view);
     }
 
 }
