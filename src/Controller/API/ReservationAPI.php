@@ -24,6 +24,7 @@ use DatePeriod;
 use DateTime;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\ConnectionException;
+use DoctrineExtensions\Query\Sqlite\StrfTime;
 use Exception;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -98,6 +99,7 @@ class ReservationAPI extends AbstractFOSRestController
         $slots = $serviceCalendar->getSlots();
         $dayOfWeek = 0;
         $dataToSend = [];
+        $dataToSendAll = [];
         foreach($days as $day){
             $thisDaySlots = $slots[$dayOfWeek];
             $thisDayOfWeekData = [];
@@ -129,17 +131,128 @@ class ReservationAPI extends AbstractFOSRestController
                 if(isset($thisDayAvailableSlots[0]["isInWorkingHours"])){
                     $dayInfo = array_merge(["date"=> $date],["slots"=>$thisDayAvailableSlots]);
                     array_push($thisDayOfWeekData,$dayInfo);
+                }else{
+
+                    $dayInfo = array_merge(["date"=> $date],["slots"=>[]]);
+                    array_push($thisDayOfWeekData,$dayInfo);
                 }
+
+                array_push($dataToSendAll,$dayInfo);
             }
             array_push($dataToSend,[$dayOfWeek+1=>$thisDayOfWeekData]);
             $dayOfWeek++;
         }
+        sort($dataToSendAll);
         $view = $this->view([
             'success' => true,
-            'daysList' => $days,
-            'workingHoursList' => $workingHoursList,
-            'slots' => $slots,
-            'data' => $dataToSend,
+            //'daysList' => $days,
+            //'workingHoursList' => $workingHoursList,
+            //'slots' => $slots,
+           // 'data' => $dataToSend,
+            'all' => $dataToSendAll,
+        ]);
+        return $this->handleView($view);
+    }
+    /**
+     * @Rest\Post(name="ReservationAPI_getSlots_ofService_Week", "/getSlotsByServiceWeek/")
+     * @param ParamFetcher $paramFetcher
+     * @return Response
+     * @QueryParam(name="service", nullable=false)
+     * @QueryParam(name="week", nullable=false)
+     * @throws \Exception
+     */
+    public function getAvailableSlotsWeek(ParamFetcher $paramFetcher): Response
+    {
+        $serviceId = $paramFetcher->get('service');
+        $week = $paramFetcher->get('week');
+        if($serviceId == null || $week == null || intval($week)<0 ||intval($week)>12){
+            $view = $this->view([
+                'success' => false
+            ]);
+            return $this->handleView($view);
+        }
+        $service = $this->sr->find($serviceId);
+        $multiply = (intval($week) * 7)+1 ;
+        $tomorrowString = date('Y-m-d',strtotime("+ $multiply days"));
+        $tomorrowDate = new DateTime($tomorrowString);
+        $period = new DatePeriod(
+            $tomorrowDate, // Start date of the period
+            new DateInterval('P1D'), // Define the intervals as Periods of 1 Day
+            6 // Apply the interval 6 times on top of the starting date
+        );
+        //next 90 days list
+        $days = [[],[],[],[],[],[],[]];
+        foreach ($period as $day)
+        {
+            $dayOfWeek  = $day->format('w');
+            array_push($days[$dayOfWeek],$day->format('Y-m-d'));
+        }
+        // workingHours List
+        $workingHours = $this->whr->findOneBy(["business"=>$service->getBusiness()]);
+        $workingHoursList = $workingHours->getHours();
+        //convert it to openingHours
+        $openingHours = OpeningHours::createAndMergeOverlappingRanges($workingHoursList);
+        // slots list
+        $serviceCalendar = $this->scr->findOneBy(["service"=>$service]);
+        $slots = $serviceCalendar->getSlots();
+        $dayOfWeek = 0;
+        $dataToSend = [];
+        $dataToSendAll = [];
+        foreach($days as $day){
+            $thisDaySlots = $slots[$dayOfWeek];
+            $thisDayOfWeekData = [];
+            foreach($day as $date){
+                // we got the date yyyy-mm-dd
+                // get available slots of that day
+                $thisDayAvailableSlots = [];
+                foreach($thisDaySlots as $slot){
+                    //check if this slot is in workingHours
+                    $startTime = $slot["start"];
+                    $endTime = $slot["end"];
+                    $start = $date." ".$startTime;
+                    $end = $date." ".$endTime;
+                    $res = $openingHours->diffInOpenMinutes(new DateTime($start), new DateTime($end));
+                    $checkTime = strtotime($start);
+                    $loginTime = strtotime($end);
+                    $diff =  ($loginTime - $checkTime)/60 ;
+                    if($diff<=$res){
+                        //check if reserved
+                        $reservations = $this->rr->findReservationAtThisDay($start,$service,false,false);
+                        if(sizeof($reservations)===0)
+                        array_push($thisDayAvailableSlots,[
+                            "start"=>substr($startTime,0,5),
+                            "end"=>substr($endTime,0,5),
+                            "reservationDate"=>$start,
+                            "isInWorkingHours"=>$diff<=$res,
+                            "isReserved"=>sizeof($reservations)!==0
+                        ]);
+
+                    }
+                }
+                setlocale(LC_ALL, "fr_FR");
+                if(isset($thisDayAvailableSlots[0]["isInWorkingHours"])){
+                    $dayInfo = array_merge(["date"=> $date],["slots"=>$thisDayAvailableSlots]);
+                    array_push($thisDayOfWeekData,$dayInfo);
+                }else{
+
+                    $dayInfo = array_merge(["date"=> $date],["slots"=>[]]);
+                    array_push($thisDayOfWeekData,$dayInfo);
+                }
+
+                setlocale(LC_ALL, "fr_FR");
+                array_push($dataToSendAll,$dayInfo);
+            }
+            array_push($dataToSend,[$dayOfWeek+1=>$thisDayOfWeekData]);
+            $dayOfWeek++;
+        }
+        sort($dataToSendAll);
+        $view = $this->view([
+            'success' => true,
+            //'daysList' => $days,
+            //'workingHoursList' => $workingHoursList,
+            //'slots' => $slots,
+            // 'data' => $dataToSend,
+            'all' => $dataToSendAll,
         ]);
         return $this->handleView($view);
     }
