@@ -3,7 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/API/ReservationAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ReservationAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210501232500.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210507040003.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210511033153.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210511175908.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210511180106.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20210512204047.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/product_images/166555480-4017571044968863-6671336449659034515-n-6060e5f24e6e7730583315.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/product_images/defuser-6048f38955f77968673691-9-6049015856d34315506155.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Deal.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Deal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/_form.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -298,6 +309,12 @@
       <workItem from="1621217224600" duration="6809000" />
       <workItem from="1621292417255" duration="8314000" />
       <workItem from="1621366935487" duration="1724000" />
+      <workItem from="1621840616753" duration="5102000" />
+      <workItem from="1621949031052" duration="1888000" />
+      <workItem from="1622050065878" duration="41000" />
+      <workItem from="1622213422282" duration="8526000" />
+      <workItem from="1622303919853" duration="540000" />
+      <workItem from="1622305007851" duration="3919000" />
     </task>
     <servers />
   </component>

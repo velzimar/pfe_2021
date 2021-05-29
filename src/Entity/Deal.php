@@ -88,7 +88,7 @@ class Deal
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="deals")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $business;
 

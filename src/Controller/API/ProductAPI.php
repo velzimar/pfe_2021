@@ -136,7 +136,7 @@ class ProductAPI extends AbstractFOSRestController
             ]);
             return $this->handleView($view);
         }
-        $path="http://192.168.1.101:8000/product_images/";
+        $path="http://192.168.1.100:8000/product_images/";
         $products = $this->productRepository->findByBusinessIdByName($id,$nom,$path);
         //added for delivery service
         $delivery = $deliveryRepository->findByBusinessId($id);
@@ -189,7 +189,7 @@ class ProductAPI extends AbstractFOSRestController
             return $this->handleView($view);
         }
 
-        $path="http://192.168.1.101:8000/product_images/";
+        $path="http://192.168.1.100:8000/product_images/";
         if($categoryId==null || $categoryId ==""){
             $products = $this->productRepository->findByBusinessIdByName($id,$nom,$path);
             $code = 200;

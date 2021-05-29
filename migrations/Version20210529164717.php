@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210511180106 extends AbstractMigration
+final class Version20210529164717 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -20,14 +20,14 @@ final class Version20210511180106 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX unique_status_selectedDate ON reservation');
-        $this->addSql('CREATE UNIQUE INDEX unique_status_selectedDate_service ON reservation (status, selected_date, service_id)');
+        $this->addSql('ALTER TABLE deal DROP FOREIGN KEY FK_E3FEC116A89DB457');
+        $this->addSql('ALTER TABLE deal ADD CONSTRAINT FK_E3FEC116A89DB457 FOREIGN KEY (business_id) REFERENCES user (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX unique_status_selectedDate_service ON reservation');
-        $this->addSql('CREATE UNIQUE INDEX unique_status_selectedDate ON reservation (status, selected_date)');
+        $this->addSql('ALTER TABLE deal DROP FOREIGN KEY FK_E3FEC116A89DB457');
+        $this->addSql('ALTER TABLE deal ADD CONSTRAINT FK_E3FEC116A89DB457 FOREIGN KEY (business_id) REFERENCES user (id)');
     }
 }
