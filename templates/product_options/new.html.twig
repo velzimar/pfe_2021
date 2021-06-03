@@ -4,9 +4,13 @@
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Home</a>
+            <a href="#">Accueil</a>
         <li class="breadcrumb-item">
             <a href="{{ path('myProducts') }}">Mes produits</a>
+        </li>
+
+        <li class="breadcrumb-item">
+            <a href="{{ path('myProducts') }}">{{ id.nom }}</a>
         </li>
         <li class="breadcrumb-item">
             <a href="{{ path('thisProductOptions',{'id':id.id}) }}">Options</a>

@@ -1,4 +1,4 @@
-<div class="col-sm-12">
+<div class="col-sm-6">
     <div class="element-wrapper">
         <div class="element-box">
             <h5 class="form-header">
@@ -19,40 +19,40 @@
                     'attr': {'class': 'form-control' ,'placeholder':"Entrer la description" ,'required':"required", 'type':"text" }
                 }) }}
             </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group">
+
+
+<div class="row">
+
+                <div class="col-sm-6">
                         {{ form_row(form.prix,{
-                            'label':"Prix",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le prix" ,'required':"required", 'type':"prix" }
+                            'label':" ",
+                            'attr': {'class': 'form-control' ,'placeholder':"Prix" ,'required':"required", 'type':"prix" }
                         }) }}
 
-                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    {{ form_label(form.imageFile,null,{
-                        'label':'Image',
-                        'label_attr': {'class': 'custom-file-label','for':'service_imageFile_file'}
-                    }) }}
-                    {{ form_widget(form.imageFile) }}
-                    <script>
-                        $("#service_imageFile_file").addClass("custom-file-input")
+    <div class="bottom-align-text col-sm-6">
+                        {{ form_label(form.imageFile,null,{
+                            'label':'Image',
+                            'label_attr': {'class': 'custom-file-label','for':'service_imageFile_file'}
+                        }) }}
+                        {{ form_widget(form.imageFile) }}
+                        <script>
+                            $("#service_imageFile_file").addClass("custom-file-input")
 
-                        vich = $(".vich-image")
-                        vich_div = vich.children('div')
-                        delete_label = vich_div.children("label")
-                        delete_input = vich_div.children("input[type=checkbox]")
+                            vich = $(".vich-image")
+                            vich_div = vich.children('div')
+                            delete_label = vich_div.children("label")
+                            delete_input = vich_div.children("input[type=checkbox]")
 
-                        vich.children('a').removeAttr('download').css('pointer-events', 'none');
-                        vich_div.addClass("custom-control custom-checkbox")
-                        delete_label.addClass("custom-control-label")
-                        delete_input.addClass("custom-control-input")
-                        delete_label.before(delete_input);
-                    </script>
+                            vich.children('a').removeAttr('download').css('pointer-events', 'none');
+                            vich_div.addClass("custom-control custom-checkbox")
+                            delete_label.addClass("custom-control-label")
+                            delete_input.addClass("custom-control-input")
+                            delete_label.before(delete_input);
+                        </script>
+
                 </div>
-            </div>
+</div>
 
             <div class="form-buttons-w">
                 <div class="row">

@@ -3,18 +3,34 @@
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20210501232500.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20210507040003.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20210511033153.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20210511175908.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20210511180106.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/Version20210512204047.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/product_images/166555480-4017571044968863-6671336449659034515-n-6060e5f24e6e7730583315.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/product_images/defuser-6048f38955f77968673691-9-6049015856d34315506155.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/DealAPI.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/API/ProductAPI.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Deal.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Deal.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/deal_images/an-6051e466ac3fe551004382.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/service_images/scrum-process-60a034ba02c65828444938.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/users_images/avatar7-603168895d96a017777300.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/deal/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/deal/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/deal/myDeals_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/myDeals_new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/delivery/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/delivery/user/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/last4Clients.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/last4Clients.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/last4Orders.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/last4Orders.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/notification/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/notification/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/notifications.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/notifications.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/options.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/options.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/orderDeal/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/orderDeal/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/orderProduct/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/orderProduct/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/product/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product/myProducts_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/myProducts_new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product_options/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/product_options/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/subOrderProduct/index_subOrder.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/subOrderProduct/index_subOrder.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/teamMembers.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/teamMembers.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/workingHours/myReservationList.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/myReservationList.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -314,7 +330,13 @@
       <workItem from="1622050065878" duration="41000" />
       <workItem from="1622213422282" duration="8526000" />
       <workItem from="1622303919853" duration="540000" />
-      <workItem from="1622305007851" duration="3919000" />
+      <workItem from="1622305007851" duration="3920000" />
+      <workItem from="1622390438621" duration="2456000" />
+      <workItem from="1622494190485" duration="716000" />
+      <workItem from="1622556049105" duration="3816000" />
+      <workItem from="1622570406874" duration="706000" />
+      <workItem from="1622646602324" duration="6487000" />
+      <workItem from="1622734459339" duration="9186000" />
     </task>
     <servers />
   </component>
@@ -332,17 +354,6 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="php">
-          <url>file://$PROJECT_DIR$/templates/orderDeal/index.html.twig</url>
-          <line>129</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

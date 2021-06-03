@@ -4,13 +4,13 @@
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Home</a>
+            <a href="#">Accueil</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('myServices_new') }}">Mon service</a>
+            <a href="{{ path('myServices_new') }}">Mes Rendez-Vous</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="#">Fixer mes créneaux</a>
+            <a href="#">Créneaux</a>
         </li>
     </ul>
 {% endblock %}
@@ -78,20 +78,25 @@
 
     {# % do form.slots.setRendered %} #}
 
-    <div class="col-sm-12">
+    <div class="col-sm-6">
         <div class="element-wrapper">
             <div class="element-box">
-                <h5 class="form-header">
-                    {{ service.nom }}
-                </h5>
-                <div class="form-desc">
-                    Gestion de réservation
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-calendar-time"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header" style="color: #047bf8;">
+                                Selectionner vos créneaux disponible
+                            </h5>
+                            <div class="element-inner-desc">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {{ form_start(form) }}
 
-                <h6 class="form-header">
-                    Selectionner vos créneaux disponible
-                </h6>
                 <div id='calendar'></div>
 
                 <div class="form-desc">

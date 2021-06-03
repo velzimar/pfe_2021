@@ -1,10 +1,19 @@
-<div class="col-sm-12">
+<div class="col-sm-6">
     <div class="element-wrapper">
         <div class="element-box">
-            <h5 class="form-header">
-                {{ button_label }} un produit
-            </h5>
-            <div class="form-desc">
+            <div class="element-info">
+                <div class="element-info-with-icon">
+                    <div class="element-info-icon">
+                        <div class="os-icon os-icon-plus"></div>
+                    </div>
+                    <div class="element-info-text">
+                        <h5 class="element-inner-header" style="color: #047bf8;">
+                            {{ button_label }} un produit
+                        </h5>
+                        <div class="element-inner-desc">
+                        </div>
+                    </div>
+                </div>
             </div>
             {{ form_start(form) }}
             {% do form.business.setRendered() %}
@@ -12,21 +21,21 @@
 
             <div class="row">
 
-                <div class="col-sm-3">
+                <div class="col-sm-4">
 
                     <div class="form-group">
                         {{ form_row(form.nom,{
                             'label':"Nom",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le nom" ,'required':"required", 'type':"text" }
+                            'attr': {'class': 'form-control' ,'placeholder':" " ,'required':"required", 'type':"text" }
                         }) }}
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-8">
 
                     <div class="form-group">
                         {{ form_row(form.description,{
                             'label':"Description",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer la description" ,'required':"required", 'type':"text" }
+                            'attr': {'class': 'form-control' ,'placeholder':" " ,'required':"required", 'type':"text" }
                         }) }}
                     </div>
                 </div>
@@ -34,17 +43,17 @@
 
 
             <div class="row">
-                <div class="col-sm-1">
+                <div class="col-sm-4">
                     <div class="form-group">
                         {{ form_row(form.prix,{
                             'label':"Prix",
-                            'attr': {'class': 'form-control' ,'placeholder':"Entrer le prix" ,'required':"required", 'type':"prix" }
+                            'attr': {'class': 'form-control' ,'placeholder':" " ,'required':"required", 'type':"prix" }
                         }) }}
 
                     </div>
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                     <div class="form-group">
                         {{ form_row(form.category,{
                             'label':"Catégorie",
@@ -52,26 +61,47 @@
                         }) }}
                     </div>
                 </div>
+
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    {{ form_label(form.imageFile,null,{
+                        'label':'Image',
+                        'label_attr': {'class': 'custom-file-label','for':'product_imageFile_file'}
+                    }) }}
+                    {{ form_widget(form.imageFile) }}
+                    <script>
+                        $("#product_imageFile_file").addClass("custom-file-input")
+
+                        vich = $(".vich-image")
+                        vich_div = vich.children('div')
+                        delete_label = vich_div.children("label")
+                        delete_input = vich_div.children("input[type=checkbox]")
+
+                        vich.children('a').removeAttr('download').css('pointer-events', 'none');
+                        vich_div.addClass("custom-control custom-checkbox")
+                        delete_label.addClass("custom-control-label")
+                        delete_input.addClass("custom-control-input")
+                        delete_label.before(delete_input);
+                    </script>
+                </div>
             </div>
 
-            <div class="form-buttons-w">
+            <legend><span></span></legend>
                 <div class="row">
-                    <div class="col-sm-2">
-                        <label>Votre produit</label>
-                    </div>
 
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <button id="cmd" type="button">Sur commande</button>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <button id="qtt" type="button">Par quantité</button>
                     </div>
-                    <div class="col-sm-1" id="qtt_block">
+                    <div class="col-sm-4" id="qtt_block">
 
                         <div class="form-group">
                             {{ form_widget(form.qtt,{
                                 'label':"Quantité",
-                                'attr': {'class': 'form-control' ,'placeholder':"Entrer la quantité" ,'required':"required", 'type':"text" }
+                                'attr': {'class': 'form-control' ,'placeholder':"Quantité " ,'required':"required", 'type':"text" }
                             }) }}
                         </div>
                     </div>
@@ -109,267 +139,248 @@
                         }
                     </script>
                 </div>
-            </div>
 
-            <div class="form-buttons-w">
+            <legend><span>Priorité</span></legend>
                 <div class="row">
-                    <div class="col-sm-2">
-                        <label>Priorité</label>
-                    </div>
-                    <div class="col-sm-1.2">
+                    <div class="col-sm-3">
                         <button id="the_first" type="button" class="btn btn-outline-info">Maximale+1</button>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <button id="first" type="button" class="btn btn-outline-info">Maximale</button>
                     </div>
-                    <div class="col-sm-1.2">
+                    <div class="col-sm-3">
                         <button id="the_last" type="button" class="btn btn-outline-info">Minimale-1</button>
                     </div>
                     <div class="col-sm-2">
                         <button id="last" type="button" class="btn btn-outline-info">Minimale</button>
                     </div>
 
-                    <div class="col-sm-1.2">
-                        <button id="after" type="button" data-toggle="modal" class="btn btn-outline-info">Personnalisé
-                        </button>
-                    </div>
-                    <div class="modal fade" id="myModalafter" role="dialog">
-                        <div class="modal-dialog">
-                            <!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title">Priorité personnalisé</h4>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                                </div>
-                                <div class="modal-body">
-                                    <table id="dataTable">
-                                        <thead>
-                                        <tr>
-                                            <th>Nom</th>
-                                            <th>Prix</th>
-                                            <th>Priority</th>
-                                            <th>
-                                            </th>
-                                            <th>
-                                            </th>
-                                            <th>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="tbody_for_after">
-                                        </tbody>
-                                    </table>
+                </div>
 
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="form-desc" style="border-bottom: none">
+            </div>
+<div class="row">
+    <div class="col-sm-3">
+        <button id="after" type="button" data-toggle="modal" class="btn btn-outline-info">Personnalisée
+        </button>
+    </div>
+    <div class="modal fade" id="myModalafter" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Priorité personnalisée</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                    <script>
-                        const user_id = '{{ userId }}'
-                        let category_id = $("#product_category option:selected").val()
-                        alert(category_id)
+                </div>
+                <div class="modal-body">
+                    <table id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                            <th>Priority</th>
+                            <th>
+                            </th>
+                            <th>
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="tbody_for_after">
+                        </tbody>
+                    </table>
 
-                        function update_category(id) {
-                            category_id = id
-                        }
-
-                        $("#product_category").change(() => {
-                            let val = $("#product_category option:selected").val()
-                            alert(val)
-                            update_category(val);
-                        })
-                        let product_priority = $("#product_priority");
-                        //alert(user_id)
-                        //alert(category_id)
-                        function _Avant(identifier) {
-                            _val = $(identifier).data("prio")
-                            alert(_val)
-                            $("#product_priority").val(_val - 1)
-                        }
-
-                        function _Apres(identifier) {
-                            _val = $(identifier).data("prio")
-                            alert(_val)
-                            $("#product_priority").val(_val + 1)
-                        }
-
-                        function _same(identifier) {
-                            _val = $(identifier).data("prio")
-                            alert(_val)
-                            $("#product_priority").val(_val)
-                        }
-
-                        $("#after").click(() => {
-                            $.when(getProductsOfThisCategory()).done(function (response) {
-                                alert(JSON.stringify(response.minPriority))
-                                let str = ""
-                                $.each(response.minPriority, function (product) {
-                                    _id = response.minPriority[product]["id"]
-                                    _nom = response.minPriority[product]["nom"]
-                                    _prix = response.minPriority[product]["prix"]
-                                    _prio = response.minPriority[product]["priority"]
-                                    prio_value = parseInt(response.minPriority[product]["priority"])
-                                    str += "<tr><td>" + _nom + "</td><td>" + _prix + "</td><td>" + _prio + "</td><td><button type='button' onclick='_Avant(this)' class='btn btn-outline-primary' data-prio='" + prio_value + "' >Avant</button></td><td><button type='button' class='btn btn-outline-primary' onclick='_same(this)' data-prio='" + prio_value + "' >Même</button></td><td><button type='button' class='btn btn-outline-primary' data-prio='" + prio_value + "' onclick='_Apres(this)'>Après</button></td></tr>"
-
-                                });
-                                // alert(JSON.stringify(str))
-                                $("#tbody_for_after").html(
-                                    str
-                                )
-                                if (str === "") {
-                                    alert("Aucun produit dans cette catégorie")
-                                    return;
-                                }
-                                $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
-                                $('#dataTable thead tr:eq(1) th').each(function (i) {
-
-                                    var title = $(this).text();
-                                    if (title.search("Nom") !== -1 || title.search("Pri") !== -1) {
-                                        $(this).html('<input class="form-control" type="text" />');
-
-                                        $('input', this).on('keyup change', function () {
-                                            if (table.column(i).search() !== this.value) {
-                                                table
-                                                    .column(i)
-                                                    .search(this.value)
-                                                    .draw();
-                                            }
-                                        });
-                                    } else {
-                                        $(this).html('<input type="text" hidden/>');
-
-                                    }
-
-                                });
-
-                                var table = $('#dataTable').DataTable({
-                                    orderCellsTop: true,
-                                    fixedHeader: true,
-                                    "dom": '<"top"l>rt<"bottom"ip><"clear">',
-                                    language: {
-                                        url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
-                                    }
-                                });
-
-                                $('#myModalafter').modal('show');
-                                // $("#product_priority").val(parseInt((response.maxPriority!==null)?response.maxPriority:0))
-                            })
-                        })
-                        $("#first").click(() => {
-                            $.when(getMaxPriority()).done(function (response) {
-                                $("#product_priority").val(parseInt((response.maxPriority !== null) ? response.maxPriority : 0))
-                            })
-                        })
-                        $("#last").click(() => {
-                            $.when(getMinPriority()).done(function (response) {
-                                $("#product_priority").val(parseInt((response.minPriority !== null) ? response.maxPriority : 0))
-                            })
-                        })
-                        $("#the_first").click(() => {
-                            $.when(getMaxPriority()).done(function (response) {
-                                $("#product_priority").val(parseInt((response.maxPriority !== null) ? response.maxPriority : 0) + 1)
-                            })
-                        })
-                        $("#the_last").click(() => {
-                            $.when(getMinPriority()).done(function (response) {
-                                $("#product_priority").val(parseInt((response.minPriority !== null) ? response.minPriority : 0) - 1)
-                            })
-                        })
-
-                        function getProductsOfThisCategory() {
-                            return $.ajax({
-                                type: "GET",
-                                url: "/product/get/getProductsOfThisCategory/" + user_id + "/" + category_id + "/",//post how you get this URL please...
-                                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
-                                success: function (response) {
-                                    if (response.success) {
-
-                                        //return(parseInt(response.maxPriority))
-                                    }
-                                },
-                                error: function () {
-                                    alert("err")
-                                    //return(0)
-                                }
-                            });
-                        }
-
-                        function getMaxPriority() {
-                            return $.ajax({
-                                type: "GET",
-                                url: "/product/get/getMaxPriority/" + user_id + "/" + category_id + "/",//post how you get this URL please...
-                                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
-                                success: function (response) {
-                                    if (response.success) {
-                                        alert(response.maxPriority)
-                                        //return(parseInt(response.maxPriority))
-                                    }
-                                },
-                                error: function () {
-                                    alert("err")
-                                    //return(0)
-                                }
-                            });
-                        }
-
-                        function getMinPriority() {
-                            return $.ajax({
-                                type: "GET",
-                                url: "/product/get/getMinPriority/" + user_id + "/" + category_id + "/",//post how you get this URL please...
-                                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
-                                success: function (response) {
-                                    if (response.success) {
-                                        alert(response.minPriority)
-                                        //return(parseInt(response.minPriority))
-                                    }
-                                },
-                                error: function () {
-                                    alert("err")
-                                    //return((0))
-                                }
-                            });
-                        }
-                    </script>
-
-                    <div class="col-sm-1" id="qtt_block">
-                        <div class="form-group">
-                            {{ form_widget(form.priority,{
-                                'attr': {'class': 'form-control' ,'required':"required" }
-                            }) }}
-                        </div>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                 </div>
             </div>
-            <div class="form-desc">
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    {{ form_label(form.imageFile,null,{
-                        'label':'Image',
-                        'label_attr': {'class': 'custom-file-label','for':'product_imageFile_file'}
-                    }) }}
-                    {{ form_widget(form.imageFile) }}
-                    <script>
-                        $("#product_imageFile_file").addClass("custom-file-input")
+        </div>
+    </div>
 
-                        vich = $(".vich-image")
-                        vich_div = vich.children('div')
-                        delete_label = vich_div.children("label")
-                        delete_input = vich_div.children("input[type=checkbox]")
+    <script>
+        const user_id = '{{ userId }}'
+        let category_id = $("#product_category option:selected").val()
+        alert(category_id)
 
-                        vich.children('a').removeAttr('download').css('pointer-events', 'none');
-                        vich_div.addClass("custom-control custom-checkbox")
-                        delete_label.addClass("custom-control-label")
-                        delete_input.addClass("custom-control-input")
-                        delete_label.before(delete_input);
-                    </script>
-                </div>
-            </div>
+        function update_category(id) {
+            category_id = id
+        }
+
+        $("#product_category").change(() => {
+            let val = $("#product_category option:selected").val()
+            alert(val)
+            update_category(val);
+        })
+        let product_priority = $("#product_priority");
+        //alert(user_id)
+        //alert(category_id)
+        function _Avant(identifier) {
+            _val = $(identifier).data("prio")
+            alert(_val)
+            $("#product_priority").val(_val - 1)
+        }
+
+        function _Apres(identifier) {
+            _val = $(identifier).data("prio")
+            alert(_val)
+            $("#product_priority").val(_val + 1)
+        }
+
+        function _same(identifier) {
+            _val = $(identifier).data("prio")
+            alert(_val)
+            $("#product_priority").val(_val)
+        }
+
+        $("#after").click(() => {
+            if (category_id === "" || category_id === null) {
+                alert("Sélectionner une catégorie d'abord")
+                return;
+            }
+            $.when(getProductsOfThisCategory()).done(function (response) {
+                alert(JSON.stringify(response.minPriority))
+                let str = ""
+                $.each(response.minPriority, function (product) {
+                    _id = response.minPriority[product]["id"]
+                    _nom = response.minPriority[product]["nom"]
+                    _prix = response.minPriority[product]["prix"]
+                    _prio = response.minPriority[product]["priority"]
+                    prio_value = parseInt(response.minPriority[product]["priority"])
+                    str += "<tr><td>" + _nom + "</td><td>" + _prix + "</td><td>" + _prio + "</td><td><button type='button' onclick='_Avant(this)' class='btn btn-outline-primary' data-prio='" + prio_value + "' >Avant</button></td><td><button type='button' class='btn btn-outline-primary' onclick='_same(this)' data-prio='" + prio_value + "' >Même</button></td><td><button type='button' class='btn btn-outline-primary' data-prio='" + prio_value + "' onclick='_Apres(this)'>Après</button></td></tr>"
+
+                });
+                // alert(JSON.stringify(str))
+                $("#tbody_for_after").html(
+                    str
+                )
+                if (str === "") {
+                    alert("Aucun produit dans cette catégorie")
+                    return;
+                }
+                $('#dataTable thead tr').clone(true).appendTo('#dataTable thead');
+                $('#dataTable thead tr:eq(1) th').each(function (i) {
+
+                    var title = $(this).text();
+                    if (title.search("Nom") !== -1 || title.search("Pri") !== -1) {
+                        $(this).html('<input class="form-control" type="text" />');
+
+                        $('input', this).on('keyup change', function () {
+                            if (table.column(i).search() !== this.value) {
+                                table
+                                    .column(i)
+                                    .search(this.value)
+                                    .draw();
+                            }
+                        });
+                    } else {
+                        $(this).html('<input type="text" hidden/>');
+
+                    }
+
+                });
+
+                var table = $('#dataTable').DataTable({
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    "dom": '<"top"l>rt<"bottom"ip><"clear">',
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json'
+                    }
+                });
+
+                $('#myModalafter').modal('show');
+                // $("#product_priority").val(parseInt((response.maxPriority!==null)?response.maxPriority:0))
+            })
+        })
+        $("#first").click(() => {
+            $.when(getMaxPriority()).done(function (response) {
+                $("#product_priority").val(parseInt((response.maxPriority !== null) ? response.maxPriority : 0))
+            })
+        })
+        $("#last").click(() => {
+            $.when(getMinPriority()).done(function (response) {
+                $("#product_priority").val(parseInt((response.minPriority !== null) ? response.maxPriority : 0))
+            })
+        })
+        $("#the_first").click(() => {
+            $.when(getMaxPriority()).done(function (response) {
+                $("#product_priority").val(parseInt((response.maxPriority !== null) ? response.maxPriority : 0) + 1)
+            })
+        })
+        $("#the_last").click(() => {
+            $.when(getMinPriority()).done(function (response) {
+                $("#product_priority").val(parseInt((response.minPriority !== null) ? response.minPriority : 0) - 1)
+            })
+        })
+
+        function getProductsOfThisCategory() {
+            return $.ajax({
+                type: "GET",
+                url: "/product/get/getProductsOfThisCategory/" + user_id + "/" + category_id + "/",//post how you get this URL please...
+                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
+                success: function (response) {
+                    if (response.success) {
+
+                        //return(parseInt(response.maxPriority))
+                    }
+                },
+                error: function () {
+                    alert("err")
+                    //return(0)
+                }
+            });
+        }
+
+        function getMaxPriority() {
+            return $.ajax({
+                type: "GET",
+                url: "/product/get/getMaxPriority/" + user_id + "/" + category_id + "/",//post how you get this URL please...
+                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.maxPriority)
+                        //return(parseInt(response.maxPriority))
+                    }
+                },
+                error: function () {
+                    alert("err")
+                    //return(0)
+                }
+            });
+        }
+
+        function getMinPriority() {
+            return $.ajax({
+                type: "GET",
+                url: "/product/get/getMinPriority/" + user_id + "/" + category_id + "/",//post how you get this URL please...
+                //data: {user: user_id, array: json, info: input_json},//jQ will sort this out for you
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.minPriority)
+                        //return(parseInt(response.minPriority))
+                    }
+                },
+                error: function () {
+                    alert("err")
+                    //return((0))
+                }
+            });
+        }
+    </script>
+
+    <div class="col-sm-3" id="qtt_block">
+        <div class="form-group">
+            {{ form_widget(form.priority,{
+                'attr': {'class': 'form-control' ,"placeholder":"Priorité",'required':"required" }
+            }) }}
+        </div>
+    </div>
+</div>
+
 
             <div class="form-buttons-w">
                 <div class="row">
@@ -377,7 +388,7 @@
                         <button class="btn btn-primary " type="submit"> {{ button_label }}</button>
                     </div>
                     <div class="col-auto">
-                        <button class="btn" type="reset">Annuler</button>
+                        <button class="btn btn-outline-primary" type="reset">Annuler</button>
                     </div>
                 </div>
             </div>

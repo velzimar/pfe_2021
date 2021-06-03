@@ -6,16 +6,13 @@
 
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Home</a>
+            <a href="#">Accueil</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('myServices_new') }}">Mon service</a>
+            <a href="{{ path('myServices_new') }}">Mes rendez-vous</a>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ path('service_calendar',{'id':service.id}) }}">Fixer mes créneaux</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="#">Liste des réservations</a>
+            <a href="#">Demandes réçus</a>
         </li>
     </ul>
 {% endblock %}
@@ -24,10 +21,22 @@
     {# { include('product/_myQuickLinks.html.twig') }} #}
 {% endblock %}
 {% block body %}
+    <div class="col-sm-10">
     <div class="element-wrapper">
-        <h6 class="element-header">
-            La liste des résèrvations
-        </h6>
+        <div class="element-info">
+            <div class="element-info-with-icon">
+                <div class="element-info-icon">
+                    <div class="os-icon os-icon-tasks-checked"></div>
+                </div>
+                <div class="element-info-text">
+                    <h5 class="element-inner-header" style="color: #047bf8;">
+                        Demandes réçus
+                    </h5>
+                    <div class="element-inner-desc">
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">{#
@@ -64,7 +73,7 @@
                             <thead id="head">
                             <tr>
                                 <th>
-                                    Identifiant
+                                    Id
                                 </th>
                                 <th>
                                     Client
@@ -73,7 +82,7 @@
                                     Téléphone
                                 </th>
                                 <th>
-                                    Date
+                                    Temps de rendez-vous
                                 </th>
                                 <th>
                                     Coût
@@ -141,7 +150,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div></div>
 {% endblock %}
 
 {% block javascripts %}

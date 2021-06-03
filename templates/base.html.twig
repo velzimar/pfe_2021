@@ -265,6 +265,24 @@
                     </div>
                 </div>
             </div>
+
+            <div class="menu-actions">
+                <a class="messages-notifications os-dropdown-trigger os-dropdown-position-right"
+                   href="{{ path('myWorkingHours_new') }}"
+                >
+                    <i class="os-icon os-icon-signs-11"></i>
+
+                </a>
+                {{ include('notifications.html.twig') }}
+
+                <a class="messages-notifications os-dropdown-trigger os-dropdown-position-right"
+                   href="{{ path('myWorkingHours_new') }}"
+                >
+                    <i class="os-icon os-icon-user-male-circle2"></i>
+
+                </a>
+            </div>
+            {#
             <div class="menu-actions">
                 <!--------------------
                 START - Messages Link in secondary top menu
@@ -290,11 +308,11 @@
                         </div>
                         <ul>
 
-                            {#
+
                             <li>
                                 <a href="apps_email.html"><i class="os-icon os-icon-mail-01"></i><span>Incoming Mail</span></a>
                             </li>
-                            #}
+
                             <li>
                                 <a href="{{ path('my_profile_edit') }}"><i
                                             class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
@@ -310,6 +328,7 @@
                 --------------------><!--------------------
             START - Messages Link in secondary top menu
             -------------------->
+
                 <div class="messages-notifications os-dropdown-trigger os-dropdown-position-right">
                     <i class="os-icon os-icon-zap"></i>
                     <div class="new-messages-count">
@@ -383,14 +402,18 @@
                         </ul>
                     </div>
                 </div>
+
                 <!--------------------
+
                 END - Messages Link in secondary top menu
                 -------------------->
             </div>
+#}
             <h1 class="menu-page-header">
                 Page Header
             </h1>
             <ul class="main-menu">
+                {#
                 {% if is_granted('ROLE_ADMIN') %}
 
                     <li class="sub-header">
@@ -655,6 +678,8 @@
                     </li>
 
                 {% endif %}
+                #}
+
                 {% if is_granted('ROLE_SELLER') %}
                     <li class="sub-header">
                         <span>Je délivre</span>
@@ -662,19 +687,19 @@
                     <li class="has-sub-menu">
                         <a href="{{ path('my_new_delivery') }}">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-package"></div>
+                                <div class="os-icon os-icon-truck"></div>
                             </div>
                             <span>Configurer la livraison</span>
                         </a>
                     </li>
 
                     <li class="sub-header">
-                        <span>Ma Vitrine</span>
+                        <span>Mes produits</span>
                     </li>
                     <li class="has-sub-menu">
                         <a>
                             <div class="icon-w">
-                                <div class="os-icon os-icon-package"></div>
+                                <div class="os-icon os-icon-grid-squares-22"></div>
                             </div>
                             <span>Catégories</span></a>
                         <div class="sub-menu-w">
@@ -700,9 +725,9 @@
                     <li class="has-sub-menu">
                         <a href="#">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-file-text"></div>
+                                <div class="os-icon os-icon-package"></div>
                             </div>
-                            <span>Mes produits</span></a>
+                            <span>Produits</span></a>
                         <div class="sub-menu-w">
                             <div class="sub-menu-header">
                                 Mes produits
@@ -726,9 +751,9 @@
                     <li class="has-sub-menu">
                         <a href="{{ path('myReceivedOrderProducts') }}">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-package"></div>
+                                <div class="os-icon os-icon-shopping-cart"></div>
                             </div>
-                            <span>Commandes</span>
+                            <span>Commandes récus</span>
                         </a>
                     </li>
 
@@ -736,14 +761,56 @@
 
 
                     <li class="sub-header">
-                        <span>Mon Service</span>
+                        <span>Mes rendez-vous</span>
                     </li>
+
+                    <li class="has-sub-menu">
+                        <a href="{{ path('myWorkingHours_new') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-edit"></div>
+                            </div>
+                            <span>Configurer</span>
+                        </a>
+
+                    </li>
+                    <li class="has-sub-menu">
+                        <a href="{{ path('myWorkingHours_new') }}">
+                            <div class="icon-w">
+                                <div class="os-icon os-icon-calendar"></div>
+                            </div>
+                            <span>Temps de travail</span>
+                        </a>
+
+                    </li>
+                    <style>
+                    .os-icon-basic-2-259-calendar:before {
+                    content: "\e926";
+                     color: #047bf8;
+                    }
+                    </style>
+                    <li class="has-sub-menu">
+                    <a href="{{ path('myServices_new') }}">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-basic-2-259-calendar"></div>
+                        </div>
+                        <span>Exceptions</span>
+                    </a>
+                    </li>
+
+                    <li class="has-sub-menu">
+                    <a href="{{ path('myServices_new') }}">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-calendar-time"></div>
+                        </div>
+                        <span>Créneaux</span>
+                    </a>
+
                     <li class="has-sub-menu">
                         <a href="{{ path('myServices_new') }}">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-package"></div>
+                                <div class="os-icon os-icon-tasks-checked"></div>
                             </div>
-                            <span>Gérer mon service</span>
+                            <span>Demandes réçus</span>
                         </a>
                     </li>
 
@@ -754,7 +821,7 @@
                     <li class="has-sub-menu">
                         <a>
                             <div class="icon-w">
-                                <div class="os-icon os-icon-package"></div>
+                                <div class="os-icon os-icon-grid-squares-22"></div>
                             </div>
                             <span>Catégories</span></a>
                         <div class="sub-menu-w">
@@ -762,7 +829,7 @@
                                 Catégories des Deals
                             </div>
                             <div class="sub-menu-icon">
-                                <i class="os-icon os-icon-package"></i>
+                                <i class="os-icon os-icon-"></i>
                             </div>
                             <div class="sub-menu-i">
                                 <ul class="sub-menu">
@@ -780,7 +847,7 @@
                     <li class="has-sub-menu">
                         <a href="#">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-file-text"></div>
+                                <div class="os-icon os-icon-package"></div>
                             </div>
                             <span>Deals</span></a>
                         <div class="sub-menu-w">
@@ -805,9 +872,9 @@
                     <li class="has-sub-menu">
                         <a href="{{ path('myReceivedOrderDeals') }}">
                             <div class="icon-w">
-                                <div class="os-icon os-icon-package"></div>
+                                <div class="os-icon os-icon-check-circle"></div>
                             </div>
-                            <span>Commandes</span>
+                            <span>Codes obtenus</span>
                         </a>
                     </li>
 
@@ -870,9 +937,6 @@
                                 <li>
                                     <a href="{{ path('my_profile_edit') }}"><i
                                                 class="os-icon os-icon-user-male-circle2"></i><span>Profile</span></a>
-                                </li>
-                                <li>
-                                    <a href="users_profile_small.html"><i class="os-icon os-icon-coins-4"></i><span>Commandes réçus</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -966,7 +1030,7 @@
                     </div>
                     <div class="element-wrapper">
                         <h6 class="element-header">
-                            Liens rapide
+                            Liens rapides
                         </h6>
                         <div class="element-box-tp">
                             <div class="el-buttons-list full-width">

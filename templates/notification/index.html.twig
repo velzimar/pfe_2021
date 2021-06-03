@@ -16,12 +16,9 @@
 
     <div class="element-wrapper">
         <h6 class="element-header">
-            Mes notifications
+            Notifications
         </h6>
         <div class="element-box">
-            <h5 class="form-header">
-                Liste des notifications
-            </h5>
             <div class="form-desc">
             </div>
             <div class="table-responsive">
@@ -32,10 +29,10 @@
                             Id
                         </th>
                         <th>
-                            Par
+                            Email
                         </th>
                         <th>
-                            Titre
+                            Evènement
                         </th>
                         <th>
                             Date
@@ -51,7 +48,7 @@
                             <td>
                                 {{ notification.id }}
                             <td class="text-right">
-                                {{ notification.sender.nom }} {{ notification.sender.prenom }}
+                                {{ notification.sender.email }}
                             </td>
                             <td>
                                 {{ notification.title }}

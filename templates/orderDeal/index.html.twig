@@ -14,9 +14,10 @@
     {# { include('deal/_myQuickLinks.html.twig') }} #}
 {% endblock %}
 {% block body %}
+    <div class="col-sm-7">
     <div class="element-wrapper">
         <h6 class="element-header">
-            Les commandes des deals
+            Les codes obtenus
         </h6>
         <div class="element-box">
             <div class="order-box">
@@ -29,7 +30,7 @@
                                     Client
                                 </th>
                                 <th>
-                                    Deal
+                                    Id du deal
                                 </th>
                                 <th>
                                     Code
@@ -126,7 +127,7 @@
             </div>
             #}
         </div>
-    </div>
+    </div></div>
 {% endblock %}
 
 {% block javascripts %}

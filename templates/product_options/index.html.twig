@@ -4,9 +4,12 @@
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Home</a>
+            <a href="#">Accueil</a>
         <li class="breadcrumb-item">
             <a href="{{ path('myProducts') }}">Mes produits</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ path('myProducts') }}">{{ product.nom }}</a>
         </li>
         <li class="breadcrumb-item">
             <a href="#">Options</a>
@@ -20,7 +23,7 @@
     </a>
 {% endblock %}
 {% block body %}
-<div class="col-sm-12">
+<div class="col-sm-8">
     <div class="element-wrapper">
         <h6 class="element-header">
             {{ product.nom }}

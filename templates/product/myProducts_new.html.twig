@@ -4,7 +4,7 @@
 {% block  breadcrumb %}
     <ul class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Home</a>
+            <a href="#">Accueil</a>
         </li>
         <li class="breadcrumb-item">
             <a href="{{ path('myProducts') }}">Mes produits</a>
@@ -17,6 +17,6 @@
 
 
 {% block body %}
-    {{ include('product/_form.html.twig', {'button_label': 'Crée', 'action':'new'}) }}
+    {{ include('product/_form.html.twig', {'button_label': 'Ajouter', 'action':'new'}) }}
 
 {% endblock %}

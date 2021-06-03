@@ -40,13 +40,21 @@
     </script>
     <div class="element-wrapper">
         <h6 class="element-header">
-            Les deals de l'utilisateur {{ userId.nom }}
         </h6>
         <div class="element-box">
-            <h5 class="form-header">
-                {{ button_label }} un deal
-            </h5>
-            <div class="form-desc">
+            <div class="element-info">
+                <div class="element-info-with-icon">
+                    <div class="element-info-icon">
+                        <div class="os-icon os-icon-plus"></div>
+                    </div>
+                    <div class="element-info-text">
+                        <h5 class="element-inner-header" style="color: #047bf8;">
+                            {{ button_label }} un deal
+                        </h5>
+                        <div class="element-inner-desc">
+                        </div>
+                    </div>
+                </div>
             </div>
             {% form_theme form 'bootstrap_4_layout.html.twig' %}
             {{ form_start(form) }}
@@ -67,7 +75,7 @@
                 </div>
                 <div class="col-sm-3">
                     {{ form_row(form.prix,{
-                        'label': "Prix après réduction"
+                        'label': "Prix après la réduction"
                     }) }}
                 </div>
                 <div class="col-sm-3">
@@ -106,17 +114,24 @@
                     </script>
                 </div>
             </div>
+            <legend><span>Activation</span></legend>
             <fieldset class="form-group">
-                <legend><span>Activation</span></legend>
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4">Date d'activation
+
+                    </div>
+                    <div class="col-sm-8">Durée d'activation
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4" style="top:20px">
                         {{ form_row(form.date_add,{
-                            'label':"Date d'activation",
+                            'label':" ",
                         }) }}
                     </div>
                     <div class="col-sm-8">
                         {{ form_row(form.duration,{
-                            'label':"Durée d'activation",
+                            'label':" ",
                         }) }}
                     </div>
                     <script>
@@ -130,11 +145,11 @@
         <div class="row">
             <div class="col col-auto mr-auto">
 
-                {{ form_row(form.submit) }}
+                {{ form_row(form.submit,{'label':"Sauvegarder"}) }}
             </div>
             <div class="col col-auto ">
 
-                <button class="btn" type="reset">Annuler</button>
+                <button class="btn btn-outline-primary" type="reset">Annuler</button>
             </div>
         </div>
 

@@ -28,16 +28,25 @@
             border-color: #fbe4a0;
         }
     </style>
-    <div class="col-sm-12">
+    <div class="col-sm-5">
         <div class="element-wrapper">
             <div class="element-box">
-                <h5 class="form-header">
-                </h5>
-                <div class="form-desc">
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-icon">
+                            <div class="os-icon os-icon-plus"></div>
+                        </div>
+                        <div class="element-info-text">
+                            <h5 class="element-inner-header" style="color: #047bf8;">
+                                Ajouter une exception
+                            </h5>
+                            <div class="element-inner-desc">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <fieldset class="form-group">
-                    <legend><span>Choisir le type d'exception</span></legend>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons" id="radiosOf">
                         <label class="btn btn-outline-warning" id="lab01">
                             <input  type="radio" id="once" name="typeOf" autocomplete="off"  value="once" checked>Une fois
@@ -85,8 +94,22 @@
                     </div>
                 </div>
             </fieldset>
-
-                <button id="getBetween">Get Between Dates</button>
+                <div class="element-info">
+                    <div class="element-info-with-icon">
+                        <div class="element-info-text">
+                            <div class="element-inner-desc">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-auto mr-auto">
+                        <button id="getBetween" class="btn btn-primary" >Sauvegarder</button>
+                    </div>
+                    <div class="col col-auto ">
+                        <button class="btn btn-outline-primary" type="reset">Annuler</button>
+                    </div>
+                </div>
                 <div id="results"></div>
                 <div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -337,7 +360,7 @@
             $('#daterange').daterangepicker({
                 singleDatePicker: false,
                 "minDate": newd,
-                "locale": local
+                "locale": local,drops: 'down'
             }, onSelect);
 
             $('#singledate').daterangepicker({

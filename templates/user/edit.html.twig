@@ -64,8 +64,15 @@
     {% for flashError in app.flashes('user/edit.html.twig_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-
-    <div class="col-sm-12">
+<style>
+    .user-profile .up-head-w .up-social {
+        position: absolute;
+        top: 80px;
+        left: 40px;
+        /*z-index: 5;*/
+    }
+</style>
+    <div class="col-sm-6">
         <div class="element-wrapper">
             {% if user.getMainRole != "Client" %}
 
@@ -74,9 +81,9 @@
                     <div class="up-head-w" id="user_profile"
                          style="background-image:url({{ vich_uploader_asset(user, 'imageFile') }})">
                         <div class="up-social">
-                            <a href="#"><i class="os-icon os-icon-twitter"></i></a>
-                            <a href="#"><i
-                                        class="os-icon os-icon-facebook"></i></a>
+                            <div class="col-md-6 mb-4">
+                                <img class="rounded-circle z-depth-2" width="150px" height="150px" alt="100x100" src="https://mdbootstrap.com/img/Photos/Avatars/img%20(31).jpg" data-holder-rendered="true">
+                            </div>
                         </div>
                         <div class="up-main-info">
                             <h2 class="up-header">
@@ -98,7 +105,6 @@
                     </div>
                 </div>
             </div>
-
                 <div class="element-box">
                     <div class="element-info">
                         <div class="element-info-with-icon">
@@ -289,14 +295,14 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Modal Header</h4>
+                                    <h4 class="modal-title"></h4>
                                 </div>
                                 <div class="modal-body">
 
                                     <div id="map"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"></button>
                                 </div>
                             </div>
 
@@ -503,7 +509,6 @@
 
 
     <script src="{{ asset("/myScripts/user/editUser.js") }}"></script>
-
     <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBGbVdDprMqKm8-WHOBC8u3GIXrBWbJxw&callback=initMap">
     </script>

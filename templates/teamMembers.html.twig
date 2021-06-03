@@ -5,7 +5,7 @@
     </h6>
     <div class="element-box-tp">
         <div class="input-search-w">
-            <input class="form-control rounded bright" placeholder="Search team members..."
+            <input class="form-control rounded bright" placeholder="Chercher un administrateur"
                    type="search">
         </div>
         <div class="users-list-w">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a class="user-action" href="{{ path('send_mail_as_admin',{'id':admin.id}) }}">
+                    <a class="user-action" href="{{ path('send_mail_as_seller',{'id':admin.id}) }}">
                         <div class="os-icon os-icon-email-forward"></div>
                     </a>
                 {% elseif is_granted('ROLE_SELLER') %}
