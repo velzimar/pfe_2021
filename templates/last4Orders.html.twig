@@ -31,8 +31,10 @@
                              {{ order[0].total }}dt
                         </div>
                         <div class="activity-info">
+
+                                <h6>Client : {{ order[0].client.id }}</h6>
+
                             <div class="activity-role">
-                                    {{ order[0].client.email }}
                                 {% if is_granted('ROLE_ADMIN') %}
                                     <a class="user-action" target="_blank" href="{{ path('send_mail_as_admin_to_client',{'id':order[0].client.id}) }}">
                                         <div class="os-icon os-icon-email-forward"> Envoyer un email</div>
@@ -43,10 +45,6 @@
                                     </a>
                                 {% endif %}
                             </div>
-                            <strong class="activity-title">
-                                    {{ order[0].phone }}
-
-                            </strong>
                         </div>
 
                     </div>

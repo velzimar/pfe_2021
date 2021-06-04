@@ -105,7 +105,7 @@ class UserAuthAuthenticator extends AbstractFormLoginAuthenticator implements Pa
 */
         $role = $token->getUser()->getMainRole();
         if($role == "Vendeur")
-            return new RedirectResponse($this->urlGenerator->generate('myProducts'));
+            return new RedirectResponse($this->urlGenerator->generate('products_dashboard'));
         else if ($role == "Admin")
             return new RedirectResponse($this->urlGenerator->generate('user_index'));
         else if ($role == "SuperAdmin")

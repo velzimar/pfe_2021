@@ -2,35 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2d08576-c09c-4d4c-9e6b-6941ef74f0e9" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Controller/DashboardController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/sellerDashboard/products_dashboard.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/deal_images/an-6051e466ac3fe551004382.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/service_images/scrum-process-60a034ba02c65828444938.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/users_images/avatar7-603168895d96a017777300.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/deal/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/deal/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/deal/myDeals_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/deal/myDeals_new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/delivery/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/delivery/user/edit.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/OrderProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/OrderProductRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/SubOrderProductRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/SubOrderProductRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Security/UserAuthAuthenticator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Security/UserAuthAuthenticator.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/last4Clients.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/last4Clients.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/last4Orders.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/last4Orders.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/notification/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/notification/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/notifications.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/notifications.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/options.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/options.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/orderDeal/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/orderDeal/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/orderProduct/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/orderProduct/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product/myProducts_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product/myProducts_new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product_options/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/product_options/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/product_options/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service/_form.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/service_calendar/user/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/subOrderProduct/index_subOrder.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/subOrderProduct/index_subOrder.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/teamMembers.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/teamMembers.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/edit.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/edit.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/user/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/new.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/addExceptionScreen.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/workingHours/myReservationList.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/myReservationList.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/workingHours/myWorkingHours_new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/user/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/user/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,7 +193,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/service_images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/sellerDashboard" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -226,11 +206,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\sellerDashboard" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public\service_images" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Controller\API" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates\workingHours" />
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\public" />
-      <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Velzimar\PhpstormProjects\untitled2\pfe_2021\src\Form\API" />
@@ -336,7 +316,8 @@
       <workItem from="1622556049105" duration="3816000" />
       <workItem from="1622570406874" duration="706000" />
       <workItem from="1622646602324" duration="6487000" />
-      <workItem from="1622734459339" duration="9186000" />
+      <workItem from="1622734459339" duration="9781000" />
+      <workItem from="1622809569219" duration="17858000" />
     </task>
     <servers />
   </component>

@@ -1,0 +1,444 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block  breadcrumb %}
+    <ul class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="#">Accueil</a>
+        </li>
+    </ul>
+{% endblock %}
+
+{% block body %}
+
+    <script src="{{ asset('bower_components/chart.js/samples/utils.js') }}"></script>
+    <style>
+        canvas{
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        .el-tablo.trend-in-corner .trending i {
+            font-size: 30px;
+        }
+    </style>
+    <!--START - Control panel above projects-->
+    <div class="os-tabs-w mx-3">
+        <div class="os-tabs-controls">
+            <ul class="nav nav-tabs upper">
+                <li class="nav-item">
+                    <a aria-expanded="false" class="nav-link" data-toggle="tab" href="#tab_overview"> Tous</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-expanded="false"  data-toggle="tab" href="#tab_sales" class="nav-link active" > Produits</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-expanded="false" class="nav-link" data-toggle="tab" href="#tab_sales"> Deals</a>
+                </li>
+                <li class="nav-item">
+                    <a aria-expanded="true" class="nav-link"  data-toggle="tab" href="#tab_sales"> Rendez-vous</a>
+                </li>
+            </ul>
+            <ul class="nav nav-pills smaller d-none d-lg-flex">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#"> Aujourd'hui</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " data-toggle="tab" href="#"> 7 jours</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#"> 30 jours</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#"> Cette année</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#"> Total</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--END - Control panel above projects-->
+    <div class="row">
+            <div class="col-sm-12">
+                <!--START - Grid of tablo statistics-->
+                <div class="element-wrapper">
+                    <h6 class="element-header">
+                        Tableau de bord
+                    </h6>
+                    <div class="element-content">
+                        <div class="tablo-with-chart">
+
+                            <div class="row">
+
+                                <div class="col">
+                                    <div class="tablos">
+                                        <div class="row ">
+                                            <div class="col-sm-4">
+                                                <a class="element-box el-tablo centered trend-in-corner padded bold-label" href="apps_support_index.html">
+                                                    <div class="value">
+                                                        {{  nbProdSold.0.somme}}
+                                                    </div>
+                                                    <div class="label">
+                                                        Nombre de produits vendus
+                                                    </div>
+                                                    <div class="trending trending-up-basic">
+                                                        <i class="os-icon os-icon-arrow-up-circle"></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <a class="element-box el-tablo centered trend-in-corner padded bold-label" href="apps_support_index.html">
+                                                    <div class="value">
+                                                        {{  revenu.0.somme}} dt
+                                                    </div>
+                                                    <div class="label">
+                                                        Revenu
+                                                    </div>
+                                                    <div class="trending trending-up-basic">
+                                                        <i class="os-icon os-icon-wallet-loaded"></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <a class="element-box el-tablo centered trend-in-corner padded bold-label" href="apps_support_index.html">
+                                                    <div class="value">
+                                                        {{  nbClient.0.somme}}
+                                                    </div>
+                                                    <div class="label">
+                                                        Nombre des clients
+                                                    </div>
+
+                                                    <div class="trending trending-up-basic">
+                                                        <i class="os-icon os-icon-users"></i>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <!--START - Chart Box-->
+                                    <div class="element-box ">
+                                        <div class="el-chart-w"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                            <canvas height="700" id="canvas" width="1000" style="display: block; width: 941px; height: 266px;" class="chartjs-render-monitor"></canvas>
+
+                                        </div>
+                                    </div>
+                                    <!--END - Chart Box-->
+                                </div>
+                                <div class="col-sm-4">
+                                    <!--START - Chart Box-->
+                                    <div class="element-box ">
+                                        <div class="el-chart-w"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                            <canvas height="700" id="canvas1" width="1000" style="display: block; width: 941px; height: 266px;" class="chartjs-render-monitor"></canvas>
+
+                                        </div>
+                                    </div>
+                                    <!--END - Chart Box-->
+                                </div>
+                                <div class="col-sm-4">
+                                    <!--START - Chart Box-->
+                                    <div class="element-box ">
+                                        <div class="el-chart-w"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                            <canvas height="700" id="canvas2" width="1000" style="display: block; width: 941px; height: 266px;" class="chartjs-render-monitor"></canvas>
+                                            <script>
+                                                var MONTHS = ['1', '5', '10', '15', '20', '25', '30'];
+                                                var config = {
+                                                    type: 'line',
+                                                    data: {
+                                                        labels: ['1', '5', '10', '15', '20', '25', '30'],
+                                                        datasets: [{
+                                                            label: "Chiffre d'affaire",
+                                                            backgroundColor: window.chartColors.red,
+                                                            borderColor: window.chartColors.red,
+                                                            data: [
+                                                                0,
+                                                                56,
+                                                                56+56+5,
+                                                                56+56+5,
+                                                                56+56+5,
+                                                                56+56+5,
+                                                                56+56+5+174,
+                                                            ],
+                                                            fill: false,
+                                                        }]
+                                                    },
+                                                    options: {
+                                                        responsive: true,
+                                                        title: {
+                                                            display: false,
+                                                            text: ''
+                                                        },
+                                                        tooltips: {
+                                                            mode: 'index',
+                                                            intersect: false,
+                                                        },
+                                                        hover: {
+                                                            mode: 'nearest',
+                                                            intersect: false
+                                                        },
+                                                        scales: {
+                                                            xAxes: [{
+                                                                display: true,
+                                                                scaleLabel: {
+                                                                    display: true,
+                                                                    labelString: ' '
+                                                                }
+                                                            }],
+                                                            yAxes: [{
+                                                                display: true,
+                                                                scaleLabel: {
+                                                                    display: true,
+                                                                    labelString: ' '
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                };
+                                                var config1 = {
+                                                    type: 'line',
+                                                    data: {
+                                                        labels: ['1', '5', '10', '15', '20', '25', '30'],
+                                                        datasets: [{
+                                                            label: "Nombre de produit vendus",
+                                                            backgroundColor: window.chartColors.red,
+                                                            borderColor: window.chartColors.red,
+                                                            data: [
+                                                                0,
+                                                                1,
+                                                                3,
+                                                                3,
+                                                                3,
+                                                                3,
+                                                                6,
+                                                            ],
+                                                            fill: false,
+                                                        }]
+                                                    },
+                                                    options: {
+                                                        responsive: true,
+                                                        title: {
+                                                            display: false,
+                                                            text: ''
+                                                        },
+                                                        tooltips: {
+                                                            mode: 'index',
+                                                            intersect: false,
+                                                        },
+                                                        hover: {
+                                                            mode: 'nearest',
+                                                            intersect: false
+                                                        },
+                                                        scales: {
+                                                            xAxes: [{
+                                                                display: true,
+                                                                scaleLabel: {
+                                                                    display: true,
+                                                                    labelString: ' '
+                                                                }
+                                                            }],
+                                                            yAxes: [{
+                                                                display: true,
+                                                                scaleLabel: {
+                                                                    display: true,
+                                                                    labelString: ' '
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                };
+                                                var config2 = {
+                                                    type: 'line',
+                                                    data: {
+                                                        labels: ['1', '5', '10', '15', '20', '25', '30'],
+                                                        datasets: [{
+                                                            label: "Nombre des clients",
+                                                            backgroundColor: window.chartColors.red,
+                                                            borderColor: window.chartColors.red,
+                                                            data: [
+                                                                0,
+                                                                1,
+                                                                2,
+                                                                2,
+                                                                2,
+                                                                2,
+                                                                2,
+                                                            ],
+                                                            fill: false,
+                                                        }]
+                                                    },
+                                                    options: {
+                                                        responsive: true,
+                                                        title: {
+                                                            display: false,
+                                                            text: ''
+                                                        },
+                                                        tooltips: {
+                                                            mode: 'index',
+                                                            intersect: false,
+                                                        },
+                                                        hover: {
+                                                            mode: 'nearest',
+                                                            intersect: false
+                                                        },
+                                                        scales: {
+                                                            xAxes: [{
+                                                                display: true,
+                                                                scaleLabel: {
+                                                                    display: true,
+                                                                    labelString: ' '
+                                                                }
+                                                            }],
+                                                            yAxes: [{
+                                                                ticks: {
+                                                                    stepSize: 1
+                                                                },
+                                                                display: true,
+                                                                scaleLabel: {
+                                                                    display: true,
+                                                                    labelString: ' '
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                };
+
+                                                window.onload = function() {
+                                                    var ctx = document.getElementById('canvas').getContext('2d');
+                                                    window.myLine = new Chart(ctx, config1);
+
+                                                    var ctx1 = document.getElementById('canvas1').getContext('2d');
+                                                    window.myLine = new Chart(ctx1, config);
+
+                                                    var ctx2 = document.getElementById('canvas2').getContext('2d');
+                                                    window.myLine = new Chart(ctx2, config2);
+                                                };
+
+
+                                                var colorNames = Object.keys(window.chartColors);
+
+
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <!--END - Chart Box-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END - Grid of tablo statistics-->
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-xxl-6">
+            <!--START - Customers with most tickets-->
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Les clients les plus rentable
+                </h6>
+                <div class="element-box">
+                    <div class="table-responsive">
+                        <table class="table table-lightborder">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Nombre de commande
+                                </th>
+                                <th>
+                                    Total (dt)
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for client in clients %}
+                            <tr>
+                                <td>
+                                       <span class="d-none d-xl-inline-block">{{ client.email }}</span>
+                                </td>
+                                <td class="text-left">
+                                    {{ client.nbcmd }}
+                                </td>
+                                <td class="text-left">
+                                    {{ client.revenu }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--END - Customers with most tickets-->
+        </div>
+        <div class="col-sm-6 col-xxl-6">
+            <!--START - Questions per Product-->
+            <div class="element-wrapper">
+                <h6 class="element-header">
+                    Les produits les plus vendus
+                </h6>
+                <div class="element-box">
+                    <div class="table-responsive">
+                        <table class="table table-lightborder">
+                            <thead>
+                            <tr>
+                                <th>
+                                    Produit
+                                </th>
+                                <th>
+                                    Nombre de fois vendu
+                                </th>
+                                <th>
+                                    Revenu (dt)
+                                </th>
+                                <th >
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for product in products %}
+                            <tr>
+                                <td>
+                                    <div class="user-with-avatar">
+                                        {% if product.0.product.filename %}
+                                            <img alt="" src="{{ vich_uploader_asset(product.0.product, 'imageFile') }}"><span class="d-none d-xl-inline-block">{{ product.0.product.nom }}</span>
+                                        {% else %}
+
+                                            <img alt="" src="{{ asset('/img/bigicon1.png') }}"><span class="d-none d-xl-inline-block">{{ product.0.product.nom }}</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td class="text-left">
+                                    {{ product.somme }}
+                                </td>
+                                <td class="text-left">
+                                    {{ product.revenu }}
+                                </td>
+                                <td class="text-right">
+                                    <a class="btn btn-outline-dark" href="{{ path('myProducts_show',{id:product.0.product.id}) }}">Détails</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--END - Questions per product-->
+        </div>
+    </div>
+    <!--------------------
+    END - Chat Popup Box
+    -------------------->
+
+{% endblock %}

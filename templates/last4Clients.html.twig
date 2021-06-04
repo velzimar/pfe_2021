@@ -6,7 +6,6 @@
 
         {% for client in clients %}
         <div class="profile-tile">
-            <div class="profile-tile-box">
 
                 {% if is_granted('ROLE_ADMIN') %}
                     <a class="pt-btn" target="_blank" href="{{ path('send_mail_as_admin_to_client',{'id':client.id}) }}">
@@ -17,11 +16,7 @@
                         <div class="btn btn-success btn-sm"> Envoyer un email</div>
                     </a>
                 {% endif %}
-                <div class="pt-user-name">
-                    {{ client.email }}
-                </div>
 
-            </div>
             <div class="profile-tile-meta">
                 <ul>
 
@@ -29,7 +24,7 @@
                         Nombre de commande:<strong>{{ client.count }}</strong>
                     </li>
                     <li>
-                        Dérnier commande:<strong><a target="_blank" href="{{ path('myReceivedSubOrderProducts_status', {'status':'Tous','orderId':client.orderId}) }}">{{ client.orderId }}</a></strong>
+                        Dérniere commande:<strong><a target="_blank" href="{{ path('myReceivedSubOrderProducts_status', {'status':'Tous','orderId':client.orderId}) }}">{{ client.orderId }}</a></strong>
                     </li>
                     <li>
                         Téléphone:<strong>{{ client.phone }}</strong>

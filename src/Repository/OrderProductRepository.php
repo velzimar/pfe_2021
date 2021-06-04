@@ -59,7 +59,7 @@ class OrderProductRepository extends ServiceEntityRepository
             ->andWhere('o.business = :val')
             ->setParameter('val', $value)
             ->groupBy('c.id')
-            ->orderBy('o.orderDate', 'ASC')
+            ->orderBy('o.orderDate', 'DESC')
             ->setMaxResults(4)
             ;
         return  $a->getQuery()->getResult();
@@ -92,7 +92,57 @@ class OrderProductRepository extends ServiceEntityRepository
     }
 
 
+    public function findCustomersOrderByMostBought($date,$user)
+    {
+        return $this->createQueryBuilder('so')
+            ->select(array(
+                "so.id as orderId",
+                "u.email",
+                "Identity(so.client) as ClientId ",
+                "Sum(so.total) as revenu",
+                "Count(so.id) as nbcmd",
+            ))
+            ->from("App\Entity\User","u")
+            ->andWhere('u.id = so.client')
+            ->andWhere(':date <= so.orderDate')
+            ->andWhere(':business = so.business')
+            ->setParameter('date',$date)
+            ->setParameter('business',$user)
+            ->groupBy("so.client")
+            ->orderBy("revenu","DESC")
+            ->getQuery()->getResult();
 
+    }
+    public function findSommeTotal($date,$user)
+    {
+        return $this->createQueryBuilder('so')
+
+
+            ->select(
+                " Sum(so.total) as somme"
+            )
+            ->andWhere(':date <= so.orderDate')
+            ->andWhere(':business = so.business')
+            ->setParameter('date',$date)
+            ->setParameter('business',$user)
+            ->getQuery()->getResult();
+
+    }
+    public function findCustomers($date,$user)
+    {
+        return $this->createQueryBuilder('so')
+
+
+            ->select(
+                "  COUNT ( DISTINCT so.client ) as somme"
+            )
+            ->andWhere(':date <= so.orderDate')
+            ->andWhere(':business = so.business')
+            ->setParameter('date',$date)
+            ->setParameter('business',$user)
+            ->getQuery()->getResult();
+
+    }
     /*
     public function findOneBySomeField($value): ?OrderProduct
     {

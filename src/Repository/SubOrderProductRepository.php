@@ -67,4 +67,53 @@ class SubOrderProductRepository extends ServiceEntityRepository
            ->getQuery()->getResult();
 
     }
+    public function findProductsOrderByMostSold($date,$user)
+    {
+        return $this->createQueryBuilder('so')
+
+
+            ->select(array(
+                //"p.filename ",
+                //"so.name",
+               // "so.status",
+                'partial so.{id}',
+            ))
+
+            ->from("App\Entity\OrderProduct","po")
+            //->from("App\Entity\Product","p")
+            ->leftJoin('so.product', 'p')
+            ->addSelect("p")
+            ->addSelect(
+                " Sum(so.qtt) as somme",
+                "  Sum(so.qtt*(so.optionsPrice+so.price)) as revenu")
+            ->andWhere('so.product = p.id')
+            ->andWhere('so.orderProduct = po.id')
+            ->andWhere(':date <= so.orderDate')
+            ->andWhere(':business = po.business')
+            ->setParameter('date',$date)
+            ->setParameter('business',$user)
+            ->groupBy("so.product")
+            ->orderBy(" somme","DESC")
+            ->addOrderBy(" revenu","DESC")
+            ->getQuery()->getResult();
+
+    }
+    public function findSommeQTT($date,$user)
+    {
+        return $this->createQueryBuilder('so')
+
+
+            ->select(
+                    " Sum(so.qtt) as somme"
+            )
+            ->from("App\Entity\OrderProduct","po")
+            ->andWhere('so.orderProduct = po.id')
+            ->andWhere(':date <= so.orderDate')
+            ->andWhere(':business = po.business')
+            ->setParameter('date',$date)
+            ->setParameter('business',$user)
+            ->getQuery()->getResult();
+
+    }
+
 }
